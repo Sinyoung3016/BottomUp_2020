@@ -1,0 +1,13 @@
+package Model;
+
+public class BanManager {
+private int BM_num;
+private enum BM_state{ OPEN, ING, CLOSE };
+private String BM_name;
+private String BM_password;
+private WorkBook workbook;
+private AnswerSet answerSet;
+public int BM_num() {
+	return BM_num;
+}
+}

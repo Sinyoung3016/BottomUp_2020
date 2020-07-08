@@ -1,0 +1,27 @@
+1594192231306	Rename package 'application'
+1594192547397	Encapsulate field 'pro_id'
+1594192780017	Encapsulate field 'pro_num'
+1594192824764	Encapsulate field 'pro_id'
+1594192924802	Encapsulate field 'banSet'
+1594192934739	Encapsulate field 'workbookSet'
+1594193068088	Encapsulate field 'ban_num'
+1594193079698	Encapsulate field 'ban_name'
+1594193093795	Encapsulate field 'banManager'
+1594193489132	Delete element
+1594193584825	Encapsulate field 'BM_num'
+1594193639131	Encapsulate field 'BM_name'
+1594193648762	Encapsulate field 'BM_password'
+1594193664626	Encapsulate field 'workbook'
+1594193673326	Encapsulate field 'answerSet'
+1594193885434	Encapsulate field 'WB_num'
+1594193895623	Encapsulate field 'WB_name'
+1594193906547	Encapsulate field 'WB_size'
+1594193916352	Encapsulate field 'problemSet'
+1594194115986	Encapsulate field 'PB_num'
+1594194126165	Encapsulate field 'PB_question'
+1594194137820	Encapsulate field 'PB_answer'
+1594197218466	Delete element
+1594198436715	Delete element
+1594198586899	Delete element
+1594198594609	Copy file
+1594198638826	Delete element

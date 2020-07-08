@@ -1,0 +1,10 @@
+package gui;
+
+public class BaseController {
+
+	public static Object CloseButtonActione() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

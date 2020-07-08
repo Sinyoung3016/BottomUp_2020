@@ -1,0 +1,10 @@
+package Model;
+
+public class Ban {
+	private int ban_num;
+	private String nban_name;
+	private BanManager[] banManager;
+	public int ban_num() {
+		return ban_num;
+	}
+}

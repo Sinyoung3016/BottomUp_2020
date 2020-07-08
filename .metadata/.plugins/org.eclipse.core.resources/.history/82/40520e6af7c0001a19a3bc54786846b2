@@ -1,0 +1,15 @@
+package gui;
+
+import javafx.scene.control.Button;
+
+public class BaseController {
+
+	
+	public  Button btn_Main, btn_search
+	
+	public static Object CloseButtonActione() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

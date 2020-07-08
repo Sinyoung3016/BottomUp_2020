@@ -1,0 +1,12 @@
+package Model;
+
+public class Ban {
+	private int ban_num;
+	private String ban_name;
+	private BanManager[] banManagerSet;
+	public int ban_num() {
+		return this.ban_num;
+	}
+	public String ban_name() { return this.ban_name;}
+	public BanManager[] banManagerSet() { return this.banManagerSet;}
+}
