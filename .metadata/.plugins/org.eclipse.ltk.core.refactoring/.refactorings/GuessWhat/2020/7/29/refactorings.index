@@ -2,3 +2,20 @@
 1594616597820	Move compilation unit
 1594616638051	Move compilation units
 1594616652809	Move compilation unit
+1594618399859	Rename type 'LoginController'
+1594618423081	Delete element
+1594618437132	Copy file
+1594619358109	Rename type 'Stu_LoginController'
+1594619369426	Rename type 'Home_Controller'
+1594619381825	Rename resource 'Stu_Login.fxml'
+1594619721281	Delete element
+1594619732185	Copy file
+1594622193082	Copy file
+1594627508495	Rename type 'FormException'
+1594627583515	Copy compilation unit
+1594627749320	Rename package 'Authentication'
+1594627756434	Delete element
+1594627803950	Rename package 'Exception'
+1594629652056	Rename resource 'SignIn.fxml'
+1594629663361	Rename type 'SignInController'
+1594629974719	Delete element

@@ -1,0 +1,52 @@
+package authentication;
+
+import java.sql.SQLException;
+import database.DB_USER;
+import exception.AuthenticationException;
+import exception.MyException;
+import User.Professor;
+
+public class LogInContext {
+
+	public synchronized static boolean SignUp(String ID, String Password, String Email) throws MyException, SQLException {
+	
+		if(AuthenticationException.IDFormCheck(ID)&&AuthenticationException.passwordFormCheck(Password)) {
+			Professor getPro;
+			getPro = DB_USER.getUser(ID);
+			if (getPro != null) {	throw new MyException("중복되는 아이디가 있습니다.");
+			}else {
+			DB_USER.insertPro(ID, Password, Email);
+			return true;
+			}
+		}
+		return false;
+	}
+
+	
+
+	public synchronized static boolean LogIn(String ID, String PW) throws MyException {
+		Professor getPro;
+		getPro = DB_USER.getPro(ID);
+
+		if (getPro == null) {
+			throw new MyException("존재하지 않는 ID 입니다.");
+		}
+		if (PW.equals(getPro.getPassword())) {
+			if(!getPro.is_connected()) {
+				return true;
+			}
+			else {
+				throw new MyException("이미 로그인 상태 입니다.");
+			}
+		} else {
+			throw new MyException("틀린 비밀번호 입니다.");
+		}
+
+	}
+	
+
+	public static void LogOut(String ID) {
+		DB_USER.userLogOut(ID);
+	}
+
+}

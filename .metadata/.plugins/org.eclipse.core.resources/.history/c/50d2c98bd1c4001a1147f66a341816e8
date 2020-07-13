@@ -1,0 +1,8 @@
+package Gui;
+
+public class LoginController {
+
+	private Button btn_SignIn, btn_Login;
+	private TextField tf_Id;
+	private PassWordField pf_Password;
+}

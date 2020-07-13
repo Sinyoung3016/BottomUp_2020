@@ -3,5 +3,9 @@
     <fullyQualifiedTypeName name="java.net.InetAddress"/>
     <fullyQualifiedTypeName name="alter.UserAlter"/>
     <fullyQualifiedTypeName name="javafx.scene.layout.BorderPane"/>
+    <fullyQualifiedTypeName name="javafx.scene.control.TextField"/>
+    <fullyQualifiedTypeName name="javafx.scene.control.PasswordField"/>
+    <fullyQualifiedTypeName name="javafx.scene.control.Label"/>
     <fullyQualifiedTypeName name="javafx.scene.control.Button"/>
+    <fullyQualifiedTypeName name="User.Professor"/>
 </qualifiedTypeNameHistroy>
