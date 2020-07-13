@@ -1,0 +1,5 @@
+package Model;
+//해당 BanManager의 채점결과를 관리
+public class AnswerSet {
+
+}

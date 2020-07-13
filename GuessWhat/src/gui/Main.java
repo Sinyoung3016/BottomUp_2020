@@ -1,4 +1,4 @@
-package gui;
+package Gui;
 	
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -10,7 +10,7 @@ import javafx.fxml.FXMLLoader;
 public class Main extends Application {
 	public void start( Stage primaryStage) throws Exception {
 		try {
-			BorderPane root = (BorderPane)FXMLLoader.load(getClass().getResource("/gui/MainPage.fxml"));
+			BorderPane root = (BorderPane)FXMLLoader.load(getClass().getResource("/Gui/MainPage.fxml"));
 			Scene scene = new Scene(root);
 			primaryStage.setTitle("QuessWhat");
 			primaryStage.setOnCloseRequest(ActionEvent->BaseController.CloseButtonActione());
