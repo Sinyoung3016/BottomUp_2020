@@ -8,21 +8,21 @@
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="840.0" prefWidth="630.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Gui.MainPageController">
    <top>
-      <HBox prefHeight="100.0" prefWidth="680.0" spacing="10.0" BorderPane.alignment="CENTER">
+      <HBox prefHeight="100.0" prefWidth="630.0" spacing="5.0" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="btn_Main" mnemonicParsing="false" onAction="#btn_Main_Action" prefHeight="60.0" prefWidth="420.0" text="GuessWhat?">
+            <Button fx:id="btn_Logo" mnemonicParsing="false" onAction="#btn_Logo_Action" prefHeight="60.0" prefWidth="60.0" text="Search">
                <HBox.margin>
-                  <Insets left="20.0" right="10.0" top="20.0" />
+                  <Insets left="25.0" top="25.0" />
                </HBox.margin>
             </Button>
-            <Button fx:id="btn_Search" mnemonicParsing="false" onAction="#btn_Search_Action" prefHeight="50.0" prefWidth="50.0" text="Search">
+            <Button fx:id="btn_Main" mnemonicParsing="false" onAction="#btn_Main_Action" prefHeight="65.0" prefWidth="410.0" text="GuessWhat?">
                <HBox.margin>
-                  <Insets left="35.0" top="25.0" />
+                  <Insets left="20.0" right="20.0" top="20.0" />
                </HBox.margin>
             </Button>
-            <Button fx:id="btn_MyInfo" mnemonicParsing="false" onAction="#btn_MyInfo_Action" prefHeight="50.0" prefWidth="50.0" text="myInfo">
+            <Button fx:id="btn_MyInfo" mnemonicParsing="false" onAction="#btn_MyInfo_Action" prefHeight="60.0" prefWidth="60.0" text="myInfo">
                <HBox.margin>
-                  <Insets right="20.0" top="25.0" />
+                  <Insets right="25.0" top="25.0" />
                </HBox.margin>
             </Button>
          </children>
@@ -32,6 +32,6 @@
       </HBox>
    </top>
    <center>
-      <VBox prefHeight="580.0" prefWidth="510.0" BorderPane.alignment="CENTER" />
+      <VBox prefHeight="740.0" prefWidth="630.0" BorderPane.alignment="CENTER" />
    </center>
 </BorderPane>
