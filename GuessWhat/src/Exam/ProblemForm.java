@@ -1,4 +1,4 @@
-package Exam;
+package exam;
 //문제형식
 public enum ProblemForm {
 	MultipleChoice, //객관식

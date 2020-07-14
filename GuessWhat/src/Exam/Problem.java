@@ -1,4 +1,4 @@
-package Exam;
+package exam;
 //각각의 문제
 public class Problem {
 	private int PB_num;

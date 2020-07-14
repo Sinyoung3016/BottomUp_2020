@@ -1,4 +1,4 @@
-package Exam;
+package exam;
 //Problem의 모음
 public class WorkBook {
 	private int WB_num;
