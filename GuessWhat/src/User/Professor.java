@@ -1,7 +1,7 @@
-package User;
+package user;
 
-import Exam.WorkBook;
-import Room.Ban;
+import exam.WorkBook;
+import room.Ban;
 
 //문제 출제자
 public class Professor {
