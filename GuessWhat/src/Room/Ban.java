@@ -1,4 +1,4 @@
-package Room;
+package room;
 //BanManager의 모음
 public class Ban {
 	private int ban_num;

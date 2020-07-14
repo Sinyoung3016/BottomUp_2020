@@ -1,6 +1,6 @@
-package Room;
+package room;
 
-import Exam.WorkBook;
+import exam.WorkBook;
 
 //workbook을 풀이하고 결과를 관리
 public class BanManager {
