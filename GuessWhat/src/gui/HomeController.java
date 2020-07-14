@@ -1,4 +1,4 @@
-package Gui;
+package gui;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -16,7 +16,7 @@ public class HomeController {
 	public void btn_CreateProblem_Action() throws Exception {
 		try {
 			Stage primaryStage = (Stage) btn_CreateProblem.getScene().getWindow();
-			Parent main = FXMLLoader.load(getClass().getResource("/Gui/Login.fxml"));
+			Parent main = FXMLLoader.load(getClass().getResource("/gui/Login.fxml"));
 			Scene scene = new Scene(main);
 			primaryStage.setTitle("GuessWhat/Login");
 			primaryStage.setScene(scene);

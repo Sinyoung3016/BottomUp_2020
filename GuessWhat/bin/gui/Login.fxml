@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="840.0" prefWidth="630.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Gui.LoginController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="840.0" prefWidth="630.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.LoginController">
    <top>
       <Label text="Guess What?" BorderPane.alignment="CENTER">
          <BorderPane.margin>
@@ -60,7 +60,7 @@
                         <Insets />
                      </VBox.margin>
                   </HBox>
-                  <Button fx:id="btn_SignIn" mnemonicParsing="false" onAction="#btn_SignIn_Action" text="SignIn">
+                  <Button fx:id="btn_SignUp" mnemonicParsing="false" onAction="#btn_SignUp_Action" text="SignIn">
                      <VBox.margin>
                         <Insets left="300.0" top="10.0" />
                      </VBox.margin>
