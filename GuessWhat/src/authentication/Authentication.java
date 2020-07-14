@@ -4,9 +4,9 @@ import java.sql.SQLException;
 import database.DB_USER;
 import exception.AuthenticationException;
 import exception.MyException;
-import User.Professor;
+import user.Professor;
 
-public class LogInContext {
+public class Authentication {
 
 	public synchronized static boolean SignUp(String ID, String Password, String Email)
 			throws MyException, SQLException {
@@ -34,7 +34,6 @@ public class LogInContext {
 		if (!PW.equals(getUser.pro_password())) {
 			throw new MyException("틀린 비밀번호 입니다.");
 		}
-		
 		return true;
 	}
 
