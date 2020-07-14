@@ -19,3 +19,7 @@
 1594629652056	Rename resource 'SignIn.fxml'
 1594629663361	Rename type 'SignInController'
 1594629974719	Delete element
+1594717717753	Delete element
+1594720557317	Rename type 'ServerManage_Controller'
+1594724485679	Delete element
+1594725752373	Rename type 'LogInContext'
