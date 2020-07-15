@@ -1,7 +1,5 @@
 package gui;
 
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.SQLException;
 
 import javafx.application.Platform;
@@ -48,7 +46,8 @@ public class LoginController {
 			try {
 				this.logIn(tf_Id.getText(), pf_Password.getText());
 			} catch (Exception e) {
-				e.printStackTrace();
+				new Alert(Alert.AlertType.WARNING, e.getMessage(), ButtonType.CLOSE).show();
+				return ;
 			}
 
 			Stage primaryStage = (Stage) btn_Login.getScene().getWindow();
@@ -68,6 +67,7 @@ public class LoginController {
 
 			btn_Login.setDisable(true);
 			btn_SignUp.setDisable(true);
+			
 		} else
 			new Alert(Alert.AlertType.WARNING, "빈칸을 전부 채워주세요.", ButtonType.CLOSE).show();
 	}

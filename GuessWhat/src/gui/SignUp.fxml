@@ -24,14 +24,14 @@
    <center>
       <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
          <children>
-            <HBox alignment="BOTTOM_RIGHT" prefHeight="40.0" prefWidth="200.0" spacing="15.0">
+            <HBox alignment="TOP_RIGHT" prefHeight="40.0" prefWidth="200.0" spacing="5.0">
                <children>
                   <Label text="ID">
                      <font>
                         <Font size="20.0" />
                      </font>
                      <HBox.margin>
-                        <Insets bottom="5.0" />
+                        <Insets bottom="5.0" right="10.0" />
                      </HBox.margin>
                   </Label>
                   <TextField fx:id="tf_ID" prefWidth="250.0">
@@ -39,16 +39,16 @@
                         <Font size="15.0" />
                      </font>
                   </TextField>
+                  <Button fx:id="btn_Overlap" mnemonicParsing="false" onAction="#btn_Overlap_Action" prefHeight="30.0" prefWidth="50.0" text="중복">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Button>
                </children>
                <VBox.margin>
-                  <Insets left="100.0" right="160.0" top="25.0" />
+                  <Insets left="80.0" right="125.0" top="25.0" />
                </VBox.margin>
             </HBox>
-            <Label fx:id="lb_warning_ID" alignment="CENTER" prefWidth="250.0">
-               <VBox.margin>
-                  <Insets left="220.0" />
-               </VBox.margin>
-            </Label>
             <HBox alignment="TOP_RIGHT" prefHeight="40.0" prefWidth="200.0" spacing="15.0">
                <children>
                   <Label text="PassWord">
@@ -66,7 +66,7 @@
                   </PasswordField>
                </children>
                <VBox.margin>
-                  <Insets left="100.0" right="160.0" />
+                  <Insets left="80.0" right="180.0" />
                </VBox.margin>
             </HBox>
             <HBox alignment="TOP_RIGHT" prefHeight="30.0" prefWidth="200.0" spacing="15.0">
@@ -86,12 +86,12 @@
                   </PasswordField>
                </children>
                <VBox.margin>
-                  <Insets left="100.0" right="160.0" />
+                  <Insets left="80.0" right="180.0" />
                </VBox.margin>
             </HBox>
             <Label fx:id="lb_warning_CheckPW" alignment="CENTER" prefWidth="250.0">
                <VBox.margin>
-                  <Insets left="220.0" />
+                  <Insets left="200.0" />
                </VBox.margin>
             </Label>
             <HBox alignment="TOP_RIGHT" prefHeight="40.0" prefWidth="200.0" spacing="15.0">
@@ -111,7 +111,7 @@
                   </TextField>
                </children>
                <VBox.margin>
-                  <Insets left="100.0" right="160.0" />
+                  <Insets left="80.0" right="180.0" />
                </VBox.margin>
             </HBox>
             <Button fx:id="btn_SignUp" mnemonicParsing="false" onAction="#btn_SignUp_Action" prefHeight="40.0" prefWidth="150.0" text="SignUp">
