@@ -1,7 +1,0 @@
-package Model;
-
-public class Ban {
-	private int ban_num;
-	private String nban_name;
-	private BanManager[] banManager;
-}

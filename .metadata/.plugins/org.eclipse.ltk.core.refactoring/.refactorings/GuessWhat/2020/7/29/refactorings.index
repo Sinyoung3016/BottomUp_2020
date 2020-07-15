@@ -23,3 +23,5 @@
 1594720557317	Rename type 'ServerManage_Controller'
 1594724485679	Delete element
 1594725752373	Rename type 'LogInContext'
+1594790876411	Delete element
+1594800407714	Encapsulate field 'is_connect'

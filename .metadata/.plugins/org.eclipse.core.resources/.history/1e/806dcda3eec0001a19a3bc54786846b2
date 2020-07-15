@@ -1,8 +1,0 @@
-package Model;
-//개별 문제
-public class Problem {
-	private int PB_num;
-	private String PB_question;
-	private String PB_answer;
-	private enum problemForm{ };
-}

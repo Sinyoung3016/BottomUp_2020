@@ -8,4 +8,7 @@
     <fullyQualifiedTypeName name="javafx.scene.control.Label"/>
     <fullyQualifiedTypeName name="javafx.scene.control.Button"/>
     <fullyQualifiedTypeName name="User.Professor"/>
+    <fullyQualifiedTypeName name="java.net.Socket"/>
+    <fullyQualifiedTypeName name="authentication.AuthenticationManage"/>
+    <fullyQualifiedTypeName name="database.DB_USER"/>
 </qualifiedTypeNameHistroy>

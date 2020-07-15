@@ -1,8 +1,0 @@
-package Model;
-
-public class BanManager {
-private int BM_num;
-private enum BM_state ;
-private String BM_name;
-private String BM_
-}
