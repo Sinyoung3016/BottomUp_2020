@@ -13,15 +13,16 @@ public class Professor {
 	private String pro_id;
 	private String pro_password;
 	private String pro_email;
+	private int is_connect;
 	private Ban[] banSet;
 	private WorkBook[] workbookSet;
 
 	// Constructor start
 	public Professor(String[] info) {
-		this.setPro_num(info[0]);
-		this.setPro_id(info[1]);
-		this.setPro_password(info[2]);
-		this.setPro_email(info[3]);
+		this.setPro_id(info[0]);
+		this.setPro_password(info[1]);
+		this.setPro_email(info[2]);
+		this.setIs_connect(Integer.parseInt(info[3]));
 		this.setBanSet(DEFAULT_BAN_SIZE);
 		this.setWorkbookSet(DEFAULT_WORKBOOK_SIZE);
 	}
@@ -31,7 +32,7 @@ public class Professor {
 	public void setPro_num(String newPro_num) {
 		this.pro_num = newPro_num;
 	}
-	
+
 	public void setPro_id(String newPro_id) {
 		this.pro_id = newPro_id;
 	}
@@ -42,6 +43,10 @@ public class Professor {
 
 	public void setPro_email(String newPro_email) {
 		this.pro_email = newPro_email;
+	}
+	
+	public void setIs_connect(int is_connect) {
+		this.is_connect = is_connect;
 	}
 
 	public void setBanSet(int newBanSize) {
@@ -70,6 +75,10 @@ public class Professor {
 		return this.pro_email;
 	}
 
+	public int is_connect() {
+		return this.is_connect;
+	}
+
 	public Ban[] banSet() {
 		return this.banSet;
 	}
@@ -77,6 +86,6 @@ public class Professor {
 	public WorkBook[] workbookSet() {
 		return this.workbookSet;
 	}
-	// Getter end
 
+// Getter end
 }
