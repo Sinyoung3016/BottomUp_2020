@@ -9,19 +9,19 @@ import user.Professor;
 
 public class DB_USER extends DBManager {
 
-	public synchronized static Professor getUser(String ID) {
+	public synchronized static Professor getUser(String givenID) {
 
 		Connection conn = null;
 		Statement state = null;
 		ResultSet rs = null;
-		String[] userInfo = new String[3];
+		String[] userInfo = new String [4];
 
 		try {
 			conn = getConn();
 			state = conn.createStatement();
 
 			String sql;
-			sql = "SELECT * FROM user WHERE pro_id = '" + ID + "'";
+			sql = "SELECT * FROM user WHERE pro_id = '" + givenID + "'";
 
 			rs = state.executeQuery(sql);
 			if (rs == null)
@@ -31,14 +31,15 @@ public class DB_USER extends DBManager {
 				userInfo[0] = rs.getString("pro_id");
 				userInfo[1] = rs.getString("pro_password");
 				userInfo[2] = rs.getString("pro_email");
+				userInfo[3] = rs.getString("is_connect");
 			}
-			
+
 			Professor returnUser = new Professor(userInfo);
 			return returnUser;
 
 		} catch (Exception e) {
 			return null;
-			
+
 		} finally {
 			try {
 				if (conn != null)
@@ -56,8 +57,8 @@ public class DB_USER extends DBManager {
 
 	}
 
-	public synchronized static void userLogIn(String id) {
-		
+	public synchronized static void userLogIn(String givenID) {
+
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 
@@ -65,13 +66,13 @@ public class DB_USER extends DBManager {
 			conn = getConn();
 
 			String sql;
-			sql = "UPDATE sample SET is_connected = '1' WHERE pro_id= '" + id + "'";
+			sql = "UPDATE user SET is_connect = '1' WHERE pro_id= '" + givenID + "'";
 			pstmt = conn.prepareStatement(sql);
 
 			pstmt.executeUpdate();
 			pstmt.close();
 			conn.close();
-			
+
 		} catch (Exception e) {
 			System.out.println(e);
 		} finally {
@@ -85,8 +86,8 @@ public class DB_USER extends DBManager {
 			}
 		}
 	}
-	
-	public synchronized static void userLogOut(String id) {
+
+	public synchronized static void userLogOut(String givenID) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 
@@ -95,7 +96,7 @@ public class DB_USER extends DBManager {
 			conn = getConn();
 
 			String sql;
-			sql = "UPDATE sample SET is_connected='0' WHERE pro_id='"+id+"'";
+			sql = "UPDATE user SET is_connect ='0' WHERE pro_id='" + givenID + "'";
 			pstmt = conn.prepareStatement(sql);
 
 			pstmt.executeUpdate();
@@ -104,16 +105,18 @@ public class DB_USER extends DBManager {
 		} catch (Exception e) {
 			System.out.println(e);
 		} finally {
-			try {if (conn != null)conn.close();
-				if (pstmt != null)pstmt.close();
-			} 
-			catch (SQLException e) {
+			try {
+				if (conn != null)
+					conn.close();
+				if (pstmt != null)
+					pstmt.close();
+			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 		}
 	}
 
-	public synchronized static void insertUser(String ID, String PassWord, String Email) throws SQLException {
+	public synchronized static void insertUser(String ID, String PassWord, String Email, String is_connect) throws SQLException {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 
@@ -122,12 +125,13 @@ public class DB_USER extends DBManager {
 			conn = getConn();
 
 			String sql;
-			sql = "INSERT INTO sample (pro_id, pro_password, pro_email)VALUES (?,?,?)";
+			sql = "INSERT INTO user (pro_id, pro_password, pro_email, is_connect ) VALUES (?,?,?,?)";
 			pstmt = conn.prepareStatement(sql);
-
+			
 			pstmt.setString(1, ID);
 			pstmt.setString(2, PassWord);
 			pstmt.setString(3, Email);
+			pstmt.setString(4, is_connect);
 
 			pstmt.executeUpdate();
 			pstmt.close();
