@@ -19,6 +19,4 @@ public class WorkBook {
 	public Problem[] problemSet() { return problemSet; }
 	//Getter end
 	
-	
-
 }
