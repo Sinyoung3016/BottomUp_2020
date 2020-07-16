@@ -10,17 +10,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="840.0" prefWidth="630.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.LoginController">
-   <top>
-      <Label text="Guess What?" BorderPane.alignment="CENTER">
-         <BorderPane.margin>
-            <Insets top="200.0" />
-         </BorderPane.margin>
-         <font>
-            <Font size="46.0" />
-         </font>
-      </Label>
-   </top>
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="840.0" prefWidth="630.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.LoginController">
    <center>
       <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
@@ -28,31 +18,31 @@
                <children>
                   <HBox alignment="CENTER_RIGHT" prefHeight="40.0" prefWidth="250.0" spacing="15.0">
                      <children>
-                        <Label text="ID">
+                        <Label style="-fx-text-fill: #5ad18f;" text="ID">
                            <font>
-                              <Font size="20.0" />
+                              <Font name="Dubai Medium" size="20.0" />
                            </font>
                         </Label>
                         <TextField fx:id="tf_Id" prefWidth="250.0">
                            <font>
-                              <Font size="15.0" />
+                              <Font name="Dubai Medium" size="12.0" />
                            </font>
                         </TextField>
                      </children>
                      <VBox.margin>
-                        <Insets top="25.0" />
+                        <Insets />
                      </VBox.margin>
                   </HBox>
                   <HBox alignment="CENTER_RIGHT" prefHeight="40.0" prefWidth="250.0" spacing="15.0">
                      <children>
-                        <Label text="PassWord">
+                        <Label style="-fx-text-fill: #5ad18f;" text="PassWord">
                            <font>
-                              <Font size="20.0" />
+                              <Font name="Dubai Medium" size="20.0" />
                            </font>
                         </Label>
                         <PasswordField fx:id="pf_Password" prefWidth="250.0">
                            <font>
-                              <Font size="15.0" />
+                              <Font name="Dubai Medium" size="12.0" />
                            </font>
                         </PasswordField>
                      </children>
@@ -60,22 +50,35 @@
                         <Insets />
                      </VBox.margin>
                   </HBox>
-                  <Button fx:id="btn_SignUp" mnemonicParsing="false" onAction="#btn_SignUp_Action" text="SignIn">
+                  <Button fx:id="btn_SignUp" mnemonicParsing="false" onAction="#btn_SignUp_Action" style="-fx-text-fill: #5ad18f; -fx-background-color: #ffffff; -fx-underline: true;" text="SignIn">
                      <VBox.margin>
-                        <Insets left="300.0" top="10.0" />
+                        <Insets left="280.0" />
                      </VBox.margin>
+                     <font>
+                        <Font name="Dubai Medium" size="18.0" />
+                     </font>
                   </Button>
                </children>
             </VBox>
-            <Button fx:id="btn_Login" mnemonicParsing="false" onAction="#btn_Login_Action" prefHeight="70.0" prefWidth="65.0" text="LogIn">
+            <Button fx:id="btn_Login" mnemonicParsing="false" onAction="#btn_Login_Action" prefHeight="70.0" prefWidth="65.0" style="-fx-background-color: #5ad18f;" text="LogIn" textFill="WHITE">
                <font>
-                  <Font size="15.0" />
+                  <Font name="Dubai Medium" size="15.0" />
                </font>
                <HBox.margin>
-                  <Insets left="10.0" top="30.0" />
+                  <Insets left="10.0" top="5.0" />
                </HBox.margin>
             </Button>
          </children>
       </HBox>
    </center>
+   <top>
+      <Button fx:id="btn_GuessWhat" mnemonicParsing="false" onAction="#btn_GuessWhat_Action" style="-fx-background-color: #ffffff; -fx-text-fill: #5ad18f;" text="Guess What?" BorderPane.alignment="CENTER">
+         <font>
+            <Font name="Dubai Medium" size="45.0" />
+         </font>
+         <BorderPane.margin>
+            <Insets top="180.0" />
+         </BorderPane.margin>
+      </Button>
+   </top>
 </BorderPane>

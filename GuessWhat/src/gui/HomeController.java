@@ -10,10 +10,10 @@ import javafx.stage.Stage;
 
 public class HomeController {
 	@FXML
-	private Button btn_CreateProblem;
+	private Button btn_CreateProblem, btn_Enter;
 	private TextField tf_RoomCode;
 
-	public void btn_CreateProblem_Action() throws Exception {
+	public void btn_CreateProblem_Action(){
 		try {
 			Stage primaryStage = (Stage) btn_CreateProblem.getScene().getWindow();
 			Parent main = FXMLLoader.load(getClass().getResource("/gui/Login.fxml"));
@@ -26,7 +26,7 @@ public class HomeController {
 		}
 	}
 
-	public void tf_RoonCode_Action() throws Exception {
+	public void btn_Enter_Action(){
 
 	}
 

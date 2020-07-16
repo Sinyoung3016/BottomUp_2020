@@ -33,11 +33,24 @@ public class SignUpController implements Initializable {
 	@FXML
 	private PasswordField pf_PassWord, pf_CheckPW;
 	@FXML
-	private Button btn_SignUp, btn_Overlap;
+	private Button btn_GuessWhat, btn_SignUp, btn_Overlap;
 
-	private boolean check_Overlap_Id = false;
+	private boolean check_Overlap_Id = false, check_checkPW = false;
+	
+	public void btn_GuessWhat_Action() {//Login으로 이동
+		try {
+			Stage primaryStage = (Stage) btn_GuessWhat.getScene().getWindow();
+			Parent main = FXMLLoader.load(getClass().getResource("/gui/Login.fxml"));
+			Scene scene = new Scene(main);
+			primaryStage.setTitle("GuessWhat/LogIn");
+			primaryStage.setScene(scene);
+			primaryStage.show();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
-	public void btn_Overlap_Action() throws Exception {
+	public void btn_Overlap_Action() {
 
 		if (Authentication.isThereOverlap(tf_ID.getText()))
 			new Alert(Alert.AlertType.WARNING, "중복되는 ID입니다. 다른 ID를 입력해주세요.", ButtonType.CLOSE).show();
@@ -45,16 +58,22 @@ public class SignUpController implements Initializable {
 			check_Overlap_Id = true;
 			new Alert(Alert.AlertType.CONFIRMATION, "가능한 ID입니다.", ButtonType.CLOSE).show();
 		}
+		
 	}
 
-	public void btn_SignUp_Action() throws Exception {
+	public void btn_SignUp_Action() {
 
+		if (!check_checkPW) {
+			new Alert(Alert.AlertType.WARNING, "비밀번호를 확인해주세요.", ButtonType.CLOSE).show();
+			return ;
+		}
+		
 		if (!check_Overlap_Id) {
 			new Alert(Alert.AlertType.WARNING, "ID 중복 체크를 해주세요.", ButtonType.CLOSE).show();
 			return ;
 		}
 
-		if (tf_ID.getText().length() != 0 && pf_PassWord.getText().length() != 0 && tf_Email.getText().length() != 0 && check_Overlap_Id) {
+		if (tf_ID.getText().length() != 0 && pf_PassWord.getText().length() != 0 && tf_Email.getText().length() != 0 && check_Overlap_Id && check_checkPW) {
 			try {
 				this.signUp(tf_ID.getText(), pf_PassWord.getText(), tf_Email.getText());
 				new Alert(Alert.AlertType.CONFIRMATION, "회원가입 되었습니다.", ButtonType.CLOSE).show();
@@ -97,10 +116,13 @@ public class SignUpController implements Initializable {
 		pf_CheckPW.focusedProperty().addListener(new ChangeListener<Boolean>() {
 			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
 				if (!pf_CheckPW.isFocused()) {
-					if (!pf_PassWord.getText().equals(pf_CheckPW.getText()))
+					if (!pf_PassWord.getText().equals(pf_CheckPW.getText())) {
 						lb_warning_CheckPW.setText("비밀번호를 다시 확인해 주세요.");
-					else
+					}
+					else {
+						check_checkPW = true;
 						lb_warning_CheckPW.setText("");
+					}
 				}
 			}
 		});

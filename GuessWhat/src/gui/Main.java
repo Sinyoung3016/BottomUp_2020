@@ -12,7 +12,7 @@ public class Main extends Application {
 		try {
 			BorderPane root = (BorderPane)FXMLLoader.load(getClass().getResource("/gui/Home.fxml"));
 			Scene scene = new Scene(root);
-			primaryStage.setTitle("QuessWhat");
+			primaryStage.setTitle("QuessWhat/Home");
 			primaryStage.setOnCloseRequest(ActionEvent->BaseController.CloseButtonActione());
 			primaryStage.setScene(scene);
 			primaryStage.show();

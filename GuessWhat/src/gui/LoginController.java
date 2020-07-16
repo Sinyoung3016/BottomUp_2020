@@ -21,13 +21,27 @@ import exception.MyException;
 public class LoginController {
 
 	@FXML
-	private Button btn_SignUp, btn_Login;
+	private Button btn_GuessWhat, btn_SignUp, btn_Login;
 	@FXML
 	private TextField tf_Id;
 	@FXML
 	private PasswordField pf_Password;
 
-	public void btn_SignUp_Action() throws Exception {
+	
+	public void btn_GuessWhat_Action() {//Home으로 이동
+		try {
+			Stage primaryStage = (Stage) btn_GuessWhat.getScene().getWindow();
+			Parent main = FXMLLoader.load(getClass().getResource("/gui/Home.fxml"));
+			Scene scene = new Scene(main);
+			primaryStage.setTitle("GuessWhat/Home");
+			primaryStage.setScene(scene);
+			primaryStage.show();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void btn_SignUp_Action() {
 		try {
 			Stage primaryStage = (Stage) btn_SignUp.getScene().getWindow();
 			Parent main = FXMLLoader.load(getClass().getResource("/gui/SignUp.fxml"));
