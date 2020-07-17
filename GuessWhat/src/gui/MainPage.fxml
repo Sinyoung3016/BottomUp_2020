@@ -2,68 +2,64 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="840.0" prefWidth="630.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.MainPageController">
    <top>
-      <HBox alignment="CENTER" prefHeight="90.0" prefWidth="630.0" spacing="5.0" style="-fx-background-color: #5ad18f;" BorderPane.alignment="CENTER">
+      <Label style="-fx-text-fill: #5ad18f;" text="Guess What?" BorderPane.alignment="CENTER">
+         <BorderPane.margin>
+            <Insets top="25.0" />
+         </BorderPane.margin>
+         <font>
+            <Font name="Dubai Medium" size="45.0" />
+         </font>
+      </Label>
+   </top>
+   <center>
+      <HBox alignment="BOTTOM_CENTER" prefHeight="80.0" prefWidth="630.0" spacing="8.0" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="btn_Logo" mnemonicParsing="false" onAction="#btn_Logo_Action" prefHeight="60.0" prefWidth="80.0" style="-fx-background-color: #5ad18f; -fx-text-fill: #ffffff;" text="Search">
+            <Button fx:id="btn_MyInfo" mnemonicParsing="false" onAction="#btn_MyInfo_Action" prefHeight="50.0" prefWidth="180.0" style="-fx-background-color: #5ad18f;" text="MyInfo" textFill="WHITE">
                <HBox.margin>
-                  <Insets left="25.0" top="5.0" />
+                  <Insets />
                </HBox.margin>
                <font>
-                  <Font name="Dubai Medium" size="17.0" />
+                  <Font name="Dubai Medium" size="18.0" />
                </font>
             </Button>
-            <Button fx:id="btn_Main" mnemonicParsing="false" onAction="#btn_Main_Action" prefHeight="65.0" prefWidth="370.0" style="-fx-background-color: #5ad18f; -fx-text-fill: #ffffff;" text="GuessWhat?">
+            <Button fx:id="btn_WorkBookList" mnemonicParsing="false" onAction="#btn_WorkBookList_Action" prefHeight="50.0" prefWidth="180.0" style="-fx-background-color: #5ad18f;" text="WorkBookList" textFill="WHITE">
                <HBox.margin>
-                  <Insets left="20.0" right="20.0" />
+                  <Insets />
                </HBox.margin>
                <font>
-                  <Font name="Dubai Medium" size="25.0" />
+                  <Font name="Dubai Medium" size="18.0" />
                </font>
             </Button>
-            <Button fx:id="btn_MyInfo" mnemonicParsing="false" onAction="#btn_MyInfo_Action" prefHeight="60.0" prefWidth="80.0" style="-fx-background-color: #5ad18f; -fx-text-fill: #ffffff;" text="myInfo">
-               <HBox.margin>
-                  <Insets right="25.0" top="5.0" />
-               </HBox.margin>
+            <Button fx:id="btn_CreateNewClass" mnemonicParsing="false" onAction="#btn_CreateNewClass_Action" prefHeight="50.0" prefWidth="180.0" style="-fx-background-color: #5ad18f;" text="Create NewClass" textFill="WHITE">
                <font>
-                  <Font name="Dubai Medium" size="17.0" />
+                  <Font name="Dubai Medium" size="18.0" />
                </font>
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
             </Button>
          </children>
          <BorderPane.margin>
-            <Insets />
+            <Insets left="20.0" right="20.0" />
          </BorderPane.margin>
-      </HBox>
-   </top>
-   <center>
-      <VBox prefHeight="740.0" prefWidth="630.0" spacing="15.0" style="-fx-background-color: #ffffff;" BorderPane.alignment="CENTER">
          <padding>
-            <Insets bottom="10.0" left="15.0" right="15.0" top="10.0" />
+            <Insets bottom="15.0" />
          </padding>
-         <BorderPane.margin>
-            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-         </BorderPane.margin>
-         <children>
-            <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="240.0" style="-fx-background-color: #5ad18f;" text="Create newWorkBook" textFill="WHITE">
-               <VBox.margin>
-                  <Insets left="350.0" />
-               </VBox.margin>
-               <font>
-                  <Font name="Dubai Medium" size="20.0" />
-               </font>
-            </Button>
-            <ListView prefHeight="650.0" prefWidth="200.0">
-               <VBox.margin>
-                  <Insets />
-               </VBox.margin>
-            </ListView>
-         </children></VBox>
+      </HBox>
    </center>
+   <bottom>
+      <ListView fx:id="lv_ClassList" prefHeight="640.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <BorderPane.margin>
+            <Insets bottom="20.0" left="20.0" right="20.0" />
+         </BorderPane.margin>
+      </ListView>
+   </bottom>
 </BorderPane>

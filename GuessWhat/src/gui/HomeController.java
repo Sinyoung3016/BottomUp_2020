@@ -27,7 +27,16 @@ public class HomeController {
 	}
 
 	public void btn_Enter_Action(){
-
+		try {
+			Stage primaryStage = (Stage) btn_Enter.getScene().getWindow();
+			Parent main = FXMLLoader.load(getClass().getResource("/gui/StudentInfo.fxml"));
+			Scene scene = new Scene(main);
+			primaryStage.setTitle("GuessWhat/StudentInfo");
+			primaryStage.setScene(scene);
+			primaryStage.show();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	public static Object CloseButtonActione() {

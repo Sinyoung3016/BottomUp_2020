@@ -3,12 +3,13 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="840.0" prefWidth="630.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.WorkBookListController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="840.0" prefWidth="630.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.BanModifyClassNameController">
    <top>
       <HBox alignment="CENTER" prefHeight="90.0" prefWidth="630.0" spacing="5.0" style="-fx-background-color: #5ad18f;" BorderPane.alignment="CENTER">
          <children>
@@ -20,14 +21,14 @@
                   <Font name="Dubai Medium" size="17.0" />
                </font>
             </Button>
-            <Button fx:id="btn_Main" mnemonicParsing="false" onAction="#btn_Main_Action" prefHeight="65.0" prefWidth="370.0" style="-fx-background-color: #5ad18f; -fx-text-fill: #ffffff;" text="WorkBookList">
+            <TextField fx:id="tf_ChangeClassName" alignment="CENTER" prefHeight="65.0" prefWidth="375.0" promptText="ChangeClassName" style="-fx-background-color: #5ad18f;">
                <HBox.margin>
                   <Insets left="20.0" right="20.0" />
                </HBox.margin>
                <font>
                   <Font name="Dubai Medium" size="25.0" />
                </font>
-            </Button>
+            </TextField>
             <Button fx:id="btn_MyInfo" mnemonicParsing="false" onAction="#btn_MyInfo_Action" prefHeight="60.0" prefWidth="80.0" style="-fx-background-color: #5ad18f; -fx-text-fill: #ffffff;" text="myInfo">
                <HBox.margin>
                   <Insets right="25.0" top="5.0" />
@@ -51,15 +52,21 @@
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </BorderPane.margin>
          <children>
-            <Button fx:id="btn_CreateNewWorkBook" mnemonicParsing="false" onAction="#btn_CreateNewWorkBook_Action" prefHeight="30.0" prefWidth="240.0" style="-fx-background-color: #5ad18f;" text="Create newWorkBook" textFill="WHITE">
-               <VBox.margin>
-                  <Insets left="350.0" />
-               </VBox.margin>
-               <font>
-                  <Font name="Dubai Medium" size="20.0" />
-               </font>
-            </Button>
-            <ListView fx:id="lv_WorkBookList" prefHeight="650.0" prefWidth="200.0">
+            <HBox alignment="TOP_RIGHT" prefHeight="50.0" prefWidth="200.0" spacing="5.0">
+               <children>
+                  <Button fx:id="btn_SaveClassName" mnemonicParsing="false" onAction="#btn_SaveClassName_Action" prefHeight="50.0" prefWidth="80.0" style="-fx-background-color: #5ad18f;" text="Save&#10;ClassName" textAlignment="CENTER" textFill="WHITE">
+                     <font>
+                        <Font name="Dubai Medium" size="12.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="btn_CreateNewBanManager" mnemonicParsing="false" onAction="#btn_CreateNewBanManager_Action" prefHeight="50.0" prefWidth="180.0" style="-fx-background-color: #5ad18f;" text="Create newRoom" textFill="WHITE">
+                     <font>
+                        <Font name="Dubai Medium" size="20.0" />
+                     </font>
+                  </Button>
+               </children>
+            </HBox>
+            <ListView fx:id="lv_BanManagerList" prefHeight="650.0" prefWidth="200.0">
                <VBox.margin>
                   <Insets />
                </VBox.margin>

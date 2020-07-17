@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="840.0" prefWidth="630.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.MyInfoController">
+   <center>
+      <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="TOP_CENTER">
+         <children>
+            <HBox alignment="CENTER_RIGHT" prefHeight="43.0" prefWidth="200.0" spacing="5.0">
+               <children>
+                  <Label style="-fx-text-fill: #5ad18f;" text="ID">
+                     <font>
+                        <Font name="Dubai Medium" size="20.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets right="10.0" />
+                     </HBox.margin>
+                  </Label>
+                  <Label prefHeight="25.0" prefWidth="250.0" style="-fx-text-fill: #22741C;">
+                     <font>
+                        <Font name="Dubai Medium" size="12.0" />
+                     </font>
+                     <padding>
+                        <Insets left="5.0" />
+                     </padding>
+                  </Label>
+               </children>
+               <VBox.margin>
+                  <Insets left="80.0" right="165.0" />
+               </VBox.margin>
+            </HBox>
+            <HBox alignment="CENTER_RIGHT" prefHeight="40.0" prefWidth="200.0" spacing="15.0">
+               <children>
+                  <Label style="-fx-text-fill: #5ad18f;" text="PassWord">
+                     <font>
+                        <Font name="Dubai Medium" size="20.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </Label>
+                  <PasswordField fx:id="pf_PassWord" prefWidth="250.0">
+                     <font>
+                        <Font name="Dubai Medium" size="12.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </PasswordField>
+               </children>
+               <VBox.margin>
+                  <Insets left="80.0" right="165.0" />
+               </VBox.margin>
+            </HBox>
+            <HBox alignment="CENTER_RIGHT" prefHeight="40.0" prefWidth="200.0" spacing="15.0">
+               <children>
+                  <Label style="-fx-text-fill: #5ad18f;" text="Check PW">
+                     <font>
+                        <Font name="Dubai Medium" size="20.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </Label>
+                  <PasswordField fx:id="pf_CheckPW" prefWidth="250.0">
+                     <font>
+                        <Font name="Dubai Medium" size="12.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </PasswordField>
+               </children>
+               <VBox.margin>
+                  <Insets left="80.0" right="165.0" />
+               </VBox.margin>
+            </HBox>
+            <HBox alignment="CENTER_RIGHT" prefHeight="40.0" prefWidth="200.0" spacing="15.0">
+               <children>
+                  <Label style="-fx-text-fill: #5ad18f;" text="Email">
+                     <font>
+                        <Font name="Dubai Medium" size="20.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </Label>
+                  <TextField fx:id="tf_Email" prefWidth="250.0">
+                     <font>
+                        <Font name="Dubai Medium" size="12.0" />
+                     </font>
+                  </TextField>
+               </children>
+               <VBox.margin>
+                  <Insets left="80.0" right="165.0" />
+               </VBox.margin>
+            </HBox>
+            <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+               <children>
+                  <Button fx:id="btn_Update" mnemonicParsing="false" onAction="#btn_Update_Action" prefWidth="100.0" style="-fx-background-color: #5ad18f;" text="Update" textFill="WHITE">
+                     <font>
+                        <Font name="Dubai Medium" size="15.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="btn_Close" mnemonicParsing="false" onAction="#btn_Close_Action" prefWidth="100.0" style="-fx-background-color: #5ad18f;" text="Close" textFill="WHITE">
+                     <font>
+                        <Font name="Dubai Medium" size="15.0" />
+                     </font>
+                  </Button>
+               </children>
+               <VBox.margin>
+                  <Insets left="150.0" right="150.0" top="10.0" />
+               </VBox.margin>
+               <padding>
+                  <Insets top="10.0" />
+               </padding>
+            </HBox>
+         </children>
+      </VBox>
+   </center>
+   <top>
+      <Label style="-fx-text-fill: #5ad18f;" text="MyInfo" BorderPane.alignment="CENTER">
+         <font>
+            <Font name="Dubai Medium" size="45.0" />
+         </font>
+         <BorderPane.margin>
+            <Insets top="200.0" />
+         </BorderPane.margin>
+      </Label>
+   </top>
+</BorderPane>
