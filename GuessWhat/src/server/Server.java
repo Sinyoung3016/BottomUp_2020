@@ -19,7 +19,7 @@ public class Server {
 	}
 	
 	
-	public static void main(String[] args){
+	public void run(){
 		PrintWriter pw = null;
 		BufferedReader br = null;
 		Socket socket = null;
