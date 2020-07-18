@@ -91,7 +91,7 @@
                   <Insets left="80.0" right="185.0" />
                </VBox.margin>
             </HBox>
-            <Label fx:id="lb_warning_CheckPW" alignment="CENTER" prefWidth="250.0" style="-fx-text-fill: #22741C;" textFill="#1000ff">
+            <Label fx:id="lb_warning_CheckPW" alignment="CENTER" prefWidth="250.0" style="-fx-text-fill: #22741C;" textFill="WHITE">
                <VBox.margin>
                   <Insets left="195.0" />
                </VBox.margin>
