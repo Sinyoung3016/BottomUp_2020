@@ -26,7 +26,7 @@ public class Server {
 		
 		try {
 			//8000번을 포트로 설정해 서버를 생성
-			ServerSocket server = new ServerSocket(8000);
+			ServerSocket server = new ServerSocket(9000);
 			
 			//클라이언트 접속 accept
 			System.out.println("서버가 요청을 기다립니다.");
