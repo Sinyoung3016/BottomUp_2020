@@ -1,10 +1,12 @@
 package exam;
 //각각의 문제
 public class Problem {
-	private int PB_num;
-	private String PB_question;
-	private String PB_answer;
-	private ProblemForm problemForm;
+	private int PBNum;
+	private String WNum;
+	private String question;
+	private String answer;
+	private ProblemType type;
+	private String answerContent;
 	
 	//Constructor start
 	public Problem() {
@@ -13,9 +15,12 @@ public class Problem {
 	//Constructor end
 	
 	//Getter start
-	public int PB_num() { return PB_num; }
-	public String PB_question() { return PB_question; }
-	public String PB_answer() { return PB_answer; }
+	public int getPBNum() { return this.PBNum; }
+	public String getWNum() { return this.WNum; } 
+	public String getQuestion() { return this.question; }
+	public String getAnswer() { return this.answer; }
+	public ProblemType getType() { return this.type;}
+	public String getAnswerContent() {return this.answerContent;}
 	//Getter end
 	
 }

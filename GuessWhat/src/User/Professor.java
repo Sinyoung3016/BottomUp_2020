@@ -9,44 +9,49 @@ public class Professor {
 	private final int DEFAULT_BAN_SIZE = 10;
 	private final int DEFAULT_WORKBOOK_SIZE = 10;
 
-	private String pro_num;
-	private String pro_id;
-	private String pro_password;
-	private String pro_email;
-	private int is_connect;
+	private String Pnum;
+	private String Id;
+	private String name;
+	private String email;
+	private String password;
+	private int isConnected;
 	private Ban[] banSet;
 	private WorkBook[] workbookSet;
 
 	// Constructor start
 	public Professor(String[] info) {
-		this.setPro_id(info[0]);
-		this.setPro_password(info[1]);
-		this.setPro_email(info[2]);
-		this.setIs_connect(Integer.parseInt(info[3]));
+		this.setId(info[0]);
+		this.setPassword(info[1]);
+		this.setEmail(info[2]);
+		this.setConnected(Integer.parseInt(info[3]));
 		this.setBanSet(DEFAULT_BAN_SIZE);
 		this.setWorkbookSet(DEFAULT_WORKBOOK_SIZE);
 	}
 	// Constructor end
 
 	// Setter start
-	public void setPro_num(String newPro_num) {
-		this.pro_num = newPro_num;
+	public void setPNum(String newPro_num) {
+		this.Pnum = newPro_num;
 	}
 
-	public void setPro_id(String newPro_id) {
-		this.pro_id = newPro_id;
-	}
-
-	public void setPro_password(String newPro_password) {
-		this.pro_password = newPro_password;
-	}
-
-	public void setPro_email(String newPro_email) {
-		this.pro_email = newPro_email;
+	public void setId(String newPro_id) {
+		this.Id = newPro_id;
 	}
 	
-	public void setIs_connect(int is_connect) {
-		this.is_connect = is_connect;
+	public void setName(String newName) {
+		this.name = newName;
+	}
+	
+	public void setPassword(String newPro_password) {
+		this.password = newPro_password;
+	}
+
+	public void setEmail(String newPro_email) {
+		this.email = newPro_email;
+	}
+	
+	public void setConnected(int is_connect) {
+		this.isConnected = is_connect;
 	}
 
 	public void setBanSet(int newBanSize) {
@@ -59,24 +64,28 @@ public class Professor {
 	// Setter end
 
 	// Getter start
-	public String pro_num() {
-		return this.pro_num;
+	public String getPNum() {
+		return this.Pnum;
 	}
 
-	public String pro_id() {
-		return this.pro_id;
+	public String getId() {
+		return this.Id;
+	}
+	
+	public String getName() {
+		return this.name;
+	}
+	
+	public String getPassword() {
+		return this.password;
 	}
 
-	public String pro_password() {
-		return this.pro_password;
+	public String getEmail() {
+		return this.email;
 	}
 
-	public String pro_email() {
-		return this.pro_email;
-	}
-
-	public int is_connect() {
-		return this.is_connect;
+	public int getIsConnected() {
+		return this.isConnected;
 	}
 
 	public Ban[] banSet() {
