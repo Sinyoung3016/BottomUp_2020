@@ -1,6 +1,6 @@
 package exam;
 //Problem의 모음
-public class WorkBook {
+public class Workbook {
 	private int WNum;
 	private String BMNum;
 	private String PNum;
@@ -9,8 +9,13 @@ public class WorkBook {
 	private Problem[] problemSet;
 	
 	//Constructor start
-	public WorkBook() {
+	public Workbook() {
 		problemSet = new Problem[10];
+	}
+	
+	public Workbook(String[] workbookInfo) {
+		this.name = workbookInfo[0];
+		this.size = Integer.parseInt(workbookInfo[1]);
 	}
 	//Constructor end
 	
@@ -23,4 +28,10 @@ public class WorkBook {
 	public Problem[] problemSet() { return problemSet; }
 	//Getter end
 	
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder("[");
+		sb.append("Name:"+ this.name + ", Size:" + this.size);
+		return new String(sb);
+	}
 }
