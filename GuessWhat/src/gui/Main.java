@@ -23,8 +23,8 @@ public class Main extends Application {
 	}
 
 	public static void main(String[] args) {
-		//launch(args);
-		Server server = new Server();
-		server.run();
+		launch(args);
+		//Server server = new Server();
+		//server.run();
 	}
 }
