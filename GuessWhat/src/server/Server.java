@@ -8,6 +8,7 @@ import java.util.List;
 
 import database.DB_Problem;
 import database.DB_Workbook;
+import exam.Problem;
 import exam.Workbook;
 
 public class Server {
@@ -59,7 +60,10 @@ public class Server {
 			String message = null;
 			
 			while((message = br.readLine()) != null) {
-				if(message.equals("quit")) break;
+				if(message.equals("quit")) {
+					server.close();
+					break;
+				}
 				if(message.equals("give Workbook")) {
 					List<Workbook> workbookList = this.getAllWorkbook();
 					Iterator<Workbook> iterator = workbookList.iterator();
@@ -69,8 +73,17 @@ public class Server {
 						pw.flush();
 					}
 				}
+				if(message.equals("give Problem")) {
+					List<Problem> problemList = this.getAllProblemOf("3");
+					Iterator<Problem> iterator = problemList.iterator();
+					while(iterator.hasNext()) {
+						Problem problem = iterator.next();
+						pw.println(problem.toString());
+						pw.flush();
+					}
+ 				}
 				else {
-				insertWorkbook(message);
+				modifyProblemName(message);
 				System.out.println(message);
 				}
 			}
@@ -95,13 +108,13 @@ public class Server {
 		DB_Workbook.insertWorkbook(requestTokens[0],requestTokens[1],requestTokens[2], requestTokens[3]);
 	}
 	
-	public void deleteWorkbook(String WNum) {
-		DB_Workbook.deleteWorkbook(WNum);
+	public void deleteWorkbook(String requestToken) {
+		DB_Workbook.deleteWorkbook(requestToken);
 	}
 	
 	public void modifyWorkbook (String requestToken) {
 		String [] requestTokens = requestToken.split(":"); //WNum:Name;
-		DB_Workbook.modifyName(requestTokens[0], requestTokens[1]);
+		DB_Workbook.modifyWorkbookName(requestTokens[0], requestTokens[1]);
 	}
 	
 	public List<Workbook> getAllWorkbook() {
@@ -115,6 +128,19 @@ public class Server {
 		DB_Problem.insertProblem(requestTokens[0], requestTokens[1], requestTokens[2], requestTokens[3], requestTokens[4]);
 	}
 	
+	public void deleteProblem(String requestToken) {
+		DB_Problem.deleteProblem(requestToken);
+	}
+	
+	public void modifyProblemName(String requestToken) {
+		String[] requestTokens = requestToken.split(":");
+		DB_Problem.modifyProblemName(requestTokens[0], requestTokens[1]);
+	}
+	
+	public List<Problem> getAllProblemOf(String requestToken){
+		List<Problem> problemList = DB_Problem.getProblemOf(requestToken);
+		return problemList;
+	}
 	
 	
 	/*public void serverOpen() { //서버생성 (version.Local)

@@ -1,4 +1,5 @@
 package exam;
+
 //각각의 문제
 public class Problem {
 	private int PBNum;
@@ -9,9 +10,13 @@ public class Problem {
 	private String answerContent;
 	
 	//Constructor start
-	public Problem() {
-		
+	public Problem(String[] problemInfo) {
+		this.question = problemInfo[0];
+		this.answer = problemInfo[1];
+		this.type = ProblemType.toProblemType(problemInfo[2]);
+		this.answerContent = problemInfo[3];
 	}
+	
 	//Constructor end
 	
 	//Getter start
@@ -23,4 +28,10 @@ public class Problem {
 	public String getAnswerContent() {return this.answerContent;}
 	//Getter end
 	
+	
+	public String toString() {
+		StringBuilder sb = new StringBuilder("");
+		sb.append("Question: " +this.question +", Anser: " + this.answer + ", Type: " +this.type + ", AnswerContent: " + this.answerContent);
+		return new String(sb);
+	}
 }

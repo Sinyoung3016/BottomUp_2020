@@ -61,7 +61,7 @@ public class DB_Workbook extends DBManager{
 			pstmt.execute();
 			
 			pstmt.close();
-			pstmt.close();
+			conn.close();
 		} catch(Exception e) {
 			System.out.println("Error: " + e.getMessage() + "From deleteWorkbook.1");
 		} finally {
@@ -74,7 +74,7 @@ public class DB_Workbook extends DBManager{
 		}
 	}
 	
-	public synchronized static void modifyName(String WNum, String newName) {
+	public synchronized static void modifyWorkbookName(String WNum, String newName) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		
