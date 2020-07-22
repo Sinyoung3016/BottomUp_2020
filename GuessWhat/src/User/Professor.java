@@ -1,6 +1,6 @@
 package user;
 
-import exam.WorkBook;
+import exam.Workbook;
 import room.Ban;
 
 //문제 출제자
@@ -16,7 +16,7 @@ public class Professor {
 	private String password;
 	private int isConnected;
 	private Ban[] banSet;
-	private WorkBook[] workbookSet;
+	private Workbook[] workbookSet;
 
 	// Constructor start
 	public Professor(String[] info) {
@@ -59,7 +59,7 @@ public class Professor {
 	}
 
 	public void setWorkbookSet(int newWorkbookSize) {
-		workbookSet = new WorkBook[newWorkbookSize];
+		workbookSet = new Workbook[newWorkbookSize];
 	}
 	// Setter end
 
@@ -92,7 +92,7 @@ public class Professor {
 		return this.banSet;
 	}
 
-	public WorkBook[] workbookSet() {
+	public Workbook[] workbookSet() {
 		return this.workbookSet;
 	}
 
