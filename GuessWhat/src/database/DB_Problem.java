@@ -10,7 +10,7 @@ import java.util.List;
 import exam.Problem;
 
 public class DB_Problem extends DBManager{
-	public synchronized static void insertProblem(String WNum, String question, String answer, String type, String answerContents) {
+	public synchronized static boolean insertProblem(String WNum, String question, String answer, String type, String answerContents) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		
@@ -30,8 +30,10 @@ public class DB_Problem extends DBManager{
 			pstmt.executeUpdate();
 			pstmt.close();
 			conn.close();
+			return true;
 		} catch(SQLException e) {
 			System.out.println("Error : " + e.getMessage() + "FROM insertProblem.1");
+			return false;
 		}
 		finally {
 			try{
@@ -43,7 +45,7 @@ public class DB_Problem extends DBManager{
 		}
 	}
 	
-	public synchronized static void deleteProblem(String PNum) {
+	public synchronized static boolean deleteProblem(String PNum) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		
@@ -60,8 +62,10 @@ public class DB_Problem extends DBManager{
 			
 			pstmt.close();
 			conn.close();
+			return true;
 		} catch(SQLException e) {
 			System.out.println("Error : " + e.getMessage() +"FROM deleteProblem.1");
+			return false;
 		}
 		finally {
 			try {

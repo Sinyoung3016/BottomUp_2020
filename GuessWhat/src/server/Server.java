@@ -13,10 +13,6 @@ import exam.Workbook;
 
 public class Server {
 	public String token;
-	/*public PrintWriter pw;
-	public BufferedReader br;
-	public Socket socket;
-	public ServerSocket server; */
 	
 	//Getter,Setter
 	private void setToken(String token) {

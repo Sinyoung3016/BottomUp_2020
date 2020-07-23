@@ -10,7 +10,7 @@ import java.util.List;
 import exam.Workbook;
 
 public class DB_Workbook extends DBManager{
-	public synchronized static void insertWorkbook(String BMNum, String PNum, String Name, String Size) {
+	public synchronized static boolean insertWorkbook(String BMNum, String PNum, String Name, String Size) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		
@@ -29,8 +29,10 @@ public class DB_Workbook extends DBManager{
 			pstmt.executeUpdate();
 			pstmt.close();
 			conn.close();
+			return true;
 		} catch(SQLException e) {
 			System.out.println("Error : " + e.getMessage() + "from insertWorkbook.1");
+			return false;
 		}
 		finally {
 			try {
@@ -45,7 +47,7 @@ public class DB_Workbook extends DBManager{
 		
 	}
 	
-	public synchronized static void deleteWorkbook(String WNum) {
+	public synchronized static boolean deleteWorkbook(String WNum) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		
@@ -62,8 +64,10 @@ public class DB_Workbook extends DBManager{
 			
 			pstmt.close();
 			conn.close();
+			return true;
 		} catch(Exception e) {
 			System.out.println("Error: " + e.getMessage() + "From deleteWorkbook.1");
+			return false;
 		} finally {
 			try {
 				if(pstmt != null) pstmt.close();
