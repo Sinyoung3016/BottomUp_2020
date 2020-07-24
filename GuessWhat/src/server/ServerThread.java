@@ -9,6 +9,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
+import java.util.Iterator;
 import java.util.List;
 
 import database.DB_Problem;
@@ -31,6 +32,7 @@ public class ServerThread extends Thread{
 	@Override
 	public void run() {
 		try {
+		
 		InputStreamReader isr = new InputStreamReader(this.socket.getInputStream(), StandardCharsets.UTF_8);
 		this.br = new BufferedReader(isr);
 		
@@ -44,23 +46,37 @@ public class ServerThread extends Thread{
 					socket.close();
 					break;
 				}
-				String[] requestTokens = message.split(":");
-				
-				if(requestTokens[0].equals(Request.ADD_WORKBOOK.getRequest())) { //AddWorkbook:BMNum:PNum:Name:Size
-					clientRequest = "AddWorkbook";
-					this.addWorkbook(requestTokens[1], requestTokens[2], requestTokens[3], requestTokens[4]);
-				}
-				else if(requestTokens[0].equals(Request.ADD_PROBLEM.getRequest())) { //AddProblem:WNum:Question:Answer:Type:AnswerContents
-					clientRequest = "AddProblem";
-					this.addProblem(requestTokens[1], requestTokens[2], requestTokens[3], requestTokens[4], requestTokens[5]);
-				}
-				else if(requestTokens[0].equals(Request.DELETE_WORKBOOK.getRequest())) { //DeleteWorkbook:WNum
-					clientRequest = "DeleteWorkbook";
-					this.deleteWorkbook(requestTokens[1]);
-				}
-				else if(requestTokens[0].equals(Request.DELETE_PROBLEM.getRequest())) { //DeleteProblem:PNum
-					clientRequest = "DeleteProblem";
-					this.deleteProblem(requestTokens[1]);
+				if(message != null) {
+					String[] requestTokens = message.split(":");
+					
+					if(requestTokens[0].equals(Request.ADD_WORKBOOK.getRequest())) { //AddWorkbook:BMNum:PNum:Name:Size
+						clientRequest = "AddWorkbook";
+						this.addWorkbook(requestTokens[1], requestTokens[2], requestTokens[3], requestTokens[4]);
+					}
+					else if(requestTokens[0].equals(Request.ADD_PROBLEM.getRequest())) { //AddProblem:WNum:Question:Answer:Type:AnswerContents
+						clientRequest = "AddProblem";
+						this.addProblem(requestTokens[1], requestTokens[2], requestTokens[3], requestTokens[4], requestTokens[5]);
+					}
+					else if(requestTokens[0].equals(Request.DELETE_WORKBOOK.getRequest())) { //DeleteWorkbook:WNum
+						clientRequest = "DeleteWorkbook";
+						this.deleteWorkbook(requestTokens[1]);
+					}
+					else if(requestTokens[0].equals(Request.DELETE_PROBLEM.getRequest())) { //DeleteProblem:PNum
+						clientRequest = "DeleteProblem";
+						this.deleteProblem(requestTokens[1]);
+					}else if(requestTokens[0].equals(Request.MODIFY_WORKBOOK.getRequest())) { //ModifyWorkbook:WNum:newName
+						clientRequest = "ModifyWorkbook";
+						this.modifyWorkbook(requestTokens[1], requestTokens[2]);
+					}else if(requestTokens[0].equals(Request.MODIFY_PROBLEM.getRequest())) { //ModifyProblem:PNum:newQuestion
+						clientRequest = "ModifyProblem";
+						this.modifyProblem(requestTokens[1], requestTokens[2]);
+					}else if(requestTokens[0].equals(Request.GET_WORKBOOK.getRequest())) { //GetWorkbook
+						clientRequest = "GetWorkbook";
+						this.getWorkbook();
+					}else if(requestTokens[0].equals(Request.GET_PROBLEM.getRequest())) { //GetProblem:WNum
+						clientRequest = "GetProblem";
+						this.getProblem(requestTokens[1]);
+					}
 				}
 			} 
 			finally {
@@ -104,6 +120,58 @@ public class ServerThread extends Thread{
 		else pw.println(">>FAIL [DeleteProblem]<<");
 		
 		pw.flush();
+	}
+	
+	private void modifyWorkbook(String WNum, String newName) {
+		if(DB_Workbook.modifyWorkbookName(WNum, newName))
+			pw.println(">>SUCCESS [ModifyWorkbook]<<");
+		else pw.println(">>FAIL [DeleteWorkbook]<<");
+		
+		pw.flush();
+	}
+	
+	private void modifyProblem(String PNum, String newQuestion){ 
+		if(DB_Problem.modifyProblemName(PNum, newQuestion))
+			pw.println(">>SUCCESS [ModifyProblem]<<");
+		else pw.println(">>FAIL [ModifyProblem]<<");
+		
+		pw.flush();
+	}
+	
+	private void getWorkbook() {
+		List<Workbook> listWorkbook = DB_Workbook.getAllWorkbook();
+		if(listWorkbook == null) {
+			pw.println(">>FAIL [GetWorkbok]<<");
+			pw.flush();
+		}
+		else {
+			Iterator<Workbook> iterator = listWorkbook.iterator();
+			pw.println(">>SUCCESS [GetWorkbook]");
+			pw.flush();
+			while(iterator.hasNext()) {
+				Workbook workbook = iterator.next();
+				pw.println(workbook.toString());
+				pw.flush();
+			}
+		}
+	}
+	
+	private void getProblem(String PNum) {
+		List<Problem> listProblem = DB_Problem.getProblemOf(PNum);
+		if(listProblem == null) {
+			pw.println(">>FAIL [GetProblem]<<");
+			pw.flush();
+		}	
+		else {
+			Iterator<Problem> iterator = listProblem.iterator();
+			pw.println(">>SUCCESS [GetProblem]<<");
+			pw.flush();
+			while(iterator.hasNext()) {
+				Problem problem = iterator.next();
+				pw.println(problem.toString());
+				pw.flush();
+			}
+		}
 	}
 }
 

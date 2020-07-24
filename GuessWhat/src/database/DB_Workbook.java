@@ -78,7 +78,7 @@ public class DB_Workbook extends DBManager{
 		}
 	}
 	
-	public synchronized static void modifyWorkbookName(String WNum, String newName) {
+	public synchronized static boolean modifyWorkbookName(String WNum, String newName) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		
@@ -97,8 +97,10 @@ public class DB_Workbook extends DBManager{
 				
 				pstmt.close();
 				conn.close();
+				return true;
 			} catch(SQLException e) {
 				System.out.println("Error : " + e.getMessage() +"FROM modifyName");
+				return false;
 			}		
 		} finally {
 			try {

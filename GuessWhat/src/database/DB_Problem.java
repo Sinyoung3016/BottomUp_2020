@@ -77,7 +77,7 @@ public class DB_Problem extends DBManager{
 		}
 	}
 	
-	public synchronized static void modifyProblemName(String PNum, String newQuestion) {
+	public synchronized static boolean modifyProblemName(String PNum, String newQuestion) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		
@@ -95,8 +95,10 @@ public class DB_Problem extends DBManager{
 				
 				pstmt.close();
 				conn.close();
+				return true;
 			} catch(SQLException e) {
 				System.out.println("Error : " +e.getMessage() + "FROM modifyPrblemName.1");
+				return false;
 			}
 		} finally {
 			try {
