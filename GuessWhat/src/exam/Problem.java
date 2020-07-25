@@ -31,7 +31,7 @@ public class Problem {
 	
 	public String toString() {
 		StringBuilder sb = new StringBuilder("");
-		sb.append("Question: " +this.question +", Anser: " + this.answer + ", Type: " +this.type + ", AnswerContent: " + this.answerContent);
+		sb.append("Question: " +this.question +", Answer: " + this.answer + ", Type: " +this.type + ", AnswerContent: " + this.answerContent);
 		return new String(sb);
 	}
 }
