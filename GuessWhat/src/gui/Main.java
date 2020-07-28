@@ -12,6 +12,7 @@ public class Main extends Application {
 		try {
 			//for test
 			BorderPane root = (BorderPane) FXMLLoader.load(getClass().getResource("/gui/MainPage.fxml"));
+			//BorderPane root = (BorderPane) FXMLLoader.load(getClass().getResource("/server/Server.fxml"));
 			//BorderPane root = (BorderPane) FXMLLoader.load(getClass().getResource("/gui/Home.fxml"));
 			Scene scene = new Scene(root);
 			primaryStage.setTitle("QuessWhat/Home");
