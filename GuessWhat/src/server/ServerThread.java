@@ -123,7 +123,7 @@ public class ServerThread extends Thread{
 	}
 	
 	private void addProfessor(String ID, String PassWord, String Email, String IsConnected) {
-		if(DB_USER.insertUser(ID, PassWord, Email, IsConnected))
+		if(DB_USER.insertUser(ID,PassWord, Email, IsConnected))
 			pw.println(">>SUCCESS [AddProfessor]<<");
 		else pw.println(">>FAIL [AddProfessor]<<");
 		

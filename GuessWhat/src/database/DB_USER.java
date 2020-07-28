@@ -134,7 +134,7 @@ public class DB_USER extends DBManager {
 			conn = getConn();
 
 			String sql;
-			sql = "INSERT INTO Professor (Id, Password, Email, IsConnected ) VALUES (?,?,?,?)";
+			sql = "INSERT INTO Professor (Id, Password, Email, IsConnected) VALUES (?,?,?,?)";
 			pstmt = conn.prepareStatement(sql);
 			
 			pstmt.setString(1, ID);

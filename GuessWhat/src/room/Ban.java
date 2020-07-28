@@ -1,6 +1,5 @@
 package room;
 
-import book.Book.HBoxCell;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;

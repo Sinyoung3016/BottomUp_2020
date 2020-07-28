@@ -10,7 +10,7 @@ public class Authentication {
 	public synchronized static boolean SignUp(String ID, String Password, String Email)
 			throws MyException, SQLException {
 		if (!isThereOverlap(ID)) {
-			DB_USER.insertUser(ID, Password, Email, "0");
+			DB_USER.insertUser(ID,Password, Email, "0");
 			return true;
 		}
 		return false;
