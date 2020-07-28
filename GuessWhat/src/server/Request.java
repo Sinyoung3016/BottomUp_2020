@@ -1,7 +1,10 @@
 package server;
 
 public enum Request {
-Add_Ban("AddBan"),
+LOGIN("Login"),
+LOGOUT("Logout"),
+ADD_PROFESSOR("AddProfessor"),
+ADD_BAN("AddBan"),
 ADD_BANMANAGER("AddBanManager"),
 ADD_WORKBOOK("AddWorkbook"),
 ADD_PROBLEM("AddProblem"),
@@ -13,6 +16,7 @@ MODIFY_BAN("ModifyBan"),
 MODIFY_BANMANAGER("ModifyBanManager"),
 MODIFY_WORKBOOK("ModifyWorkbook"),
 MODIFY_PROBLEM("ModifyProblem"),
+GET_PROFESSOR("GetProfessor"),
 GET_BAN("GetBan"),
 GET_BANMANGER("GetBanManager"),
 GET_WORKBOOK("GetWorkbook"),

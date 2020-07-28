@@ -21,17 +21,17 @@ public class DB_USER extends DBManager {
 			state = conn.createStatement();
 
 			String sql;
-			sql = "SELECT * FROM user WHERE pro_id = '" + givenID + "'";
+			sql = "SELECT * FROM Professor WHERE Id = '" + givenID + "'";
 
 			rs = state.executeQuery(sql);
 			if (rs == null)
 				return null;
 
 			if (rs.next()) {
-				userInfo[0] = rs.getString("pro_id");
-				userInfo[1] = rs.getString("pro_password");
-				userInfo[2] = rs.getString("pro_email");
-				userInfo[3] = rs.getString("is_connect");
+				userInfo[0] = rs.getString("Id");
+				userInfo[1] = rs.getString("Password");
+				userInfo[2] = rs.getString("Email");
+				userInfo[3] = rs.getString("IsConnected");
 			}
 
 			Professor returnUser = new Professor(userInfo);
@@ -57,24 +57,31 @@ public class DB_USER extends DBManager {
 
 	}
 
-	public synchronized static void userLogIn(String givenID) {
+	public synchronized static boolean userLogIn(String givenID) {
 
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 
 		try {
 			conn = getConn();
-
+			
 			String sql;
-			sql = "UPDATE user SET is_connect = '1' WHERE pro_id= '" + givenID + "'";
-			pstmt = conn.prepareStatement(sql);
-
-			pstmt.executeUpdate();
-			pstmt.close();
-			conn.close();
-
-		} catch (Exception e) {
-			System.out.println(e);
+			sql = "UPDATE Professor SET IsConnected = ? WHERE Id= ?";
+			
+			try {
+				pstmt = conn.prepareStatement(sql);
+				
+				pstmt.setString(1, "true");
+				pstmt.setString(2, givenID);
+				
+				pstmt.executeUpdate();
+				pstmt.close();
+				conn.close();
+				return true;
+			}catch(SQLException e) {
+				System.out.println("Error : " + e.getMessage() + "FROM userLogin");
+				return false;
+			}
 		} finally {
 			try {
 				if (conn != null)
@@ -87,7 +94,7 @@ public class DB_USER extends DBManager {
 		}
 	}
 
-	public synchronized static void userLogOut(String givenID) {
+	public synchronized static boolean userLogOut(String givenID) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 
@@ -96,14 +103,16 @@ public class DB_USER extends DBManager {
 			conn = getConn();
 
 			String sql;
-			sql = "UPDATE user SET is_connect ='0' WHERE pro_id='" + givenID + "'";
+			sql = "UPDATE Professor SET IsConnected ='false' WHERE Id='" + givenID + "'";
 			pstmt = conn.prepareStatement(sql);
 
 			pstmt.executeUpdate();
 			pstmt.close();
 			conn.close();
+			return true;
 		} catch (Exception e) {
-			System.out.println(e);
+			System.out.println("Error : " + e.getMessage() + "FROM userLogOut");
+			return false;
 		} finally {
 			try {
 				if (conn != null)
@@ -116,7 +125,7 @@ public class DB_USER extends DBManager {
 		}
 	}
 
-	public synchronized static void insertUser(String ID, String PassWord, String Email, String is_connect) throws SQLException {
+	public synchronized static boolean insertUser(String ID, String PassWord, String Email, String is_connect) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 
@@ -125,7 +134,7 @@ public class DB_USER extends DBManager {
 			conn = getConn();
 
 			String sql;
-			sql = "INSERT INTO user (pro_id, pro_password, pro_email, is_connect ) VALUES (?,?,?,?)";
+			sql = "INSERT INTO Professor (Id, Password, Email, IsConnected ) VALUES (?,?,?,?)";
 			pstmt = conn.prepareStatement(sql);
 			
 			pstmt.setString(1, ID);
@@ -136,7 +145,12 @@ public class DB_USER extends DBManager {
 			pstmt.executeUpdate();
 			pstmt.close();
 			conn.close();
-		} finally {
+			return true;
+		} catch(SQLException e) {
+			System.out.println("Error : " + e.getMessage() + "FROM insertUser");
+			return false;
+		}
+		finally {
 			try {
 				if (conn != null)
 					conn.close();

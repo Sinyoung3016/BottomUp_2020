@@ -14,7 +14,7 @@ public class Professor {
 	private String name;
 	private String email;
 	private String password;
-	private int isConnected;
+	private String isConnected;
 	private Ban[] banSet;
 	private Workbook[] workbookSet;
 
@@ -23,7 +23,7 @@ public class Professor {
 		this.setId(info[0]);
 		this.setPassword(info[1]);
 		this.setEmail(info[2]);
-		this.setConnected(Integer.parseInt(info[3]));
+		this.setConnected(info[3]);
 		this.setBanSet(DEFAULT_BAN_SIZE);
 		this.setWorkbookSet(DEFAULT_WORKBOOK_SIZE);
 	}
@@ -50,7 +50,7 @@ public class Professor {
 		this.email = newPro_email;
 	}
 	
-	public void setConnected(int is_connect) {
+	public void setConnected(String is_connect) {
 		this.isConnected = is_connect;
 	}
 
@@ -84,7 +84,7 @@ public class Professor {
 		return this.email;
 	}
 
-	public int getIsConnected() {
+	public String getIsConnected() {
 		return this.isConnected;
 	}
 
@@ -94,6 +94,12 @@ public class Professor {
 
 	public Workbook[] workbookSet() {
 		return this.workbookSet;
+	}
+	
+	public String toString() {
+		StringBuilder sb = new StringBuilder("");
+		sb.append("ID: " + this.Id + ", Name: " + this.name + ", Password: " +this.password +", Email" + this.email + ", IsConnected"  +this.isConnected);
+		return new String(sb);
 	}
 
 // Getter end

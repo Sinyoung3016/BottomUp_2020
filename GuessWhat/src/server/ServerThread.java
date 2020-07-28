@@ -13,11 +13,13 @@ import java.util.Iterator;
 import java.util.List;
 
 import database.DB_Problem;
+import database.DB_USER;
 import database.DB_Workbook;
 import exam.Problem;
 import exam.Workbook;
 import exception.MyException;
 import server.Request;
+import user.Professor;
 public class ServerThread extends Thread{
 	private Socket socket;
 	private BufferedReader br = null;
@@ -48,8 +50,19 @@ public class ServerThread extends Thread{
 				}
 				if(message != null) {
 					String[] requestTokens = message.split(":");
-					
-					if(requestTokens[0].equals(Request.ADD_WORKBOOK.getRequest())) { //AddWorkbook:BMNum:PNum:Name:Size
+					if(requestTokens[0].equals(Request.LOGIN.getRequest())) {//Login:Id
+						clientRequest = "Login";
+						this.Login(requestTokens[1]);
+					}
+					else if(requestTokens[0].equals(Request.LOGOUT.getRequest())) {//Logout:Id
+						clientRequest = "Logout";
+						this.Logout(requestTokens[1]);
+					}
+					else if(requestTokens[0].equals(Request.ADD_PROFESSOR.getRequest())) {//AddProfessor:ID:Password:Email:IsConnected
+						clientRequest = "AddProfessor";
+						this.addProfessor(requestTokens[1], requestTokens[2], requestTokens[3], requestTokens[4]);
+					}
+					else if(requestTokens[0].equals(Request.ADD_WORKBOOK.getRequest())) { //AddWorkbook:BMNum:PNum:Name:Size
 						clientRequest = "AddWorkbook";
 						this.addWorkbook(requestTokens[1], requestTokens[2], requestTokens[3], requestTokens[4]);
 					}
@@ -70,7 +83,11 @@ public class ServerThread extends Thread{
 					}else if(requestTokens[0].equals(Request.MODIFY_PROBLEM.getRequest())) { //ModifyProblem:PNum:newQuestion
 						clientRequest = "ModifyProblem";
 						this.modifyProblem(requestTokens[1], requestTokens[2]);
-					}else if(requestTokens[0].equals(Request.GET_WORKBOOK.getRequest())) { //GetWorkbook
+					}else if(requestTokens[0].equals(Request.GET_PROFESSOR.getRequest())) { //GetProfessor:Id
+						clientRequest = "GetProfessor";
+						this.getProfessor(requestTokens[1]);
+					}
+					else if(requestTokens[0].equals(Request.GET_WORKBOOK.getRequest())) { //GetWorkbook
 						clientRequest = "GetWorkbook";
 						this.getWorkbook();
 					}else if(requestTokens[0].equals(Request.GET_PROBLEM.getRequest())) { //GetProblem:WNum
@@ -89,6 +106,30 @@ public class ServerThread extends Thread{
 			
 		}
 	}
+	private void Login(String Id) {
+		if(DB_USER.userLogIn(Id))
+			pw.println(">>SUCCESS [Login]<<");
+		else pw.println(">>FAIL [Login]<<");
+		
+		pw.flush();
+	}
+	
+	private void Logout(String Id) {
+		if(DB_USER.userLogOut(Id))
+			pw.println(">>SUCCESS [Logout]<<");
+		else pw.println("FAIL [Logout]<<");
+		
+		pw.flush();
+	}
+	
+	private void addProfessor(String ID, String PassWord, String Email, String IsConnected) {
+		if(DB_USER.insertUser(ID, PassWord, Email, IsConnected))
+			pw.println(">>SUCCESS [AddProfessor]<<");
+		else pw.println(">>FAIL [AddProfessor]<<");
+		
+		pw.flush();
+	}
+	
 	
 	private void addWorkbook(String BMNum, String PNum, String Name, String Size) {
 		if(DB_Workbook.insertWorkbook(BMNum,PNum,Name,Size)) 
@@ -137,7 +178,19 @@ public class ServerThread extends Thread{
 		
 		pw.flush();
 	}
-	
+	private void getProfessor(String Id) {
+		Professor professor = DB_USER.getUser(Id);
+		if(professor != null) {
+			pw.println(">>SUCCESS [GetProfessor]<<");
+			pw.flush();
+			pw.println(professor.toString());
+			pw.flush();	
+		}
+		else {
+			pw.println(">>FAIL [GetProfessor]<<");
+			pw.flush();
+		}
+	}
 	private void getWorkbook() {
 		List<Workbook> listWorkbook = DB_Workbook.getAllWorkbook();
 		if(listWorkbook == null) {

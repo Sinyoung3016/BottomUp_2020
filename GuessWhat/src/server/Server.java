@@ -23,13 +23,31 @@ public class Server {
 		try {
 			serverSocket = new ServerSocket();
 		}catch(IOException e) {
-			System.out.println("Error : " + e.getMessage() + "FROM serveOpne");
+			System.out.println("Error : " + e.getMessage() + "FROM serveOpen");
 		}
 		new AcceptThread().start();
 	}
 	
+	public void serverClose() {
+		try {
+			Iterator<Socket> iterator = socketList.iterator();
+			
+			while(iterator.hasNext()) {
+				Socket socket = iterator.next();
+				socket.close();
+				iterator.remove();
+			}
+			
+			if(serverSocket != null && !serverSocket.isClosed()) {
+				serverSocket.close();
+			}
+		} catch(Exception e) {
+			System.out.println("Error : " +e.getMessage() + "FROM serverClose");
+		}
+	}
+	
 	class AcceptThread extends Thread{
-		private final static int SERVER_PORT = 7700;
+		private final static int SERVER_PORT = 7000;
 		
 		@Override
 		public void run() {
