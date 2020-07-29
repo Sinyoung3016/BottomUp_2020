@@ -3,7 +3,7 @@ package user;
 import exam.Workbook;
 import room.Ban;
 
-//문제 출제자
+//臾몄젣 異쒖젣�옄
 public class Professor {
 
 	private final int DEFAULT_BAN_SIZE = 10;
@@ -87,7 +87,15 @@ public class Professor {
 	public String getIsConnected() {
 		return this.isConnected;
 	}
-
+	
+	public boolean isConnected() {
+		if(this.isConnected == "true") {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
 	public Ban[] banSet() {
 		return this.banSet;
 	}

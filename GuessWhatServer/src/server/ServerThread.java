@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.List;
 
+import authentication.LogInContext;
 import database.DB_Problem;
 import database.DB_USER;
 import database.DB_Workbook;
@@ -52,7 +53,7 @@ public class ServerThread extends Thread{
 					String[] requestTokens = message.split(":");
 					if(requestTokens[0].equals(Request.LOGIN.getRequest())) {//Login:Id
 						clientRequest = "Login";
-						this.Login(requestTokens[1]);
+						this.Login(requestTokens[1],requestTokens[2]);
 					}
 					else if(requestTokens[0].equals(Request.LOGOUT.getRequest())) {//Logout:Id
 						clientRequest = "Logout";
@@ -106,9 +107,10 @@ public class ServerThread extends Thread{
 			
 		}
 	}
-	private void Login(String Id) {
-		if(DB_USER.userLogIn(Id))
-			pw.println(">>SUCCESS [Login]<<");
+	private void Login(String Id,String password) {
+		if(LogInContext.logIn(Id, password)) {
+			DB_USER.userLogIn(Id);
+			pw.println(">>SUCCESS [Login]<<");}
 		else pw.println(">>FAIL [Login]<<");
 		
 		pw.flush();
