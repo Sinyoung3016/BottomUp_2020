@@ -39,7 +39,7 @@ public class LoginController implements Initializable{
 	
 	public Socket socket;
 	
-	private static final String SERVER_IP ="192.168.35.24";
+	private static final String SERVER_IP ="172.30.1.52";
 	private static final int SERVER_PORT =6000;
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
@@ -121,4 +121,6 @@ public class LoginController implements Initializable{
 		}else
 			System.out.println("LogIn:실패");
 	}*/
+	
+	
 }
