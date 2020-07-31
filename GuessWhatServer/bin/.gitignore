@@ -1,2 +1,5 @@
 /server/
 /gui/
+/authentication/
+/user/
+/database/

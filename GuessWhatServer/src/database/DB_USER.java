@@ -10,12 +10,11 @@ import user.Professor;
 public class DB_USER extends DBManager {
 
 	public synchronized static Professor getUser(String givenID) {
-
+		Professor professor = null;
 		Connection conn = null;
 		Statement state = null;
 		ResultSet rs = null;
-		String[] userInfo = new String [4];
-
+		String[] userInfo = new String [5];
 		try {
 			conn = getConn();
 			state = conn.createStatement();
@@ -24,18 +23,17 @@ public class DB_USER extends DBManager {
 			sql = "SELECT * FROM Professor WHERE Id = '" + givenID + "'";
 
 			rs = state.executeQuery(sql);
-			if (rs == null)
-				return null;
-
+			
 			if (rs.next()) {
 				userInfo[0] = rs.getString("Id");
 				userInfo[1] = rs.getString("Password");
 				userInfo[2] = rs.getString("Email");
 				userInfo[3] = rs.getString("IsConnected");
+				userInfo[4] = rs.getString("PNum");
+				professor = new Professor(userInfo);
 			}
-
-			Professor returnUser = new Professor(userInfo);
-			return returnUser;
+			
+			return professor;
 
 		} catch (Exception e) {
 			return null;

@@ -27,6 +27,15 @@ public class Professor {
 		this.setBanSet(DEFAULT_BAN_SIZE);
 		this.setWorkbookSet(DEFAULT_WORKBOOK_SIZE);
 	}
+	
+	public Professor(String tokens) {
+		String token[] = tokens.split("-");
+		this.Pnum = token[0];
+		this.Id = token[1];
+		this.name = token[2];
+		this.email = token[3];
+		this.password = token[4];
+	}
 	// Constructor end
 
 	// Setter start

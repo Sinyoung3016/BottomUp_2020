@@ -1,9 +1,10 @@
 package server;
 
 public enum Request {
+OVERLAP("OverLap"),	
 LOGIN("Login"),
 LOGOUT("Logout"),
-ADD_PROFESSOR("AddProfessor"),
+SIGNUP("SignUp"),
 ADD_BAN("AddBan"),
 ADD_BANMANAGER("AddBanManager"),
 ADD_WORKBOOK("AddWorkbook"),

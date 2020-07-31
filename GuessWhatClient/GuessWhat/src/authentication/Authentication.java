@@ -6,7 +6,8 @@ import exception.MyException;
 import user.Professor;
 
 public class Authentication {
-
+	
+	//Not Need
 	public synchronized static boolean SignUp(String ID, String Password, String Email)
 			throws MyException, SQLException {
 		if (!isThereOverlap(ID)) {
@@ -16,6 +17,7 @@ public class Authentication {
 		return false;
 	}
 	
+	//Not Need
 	public static boolean isThereOverlap(String ID) {
 		Professor getUser;
 		getUser = DB_USER.getUser(ID);
