@@ -1,6 +1,13 @@
 package gui;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.net.Socket;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
@@ -23,6 +30,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import model.DataModel;
 
 public class SignUpController implements Initializable {
 
@@ -36,6 +44,8 @@ public class SignUpController implements Initializable {
 	private Button btn_GuessWhat, btn_SignUp, btn_Overlap;
 
 	private boolean check_Overlap_Id = false, check_checkPW = false;
+	
+	public Socket socket;
 	
 	public void btn_GuessWhat_Action() {//Login으로 이동
 		try {
@@ -51,12 +61,33 @@ public class SignUpController implements Initializable {
 	}
 
 	public void btn_Overlap_Action() {
-
-		if (Authentication.isThereOverlap(tf_ID.getText()))
-			new Alert(Alert.AlertType.WARNING, "중복되는 ID입니다. 다른 ID를 입력해주세요.", ButtonType.CLOSE).show();
-		else {
-			check_Overlap_Id = true;
-			new Alert(Alert.AlertType.CONFIRMATION, "가능한 ID입니다.", ButtonType.CLOSE).show();
+		if(tf_ID.getText().length() != 0 ) { // !isEmpty(tf_ID);
+			String responseMessage = null;
+			try {
+				String requestTokens = "OverLap:" + tf_ID.getText();
+				BufferedReader br = new BufferedReader(
+						new InputStreamReader(this.socket.getInputStream(), StandardCharsets.UTF_8));
+				PrintWriter pw = new PrintWriter(
+						new OutputStreamWriter(this.socket.getOutputStream(), StandardCharsets.UTF_8));
+				pw.println(requestTokens);
+				pw.flush();
+				responseMessage = br.readLine();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			String[] responseTokens = responseMessage.split(":");
+			if(responseTokens[0].equals("OverLap")) {
+				if(!responseTokens[1].equals("Success")) {
+					new Alert(Alert.AlertType.WARNING, responseTokens[1], ButtonType.CLOSE).show();
+				}
+				else {
+					check_Overlap_Id = true;
+					new Alert(Alert.AlertType.CONFIRMATION, "가능한 ID입니다.", ButtonType.CLOSE).show();
+				}
+				}
+		}
+		else { //isEmpty(tf_ID);
+			new Alert(Alert.AlertType.WARNING, "빈칸을 전부 채워주세요.", ButtonType.CLOSE).show();
 		}
 		
 	}
@@ -112,7 +143,7 @@ public class SignUpController implements Initializable {
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// TODO Auto-generated method stub
-
+		this.socket = DataModel.socket;
 		pf_CheckPW.focusedProperty().addListener(new ChangeListener<Boolean>() {
 			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
 				if (!pf_CheckPW.isFocused()) {

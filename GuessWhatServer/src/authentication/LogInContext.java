@@ -1,24 +1,38 @@
 package authentication;
 
 import database.DB_USER;
+import exception.MyException;
 import user.Professor;
 
 public class LogInContext {
-	//예외처리 안되어있음
-	public synchronized static boolean logIn(String ID, String pw)  {
+	public synchronized static boolean logIn(String ID, String pw) throws MyException{
 		Professor professor;
 		professor = DB_USER.getUser(ID);
 		
 		if(professor == null) {
-			return false;
+			throw new MyException("ID doesn't exist");
 		}
 		else {
-			if(professor.getPassword().equals(pw)) {
-				if(!professor.isConnected()) {
+			if(pw.equals(professor.getPassword())) {
+				
+				if(!professor.isConnected()) {//Success Login
 					return true;
 				}
+				else {
+					throw new MyException("This ID is already logged in.");
+				}
+			} else {
+				throw new MyException ("Invalid password.");
 			}
-		return false;
 	}
 }
+	public synchronized static boolean overLap(String ID) throws MyException {
+		Professor professor;
+		professor = DB_USER.getUser(ID);
+				
+		if(professor == null)
+			return true;
+		else
+			throw new MyException("중복되는 ID입니다. 다른 ID를 입력해주세요.");		
+	}
 }

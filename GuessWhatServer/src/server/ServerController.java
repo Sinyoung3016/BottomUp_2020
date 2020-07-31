@@ -15,6 +15,8 @@ import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
+import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -26,6 +28,7 @@ import database.DB_USER;
 import database.DB_Workbook;
 import exam.Problem;
 import exam.Workbook;
+import exception.MyException;
 
 public class ServerController {
 	@FXML
@@ -39,7 +42,9 @@ public class ServerController {
 	Map<String, PrintWriter> listClient;
 	
 	public void btn_Open_Action() {
-		// 서버오픈
+		// ServerOpen
+		client_id_ip = new HashMap<>();
+		listClient = new HashMap<>();
 		socketList = new Vector<>();
 		try {
 			serverSocket = new ServerSocket();
@@ -166,12 +171,16 @@ public class ServerController {
 					if(message != null) {
 						String[] requestTokens = message.split(":");
 						if(requestTokens[0].equals(Request.LOGIN.getRequest())) {//Login:Id
-							clientRequest = "Login";
+							clientRequest = "LogIn";
 							this.Login(requestTokens[1],requestTokens[2]);
 						}
 						else if(requestTokens[0].equals(Request.LOGOUT.getRequest())) {//Logout:Id
 							clientRequest = "Logout";
 							this.Logout(requestTokens[1]);
+						}
+						else if(requestTokens[0].equals(Request.OVERLAP.getRequest())) { //OverLap:Id
+							clientRequest = "OverLap";
+							this.overLap(requestTokens[1]);
 						}
 						else if(requestTokens[0].equals(Request.ADD_PROFESSOR.getRequest())) {//AddProfessor:ID:Password:Email:IsConnected
 							clientRequest = "AddProfessor";
@@ -210,29 +219,28 @@ public class ServerController {
 							this.getProblem(requestTokens[1]);
 						}
 					}
-				} 
-				finally {
-					
+				} catch(MyException e) {
+					pw.println(clientRequest + ":" + e.getMessage());
+					pw.flush();
 				}
-			}
-			}catch(IOException e) {
-				
+				}
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
 			}finally {
 				
 			}
-		}
-		private void Login(String Id,String password) {
+			}
+		private void Login(String Id,String password) throws MyException {
 			if(LogInContext.logIn(Id, password)) {
 				DB_USER.userLogIn(Id);
-				pw.println("LogIn:Success:" + DB_USER.getUser(id).toString());
+				System.out.println(Id + "님이 로그인하셨습니다.");
+				pw.println("LogIn:Success:" + DB_USER.getUser(Id).tokenString());
 				pw.flush();
-				client_id_ip.put(Id, socket.getInetAddress().toString());
+				client_id_ip.put(Id,socket.getInetAddress().toString());
 				listClient.put(id,pw);
 				this.id=Id;
 			}
-			else pw.println(">>FAIL [Login]<<");
-			
-			pw.flush();
 		}
 		
 		private void Logout(String Id) {
@@ -241,6 +249,13 @@ public class ServerController {
 			else pw.println("FAIL [Logout]<<");
 			
 			pw.flush();
+		}
+		
+		private void overLap(String Id) throws MyException {
+			if(LogInContext.overLap(Id)) {
+				pw.println("OverLap:Success");
+				pw.flush();
+			}
 		}
 		
 		private void addProfessor(String ID, String PassWord, String Email, String IsConnected) {

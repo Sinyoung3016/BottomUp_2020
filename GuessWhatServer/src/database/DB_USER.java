@@ -14,7 +14,7 @@ public class DB_USER extends DBManager {
 		Connection conn = null;
 		Statement state = null;
 		ResultSet rs = null;
-		String[] userInfo = new String [4];
+		String[] userInfo = new String [5];
 
 		try {
 			conn = getConn();
@@ -24,7 +24,7 @@ public class DB_USER extends DBManager {
 			sql = "SELECT * FROM Professor WHERE Id = '" + givenID + "'";
 
 			rs = state.executeQuery(sql);
-			if (rs == null)
+			if (rs.wasNull())
 				return null;
 
 			if (rs.next()) {
@@ -32,6 +32,7 @@ public class DB_USER extends DBManager {
 				userInfo[1] = rs.getString("Password");
 				userInfo[2] = rs.getString("Email");
 				userInfo[3] = rs.getString("IsConnected");
+				userInfo[4] = rs.getString("PNum");
 			}
 
 			Professor returnUser = new Professor(userInfo);

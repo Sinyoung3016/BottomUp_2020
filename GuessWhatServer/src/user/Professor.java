@@ -24,8 +24,18 @@ public class Professor {
 		this.setPassword(info[1]);
 		this.setEmail(info[2]);
 		this.setConnected(info[3]);
+		this.setPNum(info[4]);
 		this.setBanSet(DEFAULT_BAN_SIZE);
 		this.setWorkbookSet(DEFAULT_WORKBOOK_SIZE);
+	}
+	
+	public Professor(String tokens) {
+		String token[] = tokens.split("-");
+		this.Pnum = token[0];
+		this.Id = token[1];
+		this.name = token[2];
+		this.email = token[3];
+		this.password = token[4];
 	}
 	// Constructor end
 
@@ -108,6 +118,13 @@ public class Professor {
 		StringBuilder sb = new StringBuilder("");
 		sb.append("ID: " + this.Id + ", Name: " + this.name + ", Password: " +this.password +", Email" + this.email + ", IsConnected"  +this.isConnected);
 		return new String(sb);
+	}
+	
+	public String tokenString() {
+		StringBuilder sb = new StringBuilder("");
+		sb.append(this.Pnum + "-"+ this.Id + "-" + this.name + "-" +this.email + "-" + this.password);
+		return new String(sb);
+		
 	}
 
 // Getter end
