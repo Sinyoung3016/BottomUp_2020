@@ -10,10 +10,8 @@ import javafx.fxml.FXMLLoader;
 public class Main extends Application {
 	public void start(Stage primaryStage) throws Exception {
 		try {
-			//for test
-			//BorderPane root = (BorderPane) FXMLLoader.load(getClass().getResource("/gui/MainPage.fxml"));
-			//BorderPane root = (BorderPane) FXMLLoader.load(getClass().getResource("/server/Server.fxml"));
-			BorderPane root = (BorderPane) FXMLLoader.load(getClass().getResource("/gui/Home.fxml"));
+
+			BorderPane root = (BorderPane) FXMLLoader.load(getClass().getResource("/gui/WorkBookList.fxml"));
 			Scene scene = new Scene(root);
 			primaryStage.setTitle("QuessWhat/Home");
 			primaryStage.setOnCloseRequest(ActionEvent -> BaseController.CloseButtonActione());
@@ -27,7 +25,5 @@ public class Main extends Application {
 
 	public static void main(String[] args) {
 		launch(args);
-		//Server server = new Server();
-		//server.serverOpen();
 	}
 }

@@ -56,7 +56,7 @@
       </HBox>
    </center>
    <bottom>
-      <ListView fx:id="lv_ClassList" prefHeight="640.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+      <ListView fx:id="lv_ClassList" prefHeight="640.0" prefWidth="590.0" BorderPane.alignment="CENTER">
          <BorderPane.margin>
             <Insets bottom="20.0" left="20.0" right="20.0" />
          </BorderPane.margin>
