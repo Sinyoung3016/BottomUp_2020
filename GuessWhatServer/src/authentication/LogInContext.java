@@ -29,9 +29,10 @@ public class LogInContext {
 	public synchronized static boolean overLap(String ID) throws MyException {
 		Professor professor;
 		professor = DB_USER.getUser(ID);
-				
-		if(professor == null)
+		
+		if(professor == null) {
 			return true;
+		}
 		else
 			throw new MyException("중복되는 ID입니다. 다른 ID를 입력해주세요.");		
 	}

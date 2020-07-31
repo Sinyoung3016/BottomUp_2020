@@ -182,9 +182,9 @@ public class ServerController {
 							clientRequest = "OverLap";
 							this.overLap(requestTokens[1]);
 						}
-						else if(requestTokens[0].equals(Request.ADD_PROFESSOR.getRequest())) {//AddProfessor:ID:Password:Email:IsConnected
-							clientRequest = "AddProfessor";
-							this.addProfessor(requestTokens[1], requestTokens[2], requestTokens[3], requestTokens[4]);
+						else if(requestTokens[0].equals(Request.SIGNUP.getRequest())) { //SignUp:Id:Password:Email
+							clientRequest = "SignUp";
+							this.signUp(requestTokens[1],requestTokens[2],requestTokens[3]);
 						}
 						else if(requestTokens[0].equals(Request.ADD_WORKBOOK.getRequest())) { //AddWorkbook:BMNum:PNum:Name:Size
 							clientRequest = "AddWorkbook";
@@ -258,12 +258,11 @@ public class ServerController {
 			}
 		}
 		
-		private void addProfessor(String ID, String PassWord, String Email, String IsConnected) {
-			if(DB_USER.insertUser(ID,PassWord, Email, IsConnected))
-				pw.println(">>SUCCESS [AddProfessor]<<");
-			else pw.println(">>FAIL [AddProfessor]<<");
-			
-			pw.flush();
+		private void signUp(String ID, String PassWord, String Email) {
+			if(DB_USER.insertUser(ID,PassWord, Email, "true")) {
+				pw.println("SignUp:Success");
+				pw.flush();
+			}
 		}
 		
 		

@@ -106,9 +106,7 @@ public class SignUpController implements Initializable {
 
 		if (tf_ID.getText().length() != 0 && pf_PassWord.getText().length() != 0 && tf_Email.getText().length() != 0 && check_Overlap_Id && check_checkPW) {
 			try {
-				this.signUp(tf_ID.getText(), pf_PassWord.getText(), tf_Email.getText());
-				new Alert(Alert.AlertType.CONFIRMATION, "회원가입 되었습니다.", ButtonType.CLOSE).show();
-				
+				this.signUp(tf_ID.getText(), pf_PassWord.getText(), tf_Email.getText());				
 			} catch (Exception e) {
 				System.out.println("회원가입 : 실패");
 			}
@@ -134,10 +132,26 @@ public class SignUpController implements Initializable {
 	}
 
 	private void signUp(String id, String password, String Email) throws MyException, SQLException {
-		if (Authentication.SignUp(id, password, Email))
-			System.out.println("SignUp:성공");
-		else
-			System.out.println("SignUp:실패");
+		String responseMessage = null;
+		try {
+			String requestMessage = "SignUp:" + id + ":" + password + ":" + Email;
+			BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
+			PrintWriter pw = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8));
+			pw.println(requestMessage);
+			pw.flush();
+			responseMessage = br.readLine();
+		} catch(IOException e) {
+			e.printStackTrace();
+		}
+		String[] responseTokens = responseMessage.split(":");
+		if(responseTokens[0].equals("SignUp")) {
+			if(!responseTokens[1].equals("Success")) {
+				new Alert(Alert.AlertType.WARNING, responseTokens[2], ButtonType.CLOSE).show();
+			}
+			else {
+				new Alert(Alert.AlertType.CONFIRMATION, "회원가입 되었습니다.", ButtonType.CLOSE).show();
+			}
+		}
 	}
 
 	@Override
