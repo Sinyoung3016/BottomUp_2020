@@ -1,7 +1,12 @@
 package gui;
 
 import java.net.URL;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.ResourceBundle;
+
+import database.DB_Ban;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -19,6 +24,8 @@ public class MainPageController implements Initializable{
 	private Button btn_WorkBookList, btn_CreateNewClass, btn_MyInfo;
 	@FXML
 	private ListView<HBoxCell> lv_ClassList;
+	
+	private ArrayList<String> list;
 
 	public void btn_WorkBookList_Action() {
 		try {
@@ -70,7 +77,29 @@ public class MainPageController implements Initializable{
 		listMyClass.add(new HBoxCell(3, "class3", 5));
 		
 		lv_ClassList.setItems(listMyClass);
-		
+		/*
+		 * try {
+
+			int pNum = -1; 		// <-- Login user's pNum (Input DB : Professor's PNum to Test)
+
+			this.list = DB_Ban.getAllBanList(pNum);
+			Iterator<String> itr = list.iterator();
+			int num = 1;
+			
+			ObservableList<HBoxCell> listMyClass = FXCollections.observableArrayList();
+			
+			while (itr.hasNext()) {
+				
+				listMyClass.add(new HBoxCell(num, itr.next(), 3));
+				num++;
+			}
+					
+			lv_ClassList.setItems(listMyClass);
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		*/
 		
 		
 	}
