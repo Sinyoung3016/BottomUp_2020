@@ -1,6 +1,7 @@
 package database;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 public class DB_Ban extends DBManager {
@@ -113,13 +114,13 @@ public class DB_Ban extends DBManager {
 		return bNum;	
 	}
 	
-	public synchronized static LinkedList<String> getAllBanList(int PNum) throws SQLException {
+	public synchronized static ArrayList<String> getAllBanList(int PNum) throws SQLException {
 
 		Connection conn = null;
 		Statement stmt = null;
 		ResultSet rs = null;
 
-		LinkedList<String> banList = new LinkedList<String>();
+		ArrayList<String> banList = new ArrayList<String>();
 
 		try {
 

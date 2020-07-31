@@ -15,6 +15,11 @@ public abstract class DBManager {
 	public final static String USER_NAME ="root";
 	public final static String PASSWORD = "mjh48554606!";*/ 
 	
+/*	public final static String JDBC_DRIVER = "com.mysql.jdbc.Driver";
+	public final static String DB_URL = "jdbc:mysql://localhost/GWTest?useSSL=false";
+	public final static String USER_NAME = "root";
+	public final static String PASSWORD = "2810";  */
+
 	public static Connection getConn() {
 		Connection conn = null;
 
