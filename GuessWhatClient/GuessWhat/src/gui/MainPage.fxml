@@ -9,16 +9,6 @@
 <?import javafx.scene.text.Font?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="840.0" prefWidth="630.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.MainPageController">
-   <top>
-      <Label style="-fx-text-fill: #5ad18f;" text="Guess What?" BorderPane.alignment="CENTER">
-         <BorderPane.margin>
-            <Insets top="25.0" />
-         </BorderPane.margin>
-         <font>
-            <Font name="Dubai Medium" size="45.0" />
-         </font>
-      </Label>
-   </top>
    <center>
       <HBox alignment="BOTTOM_CENTER" prefHeight="80.0" prefWidth="630.0" spacing="8.0" BorderPane.alignment="CENTER">
          <children>
@@ -62,4 +52,14 @@
          </BorderPane.margin>
       </ListView>
    </bottom>
+   <top>
+      <Label style="-fx-text-fill: #5ad18f;" text="Guess What?" BorderPane.alignment="CENTER">
+         <font>
+            <Font name="Dubai Medium" size="45.0" />
+         </font>
+         <BorderPane.margin>
+            <Insets top="25.0" />
+         </BorderPane.margin>
+      </Label>
+   </top>
 </BorderPane>

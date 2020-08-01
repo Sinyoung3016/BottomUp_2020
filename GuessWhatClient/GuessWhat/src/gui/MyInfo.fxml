@@ -110,6 +110,11 @@
                         <Font name="Dubai Medium" size="15.0" />
                      </font>
                   </Button>
+                  <Button fx:id="btn_LogOut" mnemonicParsing="false" onAction="#btn_LogOut_Action" prefWidth="100.0" style="-fx-background-color: #5ad18f;" text="LogOut" textFill="WHITE">
+                     <font>
+                        <Font name="Dubai Medium" size="15.0" />
+                     </font>
+                  </Button>
                   <Button fx:id="btn_Close" mnemonicParsing="false" onAction="#btn_Close_Action" prefWidth="100.0" style="-fx-background-color: #5ad18f;" text="Close" textFill="WHITE">
                      <font>
                         <Font name="Dubai Medium" size="15.0" />

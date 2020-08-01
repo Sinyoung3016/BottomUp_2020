@@ -27,13 +27,13 @@ import javafx.stage.Stage;
 public class MyInfoController implements Initializable {
 
 	@FXML
-	private TextField tf_ID, tf_Email;
+	private TextField tf_Email;
 	@FXML
 	private Label lb_warning_CheckPW;
 	@FXML
 	private PasswordField pf_PassWord, pf_CheckPW;
 	@FXML
-	private Button btn_Update, btn_Close;
+	private Button btn_Update, btn_Close, btn_LogOut;
 
 	private boolean check_checkPW = false;
 	
@@ -49,20 +49,50 @@ public class MyInfoController implements Initializable {
 			e.printStackTrace();
 		}
 	}
-
-	public void btn_Update_Action() {
+	
+	public void btn_LogOut_Action() {
+		
+		
+		//로그아웃
+		
+		
+		try {
+			Stage primaryStage = (Stage) btn_Close.getScene().getWindow();
+			Parent main = FXMLLoader.load(getClass().getResource("/gui/Home.fxml"));
+			Scene scene = new Scene(main);
+			primaryStage.setTitle("GuessWhat/Home");
+			primaryStage.setScene(scene);
+			primaryStage.show();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
+	
+	public void btn_Update_Action() { 
+		
+		//DB에서 정보 수정 
+		
+		pf_PassWord.getText();
+		pf_CheckPW.getText();
 
 		if (!check_checkPW) {
 			new Alert(Alert.AlertType.WARNING, "비밀번호를 확인해주세요.", ButtonType.CLOSE).show();
 			return ;
 		}
 
-		//정보수정
+		
 
 	}
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
+		
+		//정보 가져와서 출력
+		
+		
+		
 		// TODO Auto-generated method stub
 
 		pf_CheckPW.focusedProperty().addListener(new ChangeListener<Boolean>() {

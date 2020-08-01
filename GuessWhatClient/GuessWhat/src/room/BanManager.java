@@ -14,7 +14,7 @@ import javafx.stage.Stage;
 //workbook을 풀이하고 결과를 관리
 public class BanManager {
 	private int BM_num;
-	private enum State { OPEN, ING, CLOSE };
+	public enum State { OPEN, ING, CLOSE };
 	private State BM_state;
 	private String BM_name;
 	private String BM_password;
@@ -44,7 +44,7 @@ public class BanManager {
 		return new HBoxCell(this.BM_num, this.BM_name, this.BM_state);
 	}
 	
-	static class HBoxCell extends HBox {
+	public static class HBoxCell extends HBox {
 		
 		private Label num = new Label();
 		private Label name = new Label();
