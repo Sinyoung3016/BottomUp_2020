@@ -7,6 +7,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.fxml.FXMLLoader;
 
 public class Main extends Application {
+
 	public void start(Stage primaryStage) throws Exception {
 		try {
 			BorderPane root = (BorderPane) FXMLLoader.load(getClass().getResource("/server/Server.fxml"));
@@ -23,6 +24,6 @@ public class Main extends Application {
 
 	public static void main(String[] args) {
 		launch(args);
-
 	}
+
 }
