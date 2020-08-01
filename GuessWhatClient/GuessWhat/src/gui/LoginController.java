@@ -40,17 +40,10 @@ public class LoginController implements Initializable{
 	private PasswordField pf_Password;
 	
 	public Socket socket;
-	
-	private static final String SERVER_IP ="172.30.1.55";
-	private static final int SERVER_PORT =6000;
+
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		try {
-			this.socket = new Socket(SERVER_IP, SERVER_PORT);
-			DataModel.socket = this.socket;
-		} catch(Exception e) {
-			System.out.println("Error :" +e.getMessage() + "FROM initialize in LoginController");
-		}
+		this.socket = DataModel.socket;
 	}
 	public void btn_GuessWhat_Action() {//Home으로 이동
 		try {
@@ -85,8 +78,8 @@ public class LoginController implements Initializable{
 			try {
 				//this.logIn(tf_Id.getText(), pf_Password.getText());
 				String requestTokens = "Login:" + tf_Id.getText()+ ":" +pf_Password.getText();
-				BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
-				PrintWriter pw = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8));
+				BufferedReader br = new BufferedReader(new InputStreamReader(this.socket.getInputStream(), StandardCharsets.UTF_8));
+				PrintWriter pw = new PrintWriter(new OutputStreamWriter(this.socket.getOutputStream(), StandardCharsets.UTF_8));
 				pw.println(requestTokens);
 				pw.flush();
 				responseMessage = br.readLine();

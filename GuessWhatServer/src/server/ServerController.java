@@ -7,6 +7,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import model.ServerDataModel;
+import thread.ClientAcceptThread;
 import user.Professor;
 
 import java.io.*;
@@ -36,29 +38,21 @@ public class ServerController {
 	@FXML
 	private TextField tf_input;
 	
+	ServerDataModel dataModel;
 	ServerSocket serverSocket;
-	List<Socket> socketList;
-	Map<String, String> client_id_ip;
-	Map<String, PrintWriter> listClient;
 	
-	public void btn_Open_Action() {
+	public void btn_Open_Action() throws IOException {
 		// ServerOpen
-		client_id_ip = new HashMap<>();
-		listClient = new HashMap<>();
-		socketList = new Vector<>();
-		try {
-			serverSocket = new ServerSocket();
-		}catch(IOException e) {
-			System.out.println("Error : " + e.getMessage() + "FROM serveOpen");
-		}
-		new AcceptThread().start();
+		dataModel = new ServerDataModel();
+		this.serverSocket = dataModel.getServerSocket();		
+		new ClientAcceptThread(this.dataModel).start();
 	}
 
 
 	public void btn_Close_Action() {
 		// 서버종료
-		try {
-			Iterator<Socket> iterator = socketList.iterator();
+		try {;
+			Iterator<Socket> iterator = dataModel.getSocketList().iterator();
 			
 			while(iterator.hasNext()) {
 				Socket socket = iterator.next();
@@ -69,8 +63,8 @@ public class ServerController {
 				iterator.remove();
 			}
 			
-			if(serverSocket != null && !serverSocket.isClosed()) {
-				serverSocket.close();
+			if(this.serverSocket != null && !this.serverSocket.isClosed()) {
+				this.serverSocket.close();
 			}
 		} catch(Exception e) {
 			System.out.println("Error : " +e.getMessage() + "FROM serverClose");
@@ -100,7 +94,7 @@ public class ServerController {
 		return null;
 	}
 	
-	class AcceptThread extends Thread{
+	/*class AcceptThread extends Thread{
 		private final static int SERVER_PORT = 6000;
 		
 		@Override
@@ -362,5 +356,5 @@ public class ServerController {
 			}
 		}
 
-	}
+	} */
 }

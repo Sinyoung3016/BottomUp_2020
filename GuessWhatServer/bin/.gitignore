@@ -1,5 +1,4 @@
+/model/
 /server/
-/gui/
-/authentication/
-/user/
-/database/
+/Thread/
+/thread/

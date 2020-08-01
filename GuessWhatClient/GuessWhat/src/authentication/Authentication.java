@@ -24,7 +24,8 @@ public class Authentication {
 		if (getUser != null) return true;
 		else return false;
 	}
-
+	
+	//Not Need
 	public synchronized static boolean LogIn(String ID, String PW) throws MyException {
 		Professor getUser;
 		getUser = DB_USER.getUser(ID);
@@ -38,7 +39,7 @@ public class Authentication {
 		
 		return true;
 	}
-
+	
 	public static void LogOut(String ID) {
 		DB_USER.userLogOut(ID);
 	}
