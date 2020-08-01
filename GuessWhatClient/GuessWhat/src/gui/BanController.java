@@ -1,8 +1,13 @@
 package gui;
 
 import java.net.URL;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
+import database.DB_Ban;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -17,7 +22,9 @@ public class BanController extends BaseController implements Initializable {
 	@FXML
 	private Button btn_CreateNewBanManager, btn_ModifyClassName;
 	@FXML
-	private ListView lv_BanManagerList;
+	private ListView<String> lv_BanManagerList;
+	
+	private ArrayList<String> list;
 
 	public void btn_CreateNewBanManager_Action() {
 		try {
@@ -48,6 +55,23 @@ public class BanController extends BaseController implements Initializable {
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// TODO Auto-generated method stub
+		try {
+
+			int pNum = -1;	 // <-- Login user's pNum (Input DB : Professor's PNum to Test)
+			list = DB_Ban.getAllBanList(pNum);
+			ObservableList<String> listItems = FXCollections.observableArrayList(list);
+			
+			lv_BanManagerList.setItems(listItems);
+			
+			if (lv_BanManagerList.getSelectionModel().getSelectedItem() != null	) {
+				btn_ModifyClassName.setOnMouseClicked(e -> {
+					btn_ModifyClassName_Action();
+				});
+			}
+				
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 
 	}
 }

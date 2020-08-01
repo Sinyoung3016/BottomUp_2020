@@ -34,7 +34,7 @@ public class Workbook {
 	public int getWBNum() { return WNum; }
 	public String getBMnum() { return this.BMNum;}
 	public String getPNum() { return this.PNum;}
-	public String getName() { return name;	}
+	public String getName() { return name;}
 	public int getSize() { return size;	}
 	public Problem[] problemSet() { return problemSet; }
 	//Getter end
