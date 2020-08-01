@@ -91,8 +91,6 @@ public class MyInfoController implements Initializable {
 		
 		//정보 가져와서 출력
 		
-		
-		
 		// TODO Auto-generated method stub
 
 		pf_CheckPW.focusedProperty().addListener(new ChangeListener<Boolean>() {

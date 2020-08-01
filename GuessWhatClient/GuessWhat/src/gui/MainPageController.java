@@ -1,12 +1,7 @@
 package gui;
 
 import java.net.URL;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.ResourceBundle;
-
-import database.DB_Ban;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -17,15 +12,15 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.stage.Stage;
+import model.DataModel;
+import model.HBoxModel;
 import room.Ban.HBoxCell;
 
 public class MainPageController implements Initializable{
 	@FXML
 	private Button btn_WorkBookList, btn_CreateNewClass, btn_MyInfo;
 	@FXML
-	private ListView<HBoxCell> lv_ClassList;
-	
-	private ArrayList<String> list;
+	private ListView<HBoxModel> lv_ClassList;
 
 	public void btn_WorkBookList_Action() {
 		try {
@@ -71,35 +66,16 @@ public class MainPageController implements Initializable{
 	public void initialize(URL location, ResourceBundle resources) {
 		// TODO Auto-generated method stub
 		
-		ObservableList<HBoxCell> listMyClass = FXCollections.observableArrayList();
-		listMyClass.add(new HBoxCell(1, "class1", 3));
-		listMyClass.add(new HBoxCell(2, "class2", 4));
-		listMyClass.add(new HBoxCell(3, "class3", 5));
+		DataModel.ItemList_MyClass = FXCollections.observableArrayList();
+		ObservableList<HBoxModel> list = DataModel.ItemList_MyClass;
 		
-		lv_ClassList.setItems(listMyClass);
-		/*
-		 * try {
-
-			int pNum = -1; 		// <-- Login user's pNum (Input DB : Professor's PNum to Test)
-
-			this.list = DB_Ban.getAllBanList(pNum);
-			Iterator<String> itr = list.iterator();
-			int num = 1;
-			
-			ObservableList<HBoxCell> listMyClass = FXCollections.observableArrayList();
-			
-			while (itr.hasNext()) {
-				
-				listMyClass.add(new HBoxCell(num, itr.next(), 3));
-				num++;
-			}
-					
-			lv_ClassList.setItems(listMyClass);
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		*/
+		// 서버에서 가지고 오기
+		list.add(new HBoxCell(1, "class1", 3));
+		list.add(new HBoxCell(2, "class2", 4));
+		list.add(new HBoxCell(3, "class3", 5));
+		// 서버에서 가지고 오기
+		
+		lv_ClassList.setItems(list);
 		
 		
 	}
