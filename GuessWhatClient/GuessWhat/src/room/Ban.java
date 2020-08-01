@@ -7,8 +7,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
+import model.HBoxModel;
 
 //BanManager의 모음
 public class Ban {
@@ -35,12 +35,9 @@ public class Ban {
 		return new HBoxCell(this.ban_num, this.ban_name, this.banManagerSet.length);
 	}
 	
-	public static class HBoxCell extends HBox {
+	public static class HBoxCell extends HBoxModel {
 		
-		private Label num = new Label();
-		private Label name = new Label();
 		private Label size = new Label();
-		private Button enter = new Button();
 		
 		public HBoxCell(int ban_num, String ban_name, int banManagerSize) {
 			super();

@@ -7,8 +7,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
+import model.HBoxModel;
 
 //Problem의 모음
 public class Workbook {
@@ -50,12 +50,9 @@ public class Workbook {
 		return new HBoxCell(this.WNum, this.name, this.problemSet.length);
 	}
 		
-	public static class HBoxCell extends HBox {
+	public static class HBoxCell extends HBoxModel {
 			
-	private Label num = new Label();
-	private Label name = new Label();
 	private Label size = new Label();
-	private Button enter = new Button();
 	
 	public HBoxCell(int W_num, String W_name, int W_size) {
 		super();
