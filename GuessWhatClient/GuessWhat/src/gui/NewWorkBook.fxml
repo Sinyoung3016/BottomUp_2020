@@ -5,7 +5,6 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TextArea?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
@@ -24,11 +23,11 @@
                   <Font name="Dubai Medium" size="17.0" />
                </font>
             </Button>
-            <TextField fx:id="tf_WorkBookName" alignment="CENTER" prefHeight="65.0" prefWidth="370.0" promptText="ChangeWorkBookName" style="-fx-background-color: #5ad18f;">
+            <Button fx:id="btn_Main" mnemonicParsing="false" onAction="#btn_Main_Action" prefHeight="65.0" prefWidth="370.0" style="-fx-background-color: #5ad18f; -fx-text-fill: #ffffff;" text="ClassName">
                <font>
                   <Font name="Dubai Medium" size="25.0" />
                </font>
-            </TextField>
+            </Button>
             <Button fx:id="btn_MyInfo" mnemonicParsing="false" onAction="#btn_MyInfo_Action" prefHeight="60.0" prefWidth="80.0" style="-fx-background-color: #5ad18f; -fx-text-fill: #ffffff;" text="myInfo">
                <HBox.margin>
                   <Insets right="25.0" top="5.0" />
@@ -46,15 +45,15 @@
    <center>
       <VBox prefWidth="630.0" style="-fx-background-color: #ffffff;" BorderPane.alignment="CENTER">
          <padding>
-            <Insets bottom="10.0" left="15.0" right="15.0" top="5.0" />
+            <Insets left="15.0" right="15.0" top="5.0" />
          </padding>
          <BorderPane.margin>
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </BorderPane.margin>
          <children>
-            <VBox alignment="TOP_CENTER" prefHeight="600.0" prefWidth="100.0">
+            <VBox alignment="TOP_CENTER" prefHeight="630.0" prefWidth="100.0">
                <children>
-                  <HBox prefHeight="50.0" prefWidth="200.0">
+                  <HBox prefHeight="40.0" prefWidth="200.0">
                      <children>
                         <Button fx:id="btn_num1" mnemonicParsing="false" onAction="#btn_num1_Action" prefHeight="40.0" prefWidth="30.0" style="-fx-background-color: #5ad18f;" text="1" textFill="WHITE">
                            <font>
@@ -158,7 +157,7 @@
                         </Button>
                      </children>
                      <VBox.margin>
-                        <Insets top="10.0" />
+                        <Insets />
                      </VBox.margin>
                   </HBox>
                   <HBox alignment="CENTER" prefHeight="50.0" prefWidth="200.0" spacing="30.0">
@@ -180,7 +179,7 @@
                         </RadioButton>
                      </children>
                      <VBox.margin>
-                        <Insets bottom="10.0" top="10.0" />
+                        <Insets />
                      </VBox.margin>
                   </HBox>
                   <VBox alignment="BOTTOM_CENTER" prefHeight="240.0" prefWidth="100.0">
@@ -205,10 +204,17 @@
                         </Label>
                      </children>
                      <VBox.margin>
-                        <Insets top="5.0" />
+                        <Insets />
                      </VBox.margin>
                   </VBox>
-                  <Pane fx:id="Pane_Answer" prefHeight="150.0" prefWidth="650.0" style="-fx-background-color: #f0fff0;" />
+                  <Pane fx:id="Pane_Answer" prefHeight="150.0" prefWidth="650.0" style="-fx-background-color: #f0fff0;">
+                     <children>
+                        <VBox prefHeight="150.0" prefWidth="590.0">
+                           <children>
+                              <HBox prefHeight="30.0" prefWidth="590.0" />
+                           </children>
+                        </VBox>
+                     </children></Pane>
                   <Button fx:id="btn_CreateProblem" mnemonicParsing="false" onAction="#btn_CreateProblem_Action" prefHeight="40.0" prefWidth="150.0" style="-fx-background-color: #5ad18f;" text="CreateProblem" textFill="WHITE">
                      <font>
                         <Font name="Dubai Medium" size="18.0" />
@@ -225,7 +231,7 @@
          </children></VBox>
    </center>
    <bottom>
-      <HBox prefHeight="90.0" prefWidth="200.0" spacing="280.0" BorderPane.alignment="CENTER">
+      <HBox prefHeight="70.0" prefWidth="200.0" spacing="280.0" BorderPane.alignment="CENTER">
          <children>
             <Button fx:id="btn_Cancel" mnemonicParsing="false" onAction="#btn_Cancel_Action" prefHeight="40.0" prefWidth="150.0" style="-fx-background-color: #5ad18f;" text="Cancel" textFill="WHITE">
                <font>
@@ -241,9 +247,6 @@
          <BorderPane.margin>
             <Insets left="25.0" right="25.0" />
          </BorderPane.margin>
-         <padding>
-            <Insets top="5.0" />
-         </padding>
       </HBox>
    </bottom>
 </BorderPane>

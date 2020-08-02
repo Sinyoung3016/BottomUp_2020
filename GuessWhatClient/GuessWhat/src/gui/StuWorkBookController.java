@@ -19,11 +19,9 @@ public class StuWorkBookController extends BaseController {
 			btn_num6, btn_num7, btn_num8, btn_num9, btn_num10, btn_num11, btn_num12, btn_num13, btn_num14, btn_num15,
 			btn_num16, btn_num17, btn_num18, btn_num19, btn_num20;
 	@FXML
-	private TextField tf_WorkBookName;
-	@FXML
 	private Label lb_Question;
 	@FXML
-	private Pane Pane_Answer;
+	private TextArea ta_Answer;
 
 
 	public void btn_Next_Action() {

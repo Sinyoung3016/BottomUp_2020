@@ -2,49 +2,57 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="840.0" prefWidth="630.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.StuWorkBookController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="840.0" prefWidth="630.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.NewWorkBook_MultipleChoiceController">
    <top>
-      <HBox alignment="CENTER" prefHeight="90.0" prefWidth="630.0" spacing="360.0" BorderPane.alignment="CENTER">
+      <HBox alignment="CENTER" prefHeight="90.0" prefWidth="630.0" spacing="5.0" style="-fx-background-color: #5ad18f;" BorderPane.alignment="CENTER">
          <children>
-            <Button mnemonicParsing="false" prefHeight="60.0" prefWidth="80.0" style="-fx-text-fill: #5ad18f; -fx-background-color: #ffffff;" text="Logo">
+            <Button fx:id="btn_Logo" mnemonicParsing="false" onAction="#btn_Logo_Action" prefHeight="60.0" prefWidth="80.0" style="-fx-background-color: #5ad18f; -fx-text-fill: #ffffff;" text="Logo">
                <HBox.margin>
-                  <Insets left="5.0" top="5.0" />
+                  <Insets left="25.0" top="5.0" />
                </HBox.margin>
                <font>
                   <Font name="Dubai Medium" size="17.0" />
                </font>
             </Button>
-            <Button fx:id="btn_Submit" mnemonicParsing="false" onAction="#btn_Submit_Action" prefHeight="40.0" prefWidth="150.0" style="-fx-background-color: #5ad18f; -fx-text-fill: #ffffff;" text="Submit">
+            <Button fx:id="btn_Main" mnemonicParsing="false" onAction="#btn_Main_Action" prefHeight="65.0" prefWidth="370.0" style="-fx-background-color: #5ad18f; -fx-text-fill: #ffffff;" text="ClassName">
+               <font>
+                  <Font name="Dubai Medium" size="25.0" />
+               </font>
+            </Button>
+            <Button fx:id="btn_MyInfo" mnemonicParsing="false" onAction="#btn_MyInfo_Action" prefHeight="60.0" prefWidth="80.0" style="-fx-background-color: #5ad18f; -fx-text-fill: #ffffff;" text="myInfo">
                <HBox.margin>
-                  <Insets right="5.0" top="5.0" />
+                  <Insets right="25.0" top="5.0" />
                </HBox.margin>
                <font>
-                  <Font name="Dubai Medium" size="18.0" />
+                  <Font name="Dubai Medium" size="17.0" />
                </font>
             </Button>
          </children>
          <BorderPane.margin>
-            <Insets top="20.0" />
+            <Insets />
          </BorderPane.margin>
       </HBox>
    </top>
    <center>
-      <VBox prefHeight="500.0" prefWidth="630.0" style="-fx-background-color: #ffffff;" BorderPane.alignment="CENTER">
+      <VBox prefWidth="630.0" style="-fx-background-color: #ffffff;" BorderPane.alignment="CENTER">
          <padding>
-            <Insets bottom="10.0" left="15.0" right="15.0" top="5.0" />
+            <Insets left="15.0" right="15.0" top="5.0" />
          </padding>
          <BorderPane.margin>
-            <Insets bottom="5.0" left="5.0" right="5.0" />
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </BorderPane.margin>
          <children>
-            <VBox alignment="TOP_CENTER" prefWidth="100.0">
+            <VBox alignment="TOP_CENTER" prefHeight="660.0" prefWidth="100.0">
                <children>
                   <HBox prefHeight="40.0" prefWidth="200.0">
                      <children>
@@ -153,24 +161,46 @@
                         <Insets />
                      </VBox.margin>
                   </HBox>
-                  <VBox alignment="CENTER" prefHeight="240.0" prefWidth="100.0">
+                  <HBox alignment="CENTER" prefHeight="50.0" prefWidth="200.0" spacing="30.0">
+                     <children>
+                        <RadioButton fx:id="rbtn_MultipleChoice" mnemonicParsing="false" style="-fx-text-fill: #5ad18f;" text="MultipleChoice">
+                           <font>
+                              <Font name="Dubai Medium" size="18.0" />
+                           </font>
+                        </RadioButton>
+                        <RadioButton fx:id="rbtn_ShortAnswer" mnemonicParsing="false" style="-fx-text-fill: #5ad18f;" text="Short-Answer">
+                           <font>
+                              <Font name="Dubai Medium" size="18.0" />
+                           </font>
+                        </RadioButton>
+                        <RadioButton fx:id="rbtn_Subjective" mnemonicParsing="false" style="-fx-text-fill: #5ad18f;" text="Subjective">
+                           <font>
+                              <Font name="Dubai Medium" size="18.0" />
+                           </font>
+                        </RadioButton>
+                     </children>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                  </HBox>
+                  <VBox alignment="BOTTOM_CENTER" prefHeight="240.0" prefWidth="100.0">
                      <children>
                         <Label prefHeight="40.0" style="-fx-text-fill: #5ad18f;" text="Question">
                            <font>
                               <Font name="Dubai Medium" size="23.0" />
                            </font>
                         </Label>
-                        <Label fx:id="lb_Question" prefHeight="150.0" prefWidth="600.0" style="-fx-background-color: #f0fff0;">
+                        <TextArea fx:id="ta_Question" prefHeight="150.0" prefWidth="200.0" style="-fx-background-color: #f0fff0;">
                            <font>
-                              <Font name="Dubai Medium" size="13.0" />
+                              <Font name="Dubai Medium" size="15.0" />
                            </font>
-                        </Label>
+                        </TextArea>
                         <Label prefHeight="40.0" style="-fx-text-fill: #5ad18f;" text="Answer">
                            <font>
                               <Font name="Dubai Medium" size="23.0" />
                            </font>
                            <VBox.margin>
-                              <Insets />
+                              <Insets top="10.0" />
                            </VBox.margin>
                         </Label>
                      </children>
@@ -178,34 +208,129 @@
                         <Insets />
                      </VBox.margin>
                   </VBox>
+                  <VBox alignment="CENTER" prefHeight="265.0" prefWidth="650.0" spacing="10.0" style="-fx-background-color: #f0fff0;">
+                     <children>
+                        <HBox alignment="CENTER_LEFT" prefHeight="40.0" spacing="10.0">
+                           <children>
+                              <CheckBox mnemonicParsing="false">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </CheckBox>
+                              <TextField fx:id="tf_Answer1" prefWidth="540.0" style="-fx-background-color: #f0fff0;">
+                                 <font>
+                                    <Font name="Dubai Medium" size="15.0" />
+                                 </font>
+                              </TextField>
+                           </children>
+                           <padding>
+                              <Insets left="10.0" />
+                           </padding>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" prefHeight="40.0" spacing="10.0">
+                           <children>
+                              <CheckBox mnemonicParsing="false">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </CheckBox>
+                              <TextField fx:id="tf_Answer2" prefWidth="540.0" style="-fx-background-color: #f0fff0;">
+                                 <font>
+                                    <Font name="Dubai Medium" size="15.0" />
+                                 </font>
+                              </TextField>
+                           </children>
+                           <padding>
+                              <Insets left="10.0" />
+                           </padding>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" prefHeight="40.0" spacing="10.0">
+                           <children>
+                              <CheckBox mnemonicParsing="false">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </CheckBox>
+                              <TextField fx:id="tf_Answer3" prefWidth="540.0" style="-fx-background-color: #f0fff0;">
+                                 <font>
+                                    <Font name="Dubai Medium" size="15.0" />
+                                 </font>
+                              </TextField>
+                           </children>
+                           <padding>
+                              <Insets left="10.0" />
+                           </padding>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" prefHeight="40.0" spacing="10.0">
+                           <children>
+                              <CheckBox mnemonicParsing="false">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </CheckBox>
+                              <TextField fx:id="tf_Answer4" prefWidth="540.0" style="-fx-background-color: #f0fff0;">
+                                 <font>
+                                    <Font name="Dubai Medium" size="15.0" />
+                                 </font>
+                              </TextField>
+                           </children>
+                           <padding>
+                              <Insets left="10.0" />
+                           </padding>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" prefHeight="40.0" spacing="10.0">
+                           <children>
+                              <CheckBox mnemonicParsing="false">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </CheckBox>
+                              <TextField fx:id="tf_Answer5" prefWidth="540.0" style="-fx-background-color: #f0fff0;">
+                                 <font>
+                                    <Font name="Dubai Medium" size="15.0" />
+                                 </font>
+                              </TextField>
+                           </children>
+                           <padding>
+                              <Insets left="10.0" />
+                           </padding>
+                        </HBox>
+                     </children>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                  </VBox>
+                  <Button fx:id="btn_CreateProblem" mnemonicParsing="false" onAction="#btn_CreateProblem_Action" prefHeight="40.0" prefWidth="150.0" style="-fx-background-color: #5ad18f;" text="CreateProblem" textFill="WHITE">
+                     <font>
+                        <Font name="Dubai Medium" size="18.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin>
+                  </Button>
                </children>
                <VBox.margin>
-                  <Insets />
+                  <Insets top="15.0" />
                </VBox.margin>
             </VBox>
-            <TextArea fx:id="ta_Answer" prefHeight="150.0" prefWidth="200.0" style="-fx-background-color: #f0fff0;">
-               <font>
-                  <Font name="Dubai Medium" size="15.0" />
-               </font>
-            </TextArea>
          </children></VBox>
    </center>
    <bottom>
-      <HBox alignment="TOP_CENTER" prefHeight="70.0" prefWidth="200.0" spacing="280.0" BorderPane.alignment="CENTER">
+      <HBox prefHeight="70.0" prefWidth="200.0" spacing="280.0" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="btn_Previous" mnemonicParsing="false" onAction="#btn_Previous_Action" prefWidth="150.0" style="-fx-background-color: #5ad18f;" text="Previous" textFill="WHITE">
+            <Button fx:id="btn_Cancel" mnemonicParsing="false" onAction="#btn_Cancel_Action" prefHeight="40.0" prefWidth="150.0" style="-fx-background-color: #5ad18f;" text="Cancel" textFill="WHITE">
                <font>
                   <Font name="Dubai Medium" size="18.0" />
                </font>
             </Button>
-            <Button fx:id="btn_Next" mnemonicParsing="false" onAction="#btn_Next_Action" prefWidth="150.0" style="-fx-background-color: #5ad18f;" text="Next" textFill="WHITE">
+            <Button fx:id="btn_SaveWorkBook" mnemonicParsing="false" onAction="#btn_SaveWorkBook_Action" prefHeight="40.0" prefWidth="150.0" style="-fx-background-color: #5ad18f;" text="SaveWorkBook" textFill="WHITE">
                <font>
                   <Font name="Dubai Medium" size="18.0" />
                </font>
             </Button>
          </children>
          <BorderPane.margin>
-            <Insets left="15.0" right="15.0" />
+            <Insets left="25.0" right="25.0" />
          </BorderPane.margin>
       </HBox>
    </bottom>

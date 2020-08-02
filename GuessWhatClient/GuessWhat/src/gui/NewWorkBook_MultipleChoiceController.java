@@ -5,30 +5,31 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
-public class StuResultDetailController extends BaseController {
+public class NewWorkBook_MultipleChoiceController extends BaseController {
 
 	@FXML
-	private Button btn_Close, btn_Previous, btn_Next, btn_num1, btn_num2, btn_num3, btn_num4,
+	private Button btn_Cancel, btn_CreateProblem, btn_SaveWorkBook, btn_num1, btn_num2, btn_num3, btn_num4,
 			btn_num5, btn_num6, btn_num7, btn_num8, btn_num9, btn_num10, btn_num11, btn_num12, btn_num13, btn_num14,
 			btn_num15, btn_num16, btn_num17, btn_num18, btn_num19, btn_num20;
 	@FXML
-	private Label lb_Question; 
+	private TextField tf_Answer1,tf_Answer2,tf_Answer3,tf_Answer4,tf_Answer5;
 	@FXML
-	private Pane Pane_Answer;
+	private RadioButton rbtn_MultipleChoice, rbtn_ShortAnswer, rbtn_Subjective;
+	@FXML
+	private TextArea ta_Question;
 	
-	public void btn_Close_Action() {
+	public void btn_Cancel_Action() {
 		try {
-			Stage primaryStage = (Stage) btn_Close.getScene().getWindow();
-			Parent main = FXMLLoader.load(getClass().getResource("/gui/Home.fxml"));
+			Stage primaryStage = (Stage) btn_Cancel.getScene().getWindow();
+			Parent main = FXMLLoader.load(getClass().getResource("/gui/WorkBookList.fxml"));
 			Scene scene = new Scene(main);
-			primaryStage.setTitle("GuessWhat/Home");
+			primaryStage.setTitle("GuessWhat/WorkBookList");
 			primaryStage.setScene(scene);
 			primaryStage.show();
 		} catch (Exception e) {
@@ -36,11 +37,20 @@ public class StuResultDetailController extends BaseController {
 		}
 	}
 
-	public void btn_Next_Action() {
-		
+	public void btn_SaveWorkBook_Action() {
+		try {
+			Stage primaryStage = (Stage) btn_Cancel.getScene().getWindow();
+			Parent main = FXMLLoader.load(getClass().getResource("/gui/WorkBookList.fxml"));
+			Scene scene = new Scene(main);
+			primaryStage.setTitle("GuessWhat/WorkBookList");
+			primaryStage.setScene(scene);
+			primaryStage.show();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
-	public void btn_Previous_Action() {
+	public void btn_CreateProblem_Action() {
 
 	}
 
