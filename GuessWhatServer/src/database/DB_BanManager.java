@@ -2,6 +2,8 @@ package database;
 
 import java.sql.*;
 
+import room.BanManager;
+
 public class DB_BanManager extends DBManager {
 	
 	public synchronized static void addBanManager(int bNum, String name, String code) throws SQLException {
@@ -100,6 +102,47 @@ public class DB_BanManager extends DBManager {
 
 			String s;
 			s = "SELECT * FROM Ban WHERE BNum = '" + bNum + "'";
+
+			rs = stmt.executeQuery(s);
+			if (rs.next()) {
+				
+			//	System.out.println(rs.getNString("Name") + "의 BanManager 목록: ");
+				
+				s = "SELECT * FROM BanManager WHERE BNum = '" + bNum + "'";
+				rs = stmt.executeQuery(s);
+				
+				while(rs.next())
+					// BNum 이 소유한 BanManager 의 이름을 얻는다
+					System.out.println(rs.getString("Name"));
+
+			}
+			
+		} catch (Exception e) {
+			System.out.println(e);
+		} finally {
+			try {
+				if (conn != null)
+					conn.close();
+				if (stmt != null)
+					stmt.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public synchronized static BanManager getBanManagerOfCode(String code) {
+		Connection conn = null;
+		Statement stmt = null;
+		ResultSet rs = null;
+
+		try {
+
+			conn = getConn();
+			stmt = conn.createStatement();
+
+			String s;
+			s = "SELECT * FROM BanManager WHERE Code = '" + code + "'";
 
 			rs = stmt.executeQuery(s);
 			if (rs.next()) {

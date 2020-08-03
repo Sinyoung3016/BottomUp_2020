@@ -1,4 +1,4 @@
-package authentication;
+	package authentication;
 
 import database.DB_USER;
 import exception.MyException;
@@ -34,6 +34,6 @@ public class LogInContext {
 			return true;
 		}
 		else
-			throw new MyException("중복되는 ID입니다. 다른 ID를 입력해주세요.");		
+			throw new MyException("It already exists. Please use another Id.");		
 	}
 }
