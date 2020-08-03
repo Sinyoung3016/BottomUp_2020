@@ -20,6 +20,7 @@ public class BanManager {
 	private String BM_password;
 	private Workbook workbook;
 	private AnswerSet answerSet;
+	private int size;
 
 	//Constructor start
 	public BanManager(int num, String name, String password, Workbook workbook) {
@@ -32,12 +33,29 @@ public class BanManager {
 	}
 	//Constructor end
 	
+	//Setter start
+	public void setBM_state_OPEN() {
+		this.BM_state = State.OPEN;
+	}
+	public void setBM_state_ING() {
+		this.BM_state = State.ING;
+	}
+	public void setBM_state_CLOSE() {
+		this.BM_state = State.CLOSE;
+	}
+	public void setSize(int n) {
+		this.size = n;
+	}
+	//Setter end
+	
 	//Getter start
 	public int BM_num() { return BM_num; } 
 	public String BM_name() { return BM_name; }
 	public String BM_password() { return BM_password; }
 	public Workbook workbook() { return workbook; }
+	public State BM_state() { return BM_state; }
 	public AnswerSet answerSet() { return answerSet; }
+	public int size() { return size; } 
 	//Getter end
 	
 	public HBoxCell getBanManager() {

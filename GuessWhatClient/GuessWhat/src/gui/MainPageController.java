@@ -12,7 +12,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.stage.Stage;
-import model.DataModel;
+import model.ProfessorDataModel;
 import model.HBoxModel;
 import room.Ban.HBoxCell;
 
@@ -66,8 +66,8 @@ public class MainPageController implements Initializable{
 	public void initialize(URL location, ResourceBundle resources) {
 		// TODO Auto-generated method stub
 		
-		DataModel.ItemList_MyClass = FXCollections.observableArrayList();
-		ObservableList<HBoxModel> list = DataModel.ItemList_MyClass;
+		ProfessorDataModel.ItemList_MyClass = FXCollections.observableArrayList();
+		ObservableList<HBoxModel> list = ProfessorDataModel.ItemList_MyClass;
 		
 		// 서버에서 가지고 오기
 		list.add(new HBoxCell(1, "class1", 3));

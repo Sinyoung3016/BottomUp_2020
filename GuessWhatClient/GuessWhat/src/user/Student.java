@@ -1,4 +1,4 @@
-package exam;
+package user;
 
 //문제 풀이자
 public class Student {

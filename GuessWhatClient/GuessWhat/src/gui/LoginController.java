@@ -14,7 +14,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import model.DataModel;
+import model.ProfessorDataModel;
 import user.Professor;
 
 import java.io.BufferedReader;
@@ -43,7 +43,7 @@ public class LoginController implements Initializable{
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		this.socket = DataModel.socket;
+		this.socket = ProfessorDataModel.socket;
 	}
 	public void btn_GuessWhat_Action() {//Home으로 이동
 		try {
@@ -94,8 +94,8 @@ public class LoginController implements Initializable{
 					new Alert(Alert.AlertType.WARNING, responseTokens[1], ButtonType.CLOSE).show();
 				}else {
 					try {
-						DataModel.professor = new Professor(responseTokens[2]);
-						DataModel.ID = tf_Id.getText();
+						ProfessorDataModel.professor = new Professor(responseTokens[2]);
+						ProfessorDataModel.ID = tf_Id.getText();
 						Stage primaryStage = (Stage) btn_Login.getScene().getWindow();
 						Platform.runLater(() -> {
 							Parent login;
