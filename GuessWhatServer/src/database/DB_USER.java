@@ -31,6 +31,7 @@ public class DB_USER extends DBManager {
 				userInfo[3] = rs.getString("IsConnected");
 				userInfo[4] = rs.getString("PNum");
 				professor = new Professor(userInfo);
+
 			}
 			
 			return professor;

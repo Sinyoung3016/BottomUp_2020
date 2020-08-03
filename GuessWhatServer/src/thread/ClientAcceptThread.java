@@ -12,7 +12,7 @@ import model.ServerDataModel;
 
 
 public class ClientAcceptThread extends Thread{
-	private final static int SERVER_PORT = 6000;
+	private final static int SERVER_PORT = 5000;
 	
 	ServerDataModel dataModel;
 	ServerSocket serverSocket;

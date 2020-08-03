@@ -30,6 +30,7 @@ public class LogInContext {
 		Professor professor;
 		professor = DB_USER.getUser(ID);
 		
+		
 		if(professor == null) {
 			return true;
 		}

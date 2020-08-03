@@ -131,11 +131,14 @@ public class DB_BanManager extends DBManager {
 		}
 	}
 	
+	//코드로 BanManager가져오는 함수
 	public synchronized static BanManager getBanManagerOfCode(String code) {
+		BanManager banManager = null;
 		Connection conn = null;
 		Statement stmt = null;
 		ResultSet rs = null;
-
+		String[] banManagerInfo = new String[5];
+		
 		try {
 
 			conn = getConn();
@@ -145,21 +148,24 @@ public class DB_BanManager extends DBManager {
 			s = "SELECT * FROM BanManager WHERE Code = '" + code + "'";
 
 			rs = stmt.executeQuery(s);
-			if (rs.next()) {
-				
-			//	System.out.println(rs.getNString("Name") + "의 BanManager 목록: ");
-				
-				s = "SELECT * FROM BanManager WHERE BNum = '" + bNum + "'";
-				rs = stmt.executeQuery(s);
-				
-				while(rs.next())
-					// BNum 이 소유한 BanManager 의 이름을 얻는다
-					System.out.println(rs.getString("Name"));
+			
+			if(rs.next()) {
 
+				banManagerInfo[0] = rs.getString("BMNum");
+				banManagerInfo[1] = rs.getString("Name");
+				banManagerInfo[2] = rs.getString("State");
+				banManagerInfo[3] = rs.getString("Code");
+				banManagerInfo[4] = rs.getString("BNum");
+				banManager = new BanManager(banManagerInfo);
+				
 			}
 			
+			return banManager;
+			
 		} catch (Exception e) {
-			System.out.println(e);
+			System.out.println("Error : "  +e.getMessage()  + "getBanManagerOfCode");
+			return null;
+			
 		} finally {
 			try {
 				if (conn != null)

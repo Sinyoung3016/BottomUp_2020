@@ -20,9 +20,10 @@ public class BanManager {
 	private State BM_state;
 	private String BM_name;
 	private String BM_password;
+	private int BNum;
 	private Workbook workbook;
 	private AnswerSet answerSet;
-
+	
 	//Constructor start
 	public BanManager(int num, String name, String password, Workbook workbook) {
 		this.BM_name = name;
@@ -40,12 +41,31 @@ public class BanManager {
 	public String BM_password() { return BM_password; }
 	public Workbook workbook() { return workbook; }
 	public AnswerSet answerSet() { return answerSet; }
+	public int BNum() {return this.BNum;}
 	//Getter end
 	
 	public HBoxCell getBanManager() {
 		return new HBoxCell(this.BM_num, this.BM_name, this.BM_state);
 	}
 	
+	public BanManager(String[] banManagerInfo) {
+		this.BM_num = Integer.parseInt(banManagerInfo[0]);
+		this.BM_name = banManagerInfo[1];
+		this.BM_state = this.stateOf(banManagerInfo[2]);
+		this.BM_password = banManagerInfo[3];
+		this.BNum = Integer.parseInt(banManagerInfo[4]);
+	}
+	
+	private State stateOf(String state) {
+		switch(state) {
+		case "Open":
+			return State.OPEN;
+		case "Ing":
+			return State.ING;
+		default:
+			return State.CLOSE;
+		}
+	}
 	public static class HBoxCell extends HBox {
 		
 		private Label num = new Label();

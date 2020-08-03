@@ -30,8 +30,8 @@ public class HomeController implements Initializable{
 	
 	public Socket socket;
 		
-	private static final String SERVER_IP ="172.30.1.32";
-	private static final int SERVER_PORT =6000;
+	private static final String SERVER_IP ="172.30.1.2";
+	private static final int SERVER_PORT =5000;
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		try {
@@ -61,7 +61,7 @@ public class HomeController implements Initializable{
 		if(tf_RoomCode.getText().length() != 0) { //!isEmpty(tf_RoomCode)
 			String responseMessage = null;
 			try {
-				String requestTokens = "Join:" + tf_RoomCode;
+				String requestTokens = "Join:" + tf_RoomCode.getText();
 				BufferedReader br = new BufferedReader(
 						new InputStreamReader(this.socket.getInputStream(), StandardCharsets.UTF_8));
 				PrintWriter pw = new PrintWriter(
@@ -75,7 +75,7 @@ public class HomeController implements Initializable{
 			String[] responseTokens = responseMessage.split(":");
 			if(responseTokens[0].equals("Join")){
 				if(!responseTokens[1].equals("Success"))
-					new Alert(Alert.AlertType.WARNING, "RoomCode가 올바르지 않습니다.", ButtonType.CLOSE).show();
+					new Alert(Alert.AlertType.WARNING, responseTokens[1], ButtonType.CLOSE).show();
 				else {
 					//Success Join 
 					//Fortune's code start

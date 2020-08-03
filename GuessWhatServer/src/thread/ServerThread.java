@@ -11,6 +11,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import authentication.LogInContext;
+import authentication.RoomCode;
 import database.DB_Problem;
 import database.DB_USER;
 import database.DB_Workbook;
@@ -71,9 +72,10 @@ public class ServerThread extends Thread{
 						clientRequest = "SignUp";
 						this.signUp(requestTokens[1],requestTokens[2],requestTokens[3]);
 					}
-					else if(requestTokens[0].equals(Request.RoomCode.getRequest())) { //RoomCode:Code
-						clientRequest = "RoomCode";
-						this.roomCode(requestTokens[1]);
+					else if(requestTokens[0].equals(Request.Join.getRequest())) { //Join:Code
+						clientRequest = "Join";
+						System.out.println(requestTokens[1]);
+						this.join(requestTokens[1]);
 					}
 					else if(requestTokens[0].equals(Request.ADD_WORKBOOK.getRequest())) { //AddWorkbook:BMNum:PNum:Name:Size
 						clientRequest = "AddWorkbook";
@@ -123,7 +125,7 @@ public class ServerThread extends Thread{
 	private void Login(String Id,String password) throws MyException {
 		if(LogInContext.logIn(Id, password)) {
 			DB_USER.userLogIn(Id);
-			System.out.println(Id + "���� �α����ϼ̽��ϴ�.");
+			System.out.println(Id + "님이 입장하셨습니다.");
 			pw.println("LogIn:Success:" + DB_USER.getUser(Id).tokenString());
 			pw.flush();
 			this.dataModel.getClient_id_ip().put(Id,socket.getInetAddress().toString());
@@ -154,8 +156,11 @@ public class ServerThread extends Thread{
 		}
 	}
 	
-	private void roomCode(String code) {
-		
+	private void join(String code) throws MyException {
+		if(RoomCode.join(code)) {
+			pw.println("Join:Success");
+			pw.flush();
+		}
 	}
 	
 	private void addWorkbook(String BMNum, String PNum, String Name, String Size) {
