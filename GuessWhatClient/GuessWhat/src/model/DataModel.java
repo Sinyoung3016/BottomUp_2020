@@ -4,7 +4,6 @@ import java.net.Socket;
 
 import exam.Workbook;
 import javafx.collections.ObservableList;
-import javafx.scene.layout.HBox;
 import room.Ban;
 import room.BanManager;
 import user.Professor;
@@ -17,9 +16,9 @@ public class DataModel {
 	public static String ID = null;
 	public static Professor professor;
 	
-	public static ObservableList<HBox> ItemList_MyClass;
-	public static ObservableList<HBox> ItemList_MyWorkBook;
-	public static ObservableList<HBox> ItemList_MyBanManager;
+	public static ObservableList<HBoxModel> ItemList_MyClass;
+	public static ObservableList<HBoxModel> ItemList_MyWorkBook;
+	public static ObservableList<HBoxModel> ItemList_MyBanManager;
 	
 	public static void addClass(Ban newBan) {
 		ItemList_MyClass.add(newBan.getBan());

@@ -6,42 +6,48 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
-public class StuResultDetailController extends BaseController {
+public class StuWorkBook_MultipleChoiceController extends BaseController {
 
 	@FXML
-	private Button btn_Close, btn_Previous, btn_Next, btn_num1, btn_num2, btn_num3, btn_num4,
-			btn_num5, btn_num6, btn_num7, btn_num8, btn_num9, btn_num10, btn_num11, btn_num12, btn_num13, btn_num14,
-			btn_num15, btn_num16, btn_num17, btn_num18, btn_num19, btn_num20;
+	private Button btn_Submit, btn_Previous, btn_Next, btn_num1, btn_num2, btn_num3, btn_num4, btn_num5,
+			btn_num6, btn_num7, btn_num8, btn_num9, btn_num10, btn_num11, btn_num12, btn_num13, btn_num14, btn_num15,
+			btn_num16, btn_num17, btn_num18, btn_num19, btn_num20;
 	@FXML
-	private Label lb_Question; 
+	private ListView lv_AnswerList;
+	@FXML
+	private Label lb_Question;
 	@FXML
 	private Pane Pane_Answer;
-	
-	public void btn_Close_Action() {
+
+
+	public void btn_Next_Action() {
+
+	}
+
+	public void btn_Previous_Action() {
+
+	}
+
+	public void btn_Submit_Action() {
+
 		try {
-			Stage primaryStage = (Stage) btn_Close.getScene().getWindow();
-			Parent main = FXMLLoader.load(getClass().getResource("/gui/Home.fxml"));
+			Stage primaryStage = (Stage) btn_Submit.getScene().getWindow();
+			Parent main = FXMLLoader.load(getClass().getResource("/gui/StuResult.fxml"));
 			Scene scene = new Scene(main);
-			primaryStage.setTitle("GuessWhat/Home");
+			primaryStage.setTitle("GuessWhat/Result");
 			primaryStage.setScene(scene);
 			primaryStage.show();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	}
-
-	public void btn_Next_Action() {
 		
-	}
-
-	public void btn_Previous_Action() {
-
 	}
 
 	public void btn_num1_Action() {

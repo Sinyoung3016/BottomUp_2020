@@ -12,7 +12,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
-public class StuResultDetailController extends BaseController {
+public class StuResultDetail_MultipleChoiceController extends BaseController {
 
 	@FXML
 	private Button btn_Close, btn_Previous, btn_Next, btn_num1, btn_num2, btn_num3, btn_num4,

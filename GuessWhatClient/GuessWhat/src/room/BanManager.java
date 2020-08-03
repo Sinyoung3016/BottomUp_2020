@@ -8,8 +8,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
+import model.HBoxModel;
 
 //workbook을 풀이하고 결과를 관리
 public class BanManager {
@@ -44,12 +44,9 @@ public class BanManager {
 		return new HBoxCell(this.BM_num, this.BM_name, this.BM_state);
 	}
 	
-	public static class HBoxCell extends HBox {
+	public static class HBoxCell extends HBoxModel {
 		
-		private Label num = new Label();
-		private Label name = new Label();
 		private Label state = new Label();
-		private Button enter = new Button();
 		
 		public HBoxCell(int BM_num, String BM_name, State BM_state) {
 			super();

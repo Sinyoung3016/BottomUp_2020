@@ -1,11 +1,7 @@
 package gui;
 
 import java.net.URL;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
-
-import database.DB_Ban;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -16,15 +12,17 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.stage.Stage;
+import model.DataModel;
+import model.HBoxModel;
+import room.BanManager.HBoxCell;
+import room.BanManager;
 
 public class BanController extends BaseController implements Initializable {
 
 	@FXML
 	private Button btn_CreateNewBanManager, btn_ModifyClassName;
 	@FXML
-	private ListView<String> lv_BanManagerList;
-	
-	private ArrayList<String> list;
+	private ListView<HBoxModel> lv_BanManagerList;
 
 	public void btn_CreateNewBanManager_Action() {
 		try {
@@ -55,23 +53,17 @@ public class BanController extends BaseController implements Initializable {
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// TODO Auto-generated method stub
-		try {
 
-			int pNum = -1;	 // <-- Login user's pNum (Input DB : Professor's PNum to Test)
-			list = DB_Ban.getAllBanList(pNum);
-			ObservableList<String> listItems = FXCollections.observableArrayList(list);
-			
-			lv_BanManagerList.setItems(listItems);
-			
-			if (lv_BanManagerList.getSelectionModel().getSelectedItem() != null	) {
-				btn_ModifyClassName.setOnMouseClicked(e -> {
-					btn_ModifyClassName_Action();
-				});
-			}
-				
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+		DataModel.ItemList_MyBanManager = FXCollections.observableArrayList();
+		ObservableList<HBoxModel> list = DataModel.ItemList_MyBanManager;
+
+		// 서버에서 가지고 오기
+		list.add(new HBoxCell(1, "test1", BanManager.State.OPEN));
+		list.add(new HBoxCell(2, "test2", BanManager.State.ING));
+		list.add(new HBoxCell(3, "test3", BanManager.State.CLOSE));
+		// 서버에서 가지고 오기
+
+		lv_BanManagerList.setItems(list);
 
 	}
 }
