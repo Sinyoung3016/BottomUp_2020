@@ -44,7 +44,7 @@
       </HBox>
    </top>
    <center>
-      <VBox alignment="TOP_CENTER" prefHeight="610.0" prefWidth="630.0" style="-fx-background-color: #ffffff;" BorderPane.alignment="CENTER">
+      <VBox alignment="TOP_CENTER" prefWidth="630.0" style="-fx-background-color: #ffffff;" BorderPane.alignment="CENTER">
          <padding>
             <Insets bottom="10.0" left="15.0" right="15.0" top="5.0" />
          </padding>
@@ -57,7 +57,7 @@
                   <Font name="Dubai Medium" size="23.0" />
                </font>
                <VBox.margin>
-                  <Insets top="15.0" />
+                  <Insets />
                </VBox.margin></Label>
             <HBox alignment="CENTER" prefHeight="50.0" prefWidth="200.0" spacing="15.0">
                <children>
@@ -73,35 +73,36 @@
                   </Label>
                </children>
             </HBox>
-            <Pane fx:id="Pane_Result" prefHeight="500.0">
+            <Pane fx:id="Pane_Result" prefHeight="570.0">
                <VBox.margin>
-                  <Insets top="15.0" />
+                  <Insets />
                </VBox.margin>
             </Pane>
+            <HBox alignment="TOP_CENTER" prefHeight="80.0" prefWidth="200.0" spacing="10.0">
+               <children>
+                  <Button fx:id="btn_Delete" mnemonicParsing="false" onAction="#btn_Delete_Action" prefHeight="40.0" prefWidth="150.0" style="-fx-background-color: #5ad18f;" text="Delete" textFill="WHITE">
+                     <font>
+                        <Font name="Dubai Medium" size="18.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="btn_Close" mnemonicParsing="false" onAction="#btn_Close_Action" prefHeight="40.0" prefWidth="150.0" style="-fx-background-color: #5ad18f;" text="Close" textFill="WHITE">
+                     <font>
+                        <Font name="Dubai Medium" size="18.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="btn_Previous" mnemonicParsing="false" onAction="#btn_Previous_Action" prefHeight="40.0" prefWidth="150.0" style="-fx-background-color: #5ad18f;" text="Previous" textFill="WHITE">
+                     <font>
+                        <Font name="Dubai Medium" size="18.0" />
+                     </font>
+                  </Button>
+               </children>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+               <padding>
+                  <Insets top="10.0" />
+               </padding>
+            </HBox>
          </children></VBox>
    </center>
-   <bottom>
-      <HBox alignment="TOP_CENTER" prefHeight="90.0" prefWidth="200.0" spacing="10.0" BorderPane.alignment="CENTER">
-         <children>
-            <Button fx:id="btn_Delete" mnemonicParsing="false" onAction="#btn_Delete_Action" prefHeight="40.0" prefWidth="150.0" style="-fx-background-color: #5ad18f;" text="Delete" textFill="WHITE">
-               <font>
-                  <Font name="Dubai Medium" size="18.0" />
-               </font>
-            </Button>
-            <Button fx:id="btn_Close" mnemonicParsing="false" onAction="#btn_Close_Action" prefHeight="40.0" prefWidth="150.0" style="-fx-background-color: #5ad18f;" text="Close" textFill="WHITE">
-               <font>
-                  <Font name="Dubai Medium" size="18.0" />
-               </font>
-            </Button>
-            <Button fx:id="btn_Previous" mnemonicParsing="false" onAction="#btn_Previous_Action" prefHeight="40.0" prefWidth="150.0" style="-fx-background-color: #5ad18f;" text="Previous" textFill="WHITE">
-               <font>
-                  <Font name="Dubai Medium" size="18.0" />
-               </font>
-            </Button>
-         </children>
-         <padding>
-            <Insets top="5.0" />
-         </padding>
-      </HBox>
-   </bottom>
 </BorderPane>
