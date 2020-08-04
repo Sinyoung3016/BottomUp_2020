@@ -20,13 +20,10 @@ public class Workbook {
 	private Problem [] problemSet;
 	
 	//Constructor start
-	public Workbook() {
-		problemSet = new Problem[10];
-	}
-	
 	public Workbook(String[] workbookInfo) {
 		this.name = workbookInfo[0];
 		this.size = Integer.parseInt(workbookInfo[1]);
+		problemSet = new Problem[10];
 	}
 	//Constructor end
 	
@@ -35,7 +32,7 @@ public class Workbook {
 	public String BMnum() { return this.BMNum;}
 	public String PNum() { return this.PNum;}
 	public String name() { return name;}
-	public int size() { return size;	}
+	public int size() { return size; }
 	public Problem[] problemSet() { return problemSet; }
 	//Getter end
 	
@@ -46,8 +43,8 @@ public class Workbook {
 		return new String(sb);
 	}
 	
-	public HBoxCell getWorkbook() {
-		return new HBoxCell(this.WNum, this.name, this.problemSet.length);
+	public HBoxCell getWorkbook(int num) {
+		return new HBoxCell(num, this.name, this.size);//num = 몇번째인지 출력할때 나오는 수
 	}
 		
 	public static class HBoxCell extends HBoxModel {
