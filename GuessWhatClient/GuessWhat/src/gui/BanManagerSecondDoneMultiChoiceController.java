@@ -3,36 +3,47 @@ package gui;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import exam.Result;
 import exam.Workbook;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.chart.PieChart;
+import javafx.scene.chart.PieChart.Data;
 import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import model.ProfessorDataModel;
 import room.Ban;
 import room.BanManager;
-import room.BanManager.State;
 
-public class BanManagerSoonController extends BaseController implements Initializable{
+public class BanManagerSecondDoneMultiChoiceController extends BaseController implements Initializable {
 
 	@FXML
-	private Button btn_Start, btn_Close, btn_Delete;
+	private Button btn_Delete, btn_Close, btn_Previous;
 	@FXML
-	private Label lb_BanManagerName, lb_WorkBook, lb_RoomCode;
-	
+	private Button btn_num1, btn_num2, btn_num3, btn_num4, btn_num5, btn_num6, btn_num7, btn_num8, btn_num9, btn_num10,
+			btn_num11, btn_num12, btn_num13, btn_num14, btn_num15, btn_num16, btn_num17, btn_num18, btn_num19,
+			btn_num20;
+	@FXML
+	private PieChart pc_Result;
+	@FXML
+	private Label lb_BanManagerName, lb_WorkBook, lb_answerNum;
+
+	private ObservableList<Data> list;
+
 	private Ban ban;
 	private BanManager banManager;
 	private Workbook workbook;
 
 	private String className;
-	
+
+	private int StudentSize;
+
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// TODO Auto-generated method stub
@@ -40,18 +51,15 @@ public class BanManagerSoonController extends BaseController implements Initiali
 		this.ban = ProfessorDataModel.ban;
 		this.banManager = ProfessorDataModel.banManager;
 		this.workbook = ProfessorDataModel.workbook;
-		
-		
+
+		this.StudentSize = banManager.size();
+		className = btn_Main.getText();
+
 		this.btn_Main.setText(ban.ban_name());
 		this.lb_BanManagerName.setText(banManager.BM_name());
-		this.lb_WorkBook.setText(workbook.getName());
-		this.lb_RoomCode.setText(banManager.BM_password());
-		
-		
-		className = btn_Main.getText();
-		
+		this.lb_WorkBook.setText(workbook.name());
 	}
-	
+
 	@Override
 	public void btn_Main_Action() {
 		try {
@@ -80,11 +88,6 @@ public class BanManagerSoonController extends BaseController implements Initiali
 	}
 
 	public void btn_Delete_Action() {
-		
-		//***********************************************************************************
-		//해당 방 삭제하기
-		ProfessorDataModel.removeBanManager(banManager);
-		
 		try {
 			Stage primaryStage = (Stage) btn_Close.getScene().getWindow();
 			Parent main = FXMLLoader.load(getClass().getResource("/gui/Ban.fxml"));
@@ -97,16 +100,10 @@ public class BanManagerSoonController extends BaseController implements Initiali
 		}
 	}
 
-	public void btn_Start_Action() {
-		
-		//***********************************************************************************
-		//시험 시작하기
-		if(banManager.BM_state().equals(State.OPEN))
-			banManager.setBM_state_ING(); //예외 처리 해줘야할듯
-		
+	public void btn_Previous_Action() {
 		try {
-			Stage primaryStage = (Stage) btn_Start.getScene().getWindow();
-			Parent main = FXMLLoader.load(getClass().getResource("/gui/BanManagerProgress.fxml"));
+			Stage primaryStage = (Stage) btn_Previous.getScene().getWindow();
+			Parent main = FXMLLoader.load(getClass().getResource("/gui/BanManagerSecondDoneController.fxml"));
 			Scene scene = new Scene(main);
 			primaryStage.setTitle("GuessWhat/" + className);
 			primaryStage.setScene(scene);
@@ -116,4 +113,102 @@ public class BanManagerSoonController extends BaseController implements Initiali
 		}
 	}
 
+	private void settingPie(int[] value) {
+		this.list = FXCollections.observableArrayList();
+
+		int n = value.length;
+		
+		for (int i = 0; i < n; i++)
+			list.add(new PieChart.Data((i+1)+"번", value[i]));
+
+		pc_Result.setData(list);
+	}
+
+	private int[]  pieValue(int n) {
+		int [] value = new int[n];
+		
+		//계산 total = studentsize
+		
+		return value; 
+	}
+
+	public void btn_num1_Action() {
+
+	}
+
+	public void btn_num2_Action() {
+
+	}
+
+	public void btn_num3_Action() {
+
+	}
+
+	public void btn_num4_Action() {
+
+	}
+
+	public void btn_num5_Action() {
+
+	}
+
+	public void btn_num6_Action() {
+
+	}
+
+	public void btn_num7_Action() {
+
+	}
+
+	public void btn_num8_Action() {
+
+	}
+
+	public void btn_num9_Action() {
+
+	}
+
+	public void btn_num10_Action() {
+
+	}
+
+	public void btn_num11_Action() {
+
+	}
+
+	public void btn_num12_Action() {
+
+	}
+
+	public void btn_num13_Action() {
+
+	}
+
+	public void btn_num14_Action() {
+
+	}
+
+	public void btn_num15_Action() {
+
+	}
+
+	public void btn_num16_Action() {
+
+	}
+
+	public void btn_num17_Action() {
+
+	}
+
+	public void btn_num18_Action() {
+
+	}
+
+	public void btn_num19_Action() {
+
+	}
+
+	public void btn_num20_Action() {
+
+	}
 }

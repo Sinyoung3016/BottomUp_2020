@@ -20,8 +20,12 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+<<<<<<< HEAD
 import model.DataModel;
 import model.StudentDataModel;
+=======
+import model.ProfessorDataModel;
+>>>>>>> 701611f307f63047dfdcb785021bf3d2d7e57e42
 
 public class HomeController implements Initializable{
 	@FXML
@@ -39,8 +43,12 @@ public class HomeController implements Initializable{
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		try {
 			this.socket = new Socket(SERVER_IP, SERVER_PORT);
+<<<<<<< HEAD
 			DataModel.socket = this.socket;
 			StudentDataModel.socket = this.socket;
+=======
+			ProfessorDataModel.socket = this.socket;
+>>>>>>> 701611f307f63047dfdcb785021bf3d2d7e57e42
 		} catch(Exception e) {
 			System.out.println("Error :" +e.getMessage() + " FROM initialize in HomeController");
 		}

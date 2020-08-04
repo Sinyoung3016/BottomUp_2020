@@ -30,7 +30,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import model.DataModel;
+import model.ProfessorDataModel;
 
 public class SignUpController implements Initializable {
 
@@ -157,7 +157,7 @@ public class SignUpController implements Initializable {
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// TODO Auto-generated method stub
-		this.socket = DataModel.socket;
+		this.socket = ProfessorDataModel.socket;
 		pf_CheckPW.focusedProperty().addListener(new ChangeListener<Boolean>() {
 			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
 				if (!pf_CheckPW.isFocused()) {

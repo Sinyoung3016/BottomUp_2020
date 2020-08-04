@@ -2,23 +2,31 @@ package model;
 
 import java.net.Socket;
 
+import exam.Result;
 import exam.Workbook;
 import javafx.collections.ObservableList;
 import room.Ban;
 import room.BanManager;
 import user.Professor;
+import user.Student;
 
-public class DataModel {
+public class ProfessorDataModel {
 	//public final static String SERVER_IP = "";
 	//public final static int PORT = null;
 	
 	public static Socket socket = null;
 	public static String ID = null;
 	public static Professor professor;
+	public static Ban ban;
+	public static BanManager banManager;
+	public static Workbook workbook;
 	
 	public static ObservableList<HBoxModel> ItemList_MyClass;
 	public static ObservableList<HBoxModel> ItemList_MyWorkBook;
 	public static ObservableList<HBoxModel> ItemList_MyBanManager;
+	
+	public static ObservableList<Student> ItemList_Students;
+	public static ObservableList<Result> ItemList_Results;
 	
 	public static void addClass(Ban newBan) {
 		ItemList_MyClass.add(newBan.getBan());
