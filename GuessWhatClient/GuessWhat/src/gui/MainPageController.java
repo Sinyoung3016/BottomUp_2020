@@ -24,8 +24,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ListView;
 import javafx.stage.Stage;
-import model.DataModel;
 import model.HBoxModel;
+import model.ProfessorDataModel;
 import room.Ban.HBoxCell;
 import user.Professor;
 
@@ -62,8 +62,8 @@ public class MainPageController implements Initializable{
 			else {
 				System.out.println("Success: GetBan");
 				
-				DataModel.ItemList_MyClass = FXCollections.observableArrayList();
-				this.list = DataModel.ItemList_MyClass;
+				ProfessorDataModel.ItemList_MyClass = FXCollections.observableArrayList();
+				this.list = ProfessorDataModel.ItemList_MyClass;
 				
 				for(int i = 2 ; i < responseTokens.length ; i++) {
 					this.list.add(new HBoxCell(i - 2, responseTokens[i], 0));
@@ -79,8 +79,8 @@ public class MainPageController implements Initializable{
 		// TODO Auto-generated method stub
 
 		//DataModel.ItemList_MyClass = FXCollections.observableArrayList();
-		this.socket = DataModel.socket;
-		this.professor = DataModel.professor;
+		this.socket = ProfessorDataModel.socket;
+		this.professor = ProfessorDataModel.professor;
 		this.showBanList(professor.getPNum());
 
 	}
@@ -134,7 +134,7 @@ public class MainPageController implements Initializable{
 		String[] responseTokens = responseMessage.split(":");
 		if(responseTokens[0].equals("AddBan")) {
 			if(!responseTokens[1].equals("Success")) {
-				new Alert(Alert.AlertType.WARNING, responseTokens[2], ButtonType.CLOSE).show();
+				System.out.println("AddBan : Fail");
 			}
 			else {
 				this.showBanList(PNum);
