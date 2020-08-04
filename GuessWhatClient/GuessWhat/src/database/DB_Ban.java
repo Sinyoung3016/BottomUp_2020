@@ -1,10 +1,124 @@
 package database;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.LinkedList;
+import java.util.List;
+
+import room.Ban;
 
 public class DB_Ban extends DBManager {
+	
+	public synchronized static boolean insertBan(String name, String PNum) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+
+		try {
+
+			conn = getConn();
+
+			String sql;
+			sql = "INSERT INTO Ban (Name, PNum) VALUES (?,?)";
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, name);
+			pstmt.setInt(2, Integer.parseInt(PNum));
+	
+			pstmt.executeUpdate();
+			pstmt.close();
+			conn.close();
+			return true;
+		} catch(SQLException e) {
+			System.out.println("Error : " + e.getMessage() + "FROM insertBan");
+			return false;
+		}
+		finally {
+			try {
+				if (conn != null)
+					conn.close();
+				if (pstmt != null)
+					pstmt.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public synchronized static List<Ban> getAllBan(String PNum) {
+		Connection conn = null;
+		Statement stmt = null;
+		ResultSet rs = null;
+		
+		List<Ban> banList = new ArrayList<>();
+		String name = null;
+		
+		try {
+			conn = getConn();
+			stmt = conn.createStatement();
+			String sql;
+			sql = "SELECT * FROM Ban WHERE PNum = '" + PNum + "'";
+			rs = stmt.executeQuery(sql);
+
+			while(rs.next()) {
+				name = rs.getString("Name");
+				banList.add(new Ban(name));
+			}
+			
+			return banList;
+		}catch(Exception e) {
+			System.out.println("Error : " + e.getMessage() + "FROM getAllBan");
+			return null;
+		} finally {
+			try {
+				if(stmt != null) stmt.close();
+				if(conn != null) conn.close();
+				if(rs != null) rs.close();
+			} catch(SQLException e) {
+				System.out.println("Error : " + e.getMessage() + "FROM getAllBan (SQL)");
+			}
+		}
+	}
+	
+/*	public synchronized static ArrayList<String> getAllBanList(String PNum){
+
+		Connection conn = null;
+		Statement stmt = null;
+		ResultSet rs = null;
+
+		ArrayList<String> banList = new ArrayList<String>();
+
+		try {
+
+			conn = getConn();
+			stmt = conn.createStatement();
+
+			String s;
+			s = "SELECT * FROM Ban WHERE PNum = '" + PNum + "'";
+			rs = stmt.executeQuery(s);
+
+			while(rs.next()) {
+				String myBan = rs.getString("Name");
+				banList.add(myBan);
+			}
+
+		} catch (Exception e) {
+			System.out.println(e);
+		} finally {
+			try {
+				if (conn != null)
+					conn.close();
+				if (stmt != null)
+					stmt.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return banList;	
+	}
+	
 	
 	public synchronized static int getMyNum(String id) throws SQLException {
 
@@ -114,7 +228,7 @@ public class DB_Ban extends DBManager {
 		return bNum;	
 	}
 	
-	public synchronized static ArrayList<String> getAllBanList(int PNum) throws SQLException {
+/*	public synchronized static ArrayList<String> getAllBanList(int PNum) throws SQLException {
 
 		Connection conn = null;
 		Statement stmt = null;
@@ -150,6 +264,7 @@ public class DB_Ban extends DBManager {
 		}
 		return banList;	
 	}
+
 	
 	public synchronized static void searchBan(int PNum) {
 
@@ -224,7 +339,7 @@ public class DB_Ban extends DBManager {
 		/* ALTER TABLE BanManager 
 		  	ADD CONSTRAINT fk_BNum FOREIGN KEY (BNum) 
 		  	REFERENCES Ban (BNum) ON DELETE CASCADE;
-		*/
+		
 		
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -250,4 +365,6 @@ public class DB_Ban extends DBManager {
 		}
 
 	}
+	
+*/	
 }

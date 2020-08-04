@@ -23,6 +23,9 @@ public class Ban {
 		this.ban_name = name;
 		banManagerSet = new BanManager[10];
 	}
+	public Ban(String name) {
+		this.ban_name = name;
+	}
 	//Constructor end
 	
 	//Getter start
@@ -30,6 +33,7 @@ public class Ban {
 	public String ban_name() { return this.ban_name; }
 	public BanManager[] banManagerSet() { return this.banManagerSet; }
 	//Getter end
+	
 	
 	public HBoxCell getBan() {
 		return new HBoxCell(this.ban_num, this.ban_name, this.banManagerSet.length);
