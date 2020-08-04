@@ -12,6 +12,7 @@ import java.util.List;
 
 import authentication.LogInContext;
 import authentication.RoomCode;
+import database.DB_BanManager;
 import database.DB_Problem;
 import database.DB_USER;
 import database.DB_Workbook;
@@ -19,6 +20,7 @@ import exam.Problem;
 import exam.Workbook;
 import exception.MyException;
 import model.ServerDataModel;
+import room.BanManager;
 import server.Request;
 import user.Professor;
 
@@ -74,7 +76,6 @@ public class ServerThread extends Thread{
 					}
 					else if(requestTokens[0].equals(Request.Join.getRequest())) { //Join:Code
 						clientRequest = "Join";
-						System.out.println(requestTokens[1]);
 						this.join(requestTokens[1]);
 					}
 					else if(requestTokens[0].equals(Request.ADD_WORKBOOK.getRequest())) { //AddWorkbook:BMNum:PNum:Name:Size
@@ -101,6 +102,9 @@ public class ServerThread extends Thread{
 					}else if(requestTokens[0].equals(Request.GET_PROFESSOR.getRequest())) { //GetProfessor:Id
 						clientRequest = "GetProfessor";
 						this.getProfessor(requestTokens[1]);
+					}else if(requestTokens[0].equals(Request.GET_BANMANGER.getRequest())) { //GetBanManager:code
+						clientRequest = "GetBanManager";
+						this.getBanManager(requestTokens[1]);
 					}
 					else if(requestTokens[0].equals(Request.GET_WORKBOOK.getRequest())) { //GetWorkbook
 						clientRequest = "GetWorkbook";
@@ -223,6 +227,15 @@ public class ServerThread extends Thread{
 			pw.flush();
 		}
 	}
+	
+	private void getBanManager(String code) {
+		BanManager banManager = DB_BanManager.getBanManagerOfCode(code);
+		if(banManager != null) {
+			pw.println("GetBanManager:Success:" + banManager.tokenString());
+			pw.flush();
+		}
+		
+ 	}
 	private void getWorkbook() {
 		List<Workbook> listWorkbook = DB_Workbook.getAllWorkbook();
 		if(listWorkbook == null) {

@@ -21,6 +21,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import model.DataModel;
+import model.StudentDataModel;
 
 public class HomeController implements Initializable{
 	@FXML
@@ -30,13 +31,16 @@ public class HomeController implements Initializable{
 	
 	public Socket socket;
 		
-	private static final String SERVER_IP ="172.30.1.2";
+	private static final String SERVER_IP ="172.30.1.11";
 	private static final int SERVER_PORT =5000;
+	
+	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		try {
 			this.socket = new Socket(SERVER_IP, SERVER_PORT);
 			DataModel.socket = this.socket;
+			StudentDataModel.socket = this.socket;
 		} catch(Exception e) {
 			System.out.println("Error :" +e.getMessage() + " FROM initialize in HomeController");
 		}
@@ -69,6 +73,7 @@ public class HomeController implements Initializable{
 				pw.println(requestTokens);
 				pw.flush();
 				responseMessage = br.readLine();
+				
 			} catch(IOException e) {
 				e.printStackTrace();
 			}
@@ -79,6 +84,7 @@ public class HomeController implements Initializable{
 				else {
 					//Success Join 
 					//Fortune's code start
+					StudentDataModel.code = tf_RoomCode.getText();
 					try {
 						Stage primaryStage = (Stage) btn_Enter.getScene().getWindow();
 						Parent main = FXMLLoader.load(getClass().getResource("/gui/StudentInfo.fxml"));

@@ -16,11 +16,12 @@ import room.BanManager.State;
 //workbook을 풀이하고 결과를 관리
 public class BanManager {
 	private int BM_num;
+	private String BM_name;
 	public enum State { OPEN, ING, CLOSE };
 	private State BM_state;
-	private String BM_name;
 	private String BM_password;
 	private int BNum;
+	private int size; 
 	private Workbook workbook;
 	private AnswerSet answerSet;
 	
@@ -33,6 +34,17 @@ public class BanManager {
 		this.workbook = workbook;
 		this.answerSet = new AnswerSet();
 	}
+	
+	
+	public BanManager(String[] banManagerInfo) {
+		this.BM_num = Integer.parseInt(banManagerInfo[0]);
+		this.BM_name = banManagerInfo[1];
+		this.BM_state = this.stateOf(banManagerInfo[2]);
+		this.BM_password = banManagerInfo[3];
+		this.BNum = Integer.parseInt(banManagerInfo[4]);
+		this.size = Integer.parseInt(banManagerInfo[5]);
+	}
+	
 	//Constructor end
 	
 	//Getter start
@@ -44,18 +56,8 @@ public class BanManager {
 	public int BNum() {return this.BNum;}
 	//Getter end
 	
-	public HBoxCell getBanManager() {
-		return new HBoxCell(this.BM_num, this.BM_name, this.BM_state);
-	}
 	
-	public BanManager(String[] banManagerInfo) {
-		this.BM_num = Integer.parseInt(banManagerInfo[0]);
-		this.BM_name = banManagerInfo[1];
-		this.BM_state = this.stateOf(banManagerInfo[2]);
-		this.BM_password = banManagerInfo[3];
-		this.BNum = Integer.parseInt(banManagerInfo[4]);
-	}
-	
+	//Private Method
 	private State stateOf(String state) {
 		switch(state) {
 		case "Open":
@@ -66,6 +68,29 @@ public class BanManager {
 			return State.CLOSE;
 		}
 	}
+	
+	private String stateToString(State state) {
+		switch(state) {
+		case OPEN:
+			return "Open";
+		case ING:
+			return "Ing";
+		default:
+			return "Close";
+		}
+	}
+	
+	//Public Method
+	public HBoxCell getBanManager() {
+		return new HBoxCell(this.BM_num, this.BM_name, this.BM_state);
+	}
+	
+	public String tokenString() {
+		StringBuilder sb = new StringBuilder("");
+		sb.append(this.BM_num + "-"  + this.BM_name + "-" + this.stateToString(this.BM_state) + "-" + this.BM_password + "-" + this.BNum + "-" + this.size);
+		return new String(sb);
+	}
+	
 	public static class HBoxCell extends HBox {
 		
 		private Label num = new Label();

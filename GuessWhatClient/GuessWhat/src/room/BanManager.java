@@ -10,14 +10,17 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import model.HBoxModel;
+import room.BanManager.State;
 
 //workbook을 풀이하고 결과를 관리
 public class BanManager {
 	private int BM_num;
+	private String BM_name;
 	public enum State { OPEN, ING, CLOSE };
 	private State BM_state;
-	private String BM_name;
 	private String BM_password;
+	private int BNum;
+	private int size; 
 	private Workbook workbook;
 	private AnswerSet answerSet;
 
@@ -30,20 +33,76 @@ public class BanManager {
 		this.workbook = workbook;
 		this.answerSet = new AnswerSet();
 	}
+	public BanManager(String responseTokens) {
+		String[] banManagerInfo = responseTokens.split("-");
+		this.BM_num = Integer.parseInt(banManagerInfo[0]);
+		this.BM_name = banManagerInfo[1];
+		this.BM_state = this.stateOf(banManagerInfo[2]);
+		this.BM_password = banManagerInfo[3];
+		this.BM_num = Integer.parseInt(banManagerInfo[4]);
+		this.size = Integer.parseInt(banManagerInfo[5]);
+	}
+	
+	public BanManager() {
+		
+	}
 	//Constructor end
 	
-	//Getter start
+	//Getter,Setter start
 	public int BM_num() { return BM_num; } 
 	public String BM_name() { return BM_name; }
 	public String BM_password() { return BM_password; }
 	public Workbook workbook() { return workbook; }
 	public AnswerSet answerSet() { return answerSet; }
-	//Getter end
 	
+	
+	public void setBM_num(int bM_num) {
+		BM_num = bM_num;
+	}
+
+	public void setBM_state(State bM_state) {
+		BM_state = bM_state;
+	}
+
+	public void setBM_name(String bM_name) {
+		BM_name = bM_name;
+	}
+
+	public void setBM_password(String bM_password) {
+		BM_password = bM_password;
+	}
+
+	public void setSize(int size) {
+		this.size = size;
+	}
+
+	public void setWorkbook(Workbook workbook) {
+		this.workbook = workbook;
+	}
+
+	public void setAnswerSet(AnswerSet answerSet) {
+		this.answerSet = answerSet;
+	}
+
+	//Getter,Setter end
+	
+	//Private Method
+	private State stateOf(String state) {
+		switch(state) {
+		case "Open":
+			return State.OPEN;
+		case "Ing":
+			return State.ING;
+		default:
+			return State.CLOSE;
+		}
+	}
+	
+	//Public Method
 	public HBoxCell getBanManager() {
 		return new HBoxCell(this.BM_num, this.BM_name, this.BM_state);
 	}
-	
+
 	public static class HBoxCell extends HBoxModel {
 		
 		private Label state = new Label();

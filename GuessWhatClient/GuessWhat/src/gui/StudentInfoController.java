@@ -1,15 +1,28 @@
 package gui;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.net.Socket;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.util.ResourceBundle;
+
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import model.StudentDataModel;
+import room.BanManager;
 
-public class StudentInfoController {
+public class StudentInfoController implements Initializable{
 	@FXML
 	private Button btn_Join, btn_Close;
 	@FXML
@@ -18,7 +31,37 @@ public class StudentInfoController {
 	private Label lb_ClassRoomName;
 	
 	private boolean IsTestStarted = true;
-
+	private Socket socket;
+	
+	@Override
+	public void initialize(URL arg0, ResourceBundle arg1) {
+		this.socket = StudentDataModel.socket;
+		String responseMessage = null;
+		try {
+			String requestTokens = "GetBanManager:" + StudentDataModel.code;
+			BufferedReader br = new BufferedReader(
+					new InputStreamReader(this.socket.getInputStream(), StandardCharsets.UTF_8));
+			PrintWriter pw = new PrintWriter(
+					new OutputStreamWriter(this.socket.getOutputStream(), StandardCharsets.UTF_8));
+			pw.println(requestTokens);
+			pw.flush();
+			responseMessage = br.readLine();
+		} catch(IOException e) {
+			e.printStackTrace();
+		}
+		String[] responseTokens = responseMessage.split(":");
+		if(responseTokens[0].equals("GetBanManager")) {
+			if(!responseTokens[1].equals("Success")) {
+				System.out.println(responseTokens[1]);
+			}
+			else {
+				//Success GetBanManager
+				BanManager banManager = new BanManager(responseTokens[2]);
+				StudentDataModel.banManager = banManager;
+			}
+		}
+	}
+	
 	public void btn_Close_Action(){
 		try {
 			Stage primaryStage = (Stage) btn_Close.getScene().getWindow();
