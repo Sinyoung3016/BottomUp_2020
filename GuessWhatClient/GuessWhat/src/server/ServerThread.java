@@ -12,12 +12,14 @@ import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.List;
 
+import database.DB_Ban;
 import database.DB_Problem;
 import database.DB_USER;
 import database.DB_Workbook;
 import exam.Problem;
 import exam.Workbook;
 import exception.MyException;
+import room.Ban;
 import server.Request;
 import user.Professor;
 public class ServerThread extends Thread{
@@ -61,6 +63,9 @@ public class ServerThread extends Thread{
 					else if(requestTokens[0].equals(Request.ADD_PROFESSOR.getRequest())) {//AddProfessor:ID:Password:Email:IsConnected
 						clientRequest = "AddProfessor";
 						this.addProfessor(requestTokens[1], requestTokens[2], requestTokens[3], requestTokens[4]);
+					} else if(requestTokens[0].equals(Request.ADD_BAN.getRequest())) { //AddBan:Name:PNum
+						clientRequest = "AddBan";
+						this.addBan(requestTokens[1]);
 					}
 					else if(requestTokens[0].equals(Request.ADD_WORKBOOK.getRequest())) { //AddWorkbook:BMNum:PNum:Name:Size
 						clientRequest = "AddWorkbook";
@@ -86,6 +91,9 @@ public class ServerThread extends Thread{
 					}else if(requestTokens[0].equals(Request.GET_PROFESSOR.getRequest())) { //GetProfessor:Id
 						clientRequest = "GetProfessor";
 						this.getProfessor(requestTokens[1]);
+					} else if(requestTokens[0].equals(Request.GET_BAN.getRequest())) { //GetBan:PNum
+						clientRequest = "GetBan";
+						this.getBan(requestTokens[1]);
 					}
 					else if(requestTokens[0].equals(Request.GET_WORKBOOK.getRequest())) { //GetWorkbook
 						clientRequest = "GetWorkbook";
@@ -129,7 +137,13 @@ public class ServerThread extends Thread{
 		
 		pw.flush();
 	}
-	
+	private void addBan(String PNum) {
+		if(DB_Ban.insertBan("new", PNum))
+			pw.println(">>SUCCESS [AddBan]<<");
+		else pw.println(">>FAIL [AddBan]<<");
+		
+		pw.flush();
+	}
 	
 	private void addWorkbook(String BMNum, String PNum, String Name, String Size) {
 		if(DB_Workbook.insertWorkbook(BMNum,PNum,Name,Size)) 
@@ -189,6 +203,26 @@ public class ServerThread extends Thread{
 		else {
 			pw.println(">>FAIL [GetProfessor]<<");
 			pw.flush();
+		}
+	}
+	private void getBan(String PNum) {
+		List<Ban> listBan = DB_Ban.getAllBan(PNum);
+		
+		if (listBan == null) {
+			pw.println(">>FAIL [GetBan]<<");
+			pw.flush();
+		}
+		else {
+			pw.println(">>SUCCESS [GetBan]");
+			pw.flush();
+			
+			Iterator<Ban> iterator = listBan.iterator();
+			while(iterator.hasNext()) {
+				Ban ban = iterator.next();
+				pw.println(ban.ban_name());
+				pw.flush();
+			}
+		
 		}
 	}
 	private void getWorkbook() {

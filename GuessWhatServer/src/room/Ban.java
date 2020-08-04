@@ -24,7 +24,17 @@ public class Ban {
 		this.ban_name = name;
 		banManagerSet = new BanManager[10];
 	}
+	public Ban(String name) {
+		this.ban_name = name;
+	}
 	//Constructor end
+	
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder("");
+		sb.append("Name:"+ this.ban_name);
+		return new String(sb);
+	}
 	
 	//Getter start
 	public int ban_num() { return this.ban_num;}
