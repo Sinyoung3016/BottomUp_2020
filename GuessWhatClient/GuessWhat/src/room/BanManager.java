@@ -116,12 +116,15 @@ public class BanManager {
 			return State.CLOSE;
 		}
 	}
-	
+		
 	//Public Method
 	public HBoxCell getBanManager() {
 		return new HBoxCell(this.BM_num, this.BM_name, this.BM_state);
 	}
-
+	
+	public String stringOfState() {
+		return this.BM_state.toString();
+	}
 	public static class HBoxCell extends HBoxModel {
 		
 		private Label state = new Label();

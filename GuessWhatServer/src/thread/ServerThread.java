@@ -231,6 +231,7 @@ public class ServerThread extends Thread{
 	private void getBanManager(String code) {
 		BanManager banManager = DB_BanManager.getBanManagerOfCode(code);
 		if(banManager != null) {
+			System.out.println(banManager.tokenString());
 			pw.println("GetBanManager:Success:" + banManager.tokenString());
 			pw.flush();
 		}

@@ -23,6 +23,7 @@ import javafx.stage.Stage;
 
 import model.ProfessorDataModel;
 import model.StudentDataModel;
+import thread.ClientThread;
 
 
 
@@ -34,8 +35,8 @@ public class HomeController implements Initializable{
 	
 	public Socket socket;
 		
-	private static final String SERVER_IP ="172.30.1.11";
-	private static final int SERVER_PORT =5000;
+	private static final String SERVER_IP ="192.168.35.142";
+	private static final int SERVER_PORT =8000;
 	
 	
 	@Override
@@ -45,8 +46,7 @@ public class HomeController implements Initializable{
 
 			ProfessorDataModel.socket = this.socket;
 			StudentDataModel.socket = this.socket;
-
-			ProfessorDataModel.socket = this.socket;
+			
 
 		} catch(Exception e) {
 			System.out.println("Error :" +e.getMessage() + " FROM initialize in HomeController");

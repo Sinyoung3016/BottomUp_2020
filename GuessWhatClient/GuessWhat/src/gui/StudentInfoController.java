@@ -15,12 +15,16 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import model.StudentDataModel;
 import room.BanManager;
+import thread.ClientThread;
+import thread.LoadingThread;
 
 public class StudentInfoController implements Initializable{
 	@FXML
@@ -30,12 +34,16 @@ public class StudentInfoController implements Initializable{
 	@FXML
 	private Label lb_ClassRoomName;
 	
-	private boolean IsTestStarted = true;
+	private boolean IsTestStarted = false;
 	private Socket socket;
+	public BanManager banManager;
 	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		this.socket = StudentDataModel.socket;
+		
+		new ClientThread(StudentDataModel.socket).start(); 
+
 		String responseMessage = null;
 		try {
 			String requestTokens = "GetBanManager:" + StudentDataModel.code;
@@ -56,8 +64,12 @@ public class StudentInfoController implements Initializable{
 			}
 			else {
 				//Success GetBanManager
-				BanManager banManager = new BanManager(responseTokens[2]);
-				StudentDataModel.banManager = banManager;
+				this.banManager = new BanManager(responseTokens[2]);
+				StudentDataModel.banManager = this.banManager;
+				System.out.println(this.banManager.stringOfState());
+				if(this.banManager.stringOfState() == "ING") {
+					this.IsTestStarted = true;
+				}
 			}
 		}
 	}
@@ -76,33 +88,45 @@ public class StudentInfoController implements Initializable{
 	}
 
 	public void btn_Join_Action(){//While문으로 계속해서 받다가 열리면 입장
+			System.out.println(StudentDataModel.banManager.stringOfState()+"in controller");
+			if(StudentDataModel.banManager.stringOfState() == "ING")
+				this.IsTestStarted = true;
 		
-		if(IsTestStarted) {
-			try {
-				Stage primaryStage = (Stage) btn_Close.getScene().getWindow();
-				Parent main = FXMLLoader.load(getClass().getResource("/gui/StuWorkBook.fxml"));
-				Scene scene = new Scene(main);
-				primaryStage.setTitle("GuessWhat/Test");
-				primaryStage.setScene(scene);
-				primaryStage.show();
-			} catch (Exception e) {
-				e.printStackTrace();
+			if(IsTestStarted) {
+				try {
+					Stage primaryStage = (Stage) btn_Close.getScene().getWindow();
+					Parent main = FXMLLoader.load(getClass().getResource("/gui/StuWorkBook.fxml"));
+					Scene scene = new Scene(main);
+					primaryStage.setTitle("GuessWhat/Test");
+					primaryStage.setScene(scene);
+					primaryStage.show();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
-		}
-		else {
-			try {
-				Stage primaryStage = (Stage) btn_Close.getScene().getWindow();
-				Parent main = FXMLLoader.load(getClass().getResource("/gui/StuInfoToStuWB.fxml"));
-				Scene scene = new Scene(main);
-				primaryStage.setTitle("GuessWhat/Loading");
-				primaryStage.setScene(scene);
-				primaryStage.show();
-			} catch (Exception e) {
-				e.printStackTrace();
+			else {
+			
+				new Alert(Alert.AlertType.WARNING, "Class has not been opened yet. Please wait in a moment.", ButtonType.CLOSE).show();
+
+				/*try {
+					Stage primaryStage = (Stage) btn_Close.getScene().getWindow();
+					Parent main = FXMLLoader.load(getClass().getResource("/gui/StuInfoToStuWB.fxml"));
+					Scene scene = new Scene(main);
+					primaryStage.setTitle("GuessWhat/Loading");
+					primaryStage.setScene(scene);
+					primaryStage.show();
+				
+				} catch (Exception e) {
+					e.printStackTrace();
+				}*/
+				
 			}
-		}
 
 	}
+			
+		
+
+	
 
 	public static Object CloseButtonActione() {
 		// TODO Auto-generated method stub

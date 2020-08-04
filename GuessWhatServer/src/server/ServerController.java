@@ -84,7 +84,19 @@ public class ServerController {
 	}
 
 	public void btn_Empty_Action() {
-		//洹몃깷 踰꾪듉 �늻瑜대㈃ �떎�뻾
+		try {
+		Iterator<Socket> iterator = dataModel.getSocketList().iterator();
+		System.out.println("btn_Empty_Action");
+		while(iterator.hasNext()) {
+			Socket socket = iterator.next();
+			PrintWriter pw=new PrintWriter(new OutputStreamWriter(socket.getOutputStream(),StandardCharsets.UTF_8));
+			pw.println("ChangeState:");
+			pw.flush();
+		}
+		} catch(IOException e) {
+			System.out.println("Error: " +e.getMessage() + "FROM btn_Empty_Action");
+		}
+		
 	}
 	//MoonDD's PlayGround end
 
