@@ -23,7 +23,7 @@ public class BanManager {
 	private int size; 
 	private Workbook workbook;
 	private AnswerSet answerSet;
-	private int size;
+
 
 	//Constructor start
 	public BanManager(int num, String name, String password, Workbook workbook) {
@@ -49,9 +49,9 @@ public class BanManager {
 	}
 	//Constructor end
 	
-<<<<<<< HEAD
+
 	//Getter,Setter start
-=======
+
 	//Setter start
 	public void setBM_state_OPEN() {
 		this.BM_state = State.OPEN;
@@ -68,18 +68,15 @@ public class BanManager {
 	//Setter end
 	
 	//Getter start
->>>>>>> 701611f307f63047dfdcb785021bf3d2d7e57e42
 	public int BM_num() { return BM_num; } 
 	public String BM_name() { return BM_name; }
 	public String BM_password() { return BM_password; }
 	public Workbook workbook() { return workbook; }
 	public State BM_state() { return BM_state; }
 	public AnswerSet answerSet() { return answerSet; }
-<<<<<<< HEAD
-=======
 	public int size() { return size; } 
 	//Getter end
->>>>>>> 701611f307f63047dfdcb785021bf3d2d7e57e42
+
 	
 	
 	public void setBM_num(int bM_num) {
@@ -96,10 +93,6 @@ public class BanManager {
 
 	public void setBM_password(String bM_password) {
 		BM_password = bM_password;
-	}
-
-	public void setSize(int size) {
-		this.size = size;
 	}
 
 	public void setWorkbook(Workbook workbook) {

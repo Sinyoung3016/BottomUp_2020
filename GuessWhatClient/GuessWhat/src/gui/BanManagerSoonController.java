@@ -44,7 +44,7 @@ public class BanManagerSoonController extends BaseController implements Initiali
 		
 		this.btn_Main.setText(ban.ban_name());
 		this.lb_BanManagerName.setText(banManager.BM_name());
-		this.lb_WorkBook.setText(workbook.getName());
+		this.lb_WorkBook.setText(workbook.name());
 		this.lb_RoomCode.setText(banManager.BM_password());
 		
 		
