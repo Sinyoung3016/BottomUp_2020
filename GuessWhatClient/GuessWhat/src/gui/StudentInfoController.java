@@ -87,22 +87,28 @@ public class StudentInfoController implements Initializable{
 		}
 	}
 
-	public void btn_Join_Action(){//While문으로 계속해서 받다가 열리면 입장
-			System.out.println(StudentDataModel.banManager.stringOfState()+"in controller");
+	public void btn_Join_Action(){
 			if(StudentDataModel.banManager.stringOfState() == "ING")
 				this.IsTestStarted = true;
 		
 			if(IsTestStarted) {
-				try {
-					Stage primaryStage = (Stage) btn_Close.getScene().getWindow();
-					Parent main = FXMLLoader.load(getClass().getResource("/gui/StuWorkBook.fxml"));
-					Scene scene = new Scene(main);
-					primaryStage.setTitle("GuessWhat/Test");
-					primaryStage.setScene(scene);
-					primaryStage.show();
-				} catch (Exception e) {
-					e.printStackTrace();
+				if(tf_StudentName.getLength() != 0) {
+					StudentDataModel.studentName = tf_StudentName.getText();
+					try {
+						Stage primaryStage = (Stage) btn_Close.getScene().getWindow();
+						Parent main = FXMLLoader.load(getClass().getResource("/gui/StuWorkBook.fxml"));
+						Scene scene = new Scene(main);
+						primaryStage.setTitle("GuessWhat/Test");
+						primaryStage.setScene(scene);
+						primaryStage.show();
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
 				}
+				else {
+					new Alert(Alert.AlertType.WARNING, "Invalid Name", ButtonType.CLOSE).show();
+				}
+				
 			}
 			else {
 			

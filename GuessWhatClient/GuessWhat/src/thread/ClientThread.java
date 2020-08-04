@@ -18,7 +18,7 @@ import room.BanManager;
 
 public class ClientThread extends Thread { //for student
 	Socket socket = null;
-	
+
 	public ClientThread(Socket socket) {
 		this.socket = socket;
 		
@@ -34,9 +34,7 @@ public class ClientThread extends Thread { //for student
 				String[] tokens = responseMessage.split(":");
 				
 				if(tokens[0].equals("ChangeState")) {
-					StudentDataModel.banManager.setBM_state(BanManager.State.ING); 
-					System.out.println(StudentDataModel.banManager.stringOfState());
-					
+					StudentDataModel.banManager.setBM_state(BanManager.State.ING); 					
 				}
 			}
 		} catch(IOException e) {
