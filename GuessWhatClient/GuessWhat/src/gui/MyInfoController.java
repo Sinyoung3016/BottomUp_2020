@@ -1,6 +1,12 @@
 package gui;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.net.Socket;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
@@ -23,6 +29,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import model.ProfessorDataModel;
 
 public class MyInfoController implements Initializable {
 
@@ -36,6 +43,7 @@ public class MyInfoController implements Initializable {
 	private Button btn_Update, btn_Close, btn_LogOut;
 
 	private boolean check_checkPW = false;
+	private Socket socket;
 	
 	public void btn_Close_Action() {//MainPage로 이동
 		try {
@@ -51,10 +59,29 @@ public class MyInfoController implements Initializable {
 	}
 	
 	public void btn_LogOut_Action() {
-		
-		
 		//로그아웃
 		
+		String responseMessage = null;
+		try {
+			String requestTokens = "LogOut:" + ProfessorDataModel.ID;
+			BufferedReader br = new BufferedReader(new InputStreamReader(this.socket.getInputStream(), StandardCharsets.UTF_8));
+			PrintWriter pw = new PrintWriter(new OutputStreamWriter(this.socket.getOutputStream(), StandardCharsets.UTF_8));
+			pw.println(requestTokens);
+			pw.flush();
+			responseMessage = br.readLine();
+			System.out.println(responseMessage);
+		} catch(Exception e) {
+			System.out.println("Error : " + e.getMessage() + "FROM btn_LogOut_Action");
+		}
+		String[] responseTokens = responseMessage.split(":");
+		if(responseTokens[0].equals("LogOut")) {
+			if(!responseTokens[1].equals("Success")) {
+				new Alert(Alert.AlertType.WARNING, responseTokens[1], ButtonType.CLOSE).show();
+			}
+			else {
+				System.out.println(ProfessorDataModel.ID + "님이 로그아웃하셨습니다.");
+			}
+		}
 		
 		try {
 			Stage primaryStage = (Stage) btn_Close.getScene().getWindow();
@@ -92,7 +119,9 @@ public class MyInfoController implements Initializable {
 		//정보 가져와서 출력
 		
 		// TODO Auto-generated method stub
-
+		this.socket = ProfessorDataModel.socket;
+		
+		System.out.println("Id:"+ProfessorDataModel.ID );
 		pf_CheckPW.focusedProperty().addListener(new ChangeListener<Boolean>() {
 			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
 				if (!pf_CheckPW.isFocused()) {
