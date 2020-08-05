@@ -32,10 +32,7 @@ public class BanController extends BaseController implements Initializable {
 		// TODO Auto-generated method stub
 
 		className = ProfessorDataModel.ban.ban_name();
-		
-		ProfessorDataModel.ItemList_MyBanManager = FXCollections.observableArrayList();
-		ObservableList<HBoxModel> list = ProfessorDataModel.ItemList_MyBanManager;
-		lv_BanManagerList.setItems(list);
+		lv_BanManagerList.setItems(ProfessorDataModel.ItemList_MyBanManager);
 
 	}
 

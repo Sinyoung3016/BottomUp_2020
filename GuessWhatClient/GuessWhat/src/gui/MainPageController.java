@@ -66,16 +66,7 @@ public class MainPageController implements Initializable{
 	public void initialize(URL location, ResourceBundle resources) {
 		// TODO Auto-generated method stub
 		
-		ProfessorDataModel.ItemList_MyClass = FXCollections.observableArrayList();
-		ObservableList<HBoxModel> list = ProfessorDataModel.ItemList_MyClass;
-		
-		// 서버에서 가지고 오기
-		list.add(new HBoxCell(1, "class1", 3));
-		list.add(new HBoxCell(2, "class2", 4));
-		list.add(new HBoxCell(3, "class3", 5));
-		// 서버에서 가지고 오기
-		
-		lv_ClassList.setItems(list);
+		lv_ClassList.setItems(ProfessorDataModel.ItemList_MyClass);
 		
 		
 	}

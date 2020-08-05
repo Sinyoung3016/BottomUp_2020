@@ -23,7 +23,6 @@ import javafx.stage.Stage;
 
 import model.ProfessorDataModel;
 import model.StudentDataModel;
-import thread.ClientThread;
 
 
 
