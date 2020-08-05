@@ -65,7 +65,7 @@ public class ServerThread extends Thread{
 							this.Login(requestTokens[1],requestTokens[2]);
 						}
 						else if(requestTokens[0].equals(Request.LOGOUT.getRequest())) {//Logout:Id
-							clientRequest = "Logout";
+							clientRequest = "LogOut";
 							this.Logout(requestTokens[1]);
 						}
 						else if(requestTokens[0].equals(Request.OVERLAP.getRequest())) { //OverLap:Id
@@ -142,17 +142,19 @@ public class ServerThread extends Thread{
 			pw.println("LogIn:Success:" + DB_USER.getUser(Id).tokenString());
 			pw.flush();
 			this.dataModel.getClient_id_ip().put(Id,socket.getInetAddress().toString());
-			this.dataModel.getListClient().put(id,pw);
 			this.id=Id;
+			this.dataModel.getListClient().put(this.id,pw);
 		}
 	}
 
 	private void Logout(String Id) {
-		if(DB_USER.userLogOut(Id))
-			pw.println(">>SUCCESS [Logout]<<");
-		else pw.println("FAIL [Logout]<<");
-
-		pw.flush();
+		if(DB_USER.userLogOut(Id)) {
+			System.out.println(Id + "님이 로그아웃합니다.");
+			pw.println("LogOut:Success");
+			pw.flush();
+			this.dataModel.getClient_id_ip().remove(Id);
+			this.dataModel.getListClient().remove(Id);
+		}
 	}
 
 	private void overLap(String Id) throws MyException {

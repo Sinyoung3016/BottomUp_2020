@@ -3,7 +3,7 @@ package server;
 public enum Request {
 OVERLAP("OverLap"),	
 LOGIN("Login"),
-LOGOUT("Logout"),
+LOGOUT("LogOut"),
 SIGNUP("SignUp"),
 Join("Join"),
 ADD_BAN("AddBan"),
