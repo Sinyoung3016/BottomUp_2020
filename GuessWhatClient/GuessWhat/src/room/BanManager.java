@@ -16,16 +16,19 @@ import room.BanManager.State;
 public class BanManager {
 	private int BM_num;
 	private String BM_name;
-	public enum State { OPEN, ING, CLOSE };
+
+	public enum State {
+		OPEN, ING, CLOSE
+	};
+
 	private State BM_state;
 	private String BM_password;
 	private int BNum;
-	private int size; 
+	private int size;
 	private Workbook workbook;
 	private AnswerSet answerSet;
 
-
-	//Constructor start
+	// Constructor start
 	public BanManager(int num, String name, String password, Workbook workbook) {
 		this.BM_name = name;
 		this.BM_num = num;
@@ -34,6 +37,7 @@ public class BanManager {
 		this.workbook = workbook;
 		this.answerSet = new AnswerSet();
 	}
+
 	public BanManager(String responseTokens) {
 		String[] banManagerInfo = responseTokens.split("-");
 		this.BM_num = Integer.parseInt(banManagerInfo[0]);
@@ -43,42 +47,62 @@ public class BanManager {
 		this.BM_num = Integer.parseInt(banManagerInfo[4]);
 		this.size = Integer.parseInt(banManagerInfo[5]);
 	}
-	
+
 	public BanManager() {
-		
+
 	}
-	//Constructor end
-	
+	// Constructor end
 
-	//Getter,Setter start
+	// Getter,Setter start
 
-	//Setter start
+	// Setter start
 	public void setBM_state_OPEN() {
 		this.BM_state = State.OPEN;
 	}
+
 	public void setBM_state_ING() {
 		this.BM_state = State.ING;
 	}
+
 	public void setBM_state_CLOSE() {
 		this.BM_state = State.CLOSE;
 	}
+
 	public void setSize(int n) {
 		this.size = n;
 	}
-	//Setter end
-	
-	//Getter start
-	public int BM_num() { return BM_num; } 
-	public String BM_name() { return BM_name; }
-	public String BM_password() { return BM_password; }
-	public Workbook workbook() { return workbook; }
-	public State BM_state() { return BM_state; }
-	public AnswerSet answerSet() { return answerSet; }
-	public int size() { return size; } 
-	//Getter end
+	// Setter end
 
-	
-	
+	// Getter start
+	public int BM_num() {
+		return BM_num;
+	}
+
+	public String BM_name() {
+		return BM_name;
+	}
+
+	public String BM_password() {
+		return BM_password;
+	}
+
+	public Workbook workbook() {
+		return workbook;
+	}
+
+	public State BM_state() {
+		return BM_state;
+	}
+
+	public AnswerSet answerSet() {
+		return answerSet;
+	}
+
+	public int size() {
+		return size;
+	}
+	// Getter end
+
 	public void setBM_num(int bM_num) {
 		BM_num = bM_num;
 	}
@@ -103,11 +127,11 @@ public class BanManager {
 		this.answerSet = answerSet;
 	}
 
-	//Getter,Setter end
-	
-	//Private Method
+	// Getter,Setter end
+
+	// Private Method
 	private State stateOf(String state) {
-		switch(state) {
+		switch (state) {
 		case "Open":
 			return State.OPEN;
 		case "Ing":
@@ -116,60 +140,93 @@ public class BanManager {
 			return State.CLOSE;
 		}
 	}
-		
-	//Public Method
-	public HBoxCell getBanManager() {
-		return new HBoxCell(this.BM_num, this.BM_name, this.BM_state);
+
+	// Public Method
+	public HBoxCell getBanManager(int n) {
+		return new HBoxCell(n, this.BM_name, this.BM_state);
 	}
-	
+
 	public String stringOfState() {
 		return this.BM_state.toString();
 	}
+
 	public static class HBoxCell extends HBoxModel {
-		
+
 		private Label state = new Label();
-		
+
 		public HBoxCell(int BM_num, String BM_name, State BM_state) {
 			super();
 			this.setSpacing(10);
-			
+
 			num.setText(BM_num + "");
-			num.setStyle("-fx-font-family: Dubai Medium; -fx-alignment: center; -fx-text-fill: #ffffff; -fx-font-size: 20; -fx-background-color: #5ad18f;");
+			num.setStyle(
+					"-fx-font-family: Dubai Medium; -fx-alignment: center; -fx-text-fill: #ffffff; -fx-font-size: 20; -fx-background-color: #5ad18f;");
 			num.setPrefWidth(40);
 			num.setPrefHeight(40);
 
 			name.setText("  " + BM_name);
-			name.setStyle("-fx-font-family: Dubai Medium; -fx-text-fill: #5ad18f; -fx-font-size: 20; -fx-background-color: #f0fff0;");
+			name.setStyle(
+					"-fx-font-family: Dubai Medium; -fx-text-fill: #5ad18f; -fx-font-size: 20; -fx-background-color: #f0fff0;");
 			name.setPrefWidth(330);
 			name.setPrefHeight(40);
-			
+
 			state.setText("" + BM_state.toString());
-			state.setStyle("-fx-font-family: Dubai Medium; -fx-alignment: center; -fx-text-fill: #5ad18f; -fx-font-size: 20;");
+			state.setStyle(
+					"-fx-font-family: Dubai Medium; -fx-alignment: center; -fx-text-fill: #5ad18f; -fx-font-size: 20;");
 			state.setPrefWidth(60);
 			state.setPrefHeight(40);
-			
+
 			enter.setText("ENTER");
-			enter.setStyle("-fx-font-family: Dubai Medium; -fx-text-fill: #ffffff; -fx-font-size: 15; -fx-background-color: #5ad18f;");
+			enter.setStyle(
+					"-fx-font-family: Dubai Medium; -fx-text-fill: #ffffff; -fx-font-size: 15; -fx-background-color: #5ad18f;");
 			enter.setPrefWidth(100);
 			enter.setPrefHeight(30);
 			enter.setOnAction(new EventHandler<ActionEvent>() {
 				@Override
 				public void handle(ActionEvent e) {
-					try {
-						Stage primaryStage = (Stage) name.getScene().getWindow();
-						Parent search = FXMLLoader.load(getClass().getResource("/gui/Ban.fxml"));
-						Scene scene = new Scene(search);
-						primaryStage.setTitle("HelloBooks/"+ name.getText());
-						primaryStage.setScene(scene);
-						primaryStage.show();
-					} catch (Exception a) {
-						a.printStackTrace();
+					if (BM_state.toString().equals("OPEN")) {
+
+						try {
+							Stage primaryStage = (Stage) name.getScene().getWindow();
+							Parent search = FXMLLoader.load(getClass().getResource("/gui/BanManagerSoon.fxml"));
+							Scene scene = new Scene(search);
+							primaryStage.setTitle("HelloBooks/" + name.getText());
+							primaryStage.setScene(scene);
+							primaryStage.show();
+						} catch (Exception a) {
+							a.printStackTrace();
+						}
+					} else if (BM_state.toString().equals("ING")) {
+
+						try {
+							Stage primaryStage = (Stage) name.getScene().getWindow();
+							Parent search = FXMLLoader.load(getClass().getResource("/gui/BanMAnagerProgress.fxml"));
+							Scene scene = new Scene(search);
+							primaryStage.setTitle("HelloBooks/" + name.getText());
+							primaryStage.setScene(scene);
+							primaryStage.show();
+						} catch (Exception a) {
+							a.printStackTrace();
+						}
+					} else if (BM_state.toString().equals("CLOSE")) {
+
+						try {
+							Stage primaryStage = (Stage) name.getScene().getWindow();
+							Parent search = FXMLLoader.load(getClass().getResource("/gui/BanManagerDoneFirst.fxml"));
+							Scene scene = new Scene(search);
+							primaryStage.setTitle("HelloBooks/" + name.getText());
+							primaryStage.setScene(scene);
+							primaryStage.show();
+						} catch (Exception a) {
+							a.printStackTrace();
+						}
 					}
+
 				}
+
 			});
-			
+
 			this.getChildren().addAll(num, name, state, enter);
 		}
 	}
 }
-

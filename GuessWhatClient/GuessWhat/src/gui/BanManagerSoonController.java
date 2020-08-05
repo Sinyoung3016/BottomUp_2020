@@ -83,7 +83,7 @@ public class BanManagerSoonController extends BaseController implements Initiali
 		
 		//***********************************************************************************
 		//해당 방 삭제하기
-		ProfessorDataModel.removeBanManager(banManager);
+		//ProfessorDataModel.removeBanManager(1, banManager);
 		
 		try {
 			Stage primaryStage = (Stage) btn_Close.getScene().getWindow();
