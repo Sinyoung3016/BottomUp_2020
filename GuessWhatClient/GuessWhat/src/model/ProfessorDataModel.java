@@ -21,9 +21,11 @@ public class ProfessorDataModel {
 	public static Professor professor;
 
 	// for test
-	public static Ban ban = new Ban(1, "컴퓨터프로그래밍");
+	public static Ban ban = new Ban(1, "컴퓨터프로그래밍1");
+	public static Ban ban2 = new Ban(2, "컴퓨터프로그래밍2");
 	public static Workbook workbook = new Workbook(new String[]{"workbook", "2"});
 	public static BanManager banManager = new BanManager(1, "1차시", "1111", workbook);
+	public static BanManager banManager1 = new BanManager(1, "1차시", "2222", workbook);
 	
 	public static Result num1 = new Result("1", "MultipleChoice", "1", "문정현", "1");
 	public static Result num2 = new Result("2", "MultipleChoice", "1", "창문정현", "2");
@@ -35,8 +37,8 @@ public class ProfessorDataModel {
 	public static Student stu2 = new Student("workbook", "2","창문정현","2:banana");
 	//for test
 	
-	public static ObservableList<HBoxModel> ItemList_MyBanManager = FXCollections.observableArrayList(banManager.getBanManager());
-	public static ObservableList<HBoxModel> ItemList_MyClass = FXCollections.observableArrayList(ban.getBan());
+	public static ObservableList<HBoxModel> ItemList_MyBanManager = FXCollections.observableArrayList(banManager.getBanManager(1));
+	public static ObservableList<HBoxModel> ItemList_MyClass = FXCollections.observableArrayList(ban.getBan(), ban2.getBan());
 	public static ObservableList<HBoxModel> ItemList_MyWorkBook = FXCollections.observableArrayList(workbook.getWorkbook(1));
 
 	public static ObservableList<Student> ItemList_Students = FXCollections.observableArrayList(stu1, stu2);
@@ -51,20 +53,20 @@ public class ProfessorDataModel {
 		ItemList_MyClass.remove(newBan.getBan());
 	}
 
-	public static void addWorkBook(Workbook newWorkBook) {
-		ItemList_MyWorkBook.add(newWorkBook.getWorkbook(1));
+	public static void addWorkBook(int n, Workbook newWorkBook) {
+		ItemList_MyWorkBook.add(newWorkBook.getWorkbook(n));
 	}
 
-	public static void removeWorkBook(Workbook newWorkBook) {
-		ItemList_MyWorkBook.remove(newWorkBook.getWorkbook(1));
+	public static void removeWorkBook(int n, Workbook newWorkBook) {
+		ItemList_MyWorkBook.remove(newWorkBook.getWorkbook(n));
 	}
 
-	public static void addBanManager(BanManager newBanManager) {
-		ItemList_MyBanManager.add(newBanManager.getBanManager());
+	public static void addBanManager(int n, BanManager newBanManager) {
+		ItemList_MyBanManager.add(newBanManager.getBanManager(n));
 	}
 
-	public static void removeBanManager(BanManager newBanManager) {
-		ItemList_MyBanManager.remove(newBanManager.getBanManager());
+	public static void removeBanManager(int n, BanManager newBanManager) {
+		ItemList_MyBanManager.remove(newBanManager.getBanManager(n));
 	}
 
 }

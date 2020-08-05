@@ -7,12 +7,8 @@ import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 
 import javafx.application.Platform;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
-import javafx.scene.layout.HBox;
-import model.ProfessorDataModel;
 import model.StudentDataModel;
 import room.BanManager;
 
