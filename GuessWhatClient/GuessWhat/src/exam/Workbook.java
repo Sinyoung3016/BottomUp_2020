@@ -12,39 +12,39 @@ import model.HBoxModel;
 
 //Problem의 모음
 public class Workbook {
-	private int WNum;
-	private String BMNum;
-	private String PNum;
-	private String name;
-	private int size;
-	private Problem [] problemSet;
+
+	private int P_Num;
+	
+	private int W_Num;
+	private String W_name;
+	
+	private int WorkBook_size;
 	
 	//Constructor start
 	public Workbook(String[] workbookInfo) {
-		this.name = workbookInfo[0];
-		this.size = Integer.parseInt(workbookInfo[1]);
-		problemSet = new Problem[10];
+		this.P_Num =  Integer.parseInt(workbookInfo[0]);
+		this.W_Num =  Integer.parseInt(workbookInfo[1]);
+		this.W_name = workbookInfo[2];
+		this.WorkBook_size = Integer.parseInt(workbookInfo[3]);
 	}
 	//Constructor end
 	
 	//Getter start
-	public int WBNum() { return WNum; }
-	public String BMnum() { return this.BMNum;}
-	public String PNum() { return this.PNum;}
-	public String name() { return name;}
-	public int size() { return size; }
-	public Problem[] problemSet() { return problemSet; }
+	public int P_Num() { return this.P_Num;}
+	public int W_Num() { return this.W_Num; }
+	public String W_name() { return this.W_name;}
+	public int WorkBooksize() { return this.WorkBook_size; }
 	//Getter end
 	
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder("");
-		sb.append("Name:"+ this.name + ", Size:" + this.size);
+		sb.append("Name:"+ this.W_name + ", Size:" + this.WorkBook_size);
 		return new String(sb);
 	}
 	
 	public HBoxCell getWorkbook(int num) {
-		return new HBoxCell(num, this.name, this.size);//num = 몇번째인지 출력할때 나오는 수
+		return new HBoxCell(num, this.W_name, this.WorkBook_size);
 	}
 		
 	public static class HBoxCell extends HBoxModel {

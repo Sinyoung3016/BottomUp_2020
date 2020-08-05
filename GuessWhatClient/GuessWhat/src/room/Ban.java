@@ -13,37 +13,44 @@ import model.HBoxModel;
 //BanManager의 모음
 public class Ban {
 	
+	private int P_num;
 	private int ban_num;
+	
 	private String ban_name;
-	private BanManager[] banManagerSet;
+	private int banManager_size;
 	
 	//Constructor start
-	public Ban(int num, String name) {
+	public Ban(int P_num, int num, String name) {
+		this.P_num = P_num;
 		this.ban_num = num;
 		this.ban_name = name;
-		banManagerSet = new BanManager[10];
-	}
-	public Ban(String name) {
-		this.ban_name = name;
+		this.banManager_size = 0;
 	}
 	//Constructor end
 	
+	//Setter start
+	public void setSize(int banManager_size) {
+		this.banManager_size = banManager_size;
+	}
+	//Setter end
+	
 	//Getter start
+	public int P_num() { return this.P_num; }
 	public int ban_num() { return this.ban_num;}
 	public String ban_name() { return this.ban_name; }
-	public BanManager[] banManagerSet() { return this.banManagerSet; }
+	public int banManager_Size() { return this.banManager_size; }
 	//Getter end
 	
 	
-	public HBoxCell getBan() {
-		return new HBoxCell(this.ban_num, this.ban_name, this.banManagerSet.length);
+	public HBoxCell getBan(int n) {
+		return new HBoxCell(n, this.ban_name, this.banManager_size);
 	}
 	
 	public static class HBoxCell extends HBoxModel {
 		
 		private Label size = new Label();
 		
-		public HBoxCell(int ban_num, String ban_name, int banManagerSize) {
+		public HBoxCell(int ban_num, String ban_name, int banManager_size) {
 			super();
 			this.setSpacing(10);
 			
@@ -57,7 +64,7 @@ public class Ban {
 			name.setPrefWidth(350);
 			name.setPrefHeight(40);
 			
-			size.setText("" + banManagerSize);
+			size.setText("" + banManager_size);
 			size.setStyle("-fx-font-family: Dubai Medium; -fx-alignment: center; -fx-text-fill: #5ad18f; -fx-font-size: 20;");
 			size.setPrefWidth(50);
 			size.setPrefHeight(40);
