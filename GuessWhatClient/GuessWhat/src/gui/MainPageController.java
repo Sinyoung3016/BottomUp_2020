@@ -1,17 +1,7 @@
 package gui;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
-import java.net.Socket;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
-import java.sql.SQLException;
 import java.util.ResourceBundle;
-
-import exception.MyException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -19,72 +9,19 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.ListView;
 import javafx.stage.Stage;
-import model.HBoxModel;
 import model.ProfessorDataModel;
+import model.HBoxModel;
 import room.Ban.HBoxCell;
-import user.Professor;
 
 public class MainPageController implements Initializable{
 	@FXML
 	private Button btn_WorkBookList, btn_CreateNewClass, btn_MyInfo;
 	@FXML
 	private ListView<HBoxModel> lv_ClassList;
-	
-	public Socket socket;
-	public Professor professor; 
 
-	ObservableList<HBoxModel> list;
-
-	private void showBanList(String PNum) {
-		String responseMessage = null;
-		try {
-			String requestMessage = "GetBan:" + PNum;
-			BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
-			PrintWriter writer = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8));
-			writer.println(requestMessage);
-			writer.flush();
-			responseMessage = reader.readLine();
-			System.out.println("(test) " + responseMessage);
-		} catch(IOException e) {
-			e.printStackTrace();
-		}
-		String[] responseTokens = responseMessage.split(":");
-		
-		if(responseTokens[0].equals("GetBan")) {
-			if(! responseTokens[1].equals("Success")) {
-				System.out.println("Fail : GetBan");
-			}
-			else {
-				System.out.println("Success: GetBan");
-				
-				ProfessorDataModel.ItemList_MyClass = FXCollections.observableArrayList();
-				this.list = ProfessorDataModel.ItemList_MyClass;
-				
-				for(int i = 2 ; i < responseTokens.length ; i++) {
-					this.list.add(new HBoxCell(i - 2, responseTokens[i], 0));
-				}
-				
-				lv_ClassList.setItems(list);
-			}
-		}  
-	}
-	
-	@Override
-	public void initialize(URL location, ResourceBundle resources) {
-		// TODO Auto-generated method stub
-
-		//DataModel.ItemList_MyClass = FXCollections.observableArrayList();
-		this.socket = ProfessorDataModel.socket;
-		this.professor = ProfessorDataModel.professor;
-		this.showBanList(professor.getPNum());
-
-	}
-	
 	public void btn_WorkBookList_Action() {
 		try {
 			Stage primaryStage = (Stage) btn_WorkBookList.getScene().getWindow();
@@ -97,6 +34,20 @@ public class MainPageController implements Initializable{
 			e.printStackTrace();
 		}
 	}
+
+	public void btn_CreateNewClass_Action() {
+		try {
+			Stage primaryStage = (Stage) btn_CreateNewClass.getScene().getWindow();
+			Parent main = FXMLLoader.load(getClass().getResource("/gui/Ban.fxml"));
+			Scene scene = new Scene(main);
+			primaryStage.setTitle("GuessWhat/Class");
+			primaryStage.setScene(scene);
+			primaryStage.show();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
 	public void btn_MyInfo_Action() {
 		try {
 			Stage primaryStage = (Stage) btn_MyInfo.getScene().getWindow();
@@ -110,38 +61,22 @@ public class MainPageController implements Initializable{
 		}
 	}
 
-	public void btn_CreateNewClass_Action() {
-		String pNum = this.professor.getPNum();
-		try {
-			this.createNewClass(pNum);
-		} catch (Exception e) {
-			System.out.println("Failed : Create New Class");
-			e.printStackTrace();
-		}
+
+	@Override
+	public void initialize(URL location, ResourceBundle resources) {
+		// TODO Auto-generated method stub
+		
+		ProfessorDataModel.ItemList_MyClass = FXCollections.observableArrayList();
+		ObservableList<HBoxModel> list = ProfessorDataModel.ItemList_MyClass;
+		
+		// 서버에서 가지고 오기
+		list.add(new HBoxCell(1, "class1", 3));
+		list.add(new HBoxCell(2, "class2", 4));
+		list.add(new HBoxCell(3, "class3", 5));
+		// 서버에서 가지고 오기
+		
+		lv_ClassList.setItems(list);
+		
+		
 	}
-	private void createNewClass(String PNum) throws MyException, SQLException {
-		String responseMessage = null;
-		try {
-			String requestMessage = "AddBan:" + PNum;
-			BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
-			PrintWriter writer = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8));
-			writer.println(requestMessage);
-			writer.flush();
-			responseMessage = reader.readLine();
-		} catch(IOException e) {
-			e.printStackTrace();
-		}
-		String[] responseTokens = responseMessage.split(":");
-		if(responseTokens[0].equals("AddBan")) {
-			if(!responseTokens[1].equals("Success")) {
-				System.out.println("AddBan : Fail");
-			}
-			else {
-				this.showBanList(PNum);
-			//	Ban ban = new Ban("new");
-			//	DataModel.addClass(ban);
-			}
-		} 
-	}
-	
 }
