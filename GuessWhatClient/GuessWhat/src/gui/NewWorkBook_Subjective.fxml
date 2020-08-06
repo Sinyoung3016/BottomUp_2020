@@ -5,6 +5,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
@@ -22,11 +23,11 @@
                   <Font name="Dubai Medium" size="17.0" />
                </font>
             </Button>
-            <Button fx:id="btn_Main" mnemonicParsing="false" onAction="#btn_Main_Action" prefHeight="65.0" prefWidth="370.0" style="-fx-background-color: #5ad18f; -fx-text-fill: #ffffff;" text="ClassName">
+            <TextField fx:id="tf_ChangeName" alignment="CENTER" prefHeight="65.0" prefWidth="370.0" promptText="NewWorkBook" style="-fx-background-color: #5ad18f;">
                <font>
                   <Font name="Dubai Medium" size="25.0" />
                </font>
-            </Button>
+            </TextField>
             <Button fx:id="btn_MyInfo" mnemonicParsing="false" onAction="#btn_MyInfo_Action" prefHeight="60.0" prefWidth="80.0" style="-fx-background-color: #5ad18f; -fx-text-fill: #ffffff;" text="myInfo">
                <HBox.margin>
                   <Insets right="25.0" top="5.0" />
