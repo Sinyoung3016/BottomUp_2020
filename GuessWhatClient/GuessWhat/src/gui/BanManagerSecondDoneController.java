@@ -1,12 +1,8 @@
 package gui;
 
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.ResourceBundle;
-
-import exam.ProblemType;
-import exam.Result;
+import exam.StuNumResult;
 import exam.Workbook;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.ObservableList;
@@ -19,7 +15,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import model.ProfessorDataModel;
 import room.Ban;
@@ -34,11 +29,11 @@ public class BanManagerSecondDoneController extends BaseController implements In
 			btn_num11, btn_num12, btn_num13, btn_num14, btn_num15, btn_num16, btn_num17, btn_num18, btn_num19,
 			btn_num20;
 	@FXML
-	private TableView<Result> tv_Result;
+	private TableView<StuNumResult> tv_Result;
 	@FXML
 	private Label lb_BanManagerName, lb_WorkBook;
 	@FXML
-	private ObservableList<Result> tableDataList;
+	private ObservableList<StuNumResult> tableDataList;
 
 	private Button[] btn;
 
@@ -56,12 +51,12 @@ public class BanManagerSecondDoneController extends BaseController implements In
 		this.ban = ProfessorDataModel.ban;
 		this.banManager = ProfessorDataModel.banManager;
 		this.workbook = ProfessorDataModel.workbook;
-		this.tableDataList = ProfessorDataModel.ItemList_Results2;
-		this.WorkBookSize = workbook.size();
+		this.tableDataList = ProfessorDataModel.ItemList_Results;
+		this.WorkBookSize = workbook.WorkBooksize();
 
 		this.btn_Main.setText(ban.ban_name());
 		this.lb_BanManagerName.setText(banManager.BM_name());
-		this.lb_WorkBook.setText(workbook.name());
+		this.lb_WorkBook.setText(workbook.W_name());
 
 		btn = new Button[] { btn_num1, btn_num2, btn_num3, btn_num4, btn_num5, btn_num6, btn_num7, btn_num8, btn_num9,
 				btn_num10, btn_num11, btn_num12, btn_num13, btn_num14, btn_num15, btn_num16, btn_num17, btn_num18,
@@ -81,20 +76,16 @@ public class BanManagerSecondDoneController extends BaseController implements In
 		tv_Result.getItems().setAll(this.tableDataList);
 	}
 
-	private TableColumn<Result, String>[] getColumns() {
+	private TableColumn<StuNumResult, String>[] getColumns() {
 
-		TableColumn<Result, String> numColumn = new TableColumn<>("No");
-		numColumn.setCellValueFactory(item -> new ReadOnlyStringWrapper(item.getValue().num()));
-		numColumn.setPrefWidth(30);
-
-		TableColumn<Result, String> nameColumn = new TableColumn<>("Name");
-		nameColumn.setCellValueFactory(item -> new ReadOnlyStringWrapper(item.getValue().name()));
+		TableColumn<StuNumResult, String> nameColumn = new TableColumn<>("Name");
+		nameColumn.setCellValueFactory(item -> new ReadOnlyStringWrapper(item.getValue().S_name()));
 		nameColumn.setPrefWidth(50);
 
-		TableColumn<Result, String> resultColumn = new TableColumn<>("Result");
-		resultColumn.setCellValueFactory(item -> new ReadOnlyStringWrapper(item.getValue().result()));
+		TableColumn<StuNumResult, String> resultColumn = new TableColumn<>("Result");
+		resultColumn.setCellValueFactory(item -> new ReadOnlyStringWrapper(item.getValue().S_result()));
 
-		TableColumn<Result, String>[] returnTable = new TableColumn[] { numColumn, nameColumn, resultColumn };
+		TableColumn<StuNumResult, String>[] returnTable = new TableColumn[] { nameColumn, resultColumn };
 
 		return returnTable;
 	}
@@ -153,16 +144,16 @@ public class BanManagerSecondDoneController extends BaseController implements In
 		}
 	}
 
-	private boolean checkProblemType(int n) {
+	private boolean checkProblemType() {
 
-		Result t = tableDataList.iterator().next();
+		StuNumResult t = tableDataList.iterator().next();
 
 		if ((t.problemType()).equals("MultipleChoice")) {
 			try {
-				Stage primaryStage = (Stage) btn[n].getScene().getWindow();
+				Stage primaryStage = (Stage) btn[0].getScene().getWindow();
 				Parent main = FXMLLoader.load(getClass().getResource("/gui/BanManagerSecondDoneMultiChoice.fxml"));
 				Scene scene = new Scene(main);
-				primaryStage.setTitle("GuessWhat/" + n);
+				primaryStage.setTitle("GuessWhat/" + className);
 				primaryStage.setScene(scene);
 				primaryStage.show();
 			} catch (Exception c) {
@@ -172,144 +163,95 @@ public class BanManagerSecondDoneController extends BaseController implements In
 		return true;
 	}
 
-	public void btn_num1_Action() {
-		this.tableDataList = ProfessorDataModel.ItemList_Results2;
-		if (checkProblemType(1))
+	public void btn_Action() {
+		this.tableDataList = ProfessorDataModel.ItemList_Results;
+		if (checkProblemType())
 			settingColumn();
+	}
+
+	public void btn_CreateProblem_Action() {
+		 this.btn_Action();
+	}
+
+	public void btn_num1_Action() {
+		 this.btn_Action();
 	}
 
 	public void btn_num2_Action() {
-		this.tableDataList = ProfessorDataModel.ItemList_Results1;
-		if (checkProblemType(2))
-			settingColumn();
+		 this.btn_Action();
 	}
 
-	/*
 	public void btn_num3_Action() {
-		if (3 <= this.WorkBookSize) {
-			checkProblemType(3);
-			settingColumn();
-		}
+		 this.btn_Action();
 	}
 
 	public void btn_num4_Action() {
-		if (4 <= this.WorkBookSize) {
-			checkProblemType(4);
-			settingColumn();
-		}
+		 this.btn_Action();
 	}
 
 	public void btn_num5_Action() {
-		if (5 <= this.WorkBookSize) {
-			checkProblemType(5);
-			settingColumn();
-		}
+		 this.btn_Action();
 	}
 
 	public void btn_num6_Action() {
-		if (6 <= this.WorkBookSize) {
-			checkProblemType(6);
-			settingColumn();
-		}
+		 this.btn_Action();
 	}
 
 	public void btn_num7_Action() {
-		if (7 <= this.WorkBookSize) {
-			checkProblemType(7);
-			settingColumn();
-		}
+		 this.btn_Action();
 	}
 
 	public void btn_num8_Action() {
-		if (8 <= this.WorkBookSize) {
-			checkProblemType(8);
-			settingColumn();
-		}
+		 this.btn_Action();
 	}
 
 	public void btn_num9_Action() {
-		if (9 <= this.WorkBookSize) {
-			checkProblemType(9);
-			settingColumn();
-		}
+		 this.btn_Action();
 	}
 
 	public void btn_num10_Action() {
-		if (10 <= this.WorkBookSize) {
-			checkProblemType(10);
-			settingColumn();
-		}
+		 this.btn_Action();
 	}
 
 	public void btn_num11_Action() {
-		if (11 <= this.WorkBookSize) {
-			checkProblemType(11);
-			settingColumn();
-		}
+		 this.btn_Action();
 	}
 
 	public void btn_num12_Action() {
-		if (12 <= this.WorkBookSize) {
-			checkProblemType(12);
-			settingColumn();
-		}
+		 this.btn_Action();
 	}
 
 	public void btn_num13_Action() {
-		if (13 <= this.WorkBookSize) {
-
-			checkProblemType(13);
-			settingColumn();
-		}
+		 this.btn_Action();
 	}
 
 	public void btn_num14_Action() {
-		if (14 <= this.WorkBookSize) {
-			checkProblemType(14);
-			settingColumn();
-		}
+		 this.btn_Action();
 	}
 
 	public void btn_num15_Action() {
-		if (15 <= this.WorkBookSize) {
-			checkProblemType(15);
-			settingColumn();
-		}
+		 this.btn_Action();
 	}
 
 	public void btn_num16_Action() {
-		if (16 <= this.WorkBookSize) {
-			checkProblemType(16);
-			settingColumn();
-		}
+		 this.btn_Action();
 	}
 
 	public void btn_num17_Action() {
-		if (17 <= this.WorkBookSize) {
-			checkProblemType(17);
-			settingColumn();
-		}
+		 this.btn_Action();
 	}
 
 	public void btn_num18_Action() {
-		if (18 <= this.WorkBookSize) {
-			checkProblemType(18);
-			settingColumn();
-		}
+		 this.btn_Action();
 	}
 
 	public void btn_num19_Action() {
-		if (19 <= this.WorkBookSize) {
-			checkProblemType(19);
-			settingColumn();
-		}
+		 this.btn_Action();
 	}
 
 	public void btn_num20_Action() {
-		if (20 <= this.WorkBookSize) {
-			checkProblemType(20);
-			settingColumn();
-		}
+		 this.btn_Action();
 	}
-	*/
+
 }
+

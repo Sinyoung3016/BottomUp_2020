@@ -25,14 +25,17 @@ public class BanController extends BaseController implements Initializable {
 	@FXML
 	private ListView<HBoxModel> lv_BanManagerList;
 	
+	private Ban ban;
 	private String className;
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// TODO Auto-generated method stub
-
-		className = ProfessorDataModel.ban.ban_name();
+		
+		ban = ProfessorDataModel.ban;
 		lv_BanManagerList.setItems(ProfessorDataModel.ItemList_MyBanManager);
+		this.btn_Main.setText(ban.ban_name());
+		
 
 	}
 

@@ -21,6 +21,7 @@ import javafx.stage.Stage;
 import model.ProfessorDataModel;
 import room.Ban;
 import room.BanManager;
+import room.BanManager.State;
 import user.Student;
 
 public class BanManagerProgressController extends BaseController implements Initializable {
@@ -50,12 +51,12 @@ public class BanManagerProgressController extends BaseController implements Init
 		this.banManager = ProfessorDataModel.banManager;
 		this.workbook = ProfessorDataModel.workbook;
 		
-		this.WorkBookSize = workbook.size();
+		this.WorkBookSize = workbook.WorkBooksize();
 		className = btn_Main.getText();
 		
 		this.btn_Main.setText(ban.ban_name());
 		this.lb_BanManagerName.setText(banManager.BM_name());
-		this.lb_WorkBook.setText(workbook.name());
+		this.lb_WorkBook.setText(workbook.W_name());
 		
 		tv_Answer.getColumns().setAll(this.getColumns());
 		tv_Answer.getItems().setAll(this.getTableData());
@@ -69,10 +70,6 @@ public class BanManagerProgressController extends BaseController implements Init
 
 	private TableColumn<Student, String>[] getColumns() {
 
-		TableColumn<Student, String> numColumn = new TableColumn<>("No");
-		numColumn.setCellValueFactory(item -> new ReadOnlyStringWrapper(item.getValue().num()));
-		numColumn.setPrefWidth(30);
-
 		TableColumn<Student, String> nameColumn = new TableColumn<>("Name");
 		nameColumn.setCellValueFactory(item -> new ReadOnlyStringWrapper(item.getValue().name()));
 		nameColumn.setPrefWidth(50);
@@ -84,11 +81,10 @@ public class BanManagerProgressController extends BaseController implements Init
 			scoreColumn[i].setCellValueFactory(item -> new ReadOnlyStringWrapper(item.getValue().answer()[j]));
 		}
 
-		TableColumn<Student, String>[] returnTable = new TableColumn[WorkBookSize + 2];
-		returnTable[0] = numColumn;
-		returnTable[1] = nameColumn;
-		for (int i = 2; i < WorkBookSize + 2; i++) {
-			returnTable[i] = scoreColumn[i - 2];
+		TableColumn<Student, String>[] returnTable = new TableColumn[WorkBookSize + 1];
+		returnTable[0] = nameColumn;
+		for (int i = 1; i < WorkBookSize + 1; i++) {
+			returnTable[i] = scoreColumn[i - 1];
 		}
 
 		return returnTable;
@@ -122,9 +118,13 @@ public class BanManagerProgressController extends BaseController implements Init
 	}
 
 	public void btn_End_Action() {
+		
+		if(banManager.BM_state().equals(State.CLOSE))
+			banManager.setBM_state_CLOSE(); 
+		
 		try {
 			Stage primaryStage = (Stage) btn_End.getScene().getWindow();
-			Parent main = FXMLLoader.load(getClass().getResource("/gui/Ban.fxml"));
+			Parent main = FXMLLoader.load(getClass().getResource("/gui/BanManagerSecondDone.fxml"));
 			Scene scene = new Scene(main);
 			primaryStage.setTitle("GuessWhat/" + className);
 			primaryStage.setScene(scene);
