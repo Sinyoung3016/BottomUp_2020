@@ -8,7 +8,8 @@ public class Professor {
 
 	private final int DEFAULT_BAN_SIZE = 10;
 	private final int DEFAULT_WORKBOOK_SIZE = 10;
-
+	
+	//Test
 	private int Pnum;
 	private String Id;
 	private String name;
