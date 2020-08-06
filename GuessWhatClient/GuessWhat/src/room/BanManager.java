@@ -86,14 +86,15 @@ public class BanManager {
 
 	// Public Method
 	public HBoxCell getBanManager(int n) {
-		return new HBoxCell(n, this.BM_name, this.BM_state);
+		return new HBoxCell(n, this.BM_name, this.Student_size, this.BM_state);
 	}
 
 	public static class HBoxCell extends HBoxModel {
 
+		private Label size = new Label();
 		private Label state = new Label();
 
-		public HBoxCell(int BM_num, String BM_name, State BM_state) {
+		public HBoxCell(int BM_num, String BM_name, int Student_size, State BM_state) {
 			super();
 			this.setSpacing(10);
 
@@ -106,8 +107,14 @@ public class BanManager {
 			name.setText("  " + BM_name);
 			name.setStyle(
 					"-fx-font-family: Dubai Medium; -fx-text-fill: #5ad18f; -fx-font-size: 20; -fx-background-color: #f0fff0;");
-			name.setPrefWidth(330);
+			name.setPrefWidth(290);
 			name.setPrefHeight(40);
+			
+			size.setText("" + Student_size);
+			size.setStyle(
+					"-fx-font-family: Dubai Medium; -fx-alignment: center; -fx-text-fill: #5ad18f; -fx-font-size: 20; -fx-background-color: #f0fff0;");
+			size.setPrefWidth(40);
+			size.setPrefHeight(40);
 
 			state.setText("" + BM_state.toString());
 			state.setStyle(
@@ -165,7 +172,7 @@ public class BanManager {
 
 			});
 
-			this.getChildren().addAll(num, name, state, enter);
+			this.getChildren().addAll(num, name, size, state, enter);
 		}
 	}
 }
