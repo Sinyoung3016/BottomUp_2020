@@ -1,7 +1,20 @@
 package gui;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.net.Socket;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.util.ResourceBundle;
+
+import exam.Problem;
+import exam.Workbook;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -11,8 +24,10 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import model.ProfessorDataModel;
+import model.StudentDataModel;
 
-public class StuWorkBookController extends BaseController {
+public class StuWorkBookController extends BaseController implements Initializable{
 
 	@FXML
 	private Button btn_Submit, btn_Previous, btn_Next, btn_num1, btn_num2, btn_num3, btn_num4, btn_num5,
@@ -22,8 +37,17 @@ public class StuWorkBookController extends BaseController {
 	private Label lb_Question;
 	@FXML
 	private TextArea ta_Answer;
-
-
+	
+	private Socket socket;
+	private Workbook workbook;
+	private Problem[] problemList;
+	
+	@Override
+	public void initialize(URL arg0, ResourceBundle arg1) {
+		this.socket = StudentDataModel.socket;
+				
+		
+	}
 	public void btn_Next_Action() {
 
 	}
@@ -126,5 +150,7 @@ public class StuWorkBookController extends BaseController {
 	public void btn_num20_Action() {
 
 	}
-
+	
+	
+	
 }

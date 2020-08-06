@@ -41,6 +41,16 @@ public class Problem {
 		this.answer = answer;
 		this.answerContent = null;
 	}	
+	
+	public Problem(String responseTokens) {
+		String[] tokens = responseTokens.split("`ㅟ");
+		this.W_Num = Integer.parseInt(tokens[0]);
+		this.PB_Num = Integer.parseInt(tokens[1]);
+		this.type = ProblemType.toProblemType(tokens[2]);
+		this.question = tokens[3];
+		this.answer = tokens[4];
+		this.answerContent = tokens[5];
+	}
 	//Constructor end
 	
 	//Getter start
