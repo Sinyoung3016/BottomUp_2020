@@ -14,6 +14,7 @@ import javafx.scene.control.ListView;
 import javafx.stage.Stage;
 import model.ProfessorDataModel;
 import model.HBoxModel;
+import room.Ban;
 import room.Ban.HBoxCell;
 
 public class MainPageController implements Initializable{
@@ -44,9 +45,10 @@ public class MainPageController implements Initializable{
 	}
 
 	public void btn_CreateNewClass_Action() {
+		
 		try {
 			Stage primaryStage = (Stage) btn_CreateNewClass.getScene().getWindow();
-			Parent main = FXMLLoader.load(getClass().getResource("/gui/Ban.fxml"));
+			Parent main = FXMLLoader.load(getClass().getResource("/gui/MainPage.fxml"));
 			Scene scene = new Scene(main);
 			primaryStage.setTitle("GuessWhat/Class");
 			primaryStage.setScene(scene);
