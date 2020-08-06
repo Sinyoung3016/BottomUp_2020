@@ -46,15 +46,14 @@ public class DB_Ban extends DBManager {
 		}
 	}
 
-	public synchronized static List<Ban> getAllBan(String PNum) {
+	public synchronized static List<Ban> getAllBan(int PNum) {
 		Connection conn = null;
 		Statement stmt = null;
 		ResultSet rs = null;
-		ResultSet rs2 = null;
 
 		List<Ban> banList = new ArrayList<>();
-		String name = null;
 		int BNum = -1;
+		String name = null;
 		int size = -1;
 
 		try {
@@ -66,14 +65,10 @@ public class DB_Ban extends DBManager {
 
 			while(rs.next()) {
 				BNum = rs.getInt("BNum");
+				name = rs.getString("Name");
+				size = rs.getInt("Size");
 				
-				sql = "SELECT * FROM Ban WHERE BNum = '" + BNum + "'";
-				rs2 = stmt.executeQuery(sql);
-		
-				name = rs2.getString("Name");
-				size = rs2.getInt("Size");
-				
-				banList.add(new Ban(Integer.parseInt(PNum), BNum, name, size));
+				banList.add(new Ban(PNum, BNum, name, size));
 			}
 			return banList;
 		}catch(Exception e) {

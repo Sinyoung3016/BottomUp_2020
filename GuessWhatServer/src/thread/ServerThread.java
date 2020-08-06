@@ -248,7 +248,7 @@ public class ServerThread extends Thread{
 	}
 	private void getBan(String PNum) {
 
-		List<Ban> listBan = DB_Ban.getAllBan(PNum);
+		List<Ban> listBan = DB_Ban.getAllBan(Integer.parseInt(PNum));
 
 		if (listBan == null) {
 			pw.println("GetBan:Fail " + PNum);
