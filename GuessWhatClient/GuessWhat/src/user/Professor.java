@@ -8,8 +8,9 @@ public class Professor {
 
 	private final int DEFAULT_BAN_SIZE = 10;
 	private final int DEFAULT_WORKBOOK_SIZE = 10;
-
-	private String Pnum;
+	
+	//Test
+	private int Pnum;
 	private String Id;
 	private String name;
 	private String email;
@@ -30,7 +31,7 @@ public class Professor {
 	
 	public Professor(String tokens) {
 		String token[] = tokens.split("-");
-		this.Pnum = token[0];
+		this.Pnum = Integer.parseInt(token[0]);
 		this.Id = token[1];
 		this.name = token[2];
 		this.email = token[3];
@@ -39,7 +40,7 @@ public class Professor {
 	// Constructor end
 
 	// Setter start
-	public void setPNum(String newPro_num) {
+	public void setPNum(int newPro_num) {
 		this.Pnum = newPro_num;
 	}
 
@@ -73,7 +74,7 @@ public class Professor {
 	// Setter end
 
 	// Getter start
-	public String getPNum() {
+	public int getPNum() {
 		return this.Pnum;
 	}
 
