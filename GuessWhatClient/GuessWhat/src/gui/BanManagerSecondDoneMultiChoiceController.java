@@ -6,7 +6,7 @@ import java.util.Iterator;
 import java.util.ResourceBundle;
 
 import exam.ProblemType;
-import exam.Result;
+import exam.StuNumResult;
 import exam.Workbook;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -26,7 +26,7 @@ import model.ProfessorDataModel;
 import room.Ban;
 import room.BanManager;
 
-public class BanManagerSecondDoneMultiChoiceController<R> extends BaseController implements Initializable {
+public class BanManagerSecondDoneMultiChoiceController extends BaseController implements Initializable {
 
 	@FXML
 	private Button btn_Delete, btn_Close, btn_Previous;
@@ -39,7 +39,7 @@ public class BanManagerSecondDoneMultiChoiceController<R> extends BaseController
 	@FXML
 	private Label lb_BanManagerName, lb_WorkBook, lb_answerNum;
 	@FXML
-	private ObservableList<Result> PieDataList;
+	private ObservableList<StuNumResult> PieDataList;
 
 	private ObservableList<Data> Pie;
 
@@ -61,13 +61,13 @@ public class BanManagerSecondDoneMultiChoiceController<R> extends BaseController
 		this.ban = ProfessorDataModel.ban;
 		this.banManager = ProfessorDataModel.banManager;
 		this.workbook = ProfessorDataModel.workbook;
-		this.PieDataList = ProfessorDataModel.ItemList_Results1;
-		this.WorkBookSize = workbook.size();
+		this.PieDataList = ProfessorDataModel.ItemList_Results;
+		this.WorkBookSize = workbook.WorkBooksize();
 		this.StudentSize = PieDataList.size();
 
 		this.btn_Main.setText(ban.ban_name());
 		this.lb_BanManagerName.setText(banManager.BM_name());
-		this.lb_WorkBook.setText(workbook.name());
+		this.lb_WorkBook.setText(workbook.W_name());
 
 		btn = new Button[] { btn_num1, btn_num2, btn_num3, btn_num4, btn_num5, btn_num6, btn_num7, btn_num8, btn_num9,
 				btn_num10, btn_num11, btn_num12, btn_num13, btn_num14, btn_num15, btn_num16, btn_num17, btn_num18,
@@ -99,11 +99,11 @@ public class BanManagerSecondDoneMultiChoiceController<R> extends BaseController
 
 	private int[] pieValue() {
 		int[] value = new int[5];
-		Iterator<Result> e = PieDataList.iterator();
-		Result answer = null;
+		Iterator<StuNumResult> e = PieDataList.iterator();
+		StuNumResult answer = null;
 		for (int i = 0; (i < 5) && e.hasNext(); i++) {
 			answer = e.next();
-			if ((answer.result()).equals((i + 1) + ""))
+			if ((answer.S_result()).equals((i + 1) + ""))
 				value[i]++;
 		}
 		for (int i = 0; i < 5; i++) {
@@ -167,14 +167,14 @@ public class BanManagerSecondDoneMultiChoiceController<R> extends BaseController
 
 	private boolean checkProblemType() {
 
-		Result r = PieDataList.iterator().next();
+		StuNumResult r = PieDataList.iterator().next();
 
 		if ((r.problemType()).equals("Subjective") || (r.problemType()).equals("ShortAnswer")) {
 			try {
 				Stage primaryStage = (Stage) btn[0].getScene().getWindow();
 				Parent main = FXMLLoader.load(getClass().getResource("/gui/BanManagerSecondDone.fxml"));
 				Scene scene = new Scene(main);
-				primaryStage.setTitle("GuessWhat/"+ className);
+				primaryStage.setTitle("GuessWhat/" + className);
 				primaryStage.setScene(scene);
 				primaryStage.show();
 			} catch (Exception c) {
@@ -183,143 +183,91 @@ public class BanManagerSecondDoneMultiChoiceController<R> extends BaseController
 		}
 		return true;
 	}
-
-	public void btn_num1_Action() {
-		this.PieDataList = ProfessorDataModel.ItemList_Results1;
+	
+	private void btn_Action() {
+		this.PieDataList = ProfessorDataModel.ItemList_Results;
 		if (checkProblemType())
 			settingPie(pieValue());
+	}
+
+	public void btn_num1_Action() {
+		 this.btn_Action();
 	}
 
 	public void btn_num2_Action() {
-		this.PieDataList = ProfessorDataModel.ItemList_Results2;
-		if (checkProblemType())
-			settingPie(pieValue());
+		 this.btn_Action();
 	}
-/*
+
 	public void btn_num3_Action() {
-		if (3 <= this.WorkBookSize) {
-			checkProblemType();
-			settingPie(pieValue());
-		}
+		 this.btn_Action();
 	}
 
 	public void btn_num4_Action() {
-		if (4 <= this.WorkBookSize) {
-			checkProblemType(4);
-			settingPie(pieValue());
-		}
+		 this.btn_Action();
 	}
 
 	public void btn_num5_Action() {
-		if (5 <= this.WorkBookSize) {
-			checkProblemType(5);
-			settingPie(pieValue());
-		}
+		 this.btn_Action();
 	}
 
 	public void btn_num6_Action() {
-		if (6 <= this.WorkBookSize) {
-			checkProblemType(6);
-			settingPie(pieValue());
-		}
+		 this.btn_Action();
 	}
 
 	public void btn_num7_Action() {
-		if (7 <= this.WorkBookSize) {
-			checkProblemType(7);
-			settingPie(pieValue());
-		}
+		 this.btn_Action();
 	}
 
 	public void btn_num8_Action() {
-		if (8 <= this.WorkBookSize) {
-			checkProblemType(8);
-			settingPie(pieValue());
-		}
+		 this.btn_Action();
 	}
 
 	public void btn_num9_Action() {
-		if (9 <= this.WorkBookSize) {
-			checkProblemType(9);
-			settingPie(pieValue());
-		}
+		 this.btn_Action();
 	}
 
 	public void btn_num10_Action() {
-		if (10 <= this.WorkBookSize) {
-			checkProblemType(10);
-			settingPie(pieValue());
-		}
+		 this.btn_Action();
 	}
 
 	public void btn_num11_Action() {
-		if (11 <= this.WorkBookSize) {
-			checkProblemType(11);
-			settingPie(pieValue());
-		}
+		 this.btn_Action();
 	}
 
 	public void btn_num12_Action() {
-		if (12 <= this.WorkBookSize) {
-			checkProblemType(12);
-			settingPie(pieValue());
-		}
+		 this.btn_Action();
 	}
 
 	public void btn_num13_Action() {
-		if (13 <= this.WorkBookSize) {
-			checkProblemType(13);
-			settingPie(pieValue());
-		}
+		 this.btn_Action();
 	}
 
 	public void btn_num14_Action() {
-		if (14 <= this.WorkBookSize) {
-			checkProblemType(14);
-			settingPie(pieValue());
-		}
+		 this.btn_Action();
 	}
 
 	public void btn_num15_Action() {
-		if (15 <= this.WorkBookSize) {
-			checkProblemType(15);
-			settingPie(pieValue());
-		}
+		 this.btn_Action();
 	}
 
 	public void btn_num16_Action() {
-		if (16 <= this.WorkBookSize) {
-			checkProblemType(16);
-			settingPie(pieValue());
-		}
+		 this.btn_Action();
 	}
 
 	public void btn_num17_Action() {
-		if (17 <= this.WorkBookSize) {
-			checkProblemType(17);
-			settingPie(pieValue());
-		}
+		 this.btn_Action();
 	}
 
 	public void btn_num18_Action() {
-		if (18 <= this.WorkBookSize) {
-			checkProblemType(18);
-			settingPie(pieValue());
-		}
+		 this.btn_Action();
 	}
 
 	public void btn_num19_Action() {
-		if (19 <= this.WorkBookSize) {
-			checkProblemType(19);
-			settingPie(pieValue());
-		}
+		 this.btn_Action();
 	}
 
 	public void btn_num20_Action() {
-		if (20 <= this.WorkBookSize) {
-			checkProblemType(20);
-			settingPie(pieValue());
-		}
+		 this.btn_Action();
 	}
-	*/
+
 }

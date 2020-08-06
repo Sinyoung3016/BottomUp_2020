@@ -21,6 +21,14 @@ public class MainPageController implements Initializable{
 	private Button btn_WorkBookList, btn_CreateNewClass, btn_MyInfo;
 	@FXML
 	private ListView<HBoxModel> lv_ClassList;
+	
+	@Override
+	public void initialize(URL location, ResourceBundle resources) {
+		// TODO Auto-generated method stub
+		
+		lv_ClassList.setItems(ProfessorDataModel.ItemList_MyClass);
+			
+	}
 
 	public void btn_WorkBookList_Action() {
 		try {
@@ -61,13 +69,4 @@ public class MainPageController implements Initializable{
 		}
 	}
 
-
-	@Override
-	public void initialize(URL location, ResourceBundle resources) {
-		// TODO Auto-generated method stub
-		
-		lv_ClassList.setItems(ProfessorDataModel.ItemList_MyClass);
-		
-		
-	}
 }

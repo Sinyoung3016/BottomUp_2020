@@ -44,8 +44,8 @@ public class BanManagerSoonController extends BaseController implements Initiali
 		
 		this.btn_Main.setText(ban.ban_name());
 		this.lb_BanManagerName.setText(banManager.BM_name());
-		this.lb_WorkBook.setText(workbook.name());
-		this.lb_RoomCode.setText(banManager.BM_password());
+		this.lb_WorkBook.setText(workbook.W_name());
+		this.lb_RoomCode.setText(banManager.BM_roomcode());
 		
 		
 		className = btn_Main.getText();
@@ -81,9 +81,7 @@ public class BanManagerSoonController extends BaseController implements Initiali
 
 	public void btn_Delete_Action() {
 		
-		//***********************************************************************************
-		//해당 방 삭제하기
-		//ProfessorDataModel.removeBanManager(1, banManager);
+		ProfessorDataModel.removeBanManager(1, banManager);
 		
 		try {
 			Stage primaryStage = (Stage) btn_Close.getScene().getWindow();
@@ -99,14 +97,12 @@ public class BanManagerSoonController extends BaseController implements Initiali
 
 	public void btn_Start_Action() {
 		
-		//***********************************************************************************
-		//시험 시작하기
 		if(banManager.BM_state().equals(State.OPEN))
-			banManager.setBM_state_ING(); //예외 처리 해줘야할듯
+			banManager.setBM_state_ING(); 
 		
 		try {
 			Stage primaryStage = (Stage) btn_Start.getScene().getWindow();
-			Parent main = FXMLLoader.load(getClass().getResource("/gui/BanManagerProgress.fxml"));
+			Parent main = FXMLLoader.load(getClass().getResource("/gui/BanManagerSecondDone.fxml"));
 			Scene scene = new Scene(main);
 			primaryStage.setTitle("GuessWhat/" + className);
 			primaryStage.setScene(scene);
