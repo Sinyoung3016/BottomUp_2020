@@ -124,7 +124,7 @@ public class BanManagerProgressController extends BaseController implements Init
 		
 		try {
 			Stage primaryStage = (Stage) btn_End.getScene().getWindow();
-			Parent main = FXMLLoader.load(getClass().getResource("/gui/BanManagerSecondDone.fxml"));
+			Parent main = FXMLLoader.load(getClass().getResource("/gui/BanManagerFirstDone.fxml"));
 			Scene scene = new Scene(main);
 			primaryStage.setTitle("GuessWhat/" + className);
 			primaryStage.setScene(scene);

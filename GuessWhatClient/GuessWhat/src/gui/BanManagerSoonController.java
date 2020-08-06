@@ -102,7 +102,7 @@ public class BanManagerSoonController extends BaseController implements Initiali
 		
 		try {
 			Stage primaryStage = (Stage) btn_Start.getScene().getWindow();
-			Parent main = FXMLLoader.load(getClass().getResource("/gui/BanManagerSecondDone.fxml"));
+			Parent main = FXMLLoader.load(getClass().getResource("/gui/BanManagerProgress.fxml"));
 			Scene scene = new Scene(main);
 			primaryStage.setTitle("GuessWhat/" + className);
 			primaryStage.setScene(scene);

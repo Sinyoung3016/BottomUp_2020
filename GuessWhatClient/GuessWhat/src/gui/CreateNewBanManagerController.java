@@ -1,15 +1,21 @@
 package gui;
 
+import java.net.URL;
+import java.util.ResourceBundle;
+
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import model.ProfessorDataModel;
+import room.Ban;
 
-public class CreateNewBanManagerController extends BaseController {
+public class CreateNewBanManagerController extends BaseController implements Initializable{
 
 	@FXML
 	private Button btn_Cancel, btn_CreateNewBanManager;
@@ -17,6 +23,19 @@ public class CreateNewBanManagerController extends BaseController {
 	private TextField tf_NewBanManagerName, tf_NewBanManagerCode;
 	@FXML
 	private ChoiceBox cb_NewBanManagerWorkBook;
+	
+	private Ban ban;
+	private String className;
+	
+	@Override
+	public void initialize(URL arg0, ResourceBundle arg1) {
+		// TODO Auto-generated method stub
+		
+		ban = ProfessorDataModel.ban;
+		className = ban.ban_name();
+		this.btn_Main.setText(className);
+		
+	}
 
 	@Override
 	public void btn_Main_Action() {
@@ -24,7 +43,7 @@ public class CreateNewBanManagerController extends BaseController {
 			Stage primaryStage = (Stage) btn_Main.getScene().getWindow();
 			Parent main = FXMLLoader.load(getClass().getResource("/gui/Ban.fxml"));
 			Scene scene = new Scene(main);
-			primaryStage.setTitle("GuessWhat/Class");
+			primaryStage.setTitle("GuessWhat/" + className);
 			primaryStage.setScene(scene);
 			primaryStage.show();
 		} catch (Exception e) {
@@ -37,7 +56,7 @@ public class CreateNewBanManagerController extends BaseController {
 			Stage primaryStage = (Stage) btn_Cancel.getScene().getWindow();
 			Parent main = FXMLLoader.load(getClass().getResource("/gui/Ban.fxml"));
 			Scene scene = new Scene(main);
-			primaryStage.setTitle("GuessWhat/Class");
+			primaryStage.setTitle("GuessWhat/" + className);
 			primaryStage.setScene(scene);
 			primaryStage.show();
 		} catch (Exception e) {
@@ -50,11 +69,12 @@ public class CreateNewBanManagerController extends BaseController {
 			Stage primaryStage = (Stage) btn_CreateNewBanManager.getScene().getWindow();
 			Parent main = FXMLLoader.load(getClass().getResource("/gui/Ban.fxml"));
 			Scene scene = new Scene(main);
-			primaryStage.setTitle("GuessWhat/Class");
+			primaryStage.setTitle("GuessWhat/" + className);
 			primaryStage.setScene(scene);
 			primaryStage.show();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
+
 }

@@ -120,7 +120,7 @@ public class BanManagerSecondDoneController extends BaseController implements In
 	public void btn_Delete_Action() {
 		try {
 			Stage primaryStage = (Stage) btn_Previous.getScene().getWindow();
-			Parent main = FXMLLoader.load(getClass().getResource("/gui/BanManagerSecondDoneController.fxml"));
+			Parent main = FXMLLoader.load(getClass().getResource("/gui/Ban.fxml"));
 			Scene scene = new Scene(main);
 			primaryStage.setTitle("GuessWhat/" + className);
 			primaryStage.setScene(scene);
@@ -134,7 +134,7 @@ public class BanManagerSecondDoneController extends BaseController implements In
 	public void btn_Previous_Action() {
 		try {
 			Stage primaryStage = (Stage) btn_Previous.getScene().getWindow();
-			Parent main = FXMLLoader.load(getClass().getResource("/gui/BanManagerSecondDoneController.fxml"));
+			Parent main = FXMLLoader.load(getClass().getResource("/gui/BanManagerFirstDone.fxml"));
 			Scene scene = new Scene(main);
 			primaryStage.setTitle("GuessWhat/" + className);
 			primaryStage.setScene(scene);
