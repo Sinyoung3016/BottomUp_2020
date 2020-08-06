@@ -81,6 +81,8 @@ public class BanManager {
 			return State.CLOSE;
 		}
 	}
+	
+	public String stringOfState() { return BM_state.toString();}
 
 	// Public Method
 	public HBoxCell getBanManager(int n) {
