@@ -8,6 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import model.HBoxModel;
+import model.ProfessorDataModel;
 
 //workbook을 풀이하고 결과를 관리
 public class BanManager {
@@ -96,6 +97,8 @@ public class BanManager {
 
 		public HBoxCell(int BM_num, String BM_name, int Student_size, State BM_state) {
 			super();
+			String ban_Name =  ProfessorDataModel.ban.ban_name();
+			
 			this.setSpacing(10);
 
 			num.setText(BM_num + "");
@@ -136,7 +139,7 @@ public class BanManager {
 							Stage primaryStage = (Stage) name.getScene().getWindow();
 							Parent search = FXMLLoader.load(getClass().getResource("/gui/BanManagerSoon.fxml"));
 							Scene scene = new Scene(search);
-							primaryStage.setTitle("HelloBooks/" + name.getText());
+							primaryStage.setTitle("GuessWhat/" + ban_Name);
 							primaryStage.setScene(scene);
 							primaryStage.show();
 						} catch (Exception a) {
@@ -148,7 +151,7 @@ public class BanManager {
 							Stage primaryStage = (Stage) name.getScene().getWindow();
 							Parent search = FXMLLoader.load(getClass().getResource("/gui/BanMAnagerProgress.fxml"));
 							Scene scene = new Scene(search);
-							primaryStage.setTitle("HelloBooks/" + name.getText());
+							primaryStage.setTitle("GuessWhat/" + ban_Name);
 							primaryStage.setScene(scene);
 							primaryStage.show();
 						} catch (Exception a) {
@@ -160,7 +163,7 @@ public class BanManager {
 							Stage primaryStage = (Stage) name.getScene().getWindow();
 							Parent search = FXMLLoader.load(getClass().getResource("/gui/BanManagerDoneFirst.fxml"));
 							Scene scene = new Scene(search);
-							primaryStage.setTitle("HelloBooks/" + name.getText());
+							primaryStage.setTitle("GuessWhat/" + ban_Name);
 							primaryStage.setScene(scene);
 							primaryStage.show();
 						} catch (Exception a) {

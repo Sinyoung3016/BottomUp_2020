@@ -32,6 +32,9 @@ public class Ban {
 	public void setSize(int banManager_size) {
 		this.banManager_size = banManager_size;
 	}
+	public void setName(String name) {
+		this.ban_name = name;
+	}
 	//Setter end
 	
 	//Getter start
@@ -80,7 +83,7 @@ public class Ban {
 						Stage primaryStage = (Stage) name.getScene().getWindow();
 						Parent search = FXMLLoader.load(getClass().getResource("/gui/Ban.fxml"));
 						Scene scene = new Scene(search);
-						primaryStage.setTitle("HelloBooks/" + name.getText());
+						primaryStage.setTitle("GuessWhat/" + ban_name);
 						primaryStage.setScene(scene);
 						primaryStage.show();
 					} catch (Exception a) {
