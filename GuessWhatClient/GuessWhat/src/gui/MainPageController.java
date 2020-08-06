@@ -9,7 +9,6 @@ import java.net.Socket;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
-import java.util.List;
 import java.util.ResourceBundle;
 
 import exception.MyException;
@@ -35,7 +34,7 @@ public class MainPageController implements Initializable{
 	public Socket socket;
 	public Professor professor; 
 
-	private void showBanList(String PNum) {
+	private void showBanList(int PNum) {
 		
 		ProfessorDataModel.ItemList_MyClass.clear();
 		
@@ -62,7 +61,7 @@ public class MainPageController implements Initializable{
 				int n = 1;
 				for(int i = 2 ; i < responseTokens.length ; i++) {	//[0]GetBan:[1]Success:[2]BNum:[3]Name:[4]BM_Size
 					
-					int pNum = Integer.parseInt(PNum);
+					int pNum = PNum;
 					int BNum = Integer.parseInt(responseTokens[i]);
 					String name = responseTokens[i+1];
 					int bmSize = Integer.parseInt(responseTokens[i+2]);
@@ -77,7 +76,7 @@ public class MainPageController implements Initializable{
 			}
 		}  
 	}
-	private void createNewClass(String PNum) throws MyException, SQLException {
+	private void createNewClass(int PNum) throws MyException, SQLException {
 		String responseMessage = null;
 		try {
 			String requestMessage = "AddBan:" + PNum;
@@ -106,7 +105,7 @@ public class MainPageController implements Initializable{
 		
 		this.socket = ProfessorDataModel.socket;
 		this.professor = ProfessorDataModel.professor;
-		this.showBanList(professor.getPNum());
+		this.showBanList(professor.P_Num());
 			
 	}
 
@@ -124,9 +123,9 @@ public class MainPageController implements Initializable{
 	}
 
 	public void btn_CreateNewClass_Action() {
-		String pNum = this.professor.getPNum();
+		int P_num = this.professor.P_Num();
 		try {
-			this.createNewClass(pNum);
+			this.createNewClass(P_num);
 		} catch (Exception e) {
 			System.out.println("Failed : Create New Class");
 			e.printStackTrace();

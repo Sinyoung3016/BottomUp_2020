@@ -74,27 +74,27 @@ public class Professor {
 	// Setter end
 
 	// Getter start
-	public int getPNum() {
+	public int P_Num() {
 		return this.Pnum;
 	}
 
-	public String getId() {
+	public String Id() {
 		return this.Id;
 	}
 	
-	public String getName() {
+	public String name() {
 		return this.name;
 	}
 	
-	public String getPassword() {
+	public String password() {
 		return this.password;
 	}
 
-	public String getEmail() {
+	public String email() {
 		return this.email;
 	}
 
-	public String getIsConnected() {
+	public String isConnected() {
 		return this.isConnected;
 	}
 

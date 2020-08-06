@@ -33,7 +33,7 @@ public class Authentication {
 		if (getUser == null) {
 			throw new MyException("존재하지 않는 ID 입니다.");
 		}
-		if (!PW.equals(getUser.getPassword())) {
+		if (!PW.equals(getUser.password())) {
 			throw new MyException("잘못된 비밀번호 입니다.");
 		}
 		
