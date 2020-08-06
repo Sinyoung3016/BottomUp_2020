@@ -34,4 +34,10 @@ public class Problem {
 		sb.append("Question: " +this.question +", Answer: " + this.answer + ", Type: " +this.type + ", AnswerContent: " + this.answerContent);
 		return new String(sb);
 	}
+	
+	public String tokenString() {
+		StringBuilder sb = new StringBuilder("");
+		sb.append(this.WNum + "`" + this.question + "`" + this.answer + "`" + this.type.toString()+ "`" + this.answerContent);
+		return new String(sb);
+	}
 }

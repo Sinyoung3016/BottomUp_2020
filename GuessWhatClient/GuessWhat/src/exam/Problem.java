@@ -34,7 +34,7 @@ public class Problem {
 	}	
 	
 	public Problem(String responseTokens) {
-		String[] tokens = responseTokens.split("`ㅟ");
+		String[] tokens = responseTokens.split("`");
 		this.W_Num = Integer.parseInt(tokens[0]);
 		this.PB_Num = Integer.parseInt(tokens[1]);
 		this.type = ProblemType.toProblemType(tokens[2]);

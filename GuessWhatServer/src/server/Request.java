@@ -22,7 +22,9 @@ GET_PROFESSOR("GetProfessor"),
 GET_BAN("GetBan"),
 GET_BANMANGER("GetBanManager"),
 GET_WORKBOOK("GetWorkbook"),
-GET_PROBLEM("GetProblem");
+GET_PROBLEM("GetProblem"),
+GET_WORKBOOK_PROBLEM("GetWorkbookProblem")
+;
 	
 	private String request;
 	

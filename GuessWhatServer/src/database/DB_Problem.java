@@ -111,7 +111,7 @@ public class DB_Problem extends DBManager{
 	
 	}
 	
-	public synchronized static List<Problem> getProblemOf(String WNum){
+	public synchronized static List<Problem> getProblemListOf(int WNum){
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -121,12 +121,12 @@ public class DB_Problem extends DBManager{
 		try {
 			conn = getConn();
 			
+			
 			String sql;
 			sql = "SELECT * FROM Problem Where WNum = ?";
 			pstmt = conn.prepareStatement(sql);
 			
-			int wNum = Integer.parseInt(WNum);
-			pstmt.setInt(1, wNum);
+			pstmt.setInt(1, WNum);
 			rs = pstmt.executeQuery();
 			
 			while(rs.next()) {
@@ -151,4 +151,10 @@ public class DB_Problem extends DBManager{
 			}
 		}
 	}
+	
+	public synchronized static Problem getProblemOf(int WNum, int index){
+		List<Problem> problemList = getProblemListOf(WNum);
+		Problem problem = problemList.get(index);
+		return problem;
+		}
 }

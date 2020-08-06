@@ -117,10 +117,13 @@ public class ServerThread extends Thread{
 						}
 						else if(requestTokens[0].equals(Request.GET_WORKBOOK.getRequest())) { //GetWorkbook
 							clientRequest = "GetWorkbook";
-							this.getWorkbook();
+							this.getWorkbook(); 
 						}else if(requestTokens[0].equals(Request.GET_PROBLEM.getRequest())) { //GetProblem:WNum
 							clientRequest = "GetProblem";
 							this.getProblem(requestTokens[1]);
+						}else if(requestTokens[0].equals(Request.GET_WORKBOOK_PROBLEM.getRequest())) {
+							clientRequest = "GetWorkbookProblem";
+							this.getWorkbookProblem(requestTokens[1]);
 						}
 					}
 				} catch(MyException e) {
@@ -269,7 +272,6 @@ public class ServerThread extends Thread{
 	private void getBanManager(String code) {
 		BanManager banManager = DB_BanManager.getBanManagerOfCode(code);
 		if(banManager != null) {
-			System.out.println(banManager.tokenString());
 			pw.println("GetBanManager:Success:" + banManager.tokenString());
 			pw.flush();
 		}
@@ -294,7 +296,8 @@ public class ServerThread extends Thread{
 	}
 
 	private void getProblem(String PNum) {
-		List<Problem> listProblem = DB_Problem.getProblemOf(PNum);
+		int num = Integer.parseInt(PNum);
+		List<Problem> listProblem = DB_Problem.getProblemListOf(num);
 		if(listProblem == null) {
 			pw.println(">>FAIL [GetProblem]<<");
 			pw.flush();
@@ -310,6 +313,30 @@ public class ServerThread extends Thread{
 			}
 		}
 	}
-
+	
+	private void getWorkbookProblem(String BMNum) {
+		int num = Integer.parseInt(BMNum);
+		Workbook workbook = DB_Workbook.getWorkbookOf(num);
+		StringBuilder sb = new StringBuilder("");
+		if(workbook == null) {
+			pw.println("GetWorkbook:Fail");
+			pw.flush();
+		}
+		else {
+			sb.append("GetWorkbook:Success:");
+			sb.append(workbook.tokenString()+ ":");
+			Problem problem = DB_Problem.getProblemOf(workbook.getWBNum(), 1);
+			if(problem == null) {
+				sb.append("GetProblem:Fail");
+				pw.println(new String(sb));
+				pw.flush();
+			}
+			else {
+				sb.append(problem.tokenString());
+				pw.println(new String(sb));
+				pw.flush();
+			}
+		}
+	}
 }
 

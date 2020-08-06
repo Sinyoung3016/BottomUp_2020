@@ -138,7 +138,44 @@ public class DB_Workbook extends DBManager{
 				if(conn != null) conn.close();
 				if(rs != null) rs.close();
 			} catch(SQLException e) {
-				System.out.println("Error : " + e.getMessage() + "FROM getAllWorkbook");
+				System.out.println("Error : " + e.getMessage() + "FROM getWorkbookOf.2");
+			}
+		}
+	}
+	
+	public synchronized static Workbook getWorkbookOf(int BMNum) {
+		Connection conn = null;
+		Statement state = null;
+		ResultSet rs = null;
+		Workbook workbook = null;
+		String[] workbookInfo = new String[2];
+		try {
+			conn = getConn();
+			state = conn.createStatement();
+			String sql;
+			sql = "SELECT * FROM Workbook WHERE BMNum = '" + BMNum + "'";
+			rs = state.executeQuery(sql);
+			
+			if(rs.next()) {
+				workbookInfo[0] = rs.getString("PNum");
+				workbookInfo[1] = rs.getString("BMNum");
+				workbookInfo[2] = rs.getString("WNum");
+				workbookInfo[3] = rs.getString("Name");
+				workbookInfo[4] = rs.getString("Size");
+				workbook = new Workbook(workbookInfo);
+			}
+			
+			return workbook;
+		}catch(Exception e) {
+			System.out.println("Error : " + e.getMessage() + "FROM getWorkbookOf.1");
+			return null;
+		} finally {
+			try {
+				if(state != null) state.close();
+				if(conn != null) conn.close();
+				if(rs != null) rs.close();
+			} catch(SQLException e) {
+				System.out.println("Error : " + e.getMessage() + "FROM getWorkbookOf.2");
 			}
 		}
 	}
