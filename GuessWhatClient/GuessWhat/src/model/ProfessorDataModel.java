@@ -1,9 +1,7 @@
 package model;
 
 import java.net.Socket;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import exam.StuNumResult;
 import exam.Workbook;
@@ -21,7 +19,8 @@ public class ProfessorDataModel {
 	public static Socket socket = null;
 	public static String ID = null;
 	public static Professor professor;
-	
+	public static BanManager[] banManagerList;
+
 	// for test
 	public static Ban ban = new Ban(1, 1, "컴퓨터프로그래밍1");
 	public static Ban ban2 = new Ban(1, 2, "컴퓨터프로그래밍2");
@@ -56,7 +55,7 @@ public class ProfessorDataModel {
 
 	public static void removeClass(int n, Ban newBan) {
 		ItemList_MyClass.remove(newBan.getBan(n));
-	}
+}
 
 	public static void addWorkBook(int n, Workbook newWorkBook) {
 		ItemList_MyWorkBook.add(newWorkBook.getWorkbook(n));
@@ -64,7 +63,7 @@ public class ProfessorDataModel {
 
 	public static void removeWorkBook(int n, Workbook newWorkBook) {
 		ItemList_MyWorkBook.remove(newWorkBook.getWorkbook(n));
-	}
+		}
 
 	public static void addBanManager(int n, BanManager newBanManager) {
 		ItemList_MyBanManager.add(newBanManager.getBanManager(n));
@@ -72,7 +71,6 @@ public class ProfessorDataModel {
 
 	public static void removeBanManager(int n, BanManager newBanManager) {
 		ItemList_MyBanManager.remove(newBanManager.getBanManager(n));
-	}
-
 }
 
+}

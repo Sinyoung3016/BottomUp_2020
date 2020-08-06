@@ -32,6 +32,15 @@ public class Problem {
 		this.answer = answer;
 		this.answerContent = answerContent;
 	}	
+	public Problem(int P_num, int W_num, int PB_num, ProblemType type, String question, String answer ) {
+		this.P_Num = P_num;
+		this.W_Num = W_num;
+		this.PB_Num = PB_num;
+		this.type = type;
+		this.question = question;
+		this.answer = answer;
+		this.answerContent = null;
+	}	
 	
 	public Problem(String responseTokens) {
 		String[] tokens = responseTokens.split("`");
