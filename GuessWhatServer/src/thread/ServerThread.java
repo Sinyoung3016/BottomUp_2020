@@ -177,9 +177,9 @@ public class ServerThread extends Thread{
 			pw.flush();
 		}
 	}
-
 	private void addBan(String PNum) {
-		if(DB_Ban.insertBan("new", PNum))
+		int pNum = Integer.parseInt(PNum);
+		if(DB_Ban.insertBan(pNum, "new"))
 			pw.println("AddBan:Success");
 		else pw.println(">>FAIL [AddBan]<<");
 
@@ -251,7 +251,7 @@ public class ServerThread extends Thread{
 		List<Ban> listBan = DB_Ban.getAllBan(PNum);
 
 		if (listBan == null) {
-			pw.println("GetBan:Fail" + PNum);
+			pw.println("GetBan:Fail " + PNum);
 			pw.flush();
 		}
 		else {
@@ -260,8 +260,7 @@ public class ServerThread extends Thread{
 			Iterator<Ban> iterator = listBan.iterator();
 			while(iterator.hasNext()) {
 				Ban ban = iterator.next();
-				result = result + ":" + ban.ban_name();
-
+				result = result + ":" + ban.ban_num() + ":" + ban.ban_name() + ":" + ban.banManager_Size();
 			}
 			pw.println(result);
 			pw.flush();

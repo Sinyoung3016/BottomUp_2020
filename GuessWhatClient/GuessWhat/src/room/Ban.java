@@ -20,11 +20,11 @@ public class Ban {
 	private int banManager_size;
 	
 	//Constructor start
-	public Ban(int P_num, int num, String name) {
+	public Ban(int P_num, int num, String name, int bmsize) {
 		this.P_num = P_num;
 		this.ban_num = num;
 		this.ban_name = name;
-		this.banManager_size = 0;
+		this.banManager_size = bmsize;
 	}
 	//Constructor end
 	
