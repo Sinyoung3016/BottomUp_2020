@@ -29,6 +29,10 @@ public class Workbook {
 	}
 	//Constructor end
 	
+	public void setName(String name) { 
+		this.W_name = name;
+	}
+	
 	//Getter start
 	public int P_Num() { return this.P_Num;}
 	public int W_Num() { return this.W_Num; }
