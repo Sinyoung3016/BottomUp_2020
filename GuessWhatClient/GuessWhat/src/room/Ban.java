@@ -20,9 +20,7 @@ import model.ProfessorDataModel;
 
 //BanManager의 모음
 public class Ban {
-	
-	public Socket socket;
-	
+
 	private int P_num;
 	private int ban_num;
 	
@@ -61,6 +59,7 @@ public class Ban {
 	
 	public static class HBoxCell extends HBoxModel {
 		
+		public Socket socket = ProfessorDataModel.socket;
 		private Label size = new Label();
 
 		
@@ -93,43 +92,34 @@ public class Ban {
 					
 					String responseMessage = null;
 					try {
-						String requestMessage = "GetBan:" + P_num;
+						String requestMessage = "GetBan:" + P_num + ":" + ban_num;
 						BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
 						PrintWriter writer = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8));
 						writer.println(requestMessage);
 						writer.flush();
 						responseMessage = reader.readLine();
-					} catch(IOException e) {
-						e.printStackTrace();
+					} catch(IOException e1) {
+						e1.printStackTrace();
 					}
 					System.out.println(responseMessage);
 					String[] responseTokens = responseMessage.split(":");
 					
-					if(responseTokens[0].equals("GetAllBan")) {
+					if(responseTokens[0].equals("GetBan")) {
 						if(! responseTokens[1].equals("Success")) {
-							System.out.println("Fail : GetAllBan");
+							System.out.println("Fail : GetBan");
 						}
 						else {
-							System.out.println("Success: GetAllBan");
+							System.out.println("Success: GetBan");
+							//GetAllBan:Success:BNum:Name:BM_Size
 							
-							int n = 1;
-							for(int i = 2 ; i < responseTokens.length ; i++) {	//[0]GetBan:[1]Success:[2]BNum:[3]Name:[4]BM_Size
-								
-								int BNum = Integer.parseInt(responseTokens[i]);
-								String name = responseTokens[i+1];
-								int bmSize = Integer.parseInt(responseTokens[i+2]);
-								
-								Ban newBan = new Ban(PNum, BNum, name, bmSize);
-								ProfessorDataModel.addClass(n, newBan);					
-								i = i + 2;
-								n++;
-							}
-						lv_ClassList.setItems(ProfessorDataModel.ItemList_MyClass);
+							int BNum = Integer.parseInt(responseTokens[2]);
+							String name = responseTokens[3];
+							int bmSize = Integer.parseInt(responseTokens[4]);
+							
+							Ban newBan = new Ban(P_num, BNum, name, bmSize);
+							ProfessorDataModel.ban = newBan;
 						}
 					}
-					
-					
-					
 					try {
 						Stage primaryStage = (Stage) name.getScene().getWindow();
 						Parent search = FXMLLoader.load(getClass().getResource("/gui/Ban.fxml"));
