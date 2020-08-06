@@ -27,6 +27,14 @@ public class Workbook {
 		this.W_name = workbookInfo[2];
 		this.WorkBook_size = Integer.parseInt(workbookInfo[3]);
 	}
+	
+	public Workbook(String responseToken) {
+		String[] tokens = responseToken.split("-");
+		this.P_Num = Integer.parseInt(tokens[0]);
+		this.W_Num = Integer.parseInt(tokens[1]);
+		this.W_name = tokens[2];
+		this.WorkBook_size = Integer.parseInt(tokens[3]);
+	}
 	//Constructor end
 	
 	//Getter start
