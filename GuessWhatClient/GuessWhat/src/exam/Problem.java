@@ -23,17 +23,15 @@ public class Problem {
 		this.answerContent = problemInfo[6];
 	}
 	
-	public Problem(String responseTokens) {
-		String[] tokens = responseTokens.split("`ㅜ");
-		this.P_Num = Integer.parseInt(tokens[0]);
-		this.W_Num = Integer.parseInt(tokens[1]);
-		this.PB_Num = Integer.parseInt(tokens[2]);
-		this.type = ProblemType.toProblemType(tokens[3]);
-		this.question = tokens[4];
-		this.answer = tokens[5];
-		this.answerContent = tokens[6];		
-	}
-	
+	public Problem(int P_num, int W_num, int PB_num, ProblemType type, String question, String answer, String answerContent ) {
+		this.P_Num = P_num;
+		this.W_Num = W_num;
+		this.PB_Num = PB_num;
+		this.type = type;
+		this.question = question;
+		this.answer = answer;
+		this.answerContent = answerContent;
+	}	
 	//Constructor end
 	
 	//Getter start

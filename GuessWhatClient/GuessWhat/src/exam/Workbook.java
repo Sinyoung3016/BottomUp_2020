@@ -43,27 +43,19 @@ public class Workbook {
 		return new String(sb);
 	}
 	
-	public Workbook(String responseToken) {
-		String[] tokens = responseToken.split("-");
-		this.P_Num = Integer.parseInt(tokens[0]);
-		this.W_Num = Integer.parseInt(tokens[1]);
-		this.W_name = tokens[2];
-		this.WorkBook_size = Integer.parseInt(tokens[3]);
-	}
-	
-	public HBoxCell getWorkbook(int num) {
-		return new HBoxCell(num, this.W_name, this.WorkBook_size);
+	public HBoxCell getWorkbook(int n) {
+		return new HBoxCell(n, this.P_Num, this.W_Num, this.W_name, this.WorkBook_size);
 	}
 		
 	public static class HBoxCell extends HBoxModel {
 			
 	private Label size = new Label();
 	
-	public HBoxCell(int W_num, String W_name, int W_size) {
+	public HBoxCell(int n, int P_num, int W_num, String W_name, int W_size) {
 		super();
 		this.setSpacing(10);
 		
-		num.setText(W_num + "");
+		num.setText(n + "");
 		num.setStyle("-fx-font-family: Dubai Medium; -fx-alignment: center; -fx-text-fill: #ffffff; -fx-font-size: 20; -fx-background-color: #5ad18f;");
 		num.setPrefWidth(40);
 		num.setPrefHeight(40);

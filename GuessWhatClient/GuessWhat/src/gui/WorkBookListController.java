@@ -23,10 +23,18 @@ public class WorkBookListController extends BaseController implements Initializa
 	@FXML
 	private ListView<HBoxModel> lv_WorkBookList;
 
+	@Override
+	public void initialize(URL arg0, ResourceBundle arg1) {
+		// TODO Auto-generated method stub
+
+		lv_WorkBookList.setItems(ProfessorDataModel.ItemList_MyWorkBook);
+
+	}
+	
 	public void btn_CreateNewWorkBook_Action() {
 		try {
 			Stage primaryStage = (Stage) btn_CreateNewWorkBook.getScene().getWindow();
-			Parent main = FXMLLoader.load(getClass().getResource("/gui/NewWorkBook.fxml"));
+			Parent main = FXMLLoader.load(getClass().getResource("/gui/NewWorkBook_MultipleChoice.fxml"));
 			Scene scene = new Scene(main);
 			primaryStage.setTitle("GuessWhat/CreateNewWorkBook");
 			primaryStage.setScene(scene);
@@ -34,23 +42,6 @@ public class WorkBookListController extends BaseController implements Initializa
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
-	}
-
-	@Override
-	public void initialize(URL arg0, ResourceBundle arg1) {
-		// TODO Auto-generated method stub
-
-		ProfessorDataModel.ItemList_MyWorkBook = FXCollections.observableArrayList();
-		ObservableList<HBoxModel> list = ProfessorDataModel.ItemList_MyWorkBook;
-
-		// 서버에서 가지고 오기
-		list.add(new HBoxCell(1, "workbook1", 3));
-		list.add(new HBoxCell(2, "workbook2", 4));
-		list.add(new HBoxCell(3, "workbook3", 5));
-		// 서버에서 가지고 오기
-
-		lv_WorkBookList.setItems(list);
 
 	}
 
