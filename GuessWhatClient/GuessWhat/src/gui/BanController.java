@@ -21,7 +21,7 @@ import room.BanManager;
 public class BanController extends BaseController implements Initializable {
 
 	@FXML
-	private Button btn_CreateNewBanManager, btn_ModifyClassName;
+	private Button btn_CreateNewBanManager, btn_ModifyClassName, btn_DeleteBan;
 	@FXML
 	private ListView<HBoxModel> lv_BanManagerList;
 	
@@ -38,6 +38,22 @@ public class BanController extends BaseController implements Initializable {
 		this.btn_Main.setText(className);
 		
 
+	}
+	
+	public void btn_DeleteBan_Action() {
+		
+		//delete
+		
+		try {
+			Stage primaryStage = (Stage) btn_CreateNewBanManager.getScene().getWindow();
+			Parent main = FXMLLoader.load(getClass().getResource("/gui/MainPage.fxml"));
+			Scene scene = new Scene(main);
+			primaryStage.setTitle("GuessWhat/MainPage");
+			primaryStage.setScene(scene);
+			primaryStage.show();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void btn_CreateNewBanManager_Action() {
