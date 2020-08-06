@@ -23,6 +23,15 @@ public class Problem {
 		this.answerContent = problemInfo[6];
 	}
 	
+	public Problem(int P_num, int W_num, int PB_num, ProblemType type, String question, String answer, String answerContent ) {
+		this.P_Num = P_num;
+		this.W_Num = W_num;
+		this.PB_Num = PB_num;
+		this.type = type;
+		this.question = question;
+		this.answer = answer;
+		this.answerContent = answerContent;
+	}	
 	//Constructor end
 	
 	//Getter start

@@ -56,7 +56,7 @@ public class Ban {
 	
 	
 	public HBoxCell getBan(int n) {
-		return new HBoxCell(n, this.P_num(), this.ban_name, this.banManager_size);
+		return new HBoxCell(n, this.P_num(), this.ban_num, this.ban_name, this.banManager_size);
 	}
 	
 	public static class HBoxCell extends HBoxModel {
@@ -64,11 +64,11 @@ public class Ban {
 		private Label size = new Label();
 
 		
-		public HBoxCell(int ban_num, int P_num, String ban_name, int banManager_size) {
+		public HBoxCell(int n, int P_num, int ban_num, String ban_name, int banManager_size) {
 			super();
 			this.setSpacing(10);
 			
-			num.setText(ban_num + "");
+			num.setText(n + "");
 			num.setStyle("-fx-font-family: Dubai Medium; -fx-alignment: center; -fx-text-fill: #ffffff; -fx-font-size: 20; -fx-background-color: #5ad18f;");
 			num.setPrefWidth(40);
 			num.setPrefHeight(40);

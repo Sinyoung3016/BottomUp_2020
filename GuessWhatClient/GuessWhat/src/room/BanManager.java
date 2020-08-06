@@ -87,7 +87,7 @@ public class BanManager {
 
 	// Public Method
 	public HBoxCell getBanManager(int n) {
-		return new HBoxCell(n, this.BM_name, this.Student_size, this.BM_state);
+		return new HBoxCell(n, this.P_num, this.ban_num, this.BM_num, this.BM_name, this.Student_size, this.BM_state);
 	}
 
 	public static class HBoxCell extends HBoxModel {
@@ -95,13 +95,13 @@ public class BanManager {
 		private Label size = new Label();
 		private Label state = new Label();
 
-		public HBoxCell(int BM_num, String BM_name, int Student_size, State BM_state) {
+		public HBoxCell(int n, int P_num, int ban_Num, int BM_num, String BM_name, int Student_size, State BM_state) {
 			super();
 			String ban_Name =  ProfessorDataModel.ban.ban_name();
 			
 			this.setSpacing(10);
 
-			num.setText(BM_num + "");
+			num.setText(n + "");
 			num.setStyle(
 					"-fx-font-family: Dubai Medium; -fx-alignment: center; -fx-text-fill: #ffffff; -fx-font-size: 20; -fx-background-color: #5ad18f;");
 			num.setPrefWidth(40);
