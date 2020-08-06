@@ -36,7 +36,7 @@ public class WorkBookListController extends BaseController implements Initializa
 			Stage primaryStage = (Stage) btn_CreateNewWorkBook.getScene().getWindow();
 			Parent main = FXMLLoader.load(getClass().getResource("/gui/NewWorkBook_MultipleChoice.fxml"));
 			Scene scene = new Scene(main);
-			primaryStage.setTitle("GuessWhat/CreateNewWorkBook");
+			primaryStage.setTitle("GuessWhat/wWorkBook");
 			primaryStage.setScene(scene);
 			primaryStage.show();
 		} catch (Exception e) {
