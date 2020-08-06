@@ -10,6 +10,8 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ResourceBundle;
 
+import exam.Problem;
+import exam.Workbook;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -94,6 +96,40 @@ public class StudentInfoController implements Initializable{
 			if(IsTestStarted) {
 				if(tf_StudentName.getLength() != 0) {
 					StudentDataModel.studentName = tf_StudentName.getText();
+					String responseMessage = null;
+					try {
+						String requestTokens = "GetWorkbookAndProblem:" + StudentDataModel.banManager.BM_num();
+						BufferedReader br = new BufferedReader(
+								new InputStreamReader(this.socket.getInputStream(), StandardCharsets.UTF_8));
+						PrintWriter pw = new PrintWriter(
+								new OutputStreamWriter(this.socket.getOutputStream(), StandardCharsets.UTF_8));
+						pw.println(requestTokens);
+						pw.flush();
+						responseMessage = br.readLine();
+					} catch(IOException e) {
+						e.printStackTrace();
+					}//GetWorkbook:Success:WorkbookInfo:GetProblem:Success:FirstProblemInfo
+					String[] responseTokens = responseMessage.split(":");
+					if(responseTokens[0].equals("GetWorkbook")) {
+						if(!responseTokens[1].equals("Success")) {
+							System.out.println(responseTokens[1]);
+						}
+						else {
+							//Success GetWorkbook
+							Workbook workbook = new Workbook(responseTokens[2]);
+							StudentDataModel.setWorkbook(workbook);
+							if(responseTokens[3].equals("GetProblem")){
+								if(!responseTokens[4].equals("Success")) { 
+									System.out.println(responseTokens[4]);
+								}
+								else {
+									Problem problem = new Problem(responseTokens[4]);
+									StudentDataModel.setProblem(problem);
+								}
+							}
+						}
+					}
+
 					try {
 						Stage primaryStage = (Stage) btn_Close.getScene().getWindow();
 						Parent main = FXMLLoader.load(getClass().getResource("/gui/StuWorkBook.fxml"));

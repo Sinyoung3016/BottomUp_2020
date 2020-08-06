@@ -43,6 +43,14 @@ public class Workbook {
 		return new String(sb);
 	}
 	
+	public Workbook(String responseToken) {
+		String[] tokens = responseToken.split("-");
+		this.P_Num = Integer.parseInt(tokens[0]);
+		this.W_Num = Integer.parseInt(tokens[1]);
+		this.W_name = tokens[2];
+		this.WorkBook_size = Integer.parseInt(tokens[3]);
+	}
+	
 	public HBoxCell getWorkbook(int num) {
 		return new HBoxCell(num, this.W_name, this.WorkBook_size);
 	}

@@ -40,7 +40,16 @@ public class BanManager {
 		this.BM_state = State.OPEN;
 		this.Student_size = 0;
 	}	
-
+	
+	public BanManager(int P_num, int ban_num, int BM_num, String name, String roomcode, String workbok, int student_size) {
+		this.P_num = P_num;
+		this.ban_num = ban_num;
+		this.BM_num = BM_num;
+		this.BM_name = name;
+		this.BM_roomcode = roomcode;
+		this.workBook = workbok;
+		this.Student_size = student_size;
+	}
 	public BanManager(String responseTokens) {
 		String[] banManagerInfo = responseTokens.split("-");	
 		this.P_num = Integer.parseInt(banManagerInfo[0]);

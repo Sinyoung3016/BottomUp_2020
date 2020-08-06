@@ -83,14 +83,13 @@ public class ServerController {
 		}
 	}
 
-	public void btn_Empty_Action() {
+	public void btn_Empty_Action() {//SizeUpBanManager:ID:BMNum:BMSize
 		try {
 		Iterator<Socket> iterator = dataModel.getSocketList().iterator();
-		System.out.println("btn_Empty_Action");
 		while(iterator.hasNext()) {
 			Socket socket = iterator.next();
 			PrintWriter pw=new PrintWriter(new OutputStreamWriter(socket.getOutputStream(),StandardCharsets.UTF_8));
-			pw.println("ChangeState:");
+			pw.println("SizeUpBanManager:Moondd:1:3");
 			pw.flush();
 		}
 		} catch(IOException e) {
@@ -108,3 +107,33 @@ public class ServerController {
 	
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Here is MoonDD's Test Code! Please don't touch!
+/* ----------------ChangeState Test------------------- 
+try {
+Iterator<Socket> iterator = dataModel.getSocketList().iterator();
+System.out.println("btn_Empty_Action");
+while(iterator.hasNext()) {
+	Socket socket = iterator.next();
+	PrintWriter pw=new PrintWriter(new OutputStreamWriter(socket.getOutputStream(),StandardCharsets.UTF_8));
+	pw.println("ChangeState:");
+	pw.flush();
+}
+} catch(IOException e) {
+	System.out.println("Error: " +e.getMessage() + "FROM btn_Empty_Action");
+}
+*/

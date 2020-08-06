@@ -32,17 +32,20 @@ public class ClientThread extends Thread { //for student
 				String responseMessage = br.readLine();
 				String[] tokens = responseMessage.split(":");
 				
-				if(tokens[0].equals("ChangeState")) {
+				if(tokens[0].equals("ChangeState")) { //ChangeState
 					StudentDataModel.banManager.setBM_state_ING();				
 				}
-				else if(tokens[0].equals("SizeUpBanManger")) {
+				else if(tokens[0].equals("SizeUpBanManger")) { //SizeUpBanManager:ID:BMNum:BMSize
 					if(tokens[1].equals(ProfessorDataModel.ID)) {
-						Iterator iterator = ProfessorDataModel.ItemList_BanManager.iterator();
-						
+						Iterator<BanManager> iterator = ProfessorDataModel.banManagerList.iterator();
 						while(iterator.hasNext()) {
 							BanManager banManager = iterator.next();
-							if(banManager.BM_num().equals(Integer.parseInt(tokens[2])))
+							if(banManager.BM_num() == Integer.parseInt(tokens[2])) {
+								banManager.setSize(Integer.parseInt(tokens[3]));
+								System.out.println(banManager.Student_size());
+							}
 						}
+						
 						
 					}
 				}
