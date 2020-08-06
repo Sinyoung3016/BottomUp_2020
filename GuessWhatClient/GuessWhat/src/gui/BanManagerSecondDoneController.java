@@ -64,8 +64,14 @@ public class BanManagerSecondDoneController extends BaseController implements In
 
 		className = btn_Main.getText();
 
-		for (int i = 0; i < WorkBookSize; i++)
+		for (int i = 0; i < WorkBookSize; i++) {
 			btn[i].setStyle("-fx-background-color: #5ad18f;");
+			btn[i].setDisable(false);
+		}
+		for (int i = WorkBookSize; i < 20; i++) {
+			btn[i].setStyle("-fx-background-color: #f0fff0;");
+			btn[i].setDisable(true);
+		}
 
 		// start
 		btn_num1_Action();
