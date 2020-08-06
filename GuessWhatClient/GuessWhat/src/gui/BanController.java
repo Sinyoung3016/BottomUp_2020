@@ -34,7 +34,8 @@ public class BanController extends BaseController implements Initializable {
 		
 		ban = ProfessorDataModel.ban;
 		lv_BanManagerList.setItems(ProfessorDataModel.ItemList_MyBanManager);
-		this.btn_Main.setText(ban.ban_name());
+		className = ban.ban_name();
+		this.btn_Main.setText(className);
 		
 
 	}

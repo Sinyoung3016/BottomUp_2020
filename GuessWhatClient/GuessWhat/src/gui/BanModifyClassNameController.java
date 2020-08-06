@@ -12,13 +12,32 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import model.HBoxModel;
+import model.ProfessorDataModel;
+import room.Ban;
 
 public class BanModifyClassNameController extends BaseController implements Initializable {
 
 	@FXML
-	private Button btn_CreateNewBanManager,btn_SaveClassName;
+	private Button btn_CreateNewBanManager, btn_SaveClassName;
 	@FXML
 	private TextField tf_ChangeClassName;
+	@FXML
+	private ListView<HBoxModel> lv_BanManagerList;
+
+	private Ban ban;
+	private String className;
+
+	@Override
+	public void initialize(URL arg0, ResourceBundle arg1) {
+		// TODO Auto-generated method stub
+		
+		lv_BanManagerList.setItems(ProfessorDataModel.ItemList_MyBanManager);
+		
+		ban = ProfessorDataModel.ban;
+		className = ban.ban_name();
+	
+	}
 
 	public void btn_CreateNewBanManager_Action() {
 		try {
@@ -34,11 +53,12 @@ public class BanModifyClassNameController extends BaseController implements Init
 	}
 
 	public void btn_SaveClassName_Action() {
+
 		try {
 			Stage primaryStage = (Stage) btn_CreateNewBanManager.getScene().getWindow();
 			Parent main = FXMLLoader.load(getClass().getResource("/gui/Ban.fxml"));
 			Scene scene = new Scene(main);
-			primaryStage.setTitle("GuessWhat/Class");
+			primaryStage.setTitle("GuessWhat/" + className);
 			primaryStage.setScene(scene);
 			primaryStage.show();
 		} catch (Exception e) {
@@ -47,9 +67,4 @@ public class BanModifyClassNameController extends BaseController implements Init
 
 	}
 
-	@Override
-	public void initialize(URL arg0, ResourceBundle arg1) {
-		// TODO Auto-generated method stub
-
-	}
 }
