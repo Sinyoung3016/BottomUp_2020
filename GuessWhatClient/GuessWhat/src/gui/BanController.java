@@ -1,5 +1,6 @@
 package gui;
 
+import java.net.Socket;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
@@ -15,6 +16,7 @@ import javafx.stage.Stage;
 import model.ProfessorDataModel;
 import model.HBoxModel;
 import room.BanManager.HBoxCell;
+import user.Professor;
 import room.Ban;
 import room.BanManager;
 
@@ -25,16 +27,20 @@ public class BanController extends BaseController implements Initializable {
 	@FXML
 	private ListView<HBoxModel> lv_BanManagerList;
 	
-	private Ban ban;
+	public Socket socket;
+	public Professor professor; 
+	public Ban ban;
+	
 	private String className;
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// TODO Auto-generated method stub
 		
-		ban = ProfessorDataModel.ban;
-		lv_BanManagerList.setItems(ProfessorDataModel.ItemList_MyBanManager);
-		className = ban.ban_name();
+		this.socket = ProfessorDataModel.socket;
+		this.professor = ProfessorDataModel.professor;
+		this.ban = ProfessorDataModel.ban;
+		
 		this.btn_Main.setText(className);
 		
 

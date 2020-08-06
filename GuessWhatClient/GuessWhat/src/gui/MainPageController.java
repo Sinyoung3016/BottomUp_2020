@@ -40,7 +40,7 @@ public class MainPageController implements Initializable{
 		
 		String responseMessage = null;
 		try {
-			String requestMessage = "GetBan:" + PNum;
+			String requestMessage = "GetAllBan:" + PNum;
 			BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
 			PrintWriter writer = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8));
 			writer.println(requestMessage);
@@ -51,12 +51,12 @@ public class MainPageController implements Initializable{
 		}
 		String[] responseTokens = responseMessage.split(":");
 		
-		if(responseTokens[0].equals("GetBan")) {
+		if(responseTokens[0].equals("GetAllBan")) {
 			if(! responseTokens[1].equals("Success")) {
-				System.out.println("Fail : GetBan");
+				System.out.println("Fail : GetAllBan");
 			}
 			else {
-				System.out.println("Success: GetBan");
+				System.out.println("Success: GetAllBan");
 				
 				int n = 1;
 				for(int i = 2 ; i < responseTokens.length ; i++) {	//[0]GetBan:[1]Success:[2]BNum:[3]Name:[4]BM_Size
