@@ -14,8 +14,12 @@ import room.Ban.HBoxCell;
 //BanManager의 모음
 public class Ban {
 	
+	private int P_num;
+	
 	private int ban_num;
 	private String ban_name;
+	
+	private int banManager_size;
 	private BanManager[] banManagerSet;
 	
 	//Constructor start
@@ -27,6 +31,12 @@ public class Ban {
 	public Ban(String name) {
 		this.ban_name = name;
 	}
+	public Ban(int pnum, int bnum, String name, int bmsize) {
+		this.P_num = pnum;
+		this.ban_num = bnum;
+		this.ban_name = name;
+		this.banManager_size = bmsize;
+	}
 	//Constructor end
 	
 	@Override
@@ -37,8 +47,12 @@ public class Ban {
 	}
 	
 	//Getter start
+	public int P_num() { return this.P_num; }
+	
 	public int ban_num() { return this.ban_num;}
 	public String ban_name() { return this.ban_name; }
+	
+	public int banManager_Size() { return this.banManager_size; }
 	public BanManager[] banManagerSet() { return this.banManagerSet; }
 	//Getter end
 	

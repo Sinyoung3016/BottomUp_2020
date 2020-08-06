@@ -59,6 +59,7 @@ public class MainPageController implements Initializable{
 			else {
 				System.out.println("Success: GetBan");
 				
+				int n = 1;
 				for(int i = 2 ; i < responseTokens.length ; i++) {	//[0]GetBan:[1]Success:[2]BNum:[3]Name:[4]BM_Size
 					
 					int pNum = Integer.parseInt(PNum);
@@ -67,8 +68,9 @@ public class MainPageController implements Initializable{
 					int bmSize = Integer.parseInt(responseTokens[i+2]);
 					
 					Ban newBan = new Ban(pNum, BNum, name, bmSize);
-					ProfessorDataModel.addClass(newBan);					
+					ProfessorDataModel.addClass(n, newBan);					
 					i = i + 2;
+					n++;
 				}
 			lv_ClassList.setItems(ProfessorDataModel.ItemList_MyClass);
 			
