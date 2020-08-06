@@ -19,7 +19,8 @@ public class ProfessorDataModel {
 	public static Socket socket = null;
 	public static String ID = null;
 	public static Professor professor;
-
+	public static BanManager[] banMangerList;
+	
 	// for test
 	public static Ban ban = new Ban(1, "컴퓨터프로그래밍1");
 	public static Ban ban2 = new Ban(2, "컴퓨터프로그래밍2");
@@ -40,7 +41,7 @@ public class ProfessorDataModel {
 	public static ObservableList<HBoxModel> ItemList_MyBanManager = FXCollections.observableArrayList(banManager.getBanManager(1));
 	public static ObservableList<HBoxModel> ItemList_MyClass = FXCollections.observableArrayList(ban.getBan(), ban2.getBan());
 	public static ObservableList<HBoxModel> ItemList_MyWorkBook = FXCollections.observableArrayList(workbook.getWorkbook(1));
-
+	
 	public static ObservableList<Student> ItemList_Students = FXCollections.observableArrayList(stu1, stu2);
 	public static ObservableList<Result> ItemList_Results1 = FXCollections.observableArrayList(num1, num2); 
 	public static ObservableList<Result> ItemList_Results2 = FXCollections.observableArrayList(num3, num4);

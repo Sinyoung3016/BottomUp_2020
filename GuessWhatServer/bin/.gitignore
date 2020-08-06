@@ -1,4 +1,10 @@
-/thread/
+/authentication/
 /database/
+/exam/
+/exception/
+/gui/
+/model/
 /room/
 /server/
+/thread/
+/user/

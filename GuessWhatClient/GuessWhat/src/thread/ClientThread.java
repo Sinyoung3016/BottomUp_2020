@@ -5,12 +5,15 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
+import java.util.Iterator;
 
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import model.ProfessorDataModel;
 import model.StudentDataModel;
 import room.BanManager;
+import user.Professor;
 
 public class ClientThread extends Thread { //for student
 	Socket socket = null;
@@ -30,7 +33,18 @@ public class ClientThread extends Thread { //for student
 				String[] tokens = responseMessage.split(":");
 				
 				if(tokens[0].equals("ChangeState")) {
-					StudentDataModel.banManager.setBM_state(BanManager.State.ING); 					
+					StudentDataModel.banManager.setBM_state_ING();				
+				}
+				else if(tokens[0].equals("SizeUpBanManger")) {
+					if(tokens[1].equals(ProfessorDataModel.ID)) {
+						Iterator iterator = ProfessorDataModel.ItemList_BanManager.iterator();
+						
+						while(iterator.hasNext()) {
+							BanManager banManager = iterator.next();
+							if(banManager.BM_num().equals(Integer.parseInt(tokens[2])))
+						}
+						
+					}
 				}
 			}
 		} catch(IOException e) {
