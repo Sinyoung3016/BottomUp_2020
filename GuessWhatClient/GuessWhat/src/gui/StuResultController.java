@@ -1,9 +1,11 @@
 package gui;
 
+import java.net.Socket;
 import java.net.URL;
 import java.util.Iterator;
 import java.util.ResourceBundle;
 
+import exam.Problem;
 import exam.StuNumResult;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -16,36 +18,39 @@ import javafx.scene.chart.PieChart;
 import javafx.scene.chart.PieChart.Data;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
+import model.StudentDataModel;
 import user.Student;
 
 public class StuResultController implements Initializable {
 
 	@FXML
 	private Button btn_Detail, btn_num1, btn_num2, btn_num3, btn_num4, btn_num5, btn_num6, btn_num7, btn_num8, btn_num9,
-			btn_num10, btn_num11, btn_num12, btn_num13, btn_num14, btn_num15, btn_num16, btn_num17, btn_num18,
-			btn_num19, btn_num20;
+			btn_num10, btn_num11, btn_num12, btn_num13, btn_num14, btn_num15;
 	@FXML
 	private PieChart pc_result;
-
-	private Button [] btn;
 	
 	private ObservableList<Data> Pie;
 
+	private Button[] btn;
+
+	private Socket socket;
 	private Student student;
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// TODO Auto-generated method stub
+	
+		this.socket = StudentDataModel.socket;
+		this.student = StudentDataModel.student;
 		
 		btn = new Button[] { btn_num1, btn_num2, btn_num3, btn_num4, btn_num5, btn_num6, btn_num7, btn_num8, btn_num9,
-				btn_num10, btn_num11, btn_num12, btn_num13, btn_num14, btn_num15, btn_num16, btn_num17, btn_num18,
-				btn_num19, btn_num20 };
+				btn_num10, btn_num11, btn_num12, btn_num13, btn_num14, btn_num15};
 		
 		String[] result = this.student.result();
-		int PB_size = result.length;
+		int WorkBookSize = result.length;
 		int[] value = new int[3]; // value[0]="X", value[1]="O", value[2] = "N"
 
-		for (int i = 0; i < PB_size; i++) {
+		for (int i = 0; i < WorkBookSize; i++) {
 			if (result.equals("O")) {
 				value[1]++;
 				btn[i].setStyle("-fx-background-color: #5ad18f;");
@@ -59,17 +64,21 @@ public class StuResultController implements Initializable {
 				btn[i].setStyle("-fx-background-color: #f0fff0;");
 			}
 		}
+		for (int i = WorkBookSize; i < 15; i++) {
+			btn[i].setStyle("-fx-background-color: #dcdcdc;");
+			btn[i].setDisable(true);
+		}
 	
 		//pie
 		for (int i = 0; i < 3; i++) {
-			value[i] = value[i] * 100 / PB_size;
+			value[i] = value[i] * 100 / WorkBookSize;
 		}
 		
 		this.Pie = FXCollections.observableArrayList();
 
-		Pie.add(new PieChart.Data("", value[0]));
-		Pie.add(new PieChart.Data("", value[1]));
-		Pie.add(new PieChart.Data("", value[2]));
+		Pie.add(new PieChart.Data("Correct", value[0]));
+		Pie.add(new PieChart.Data("Wrong", value[1]));
+		Pie.add(new PieChart.Data("Non", value[2]));
 
 		pc_result.setData(Pie);
 		//pie
