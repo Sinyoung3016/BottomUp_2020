@@ -40,22 +40,23 @@ public class StuWorkBookController extends BaseController implements Initializab
 	@FXML
 	private TextArea ta_Answer;
 
-	private Button[] btn;
-	private int workBookSize;
-
 	private Socket socket;
 	private Problem problem;
 	private Student student;
-	private boolean [] answerIsFull;
+	private String[] answer;
+	private Button[] btn;
 	private int PB_num;
+	private int workBookSize;
+	private boolean[] answerIsFull;
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 
 		this.socket = StudentDataModel.socket;
 		this.problem = StudentDataModel.problem;
+		this.student = StudentDataModel.student;
 		this.answerIsFull = StudentDataModel.answerIsEmpty;
-		
+
 		if (problem.getType().equals(ProblemType.MultipleChoice)) {
 			try {
 				Stage primaryStage = (Stage) btn_Submit.getScene().getWindow();
@@ -79,47 +80,62 @@ public class StuWorkBookController extends BaseController implements Initializab
 
 		for (int i = 0; i < workBookSize; i++) {
 			if (answerIsFull[i])
-				btn[i].setStyle("-fx-background-color: #dcdcdc;");
+				btn[i].setStyle("-fx-background-color: #f0fff0;");
 			else
 				btn[i].setStyle("-fx-background-color: #5ad18f;");
-			
+
 			btn[i].setDisable(false);
 		}
 
 		btn[PB_num].setStyle("-fx-background-color: #54bd54;");
-		if(answerIsFull[PB_num]) ta_Answer.setText(student.answer()[PB_num]);
+		lb_Question.setText(problem.question());
+		if (answerIsFull[PB_num])
+			ta_Answer.setText(student.answer()[PB_num]);
 
-		for (int i = workBookSize + 1; i < 20; i++) {
-			btn[i].setStyle("-fx-background-color: #f0fff0;");
+		for (int i = workBookSize; i < 20; i++) {
+			btn[i].setStyle("-fx-background-color: #dcdcdc;");
 			btn[i].setDisable(true);
 		}
-
-		lb_Question.setText(problem.question());
 		// setting
 
 	}
 
+	private void savePro() {
+
+		String S_answer = ta_Answer.getText();
+		if (S_answer.equals(null))
+			return;
+		else {
+
+			// 디비에 저장
+		}
+	}
+
 	public void btn_Next_Action() {
+		savePro();
 
-		String anwer = ta_Answer.getText();
-		// if(answer != null) 저장
-
-		StudentDataModel.currentPB = StudentDataModel.currentPB + 1;
-
+		if (workBookSize == StudentDataModel.currentPB)
+			btn_Submit_Action();
+		else {
+			StudentDataModel.currentPB = StudentDataModel.currentPB + 1;
+			changeProblem();
+		}
 	}
 
 	public void btn_Previous_Action() {
+		savePro();
 
-		String anwer = ta_Answer.getText();
-		// if(answer != null) 저장
-
-		StudentDataModel.currentPB = StudentDataModel.currentPB - 1;
-
+		if (1 == StudentDataModel.currentPB)
+			btn_num1_Action();
+		else {
+			StudentDataModel.currentPB = StudentDataModel.currentPB - 1;
+			changeProblem();
+		}
 	}
 
 	public void btn_Submit_Action() {
-
-		// workbook 전체 저장
+		
+		savePro();
 
 		try {
 			Stage primaryStage = (Stage) btn_Submit.getScene().getWindow();
@@ -135,7 +151,7 @@ public class StuWorkBookController extends BaseController implements Initializab
 	}
 
 	private void changeProblem() {
-		// 여기가 만들어주세용 정현
+
 		String responseMessage = null;
 		try {
 			String requestTokens = "GetProblem:" + StudentDataModel.workbook.W_Num() + ":" + StudentDataModel.currentPB;
@@ -146,20 +162,19 @@ public class StuWorkBookController extends BaseController implements Initializab
 			pw.println(requestTokens);
 			pw.flush();
 			responseMessage = br.readLine();
-		} catch(IOException e) {
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		String[] responseTokens = responseMessage.split(":");
-		if(responseTokens[0].equals("GetProblem")){
-			if(!responseTokens[1].equals("Success")) {
+		if (responseTokens[0].equals("GetProblem")) {
+			if (!responseTokens[1].equals("Success")) {
 				System.out.println(responseTokens[1]);
-			}
-			else {
-				//Success GetProblem
+			} else {
+				// Success GetProblem
 				Problem problem = new Problem(responseTokens[2]);
 				StudentDataModel.setProblem(problem);
 				System.out.println(StudentDataModel.problem.toString());
-				
+
 			}
 		}
 	}
