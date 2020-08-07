@@ -22,6 +22,7 @@ import javafx.stage.Stage;
 import model.HBoxModel;
 import model.ProfessorDataModel;
 import room.Ban;
+import room.BanManager;
 import user.Professor;
 
 public class BanModifyClassNameController extends BaseController implements Initializable {
@@ -38,6 +39,44 @@ public class BanModifyClassNameController extends BaseController implements Init
 	public Ban ban;
 
 	private String className;
+	
+	private void showBanManagerList(int PNum, int BNum) {
+		ProfessorDataModel.ItemList_MyBanManager.clear();
+		String responseMessage = null;
+		try {
+			String requestMessage = "GetAllBanManager:" + PNum + ":" + BNum;
+			BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
+			PrintWriter writer = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8));
+			writer.println(requestMessage);
+			writer.flush();
+			responseMessage = reader.readLine();
+		} catch(IOException e) {
+			e.printStackTrace();
+		}
+		String[] responseTokens = responseMessage.split(":");
+		if(responseTokens[0].equals("GetAllBanManager")) {
+			if(! responseTokens[1].equals("Success")) {
+				System.out.println("Fail : GetAllBanManager");
+			}
+			else {
+				System.out.println("Success: GetAllBanManager");
+				int n = 1;
+				for(int i = 2 ; i < responseTokens.length ; i++) {	
+					int BMNum = Integer.parseInt(responseTokens[i]);
+					String name = responseTokens[i+1];
+					String state = responseTokens[i+2];
+					String code = responseTokens[i+3];
+					String workbook = responseTokens[i+4];
+					int student_size = Integer.parseInt(responseTokens[i+5]);
+					BanManager newBanManager = new BanManager(PNum, BNum, BMNum, name, state, code, workbook, student_size);
+					ProfessorDataModel.addBanManager(n, newBanManager);					
+					i = i+5;
+					n++;
+				}
+				lv_BanManagerList.setItems(ProfessorDataModel.ItemList_MyBanManager);
+			}
+		}  
+	}
 
 	private void modifyClassName(int PNum, int BNum, String newName) {
 		String responseMessage = null;
@@ -71,6 +110,8 @@ public class BanModifyClassNameController extends BaseController implements Init
 		this.socket = ProfessorDataModel.socket;
 		this.professor = ProfessorDataModel.professor;
 		this.ban = ProfessorDataModel.ban;
+		
+		this.showBanManagerList(professor.P_Num(), ban.ban_num());
 		
 		lv_BanManagerList.setItems(ProfessorDataModel.ItemList_MyBanManager);
 		this.className = ban.ban_name();
