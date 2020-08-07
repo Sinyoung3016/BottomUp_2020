@@ -20,6 +20,8 @@ public class ProfessorDataModel {
 	public static String ID = null;
 	public static Professor professor;
 	public static Ban ban;
+	public static BanManager banManager;
+	public static Workbook workbook;
 	public static BanManager[] banManagerList;
 
 	// for test
@@ -38,7 +40,7 @@ public class ProfessorDataModel {
 	public static Student stu1 = new Student(1, 1, 1, 1, "문정현", "1:apple");
 	public static Student stu2 = new Student(1, 1, 1, 2, "창문정현", "2:banana");
 	// for test
-
+	
 	public static ObservableList<HBoxModel> ItemList_MyBanManager = FXCollections
 			.observableArrayList(banManager.getBanManager(1));
 	public static ObservableList<HBoxModel> ItemList_MyClass = FXCollections.observableArrayList(ban.getBan(1),
@@ -50,6 +52,17 @@ public class ProfessorDataModel {
 	public static ObservableList<StuNumResult> ItemList_Results = FXCollections.observableArrayList(num1, num2);
 	public static ObservableList<StuNumResult> ItemList_Results2 = FXCollections.observableArrayList(num3, num4);
 
+	/*
+	 * public static ObservableList<HBoxModel> ItemList_MyBanManager = FXCollections.observableArrayList();
+	public static ObservableList<HBoxModel> ItemList_MyClass = FXCollections.observableArrayList();
+	public static ObservableList<HBoxModel> ItemList_MyWorkBook = FXCollections.observableArrayList();
+
+	public static ObservableList<Student> ItemList_Students = FXCollections.observableArrayList();
+	public static ObservableList<StuNumResult> ItemList_Results = FXCollections.observableArrayList();
+	public static ObservableList<StuNumResult> ItemList_Results2 = FXCollections.observableArrayList();
+
+	 */
+	
 	public static void addClass(int n, Ban newBan) {
 		ItemList_MyClass.add(newBan.getBan(n));
 	}

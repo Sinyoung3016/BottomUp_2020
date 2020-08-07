@@ -152,4 +152,36 @@ public class DB_Ban extends DBManager {
 			}
 		}
 	}
+	public synchronized static boolean modifyBanName(int PNum, int BNum, String newName) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+
+		try {
+			conn = getConn();
+
+			String s;
+			s = "UPDATE Ban SET Name = ? WHERE PNum = ? AND BNum = ?";
+			pstmt = conn.prepareStatement(s);
+
+			pstmt.setString(1, newName);
+			pstmt.setInt(2, PNum);
+			pstmt.setInt(3, BNum);
+
+			pstmt.executeUpdate();
+			pstmt.close();
+			conn.close();
+			return true;
+			
+		}catch(Exception e) {
+			System.out.println("Error : " + e.getMessage() + "FROM modifyBan");
+			return false;
+		} finally {
+			try {
+				if(pstmt != null) pstmt.close();
+				if(conn != null) conn.close();
+			} catch(SQLException e) {
+				System.out.println("Error : " + e.getMessage() + "FROM modifyBan (SQL)");
+			}
+		}
+	}
 }
