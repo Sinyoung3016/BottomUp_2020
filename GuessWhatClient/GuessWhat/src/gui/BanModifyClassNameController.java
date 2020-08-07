@@ -1,6 +1,13 @@
 package gui;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.net.Socket;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ResourceBundle;
 
 import javafx.fxml.FXML;
@@ -15,6 +22,7 @@ import javafx.stage.Stage;
 import model.HBoxModel;
 import model.ProfessorDataModel;
 import room.Ban;
+import user.Professor;
 
 public class BanModifyClassNameController extends BaseController implements Initializable {
 
@@ -25,17 +33,47 @@ public class BanModifyClassNameController extends BaseController implements Init
 	@FXML
 	private ListView<HBoxModel> lv_BanManagerList;
 
-	private Ban ban;
+	public Socket socket;
+	public Professor professor; 
+	public Ban ban;
+
 	private String className;
 
+	private void modifyClassName(int PNum, int BNum, String newName) {
+		String responseMessage = null;
+		try {
+			String requestMessage = "ModifyBan:" + this.professor.P_Num() + ":" + this.ban.ban_num() + ":" + newName;
+			BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
+			PrintWriter writer = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8));
+			writer.println(requestMessage);
+			writer.flush();
+			responseMessage = reader.readLine();
+		} catch(IOException e1) {
+			e1.printStackTrace();
+		}
+		System.out.println(responseMessage);
+		String[] responseTokens = responseMessage.split(":");
+		
+		if(responseTokens[0].equals("ModifyBan")) {
+			if(! responseTokens[1].equals("Success")) {
+				System.out.println("Fail : ModifyBan");
+			}
+			else {
+				System.out.println("Success: ModifyBan");
+			}
+		}
+	}
+	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// TODO Auto-generated method stub
 		
-		lv_BanManagerList.setItems(ProfessorDataModel.ItemList_MyBanManager);
+		this.socket = ProfessorDataModel.socket;
+		this.professor = ProfessorDataModel.professor;
+		this.ban = ProfessorDataModel.ban;
 		
-		ban = ProfessorDataModel.ban;
-		className = ban.ban_name();
+		lv_BanManagerList.setItems(ProfessorDataModel.ItemList_MyBanManager);
+		this.className = ban.ban_name();
 	
 	}
 
@@ -56,7 +94,9 @@ public class BanModifyClassNameController extends BaseController implements Init
 	}
 
 	public void btn_SaveClassName_Action() {
-
+		this.className = this.tf_ChangeClassName.getText();
+		this.modifyClassName(professor.P_Num(), ban.ban_num(), this.className);
+		ProfessorDataModel.ban.setName(this.className);
 		try {
 			Stage primaryStage = (Stage) btn_SaveClassName.getScene().getWindow();
 			Parent main = FXMLLoader.load(getClass().getResource("/gui/Ban.fxml"));
