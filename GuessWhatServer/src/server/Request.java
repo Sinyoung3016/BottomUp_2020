@@ -25,7 +25,9 @@ GET_ALLBAN("GetAllBan"),
 GET_BANMANGER("GetBanManager"),
 GET_WORKBOOK("GetWorkbook"),
 GET_PROBLEM("GetProblem"),
-GET_WORKBOOK_PROBLEM("GetWorkbookProblem")
+GET_WORKBOOK_PROBLEM("GetWorkbookProblem"),
+GET_ANSWERLIST("GetAnswerList"),
+GET_TYPELIST("GetTypeList")
 ;
 	
 	private String request;

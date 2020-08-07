@@ -1,5 +1,8 @@
 package gui;
 
+import java.util.Iterator;
+import java.util.List;
+
 import database.DB_Problem;
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -24,7 +27,8 @@ public class Main extends Application {
 	}
 
 	public static void main(String[] args) {
-		launch(args);
-	}
+		//launch(args);
 
-}
+	
+
+}}

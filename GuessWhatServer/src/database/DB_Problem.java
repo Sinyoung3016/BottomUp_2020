@@ -159,4 +159,74 @@ public class DB_Problem extends DBManager{
 		Problem problem = problemList.get(index);
 		return problem;
 		}
+	
+	public synchronized static List<String> getAnswerList(int WNum){
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		List<String> answerList = new ArrayList<>();
+		
+		try {
+			conn = getConn();
+			
+			String sql;
+			sql = "SELECT * FROM Problem Where WNum = ?";
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setInt(1, WNum);
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				answerList.add(rs.getString("Answer"));
+			}
+			
+			return answerList;
+		} catch(Exception e) {
+			System.out.println("Error : " + e.getMessage() + "FROM getAnswerList.1");
+			return null;
+		} finally {
+			try {
+				if(pstmt != null) pstmt.close();
+				if(conn != null) conn.close();
+				if(rs != null)  rs.close();
+			} catch(SQLException e) {
+				System.out.println("Error : " + e.getMessage() + "FROM getAnswerList.2");
+			}
+		}
+	}
+	
+	public synchronized static List<String> getTypeList(int WNum){
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		List<String> answerList = new ArrayList<>();
+		
+		try {
+			conn = getConn();
+			
+			String sql;
+			sql = "SELECT * FROM Problem Where WNum = ?";
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setInt(1, WNum);
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				answerList.add(rs.getString("Type"));
+			}
+			
+			return answerList;
+		} catch(Exception e) {
+			System.out.println("Error : " + e.getMessage() + "FROM getTypeList.1");
+			return null;
+		} finally {
+			try {
+				if(pstmt != null) pstmt.close();
+				if(conn != null) conn.close();
+				if(rs != null)  rs.close();
+			} catch(SQLException e) {
+				System.out.println("Error : " + e.getMessage() + "FROM getTypeList.2");
+			}
+		}
+	}
 }

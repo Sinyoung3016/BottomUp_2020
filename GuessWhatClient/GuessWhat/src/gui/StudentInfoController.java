@@ -27,6 +27,7 @@ import model.StudentDataModel;
 import room.BanManager;
 import thread.ClientThread;
 import thread.LoadingThread;
+import user.Student;
 
 public class StudentInfoController implements Initializable{
 	@FXML
@@ -124,8 +125,9 @@ public class StudentInfoController implements Initializable{
 								else {
 									Problem problem = new Problem(responseTokens[5]);
 									StudentDataModel.setProblem(problem);
-									StudentDataModel.answerIsEmpty = new boolean[workbook.WorkBooksize()];
-									
+									StudentDataModel.hasAnswer = new boolean[workbook.WorkBooksize()];
+									StudentDataModel.student = new Student();
+									StudentDataModel.student.setAnswer(new String[workbook.WorkBooksize()]);
 								}
 							}
 						}

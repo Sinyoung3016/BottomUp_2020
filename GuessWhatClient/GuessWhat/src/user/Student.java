@@ -1,5 +1,7 @@
 package user;
 
+import model.StudentDataModel;
+
 //문제 풀이자
 public class Student {
 	
@@ -9,7 +11,7 @@ public class Student {
 	
 	private int S_num;
 	private String name;
-	private String [] answer;
+	public String [] answer;
 	private boolean [] isEmpty;
 	private String [] result; //O X N
 	
@@ -32,6 +34,13 @@ public class Student {
 		this.answer = answer.split(":");
 	}
 	
+	public Student() {
+		this.ban_num = StudentDataModel.banManager.ban_num();
+		this.BM_num = StudentDataModel.banManager.BM_num();
+		this.name = StudentDataModel.studentName;
+		
+	}
+	
 	public void setResult(String result) { this.result = result.split(":"); }
 	
 	//Getter start
@@ -44,4 +53,23 @@ public class Student {
 	public String[] answer() { return this.answer; }
 	public String[] result() { return this.result; }
 	//Getter end
+	
+	//Setter start
+	public void setAnswer(String[] answer) {
+		this.answer = answer;
+	}
+	
+	public String tokenAnswer() {
+		StringBuilder sb = new StringBuilder("");
+		for(int i = 0; i<this.answer.length-1; i++) {
+			sb.append(this.answer()[i]);
+			sb.append("`");
+		}
+		sb.append(this.answer()[this.answer().length-1]);
+		return new String(sb);
+	}
+	
+	public String tokenResult() {
+		return null;
+	}
 }

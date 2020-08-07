@@ -131,6 +131,12 @@ public class ServerThread extends Thread{
 						}else if(requestTokens[0].equals(Request.GET_WORKBOOK_PROBLEM.getRequest())) {
 							clientRequest = "GetWorkbookProblem";
 							this.getWorkbookProblem(requestTokens[1]);
+						}else if(requestTokens[0].equals(Request.GET_ANSWERLIST.getRequest())) { //GetAnswerList:WNum
+							clientRequest = "GetAnswerList";
+							this.getAnswerList(requestTokens[1]);
+						}else if(requestTokens[0].equals(Request.GET_TYPELIST.getRequest())) { //GetTypeList:WNum
+							clientRequest = "GetTypeList";
+							this.getTypeList(requestTokens[1]);
 						}
 					}
 				} catch(MyException e) {
@@ -357,6 +363,52 @@ public class ServerThread extends Thread{
 				pw.println(new String(sb));
 				pw.flush();
 			}
+		}
+	}
+	
+	private void getAnswerList(String WNum) {
+		int num = Integer.parseInt(WNum);
+		List<String> answerList = DB_Problem.getAnswerList(num);
+		
+		if(answerList != null) {
+			StringBuilder sb = new StringBuilder("GetAnswerList:Success:");
+			
+			Iterator<String> iterator = answerList.iterator();
+			while(iterator.hasNext()){
+				sb.append(iterator.next());
+				sb.append("`");
+			}
+			sb.deleteCharAt(sb.length()-1);
+			
+			pw.println(new String(sb));
+			pw.flush();
+		}
+		else {
+			pw.println("GetAnswerList:Fail");
+			pw.flush();
+		}
+	}
+	
+	private void getTypeList(String WNum) {
+		int num = Integer.parseInt(WNum);
+		List<String> typeList = DB_Problem.getTypeList(num);
+		
+		if(typeList != null) {
+			StringBuilder sb = new StringBuilder("GetTypeList:Success:");
+			
+			Iterator<String> iterator = typeList.iterator();
+			while(iterator.hasNext()){
+				sb.append(iterator.next());
+				sb.append("-");
+			}
+			sb.deleteCharAt(sb.length()-1);
+
+			pw.println(new String(sb));
+			pw.flush();
+		}
+		else {
+			pw.println("GetTypeList:Fail");
+			pw.flush();
 		}
 	}
 }
