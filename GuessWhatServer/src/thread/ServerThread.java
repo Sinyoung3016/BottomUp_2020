@@ -344,13 +344,14 @@ public class ServerThread extends Thread{
 		else {
 			sb.append("GetWorkbook:Success:");
 			sb.append(workbook.tokenString()+ ":");
-			Problem problem = DB_Problem.getProblemOf(workbook.getWBNum(), 1);
+			Problem problem = DB_Problem.getProblemOf(workbook.getWBNum(), 0);
 			if(problem == null) {
 				sb.append("GetProblem:Fail");
 				pw.println(new String(sb));
 				pw.flush();
 			}
 			else {
+				sb.append("GetProblem:Success:");
 				sb.append(problem.tokenString());
 				pw.println(new String(sb));
 				pw.flush();

@@ -14,7 +14,7 @@ import model.HBoxModel;
 public class Workbook {
 
 	private int P_Num;
-	
+	private int BM_Num;
 	private int W_Num;
 	private String W_name;
 	
@@ -31,9 +31,10 @@ public class Workbook {
 	public Workbook(String responseToken) {
 		String[] tokens = responseToken.split("-");
 		this.P_Num = Integer.parseInt(tokens[0]);
-		this.W_Num = Integer.parseInt(tokens[1]);
-		this.W_name = tokens[2];
-		this.WorkBook_size = Integer.parseInt(tokens[3]);
+		this.BM_Num = Integer.parseInt(tokens[1]);
+		this.W_Num = Integer.parseInt(tokens[2]);
+		this.W_name = tokens[3];
+		this.WorkBook_size = Integer.parseInt(tokens[4]);
 	}
 	//Constructor end
 	

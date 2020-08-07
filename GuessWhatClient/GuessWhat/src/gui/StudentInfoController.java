@@ -67,9 +67,7 @@ public class StudentInfoController implements Initializable{
 			else {
 				//Success GetBanManager
 				this.banManager = new BanManager(responseTokens[2]);
-				System.out.println(responseTokens[2]);
 				StudentDataModel.banManager = this.banManager;
-				System.out.println(this.banManager.stringOfState());
 				if(this.banManager.stringOfState() == "ING") {
 					this.IsTestStarted = true;
 				}

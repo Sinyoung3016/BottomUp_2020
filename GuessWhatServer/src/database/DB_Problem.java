@@ -116,7 +116,7 @@ public class DB_Problem extends DBManager{
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		List<Problem> problemList = new ArrayList<>();
-		String[] problemInfo = new String[4];
+		String[] problemInfo = new String[6];
 		
 		try {
 			conn = getConn();
@@ -130,10 +130,12 @@ public class DB_Problem extends DBManager{
 			rs = pstmt.executeQuery();
 			
 			while(rs.next()) {
-				problemInfo[0] = rs.getString("Question");
-				problemInfo[1] = rs.getString("Answer");
-				problemInfo[2] = rs.getString("Type");
-				problemInfo[3] = rs.getString("AnswerContent");
+				problemInfo[0] = rs.getString("PBNum");
+				problemInfo[1] = rs.getString("WNum");
+				problemInfo[2] = rs.getString("Question");
+				problemInfo[3] = rs.getString("Answer");
+				problemInfo[4] = rs.getString("Type");
+				problemInfo[5] = rs.getString("AnswerContents");
 				problemList.add(new Problem(problemInfo));
 			}
 			

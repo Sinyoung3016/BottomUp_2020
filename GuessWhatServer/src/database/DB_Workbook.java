@@ -148,7 +148,7 @@ public class DB_Workbook extends DBManager{
 		Statement state = null;
 		ResultSet rs = null;
 		Workbook workbook = null;
-		String[] workbookInfo = new String[2];
+		String[] workbookInfo = new String[5];
 		try {
 			conn = getConn();
 			state = conn.createStatement();
@@ -168,6 +168,7 @@ public class DB_Workbook extends DBManager{
 			return workbook;
 		}catch(Exception e) {
 			System.out.println("Error : " + e.getMessage() + "FROM getWorkbookOf.1");
+			e.printStackTrace();
 			return null;
 		} finally {
 			try {
