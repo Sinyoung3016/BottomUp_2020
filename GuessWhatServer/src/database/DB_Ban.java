@@ -46,6 +46,43 @@ public class DB_Ban extends DBManager {
 		}
 	}
 
+	public synchronized static Ban getBan(int PNum, int BNum) {
+		Connection conn = null;
+		Statement stmt = null;
+		ResultSet rs = null;
+
+		Ban ban = null;
+		String name = null;
+		int size = -1;
+
+		try {
+			conn = getConn();
+			stmt = conn.createStatement();
+			String sql;
+			sql = "SELECT * FROM Ban WHERE PNum = '" + PNum + "' AND BNum = '" + BNum + "'";
+			rs = stmt.executeQuery(sql);
+
+			if(rs.next()) {
+				name = rs.getString("Name");
+				size = rs.getInt("Size");
+				
+				ban = new Ban(PNum, BNum, name, size);
+			}
+			return ban;
+		}catch(Exception e) {
+			System.out.println("Error : " + e.getMessage() + "FROM getBan");
+			return null;
+		} finally {
+			try {
+				if(stmt != null) stmt.close();
+				if(conn != null) conn.close();
+				if(rs != null) rs.close();
+			} catch(SQLException e) {
+				System.out.println("Error : " + e.getMessage() + "FROM getBan (SQL)");
+			}
+		}
+	}
+	
 	public synchronized static List<Ban> getAllBan(int PNum) {
 		Connection conn = null;
 		Statement stmt = null;

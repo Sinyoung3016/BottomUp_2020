@@ -12,10 +12,11 @@ public class StuNumResult {
 	private String problemType; //from problem
 	
 	private String S_name;
-	private String S_result;
+	private String S_answer;
+	private String S_result; //O X N
 	
 	
-	public StuNumResult(int P_num, int ban_num, int BM_num, String workbook, int PB_num, String problemType, String S_name, String S_result) {
+	public StuNumResult(int P_num, int ban_num, int BM_num, String workbook, int PB_num, String problemType, String S_name, String S_answer, String S_result) {
 		this.P_num = P_num;
 		this.ban_num = ban_num;
 		this.BM_num = BM_num;
@@ -23,6 +24,7 @@ public class StuNumResult {
 		this.PB_num = PB_num;
 		this.problemType = problemType;
 		this.S_name = S_name;
+		this.S_answer = S_answer;
 		this.S_result = S_result;
 	}
 	
@@ -34,6 +36,7 @@ public class StuNumResult {
 	public int PB_num() { return this.PB_num; }
 	public String problemType() { return this.problemType; }
 	public String S_name() { return this.S_name; }
+	public String S_answer() { return this.S_answer; }
 	public String S_result() { return this.S_result; }
 	
 }

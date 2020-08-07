@@ -111,9 +111,12 @@ public class ServerThread extends Thread{
 						}else if(requestTokens[0].equals(Request.GET_BANMANGER.getRequest())) { //GetBanManager:code
 							clientRequest = "GetBanManager";
 							this.getBanManager(requestTokens[1]);
-						}else if(requestTokens[0].equals(Request.GET_BAN.getRequest())) { //GetBan:PNum
+						}else if(requestTokens[0].equals(Request.GET_BAN.getRequest())) { //GetBan:PNum:BNum
 							clientRequest = "GetBan";
-							this.getBan(requestTokens[1]);
+							this.getBan(requestTokens[1], requestTokens[2]);
+						}else if(requestTokens[0].equals(Request.GET_ALLBAN.getRequest())) { //GetAllBan:PNum
+							clientRequest = "GetAllBan";
+							this.getAllBan(requestTokens[1]);
 						}
 						else if(requestTokens[0].equals(Request.GET_WORKBOOK.getRequest())) { //GetWorkbook
 							clientRequest = "GetWorkbook";
@@ -249,16 +252,32 @@ public class ServerThread extends Thread{
 			pw.flush();
 		}
 	}
-	private void getBan(String PNum) {
+	private void getBan(String PNum, String BNum) {
 
-		List<Ban> listBan = DB_Ban.getAllBan(Integer.parseInt(PNum));
+		Ban ban = DB_Ban.getBan(Integer.parseInt(PNum), Integer.parseInt(BNum));
 
-		if (listBan == null) {
+		if (ban == null) {
 			pw.println("GetBan:Fail " + PNum);
 			pw.flush();
 		}
 		else {
 			String result = "GetBan:Success";
+			result = result + ":" + ban.ban_num() + ":" + ban.ban_name() + ":" + ban.banManager_Size();
+			
+			pw.println(result);
+			pw.flush();
+		}
+	}
+	private void getAllBan(String PNum) { //GetAllBan:Success:BNum:Name:BM_Size
+
+		List<Ban> listBan = DB_Ban.getAllBan(Integer.parseInt(PNum));
+
+		if (listBan == null) {
+			pw.println("GetAllBan:Fail " + PNum);
+			pw.flush();
+		}
+		else {
+			String result = "GetAllBan:Success";
 
 			Iterator<Ban> iterator = listBan.iterator();
 			while(iterator.hasNext()) {

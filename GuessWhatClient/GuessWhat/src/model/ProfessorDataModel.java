@@ -19,6 +19,7 @@ public class ProfessorDataModel {
 	public static Socket socket = null;
 	public static String ID = null;
 	public static Professor professor;
+	public static Ban ban;
 	public static BanManager[] banManagerList;
 
 	// for test

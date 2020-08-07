@@ -10,7 +10,7 @@ public class Student {
 	private int S_num;
 	private String name;
 	private String [] answer;
-	private String [] result;
+	private String [] result; //O X N
 	
 	public Student(int P_num, int ban_num, int BM_num, int S_num, String name, String answer, String result) {
 		this.P_num = P_num;
