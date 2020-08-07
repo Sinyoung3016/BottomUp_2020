@@ -1,5 +1,13 @@
 package room;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.net.Socket;
+import java.nio.charset.StandardCharsets;
+
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
@@ -85,9 +93,9 @@ public class BanManager {
 
 	private State stateOf(String state) {
 		switch (state) {
-		case "OPEN":
+		case "Open":
 			return State.OPEN;
-		case "ING":
+		case "Ing":
 			return State.ING;
 		default:
 			return State.CLOSE;
@@ -103,6 +111,8 @@ public class BanManager {
 
 	public static class HBoxCell extends HBoxModel {
 
+		public Socket socket = ProfessorDataModel.socket;
+		
 		private Label size = new Label();
 		private Label state = new Label();
 
@@ -146,6 +156,40 @@ public class BanManager {
 				public void handle(ActionEvent e) {
 					if (BM_state.equals(State.OPEN)) {
 
+						String responseMessage = null;
+						try {
+							String requestMessage = "GetCurrentBanManager:" + P_num + ":" + ban_Num;
+							BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
+							PrintWriter writer = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8));
+							writer.println(requestMessage);
+							writer.flush();
+							responseMessage = reader.readLine();
+						} catch(IOException e1) {
+							e1.printStackTrace();
+						}
+						System.out.println(responseMessage);
+						String[] responseTokens = responseMessage.split(":");
+						
+						if(responseTokens[0].equals("GetCurrentBanManager")) {
+							if(! responseTokens[1].equals("Success")) {
+								System.out.println("Fail : GetCurrentBanManager");
+							}
+							else {
+								System.out.println("Success: GetCurrentBanManager");
+								//GetAllBanManager:Success:BMNum:Name:State:Code:Workbook:studentSize
+								
+								int BMNum = Integer.parseInt(responseTokens[2]);
+								String name = responseTokens[3];
+								String state = responseTokens[4];
+								String code = responseTokens[5];
+								String workbook = responseTokens[6];
+								int student_size = Integer.parseInt(responseTokens[7]);
+								BanManager newBanManager = new BanManager(P_num, ban_Num, BMNum, name, state, code, workbook, student_size);
+								
+								ProfessorDataModel.banManager = newBanManager;
+							}
+						}
+						
 						try {
 							Stage primaryStage = (Stage) name.getScene().getWindow();
 							Parent search = FXMLLoader.load(getClass().getResource("/gui/BanManagerSoon.fxml"));
