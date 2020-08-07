@@ -25,7 +25,7 @@
                         </Label>
                         <TextField fx:id="tf_Id" prefWidth="250.0">
                            <font>
-                              <Font name="Dubai Medium" size="12.0" />
+                              <Font name="Dubai Medium" size="15.0" />
                            </font>
                         </TextField>
                      </children>
@@ -42,7 +42,7 @@
                         </Label>
                         <PasswordField fx:id="pf_Password" prefWidth="250.0">
                            <font>
-                              <Font name="Dubai Medium" size="12.0" />
+                              <Font name="Dubai Medium" size="15.0" />
                            </font>
                         </PasswordField>
                      </children>

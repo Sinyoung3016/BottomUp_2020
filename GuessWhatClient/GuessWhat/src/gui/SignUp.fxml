@@ -21,28 +21,28 @@
                         <Font name="Dubai Medium" size="20.0" />
                      </font>
                      <HBox.margin>
-                        <Insets bottom="5.0" right="10.0" />
+                        <Insets right="10.0" top="5.0" />
                      </HBox.margin>
                   </Label>
                   <TextField fx:id="tf_ID" prefWidth="250.0">
                      <font>
-                        <Font name="Dubai Medium" size="12.0" />
+                        <Font name="Dubai Medium" size="15.0" />
                      </font>
                      <HBox.margin>
                         <Insets top="3.0" />
                      </HBox.margin>
                   </TextField>
-                  <Button fx:id="btn_Overlap" mnemonicParsing="false" onAction="#btn_Overlap_Action" prefHeight="30.0" prefWidth="50.0" style="-fx-background-color: #5ad18f;" text="Check" textFill="WHITE">
+                  <Button fx:id="btn_Overlap" mnemonicParsing="false" onAction="#btn_Overlap_Action" prefHeight="38.0" prefWidth="50.0" style="-fx-background-color: #5ad18f;" text="Check" textFill="WHITE">
                      <font>
                         <Font name="Dubai Medium" size="12.0" />
                      </font>
                      <HBox.margin>
-                        <Insets top="3.0" />
+                        <Insets top="2.0" />
                      </HBox.margin>
                   </Button>
                </children>
                <VBox.margin>
-                  <Insets left="80.0" right="130.0" />
+                  <Insets bottom="10.0" left="80.0" right="130.0" />
                </VBox.margin>
             </HBox>
             <HBox alignment="TOP_RIGHT" prefHeight="40.0" prefWidth="200.0" spacing="15.0">
@@ -52,12 +52,12 @@
                         <Font name="Dubai Medium" size="20.0" />
                      </font>
                      <HBox.margin>
-                        <Insets top="2.0" />
+                        <Insets top="5.0" />
                      </HBox.margin>
                   </Label>
                   <PasswordField fx:id="pf_PassWord" prefWidth="250.0">
                      <font>
-                        <Font name="Dubai Medium" size="12.0" />
+                        <Font name="Dubai Medium" size="15.0" />
                      </font>
                      <HBox.margin>
                         <Insets top="2.0" />
@@ -65,7 +65,7 @@
                   </PasswordField>
                </children>
                <VBox.margin>
-                  <Insets left="80.0" right="185.0" />
+                  <Insets bottom="10.0" left="80.0" right="185.0" />
                </VBox.margin>
             </HBox>
             <HBox alignment="TOP_RIGHT" prefHeight="30.0" prefWidth="200.0" spacing="15.0">
@@ -75,12 +75,12 @@
                         <Font name="Dubai Medium" size="20.0" />
                      </font>
                      <HBox.margin>
-                        <Insets />
+                        <Insets top="5.0" />
                      </HBox.margin>
                   </Label>
                   <PasswordField fx:id="pf_CheckPW" prefWidth="250.0">
                      <font>
-                        <Font name="Dubai Medium" size="12.0" />
+                        <Font name="Dubai Medium" size="15.0" />
                      </font>
                      <HBox.margin>
                         <Insets top="4.0" />
@@ -103,12 +103,12 @@
                         <Font name="Dubai Medium" size="20.0" />
                      </font>
                      <HBox.margin>
-                        <Insets />
+                        <Insets top="2.0" />
                      </HBox.margin>
                   </Label>
                   <TextField fx:id="tf_Email" prefWidth="250.0">
                      <font>
-                        <Font name="Dubai Medium" size="12.0" />
+                        <Font name="Dubai Medium" size="15.0" />
                      </font>
                   </TextField>
                </children>

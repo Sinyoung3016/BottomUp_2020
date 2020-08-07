@@ -68,7 +68,7 @@
                   </Label>
                   <Label fx:id="lb_WorkBook" prefHeight="40.0" prefWidth="200.0" style="-fx-text-fill: #22741C;" textAlignment="CENTER">
                      <font>
-                        <Font name="Dubai Medium" size="15.0" />
+                        <Font name="Dubai Medium" size="18.0" />
                      </font>
                   </Label>
                </children>
