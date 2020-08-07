@@ -42,6 +42,7 @@ public class Problem {
 		this.question = question;
 		this.answer = answer;
 		this.answerContent = null;
+		this.answerContentList = null;
 	}	
 	
 	public Problem(String responseTokens) {
@@ -63,6 +64,7 @@ public class Problem {
 	public String answer() { return this.answer; }
 	public ProblemType getType() { return this.type;}
 	public String getAnswerContent() {return this.answerContent;}
+	public String [] getAnswerContentList() {return this.answerContentList;}
 	//Getter end
 	
 	
