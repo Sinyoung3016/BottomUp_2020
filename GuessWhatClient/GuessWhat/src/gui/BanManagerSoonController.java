@@ -1,5 +1,6 @@
 package gui;
 
+import java.net.Socket;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -19,6 +20,7 @@ import model.ProfessorDataModel;
 import room.Ban;
 import room.BanManager;
 import room.BanManager.State;
+import user.Professor;
 
 public class BanManagerSoonController extends BaseController implements Initializable{
 
@@ -27,9 +29,11 @@ public class BanManagerSoonController extends BaseController implements Initiali
 	@FXML
 	private Label lb_BanManagerName, lb_WorkBook, lb_RoomCode;
 	
-	private Ban ban;
-	private BanManager banManager;
-	private Workbook workbook;
+	public Socket socket;
+	public Professor professor; 
+	public Ban ban;
+	public BanManager banManager;
+	public Workbook workbook;
 
 	private String className;
 	
@@ -37,10 +41,12 @@ public class BanManagerSoonController extends BaseController implements Initiali
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// TODO Auto-generated method stub
 
+		this.socket = ProfessorDataModel.socket;
+		this.professor = ProfessorDataModel.professor;
 		this.ban = ProfessorDataModel.ban;
 		this.banManager = ProfessorDataModel.banManager;
-		this.workbook = ProfessorDataModel.workbook;
 		
+		this.workbook = ProfessorDataModel.workbook;
 		
 		this.btn_Main.setText(ban.ban_name());
 		this.lb_BanManagerName.setText(banManager.BM_name());

@@ -61,7 +61,6 @@ public class BanController extends BaseController implements Initializable {
 				System.out.println("Success: GetAllBanManager");
 				int n = 1;
 				for(int i = 2 ; i < responseTokens.length ; i++) {	
-					// [2]BMNum:[3]Name:[4]State:[5]Code:[6]Workbook:[7]Student_size
 					int BMNum = Integer.parseInt(responseTokens[i]);
 					String name = responseTokens[i+1];
 					String state = responseTokens[i+2];
