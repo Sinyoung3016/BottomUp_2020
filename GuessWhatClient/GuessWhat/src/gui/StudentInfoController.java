@@ -67,6 +67,7 @@ public class StudentInfoController implements Initializable{
 			else {
 				//Success GetBanManager
 				this.banManager = new BanManager(responseTokens[2]);
+				System.out.println(responseTokens[2]);
 				StudentDataModel.banManager = this.banManager;
 				System.out.println(this.banManager.stringOfState());
 				if(this.banManager.stringOfState() == "ING") {
@@ -98,14 +99,16 @@ public class StudentInfoController implements Initializable{
 					StudentDataModel.studentName = tf_StudentName.getText();
 					String responseMessage = null;
 					try {
-						String requestTokens = "GetWorkbookAndProblem:" + StudentDataModel.banManager.BM_num();
+						String requestTokens = "GetWorkbookProblem:" + StudentDataModel.banManager.BM_num();
 						BufferedReader br = new BufferedReader(
 								new InputStreamReader(this.socket.getInputStream(), StandardCharsets.UTF_8));
 						PrintWriter pw = new PrintWriter(
 								new OutputStreamWriter(this.socket.getOutputStream(), StandardCharsets.UTF_8));
 						pw.println(requestTokens);
 						pw.flush();
+						System.out.println("requestTokens :" + requestTokens);
 						responseMessage = br.readLine();
+						System.out.println("responseTokens : " +responseMessage);
 					} catch(IOException e) {
 						e.printStackTrace();
 					}//GetWorkbook:Success:WorkbookInfo:GetProblem:Success:FirstProblemInfo
@@ -123,7 +126,7 @@ public class StudentInfoController implements Initializable{
 									System.out.println(responseTokens[4]);
 								}
 								else {
-									Problem problem = new Problem(responseTokens[4]);
+									Problem problem = new Problem(responseTokens[5]);
 									StudentDataModel.setProblem(problem);
 								}
 							}

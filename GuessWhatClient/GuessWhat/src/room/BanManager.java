@@ -57,9 +57,9 @@ public class BanManager {
 		this.BM_num = Integer.parseInt(banManagerInfo[2]);
 		this.BM_name = banManagerInfo[3];
 		this.BM_roomcode = banManagerInfo[4];
-		this.workBook = banManagerInfo[5];
-		this.BM_state = this.stateOf(banManagerInfo[6]);
-		this.Student_size = Integer.parseInt(banManagerInfo[7]);
+		//this.workBook = banManagerInfo[5];
+		this.BM_state = this.stateOf(banManagerInfo[5]);
+		this.Student_size = Integer.parseInt(banManagerInfo[6]);
 	}
 	// Constructor end
 
@@ -83,9 +83,9 @@ public class BanManager {
 
 	private State stateOf(String state) {
 		switch (state) {
-		case "Open":
+		case "OPEN":
 			return State.OPEN;
-		case "Ing":
+		case "ING":
 			return State.ING;
 		default:
 			return State.CLOSE;

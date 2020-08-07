@@ -45,6 +45,8 @@ public class StuWorkBookController extends BaseController implements Initializab
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		this.socket = StudentDataModel.socket;
+		
+		
 				
 		
 	}
