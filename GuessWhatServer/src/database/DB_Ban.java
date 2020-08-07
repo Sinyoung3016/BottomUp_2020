@@ -121,4 +121,35 @@ public class DB_Ban extends DBManager {
 			}
 		}
 	}
+	public synchronized static boolean deleteBan(int PNum, int BNum) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+
+		try {
+			conn = getConn();
+
+			String s;
+			s = "DELETE FROM Ban WHERE PNum = ? AND BNum = ?";
+			pstmt = conn.prepareStatement(s);
+
+			pstmt.setInt(1, PNum);
+			pstmt.setInt(2, BNum);
+
+			pstmt.executeUpdate();
+			pstmt.close();
+			conn.close();
+			return true;
+			
+		}catch(Exception e) {
+			System.out.println("Error : " + e.getMessage() + "FROM deleteBan");
+			return false;
+		} finally {
+			try {
+				if(pstmt != null) pstmt.close();
+				if(conn != null) conn.close();
+			} catch(SQLException e) {
+				System.out.println("Error : " + e.getMessage() + "FROM deleteBan (SQL)");
+			}
+		}
+	}
 }

@@ -96,6 +96,28 @@ public class BanController extends BaseController implements Initializable {
 	public void btn_DeleteBan_Action() {
 		
 		//delete
+		String responseMessage = null;
+		try {
+			String requestMessage = "DeleteBan:" + this.professor.P_Num() + ":" + this.ban.ban_num();
+			BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
+			PrintWriter writer = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8));
+			writer.println(requestMessage);
+			writer.flush();
+			responseMessage = reader.readLine();
+		} catch(IOException e1) {
+			e1.printStackTrace();
+		}
+		System.out.println(responseMessage);
+		String[] responseTokens = responseMessage.split(":");
+		
+		if(responseTokens[0].equals("DeleteBan")) {
+			if(! responseTokens[1].equals("Success")) {
+				System.out.println("Fail : DeleteBan");
+			}
+			else {
+				System.out.println("Success: DeleteBan");
+			}
+		}
 		
 		try {
 			Stage primaryStage = (Stage) btn_CreateNewBanManager.getScene().getWindow();
