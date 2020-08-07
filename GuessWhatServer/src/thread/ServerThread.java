@@ -115,6 +115,15 @@ public class ServerThread extends Thread{
 						}else if(requestTokens[0].equals(Request.GET_BANMANGER.getRequest())) { //GetBanManager:code
 							clientRequest = "GetBanManager";
 							this.getBanManager(requestTokens[1]);
+						}else if(requestTokens[0].equals(Request.GET_CURRENTBANMANAGER.getRequest())) { //GetCurrentBanManager:PNum:BNum
+							clientRequest = "GetCurrentBanManager";
+							this.getCurrentBanManager(requestTokens[1], requestTokens[2]);
+						}else if(requestTokens[0].equals(Request.GET_ALLBAN.getRequest())) { //GetAllBan:PNum
+							clientRequest = "GetAllBan";
+							this.getAllBan(requestTokens[1]);
+						}else if(requestTokens[0].equals(Request.GET_ALLBANMANGER.getRequest())) { //GetAllBanManager:PNum:BNum
+							clientRequest = "GetAllBanManager";
+							this.getAllBanManager(requestTokens[1], requestTokens[2]);
 						}else if(requestTokens[0].equals(Request.GET_BAN.getRequest())) { //GetBan:PNum:BNum
 							clientRequest = "GetBan";
 							this.getBan(requestTokens[1], requestTokens[2]);
@@ -306,6 +315,31 @@ public class ServerThread extends Thread{
 			pw.flush();
 		}
 	}
+	private void getAllBanManager(String PNum, String BNum) { //GetAllBanManager:Success:Name, State, Code, WorkBook
+
+		List<BanManager> listBanManager = DB_BanManager.getAllBanManager(Integer.parseInt(PNum), Integer.parseInt(BNum));
+
+		if (listBanManager == null) {
+			pw.println("GetAllBan:Fail " + PNum);
+			pw.flush();
+		}
+		else {
+			String result = "GetAllBanManager:Success";
+
+			Iterator<BanManager> iterator = listBanManager.iterator();
+			while(iterator.hasNext()) {
+				BanManager banManager = iterator.next();
+				result = result + ":" + banManager.BM_num() + ":" + 
+						banManager.BM_name() + ":" + 
+						banManager.stateToString(banManager.BM_sate()) + ":" +
+						banManager.BM_roomcode() + ":" + 
+						banManager.workbook() + ":" + 
+						banManager.student_size();
+			}
+			pw.println(result);
+			pw.flush();
+		}
+	}
 	private void getBanManager(String code) {
 		BanManager banManager = DB_BanManager.getBanManagerOfCode(code);
 		if(banManager != null) {
@@ -313,6 +347,28 @@ public class ServerThread extends Thread{
 			pw.flush();
 		}
 
+	}
+	private void getCurrentBanManager(String PNum, String BNum) { //GetCurrentBanManager:Success:Name, State, Code, WorkBook
+
+		BanManager banManager = DB_BanManager.getCurrentBanManager(Integer.parseInt(PNum), Integer.parseInt(BNum));
+
+		if (banManager == null) {
+			pw.println("GetCurrentBan:Fail " + PNum);
+			pw.flush();
+		}
+		else {
+			String result = "GetCurrentBanManager:Success";
+
+			result = result + ":" + banManager.BM_num() + ":" + 
+					banManager.BM_name() + ":" + 
+					banManager.stateToString(banManager.BM_sate()) + ":" +
+					banManager.BM_roomcode() + ":" + 
+					banManager.workbook() + ":" + 
+					banManager.student_size();
+
+			pw.println(result);
+			pw.flush();
+		}
 	}
 	private void getWorkbook() {
 		List<Workbook> listWorkbook = DB_Workbook.getAllWorkbook();
