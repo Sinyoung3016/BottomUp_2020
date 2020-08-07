@@ -21,7 +21,7 @@
                   <Font name="Dubai Medium" size="17.0" />
                </font>
             </Button>
-            <Button fx:id="btn_Close" mnemonicParsing="false" onAction="#btn_Close_Action" prefHeight="40.0" prefWidth="150.0" style="-fx-background-color: #5ad18f; -fx-text-fill: #ffffff;" text="Close">
+            <Button fx:id="btn_Close" mnemonicParsing="false" onAction="#btn_Close_Action" prefHeight="40.0" prefWidth="150.0" style="-fx-background-color: ff848f; -fx-text-fill: #ffffff;" text="Close">
                <HBox.margin>
                   <Insets right="5.0" top="5.0" />
                </HBox.margin>

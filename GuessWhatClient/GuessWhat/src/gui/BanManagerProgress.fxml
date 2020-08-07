@@ -84,11 +84,6 @@
                         <Font name="Dubai Medium" size="18.0" />
                      </font>
                   </Button>
-                  <Button fx:id="btn_Close" mnemonicParsing="false" onAction="#btn_Close_Action" prefHeight="40.0" prefWidth="150.0" style="-fx-background-color: #5ad18f;" text="Close" textFill="WHITE">
-                     <font>
-                        <Font name="Dubai Medium" size="18.0" />
-                     </font>
-                  </Button>
                </children>
                <padding>
                   <Insets top="10.0" />

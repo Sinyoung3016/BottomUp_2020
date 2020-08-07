@@ -63,7 +63,7 @@
    <bottom>
       <HBox alignment="TOP_CENTER" prefHeight="470.0" prefWidth="200.0" spacing="5.0" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="btn_Close" mnemonicParsing="false" onAction="#btn_Close_Action" prefWidth="100.0" style="-fx-background-color: #5ad18f;" text="Close" textFill="WHITE">
+            <Button fx:id="btn_Close" mnemonicParsing="false" onAction="#btn_Close_Action" prefWidth="100.0" style="-fx-background-color: ff848f;" text="Close" textFill="WHITE">
                <font>
                   <Font name="Dubai Medium" size="18.0" />
                </font>
