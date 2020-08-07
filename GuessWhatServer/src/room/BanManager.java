@@ -61,10 +61,12 @@ public class BanManager {
 	//Getter start
 	public int BM_num() { return BM_num; } 
 	public String BM_name() { return BM_name; }
-	public String BM_password() { return BM_roomcode; }
+	public State BM_sate() { return BM_state; }
+	public String BM_roomcode() { return BM_roomcode; }
 	public String workbook() { return workbook; }
 	public AnswerSet answerSet() { return answerSet; }
 	public int BNum() {return this.B_Num;}
+	public int student_size() { return student_size; }
 	//Getter end
 	
 	
@@ -80,7 +82,7 @@ public class BanManager {
 		}
 	}
 	
-	private String stateToString(State state) {
+	public String stateToString(State state) {
 		switch(state) {
 		case OPEN:
 			return "Open";
