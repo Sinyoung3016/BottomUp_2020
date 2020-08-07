@@ -234,7 +234,7 @@
    <bottom>
       <HBox prefHeight="70.0" prefWidth="200.0" spacing="260.0" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="btn_Cancel" mnemonicParsing="false" onAction="#btn_Cancel_Action" prefHeight="40.0" prefWidth="160.0" style="-fx-background-color: ff848f;" text="DeleteWorkBook" textFill="WHITE">
+            <Button fx:id="btn_DeleteWorkBook" mnemonicParsing="false" onAction="#btn_DeleteWorkBook_Action" prefHeight="40.0" prefWidth="160.0" style="-fx-background-color: ff848f;" text="DeleteWorkBook" textFill="WHITE">
                <font>
                   <Font name="Dubai Medium" size="18.0" />
                </font>

@@ -10,6 +10,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import model.ProfessorDataModel;
@@ -20,9 +21,11 @@ public class CreateNewBanManagerController extends BaseController implements Ini
 	@FXML
 	private Button btn_Cancel, btn_CreateNewBanManager;
 	@FXML
-	private TextField tf_NewBanManagerName, tf_NewBanManagerCode;
+	private TextField tf_NewBanManagerName;
 	@FXML
 	private ChoiceBox cb_NewBanManagerWorkBook;
+	@FXML
+	private Label lv_roomcode;
 	
 	private Ban ban;
 	private String className;
@@ -35,6 +38,11 @@ public class CreateNewBanManagerController extends BaseController implements Ini
 		className = ban.ban_name();
 		this.btn_Main.setText(className);
 		
+	}
+	
+	private void makeRoomCode() { //값 만들기
+		String roomcode= "";
+		lv_roomcode.setText(roomcode);
 	}
 
 	@Override

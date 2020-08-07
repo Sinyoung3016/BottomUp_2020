@@ -19,7 +19,7 @@ import room.Ban;
 public class BanModifyClassNameController extends BaseController implements Initializable {
 
 	@FXML
-	private Button btn_CreateNewBanManager, btn_SaveClassName;
+	private Button btn_CancelChangeName, btn_SaveClassName;
 	@FXML
 	private TextField tf_ChangeClassName;
 	@FXML
@@ -39,12 +39,15 @@ public class BanModifyClassNameController extends BaseController implements Init
 	
 	}
 
-	public void btn_CreateNewBanManager_Action() {
+	public void btn_CancelChangeName_Action() {
+		
+		//이름 수정
+		
 		try {
-			Stage primaryStage = (Stage) btn_CreateNewBanManager.getScene().getWindow();
-			Parent main = FXMLLoader.load(getClass().getResource("/gui/CreateNewBanManager.fxml"));
+			Stage primaryStage = (Stage) btn_CancelChangeName.getScene().getWindow();
+			Parent main = FXMLLoader.load(getClass().getResource("/gui/Ban.fxml"));
 			Scene scene = new Scene(main);
-			primaryStage.setTitle("GuessWhat/CreateNewRoom");
+			primaryStage.setTitle("GuessWhat/" + className);
 			primaryStage.setScene(scene);
 			primaryStage.show();
 		} catch (Exception e) {
@@ -55,7 +58,7 @@ public class BanModifyClassNameController extends BaseController implements Init
 	public void btn_SaveClassName_Action() {
 
 		try {
-			Stage primaryStage = (Stage) btn_CreateNewBanManager.getScene().getWindow();
+			Stage primaryStage = (Stage) btn_SaveClassName.getScene().getWindow();
 			Parent main = FXMLLoader.load(getClass().getResource("/gui/Ban.fxml"));
 			Scene scene = new Scene(main);
 			primaryStage.setTitle("GuessWhat/" + className);

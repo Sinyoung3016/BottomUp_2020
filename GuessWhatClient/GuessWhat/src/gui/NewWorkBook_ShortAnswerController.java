@@ -22,7 +22,7 @@ import javafx.stage.Stage;
 public class NewWorkBook_ShortAnswerController extends BaseController implements Initializable {
 
 	@FXML
-	private Button btn_Cancel, btn_CreateProblem, btn_SaveWorkBook, btn_num1, btn_num2, btn_num3, btn_num4, btn_num5,
+	private Button btn_DeleteWorkBook, btn_CreateProblem, btn_SaveWorkBook, btn_num1, btn_num2, btn_num3, btn_num4, btn_num5,
 			btn_num6, btn_num7, btn_num8, btn_num9, btn_num10, btn_num11, btn_num12, btn_num13, btn_num14, btn_num15,
 			btn_num16, btn_num17, btn_num18, btn_num19, btn_num20;
 	@FXML
@@ -155,7 +155,7 @@ public class NewWorkBook_ShortAnswerController extends BaseController implements
 		return false;
 	}
 	
-	public void btn_Cancel_Action() {
+	public void btn_DeleteWorkBook_Action() {
 		
 		//workbook 삭제하기
 		
@@ -176,7 +176,7 @@ public class NewWorkBook_ShortAnswerController extends BaseController implements
 		this.changeName();
 		
 		try {
-			Stage primaryStage = (Stage) btn_Cancel.getScene().getWindow();
+			Stage primaryStage = (Stage) btn_DeleteWorkBook.getScene().getWindow();
 			Parent main = FXMLLoader.load(getClass().getResource("/gui/WorkBookList.fxml"));
 			Scene scene = new Scene(main);
 			primaryStage.setTitle("GuessWhat/WorkBookList");

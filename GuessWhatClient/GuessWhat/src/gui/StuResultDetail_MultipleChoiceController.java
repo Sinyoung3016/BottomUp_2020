@@ -1,18 +1,21 @@
 package gui;
 
+import java.net.URL;
+import java.util.ResourceBundle;
+
+import exam.Problem;
+import exam.Workbook;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
-public class StuResultDetail_MultipleChoiceController extends BaseController {
+public class StuResultDetail_MultipleChoiceController extends BaseController implements Initializable {
 
 	@FXML
 	private Button btn_Close, btn_Previous, btn_Next, btn_num1, btn_num2, btn_num3, btn_num4,
@@ -21,7 +24,19 @@ public class StuResultDetail_MultipleChoiceController extends BaseController {
 	@FXML
 	private Label lb_Question; 
 	@FXML
-	private Pane Pane_Answer;
+	private CheckBox cb_1, cb_2, cb_3, cb_4, cb_5;
+	
+	private Workbook workbook;
+	private Problem problem;
+
+	
+	@Override
+	public void initialize(URL arg0, ResourceBundle arg1) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	
 	
 	public void btn_Close_Action() {
 		try {
@@ -123,5 +138,7 @@ public class StuResultDetail_MultipleChoiceController extends BaseController {
 	public void btn_num20_Action() {
 
 	}
+
+
 
 }

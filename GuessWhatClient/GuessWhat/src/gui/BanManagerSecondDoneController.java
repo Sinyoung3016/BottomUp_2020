@@ -125,7 +125,7 @@ public class BanManagerSecondDoneController extends BaseController implements In
 
 	public void btn_Delete_Action() {
 		try {
-			Stage primaryStage = (Stage) btn_Previous.getScene().getWindow();
+			Stage primaryStage = (Stage) btn_Delete.getScene().getWindow();
 			Parent main = FXMLLoader.load(getClass().getResource("/gui/Ban.fxml"));
 			Scene scene = new Scene(main);
 			primaryStage.setTitle("GuessWhat/" + className);
@@ -156,7 +156,7 @@ public class BanManagerSecondDoneController extends BaseController implements In
 
 		if ((t.problemType()).equals("MultipleChoice")) {
 			try {
-				Stage primaryStage = (Stage) btn[0].getScene().getWindow();
+				Stage primaryStage = (Stage) btn_Main.getScene().getWindow();
 				Parent main = FXMLLoader.load(getClass().getResource("/gui/BanManagerSecondDoneMultiChoice.fxml"));
 				Scene scene = new Scene(main);
 				primaryStage.setTitle("GuessWhat/" + className);
