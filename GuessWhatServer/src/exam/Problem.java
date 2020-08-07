@@ -12,11 +12,11 @@ public class Problem {
 	//Constructor start
 	public Problem(String[] problemInfo) {
 		this.PBNum = Integer.parseInt(problemInfo[0]);
-		this.WNum = Integer.parseInt(problemInfo[0]);
-		this.question = problemInfo[1];
-		this.answer = problemInfo[2];
-		this.type = ProblemType.toProblemType(problemInfo[3]);
-		this.answerContent = problemInfo[4];
+		this.WNum = Integer.parseInt(problemInfo[1]);
+		this.question = problemInfo[2];
+		this.answer = problemInfo[3];
+		this.type = ProblemType.toProblemType(problemInfo[4]);
+		this.answerContent = problemInfo[5];
 	}
 	
 	//Constructor end
@@ -33,7 +33,7 @@ public class Problem {
 	
 	public String toString() {
 		StringBuilder sb = new StringBuilder("");
-		sb.append("Question: " +this.question +", Answer: " + this.answer + ", Type: " +this.type + ", AnswerContent: " + this.answerContent);
+		sb.append("PBNum : " + this.PBNum + " WNum : " + this.WNum + " Question : " + this.question +", Answer: " + this.answer + ", Type: " +this.type + ", AnswerContent: " + this.answerContent);
 		return new String(sb);
 	}
 	

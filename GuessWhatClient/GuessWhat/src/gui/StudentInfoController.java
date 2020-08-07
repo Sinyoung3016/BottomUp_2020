@@ -104,9 +104,7 @@ public class StudentInfoController implements Initializable{
 								new OutputStreamWriter(this.socket.getOutputStream(), StandardCharsets.UTF_8));
 						pw.println(requestTokens);
 						pw.flush();
-						System.out.println("requestTokens :" + requestTokens);
 						responseMessage = br.readLine();
-						System.out.println("responseTokens : " +responseMessage);
 					} catch(IOException e) {
 						e.printStackTrace();
 					}//GetWorkbook:Success:WorkbookInfo:GetProblem:Success:FirstProblemInfo
