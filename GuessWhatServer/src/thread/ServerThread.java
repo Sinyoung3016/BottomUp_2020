@@ -99,7 +99,11 @@ public class ServerThread extends Thread{
 						else if(requestTokens[0].equals(Request.DELETE_PROBLEM.getRequest())) { //DeleteProblem:PNum
 							clientRequest = "DeleteProblem";
 							this.deleteProblem(requestTokens[1]);
-						}else if(requestTokens[0].equals(Request.MODIFY_WORKBOOK.getRequest())) { //ModifyWorkbook:WNum:newName
+						}else if(requestTokens[0].equals(Request.MODIFY_PROFESSOR.getRequest())) { //ModifyProfessor:ID:newEmail:newPassWord
+							clientRequest = "ModifyProfessor";
+							this.modifyProfessor(requestTokens[1], requestTokens[2], requestTokens[3]);
+						}
+						else if(requestTokens[0].equals(Request.MODIFY_WORKBOOK.getRequest())) { //ModifyWorkbook:WNum:newName
 							clientRequest = "ModifyWorkbook";
 							this.modifyWorkbook(requestTokens[1], requestTokens[2]);
 						}else if(requestTokens[0].equals(Request.MODIFY_PROBLEM.getRequest())) { //ModifyProblem:PNum:newQuestion
@@ -223,7 +227,15 @@ public class ServerThread extends Thread{
 
 		pw.flush();
 	}
-
+	
+	private void modifyProfessor(String id, String newEmail, String newPassword) {
+		if(DB_USER.modifyProfessor(id, newEmail, newPassword)) 
+			pw.println("ModifyProfessor:Success");
+		else 
+			pw.println("ModifyProfessor:Fail");
+		pw.flush();
+	}
+	
 	private void modifyWorkbook(String WNum, String newName) {
 		if(DB_Workbook.modifyWorkbookName(WNum, newName))
 			pw.println(">>SUCCESS [ModifyWorkbook]<<");

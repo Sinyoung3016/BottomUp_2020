@@ -160,5 +160,39 @@ public class DB_USER extends DBManager {
 			}
 		}
 	}
+	public synchronized static boolean modifyProfessor(String givenID, String newEmail, String newPassword) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+
+		try {
+
+			conn = getConn();
+
+			String sql;
+			sql = "UPDATE Professor SET Email = ?, Password = ? WHERE Id= ?";
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, newEmail);
+			pstmt.setString(2, newPassword);
+			pstmt.setString(3, givenID);
+			
+			pstmt.executeUpdate();
+			pstmt.close();
+			conn.close();
+			return true;
+		} catch (Exception e) {
+			System.out.println("Error : " + e.getMessage() + " FROM modifyUser");
+			return false;
+		} finally {
+			try {
+				if (conn != null)
+					conn.close();
+				if (pstmt != null)
+					pstmt.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
 
 }

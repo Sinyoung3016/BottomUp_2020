@@ -59,7 +59,6 @@ public class MyInfoController implements Initializable {
 	}
 	
 	public void btn_LogOut_Action() {
-		//로그아웃
 		
 		String responseMessage = null;
 		try {
@@ -69,7 +68,6 @@ public class MyInfoController implements Initializable {
 			pw.println(requestTokens);
 			pw.flush();
 			responseMessage = br.readLine();
-			System.out.println(responseMessage);
 		} catch(Exception e) {
 			System.out.println("Error : " + e.getMessage() + "FROM btn_LogOut_Action");
 		}
@@ -100,15 +98,66 @@ public class MyInfoController implements Initializable {
 	public void btn_Update_Action() { 
 		
 		//DB에서 정보 수정 
+		//ModifyProfessor:ID:NewEmail:NewPassWord
+		String newEmail = ProfessorDataModel.professor.email();
+		String newPassword = ProfessorDataModel.professor.password();
+		boolean canRequest = true; //요청을 보낼 수 있는 상태인가
 		
-		pf_PassWord.getText();
-		pf_CheckPW.getText();
-
-		if (!check_checkPW) {
-			new Alert(Alert.AlertType.WARNING, "비밀번호를 확인해주세요.", ButtonType.CLOSE).show();
-			return ;
+		if(tf_Email.getLength() == 0) { //email 수정안함
+			if(pf_PassWord.getLength() == 0) { //email, password 모두 수정안함
+				canRequest = false;
+				new Alert(Alert.AlertType.WARNING, "수정된 내용이 없습니다..", ButtonType.CLOSE).show();
+				return;
+			}
+			else { //passWord만 수정
+				if (!this.checkNewPassword(pf_PassWord.getText(), pf_CheckPW.getText())) {
+					canRequest = false;
+					new Alert(Alert.AlertType.WARNING, "비밀번호를 확인해주세요.", ButtonType.CLOSE).show();
+					return ;
+				}
+				else {
+					newPassword = pf_PassWord.getText();
+				}
+			}
+		}
+		else { //email 수정
+			if(pf_PassWord.getLength() == 0) { //email만 수정
+				newEmail = tf_Email.getText();
+			}
+			else { //email, password 모두 수정
+				newPassword = pf_PassWord.getText();
+				newEmail = tf_Email.getText();
+			}
+		}
+		
+		if(canRequest) {
+			String responseMessage = null;
+			try {
+				String requestTokens = "ModifyProfessor:" + ProfessorDataModel.ID + ":" + newEmail + ":" + newPassword;
+				BufferedReader br = new BufferedReader(new InputStreamReader(this.socket.getInputStream(), StandardCharsets.UTF_8));
+				PrintWriter pw = new PrintWriter(new OutputStreamWriter(this.socket.getOutputStream(), StandardCharsets.UTF_8));
+				pw.println(requestTokens);
+				pw.flush();
+				responseMessage = br.readLine();
+			} catch(Exception e) {
+				System.out.println("Error : " + e.getMessage() + " FROM btn_Update_Action");
+			}
+			String[] responseTokens = responseMessage.split(":");
+			if(responseTokens[0].equals("ModifyProfessor")) {
+				if(!responseTokens[1].equals("Success")) {
+					new Alert(Alert.AlertType.WARNING, responseTokens[1], ButtonType.CLOSE).show();
+				}
+				else {
+					ProfessorDataModel.professor.setEmail(newEmail);
+					ProfessorDataModel.professor.setPassword(newPassword);
+					
+					new Alert(Alert.AlertType.CONFIRMATION, "개인정보가 수정되었습니다.", ButtonType.CLOSE).show();
+				}
+			}
 		}
 
+		
+		
 		
 
 	}
@@ -136,5 +185,11 @@ public class MyInfoController implements Initializable {
 			}
 		});
 
+	}
+	
+	private boolean checkNewPassword(String password, String checkPW) {
+		if(password.equals(checkPW))
+			return true;
+		else return false;
 	}
 }
