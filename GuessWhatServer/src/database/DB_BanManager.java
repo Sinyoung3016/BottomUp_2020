@@ -1,10 +1,94 @@
 package database;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import room.BanManager;
 
 public class DB_BanManager extends DBManager {
+	
+	public synchronized static boolean insertBanManager(int PNum, int BNum, String name, String code, String workbook) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+
+		try {
+			conn = getConn();
+			String sql;
+			sql = "INSERT INTO BanManager (PNum, BNum, Name, State, Code, WorkBook) VALUES (?,?,?,?,?,?)";
+			pstmt = conn.prepareStatement(sql);
+
+			pstmt.setInt(1, PNum);
+			pstmt.setInt(2, BNum);
+			pstmt.setString(3, name);
+			pstmt.setString(4, "Open");
+			
+			pstmt.setString(5, code);
+			pstmt.setString(6, "workbookName");
+
+			pstmt.executeUpdate();
+			pstmt.close();
+			conn.close();
+			return true;
+		} catch(SQLException e) {
+			System.out.println("Error : " + e.getMessage() + "FROM insertBanManager");
+			return false;
+		}
+		finally {
+			try {
+				if (conn != null)
+					conn.close();
+				if (pstmt != null)
+					pstmt.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	public synchronized static List<BanManager> getAllBanManager(int PNum, int BNum) {
+		Connection conn = null;
+		Statement stmt = null;
+		ResultSet rs = null;
+
+		List<BanManager> banManagerList = new ArrayList<>();
+		//Name, State, Code, WorkBook
+		int BMNum = -1;
+		String name = null;
+		String state = null;
+		String code = null;
+		String workbook = null;
+		int size = -1;
+
+		try {
+			conn = getConn();
+			stmt = conn.createStatement();
+			String sql;
+			sql = "SELECT * FROM BanManager WHERE PNum = '" + PNum + "' AND BNum = '" + BNum + "'";
+			rs = stmt.executeQuery(sql);
+
+			while(rs.next()) {
+				BMNum = rs.getInt("BMNum");
+				name = rs.getString("Name");
+				state = rs.getString("State");
+				code = rs.getString("Code");
+				workbook = rs.getString("WorkBook");
+				
+				banManagerList.add(new BanManager(PNum, BNum, BMNum, name, state, code, workbook, size));
+			}
+			return banManagerList;
+		}catch(Exception e) {
+			System.out.println("Error : " + e.getMessage() + "FROM getAllBanManager");
+			return null;
+		} finally {
+			try {
+				if(stmt != null) stmt.close();
+				if(conn != null) conn.close();
+				if(rs != null) rs.close();
+			} catch(SQLException e) {
+				System.out.println("Error : " + e.getMessage() + "FROM getAllBan (SQL)");
+			}
+		}
+	}
 	
 	public synchronized static void addBanManager(int bNum, String name, String code) throws SQLException {
 
