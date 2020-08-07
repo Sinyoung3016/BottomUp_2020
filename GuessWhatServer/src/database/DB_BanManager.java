@@ -156,7 +156,7 @@ public class DB_BanManager extends DBManager {
 				banManagerInfo[2] = rs.getString("State");
 				banManagerInfo[3] = rs.getString("Code");
 				banManagerInfo[4] = rs.getString("BNum");
-				banManagerInfo[5] = rs.getString("Size");
+				banManagerInfo[5] = rs.getString("StudentSize");
 				banManager = new BanManager(banManagerInfo);
 				
 			}

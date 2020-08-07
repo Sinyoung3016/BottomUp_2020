@@ -15,6 +15,7 @@ import room.BanManager.State;
 
 //workbook을 풀이하고 결과를 관리
 public class BanManager {
+	private int P_num;
 	private int BM_num;
 	private String BM_name;
 	public enum State { OPEN, ING, CLOSE };
@@ -87,7 +88,7 @@ public class BanManager {
 	
 	public String tokenString() {
 		StringBuilder sb = new StringBuilder("");
-		sb.append(this.BM_num + "-"  + this.BM_name + "-" + this.stateToString(this.BM_state) + "-" + this.BM_password + "-" + this.BNum + "-" + this.size);
+		sb.append(this.P_num + "-" + this.BNum() + "-" + this.BM_num + "-" + this.BM_name + "-" + this.BM_password + "-" + this.BM_state.toString() + "-" + this.size   );
 		return new String(sb);
 	}
 	
