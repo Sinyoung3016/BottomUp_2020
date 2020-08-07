@@ -45,7 +45,8 @@ public class StuWorkBookController extends BaseController implements Initializab
 
 	private Socket socket;
 	private Problem problem;
-	private String[] answer;
+	private Student student;
+	private boolean [] answerIsFull;
 	private int PB_num;
 
 	@Override
@@ -53,6 +54,7 @@ public class StuWorkBookController extends BaseController implements Initializab
 
 		this.socket = StudentDataModel.socket;
 		this.problem = StudentDataModel.problem;
+		this.answerIsFull = StudentDataModel.answerIsEmpty;
 		
 		if (problem.getType().equals(ProblemType.MultipleChoice)) {
 			try {
@@ -68,7 +70,6 @@ public class StuWorkBookController extends BaseController implements Initializab
 		}
 
 		this.workBookSize = StudentDataModel.workbook.WorkBooksize();
-		this.answer = StudentDataModel.student.answer();
 		this.PB_num = problem.PB_Num();
 
 		// setting
@@ -77,15 +78,16 @@ public class StuWorkBookController extends BaseController implements Initializab
 				btn_num19, btn_num20 };
 
 		for (int i = 0; i < workBookSize; i++) {
-			if (answer[i] == null)
+			if (answerIsFull[i])
 				btn[i].setStyle("-fx-background-color: #dcdcdc;");
 			else
 				btn[i].setStyle("-fx-background-color: #5ad18f;");
-
+			
 			btn[i].setDisable(false);
 		}
 
 		btn[PB_num].setStyle("-fx-background-color: #54bd54;");
+		if(answerIsFull[PB_num]) ta_Answer.setText(student.answer()[PB_num]);
 
 		for (int i = workBookSize + 1; i < 20; i++) {
 			btn[i].setStyle("-fx-background-color: #f0fff0;");
@@ -134,6 +136,32 @@ public class StuWorkBookController extends BaseController implements Initializab
 
 	private void changeProblem() {
 		// 여기가 만들어주세용 정현
+		String responseMessage = null;
+		try {
+			String requestTokens = "GetProblem:" + StudentDataModel.workbook.W_Num() + ":" + StudentDataModel.currentPB;
+			BufferedReader br = new BufferedReader(
+					new InputStreamReader(this.socket.getInputStream(), StandardCharsets.UTF_8));
+			PrintWriter pw = new PrintWriter(
+					new OutputStreamWriter(this.socket.getOutputStream(), StandardCharsets.UTF_8));
+			pw.println(requestTokens);
+			pw.flush();
+			responseMessage = br.readLine();
+		} catch(IOException e) {
+			e.printStackTrace();
+		}
+		String[] responseTokens = responseMessage.split(":");
+		if(responseTokens[0].equals("GetProblem")){
+			if(!responseTokens[1].equals("Success")) {
+				System.out.println(responseTokens[1]);
+			}
+			else {
+				//Success GetProblem
+				Problem problem = new Problem(responseTokens[2]);
+				StudentDataModel.setProblem(problem);
+				System.out.println(StudentDataModel.problem.toString());
+				
+			}
+		}
 	}
 
 	public void btn_num1_Action() {

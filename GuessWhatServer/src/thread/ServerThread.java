@@ -125,9 +125,9 @@ public class ServerThread extends Thread{
 						else if(requestTokens[0].equals(Request.GET_WORKBOOK.getRequest())) { //GetWorkbook
 							clientRequest = "GetWorkbook";
 							this.getWorkbook(); 
-						}else if(requestTokens[0].equals(Request.GET_PROBLEM.getRequest())) { //GetProblem:WNum
+						}else if(requestTokens[0].equals(Request.GET_PROBLEM.getRequest())) { //GetProblem:WNum:Index
 							clientRequest = "GetProblem";
-							this.getProblem(requestTokens[1]);
+							this.getProblem(requestTokens[1],requestTokens[2]);
 						}else if(requestTokens[0].equals(Request.GET_WORKBOOK_PROBLEM.getRequest())) {
 							clientRequest = "GetWorkbookProblem";
 							this.getWorkbookProblem(requestTokens[1]);
@@ -326,23 +326,12 @@ public class ServerThread extends Thread{
 		}
 	}
 
-	private void getProblem(String PNum) {
-		int num = Integer.parseInt(PNum);
-		List<Problem> listProblem = DB_Problem.getProblemListOf(num);
-		if(listProblem == null) {
-			pw.println(">>FAIL [GetProblem]<<");
-			pw.flush();
-		}	
-		else {
-			Iterator<Problem> iterator = listProblem.iterator();
-			pw.println(">>SUCCESS [GetProblem]<<");
-			pw.flush();
-			while(iterator.hasNext()) {
-				Problem problem = iterator.next();
-				pw.println(problem.toString());
-				pw.flush();
-			}
-		}
+	private void getProblem(String WNum, String index) {
+		Problem problem = DB_Problem.getProblemOf(Integer.parseInt(WNum), Integer.parseInt(index));
+		if(problem == null) 
+			pw.println("GetProblem:Fail");
+		else pw.println("GetProblem:Success:" + problem.tokenString());
+		pw.flush();
 	}
 	
 	private void getWorkbookProblem(String BMNum) {

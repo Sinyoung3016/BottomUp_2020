@@ -10,9 +10,10 @@ public class Student {
 	private int S_num;
 	private String name;
 	private String [] answer;
+	private boolean [] isEmpty;
 	private String [] result; //O X N
 	
-	public Student(int P_num, int ban_num, int BM_num, int S_num, String name, String answer, String result) {
+	public Student(int P_num, int ban_num, int BM_num, int S_num, String name, boolean isEmpty, String answer, String result) {
 		this.P_num = P_num;
 		this.ban_num = ban_num;
 		this.BM_num = BM_num;

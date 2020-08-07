@@ -11,6 +11,7 @@ public class Problem {
 	private String question;
 	private String answer;
 	private String answerContent;
+	private String[] answerContentList;
 	
 	//Constructor start
 	public Problem(String[] problemInfo) {
@@ -31,6 +32,7 @@ public class Problem {
 		this.question = question;
 		this.answer = answer;
 		this.answerContent = answerContent;
+		this.answerContentList = this.answerContent.split("_");
 	}	
 	public Problem(int P_num, int W_num, int PB_num, ProblemType type, String question, String answer ) {
 		this.P_Num = P_num;
@@ -44,11 +46,11 @@ public class Problem {
 	
 	public Problem(String responseTokens) {
 		String[] tokens = responseTokens.split("`");
-		this.W_Num = Integer.parseInt(tokens[0]);
-		this.PB_Num = Integer.parseInt(tokens[1]);
-		this.type = ProblemType.toProblemType(tokens[2]);
-		this.question = tokens[3];
-		this.answer = tokens[4];
+		this.PB_Num = Integer.parseInt(tokens[0]);
+		this.W_Num = Integer.parseInt(tokens[1]);
+		this.question = tokens[2];
+		this.answer = tokens[3];
+		this.type = ProblemType.toProblemType(tokens[4]);
 		this.answerContent = tokens[5];
 	}
 	//Constructor end
@@ -66,7 +68,7 @@ public class Problem {
 	
 	public String toString() {
 		StringBuilder sb = new StringBuilder("");
-		sb.append("Question: " +this.question +", Answer: " + this.answer + ", Type: " +this.type + ", AnswerContent: " + this.answerContent);
+		sb.append("PBNum : " + this.PB_Num + " WNum : " + this.W_Num + " Question : " + this.question +", Answer: " + this.answer + ", Type: " +this.type + ", AnswerContent: " + this.answerContent);
 		return new String(sb);
 	}
 }

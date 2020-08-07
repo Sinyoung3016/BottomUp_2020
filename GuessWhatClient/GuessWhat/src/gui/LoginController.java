@@ -100,7 +100,8 @@ public class LoginController implements Initializable{
 						Platform.runLater(() -> {
 							Parent login;
 							try {
-								login = FXMLLoader.load(getClass().getResource("/gui/MainPage.fxml"));
+								login = FXMLLoader.load(getClass().getResource("/gui/MyInfo.fxml"));
+								//login = FXMLLoader.load(getClass().getResource("/gui/MainPage.fxml"));
 								Scene scene = new Scene(login);
 								primaryStage.setTitle("GuessWhat/Main");
 								primaryStage.setScene(scene);

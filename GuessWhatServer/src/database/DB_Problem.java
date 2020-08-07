@@ -18,7 +18,7 @@ public class DB_Problem extends DBManager{
 			conn = getConn();
 			
 			String sql;
-			sql = "INSERT INTO Problem (WNum, Question, Answer, Type, AnswerContent) VALUES (?,?,?,?,?)";
+			sql = "INSERT INTO Problem (WNum, Question, Answer, Type, AnswerContents) VALUES (?,?,?,?,?)";
 			pstmt = conn.prepareStatement(sql);
 			
 			pstmt.setString(1, WNum);

@@ -124,6 +124,8 @@ public class StudentInfoController implements Initializable{
 								else {
 									Problem problem = new Problem(responseTokens[5]);
 									StudentDataModel.setProblem(problem);
+									StudentDataModel.answerIsEmpty = new boolean[workbook.WorkBooksize()];
+									
 								}
 							}
 						}
