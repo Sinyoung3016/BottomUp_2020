@@ -47,7 +47,7 @@ public class StuWorkBookController extends BaseController implements Initializab
 	private Button[] btn;
 	private int PB_num;
 	private int workBookSize;
-	private boolean[] answerIsFull;
+	private boolean[] hasAnswer;
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
@@ -55,7 +55,7 @@ public class StuWorkBookController extends BaseController implements Initializab
 		this.socket = StudentDataModel.socket;
 		this.problem = StudentDataModel.problem;
 		this.student = StudentDataModel.student;
-		this.answerIsFull = StudentDataModel.answerIsEmpty;
+		this.hasAnswer = StudentDataModel.hasAnswer;
 
 		if (problem.getType().equals(ProblemType.MultipleChoice)) {
 			try {
@@ -79,7 +79,7 @@ public class StuWorkBookController extends BaseController implements Initializab
 				btn_num19, btn_num20 };
 
 		for (int i = 0; i < workBookSize; i++) {
-			if (answerIsFull[i])
+			if (hasAnswer[i])
 				btn[i].setStyle("-fx-background-color: #f0fff0;");
 			else
 				btn[i].setStyle("-fx-background-color: #5ad18f;");
@@ -89,7 +89,7 @@ public class StuWorkBookController extends BaseController implements Initializab
 
 		btn[PB_num].setStyle("-fx-background-color: #54bd54;");
 		lb_Question.setText(problem.question());
-		if (answerIsFull[PB_num])
+		if (hasAnswer[PB_num])
 			ta_Answer.setText(student.answer()[PB_num]);
 
 		for (int i = workBookSize; i < 20; i++) {
@@ -107,7 +107,8 @@ public class StuWorkBookController extends BaseController implements Initializab
 			return;
 		else {
 
-			// 디비에 저장
+			this.student.answer()[StudentDataModel.currentPB] = S_answer;
+			StudentDataModel.hasAnswer[StudentDataModel.currentPB] = true;
 		}
 	}
 
@@ -136,7 +137,7 @@ public class StuWorkBookController extends BaseController implements Initializab
 	public void btn_Submit_Action() {
 		
 		savePro();
-
+		
 		try {
 			Stage primaryStage = (Stage) btn_Submit.getScene().getWindow();
 			Parent main = FXMLLoader.load(getClass().getResource("/gui/StuResult.fxml"));

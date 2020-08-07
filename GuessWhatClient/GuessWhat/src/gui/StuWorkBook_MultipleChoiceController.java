@@ -55,7 +55,7 @@ public class StuWorkBook_MultipleChoiceController extends BaseController impleme
 		// TODO Auto-generated method stub
 		this.socket = StudentDataModel.socket;
 		this.problem = StudentDataModel.problem;
-		this.answerIsFull = StudentDataModel.answerIsEmpty;
+		this.answerIsFull = StudentDataModel.hasAnswer;
 		this.student = StudentDataModel.student;
 
 		if (!problem.getType().equals(ProblemType.MultipleChoice)) {
