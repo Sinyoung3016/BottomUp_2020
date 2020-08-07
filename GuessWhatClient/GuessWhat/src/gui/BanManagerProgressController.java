@@ -27,7 +27,7 @@ import user.Student;
 public class BanManagerProgressController extends BaseController implements Initializable {
 
 	@FXML
-	private Button btn_Close, btn_End;
+	private Button btn_End;
 	@FXML
 	private TextField tf_NewBanManagerName, tf_NewBanManagerCode;
 	@FXML
@@ -94,19 +94,6 @@ public class BanManagerProgressController extends BaseController implements Init
 	public void btn_Main_Action() {
 		try {
 			Stage primaryStage = (Stage) btn_Main.getScene().getWindow();
-			Parent main = FXMLLoader.load(getClass().getResource("/gui/Ban.fxml"));
-			Scene scene = new Scene(main);
-			primaryStage.setTitle("GuessWhat/" + className);
-			primaryStage.setScene(scene);
-			primaryStage.show();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	public void btn_Close_Action() {
-		try {
-			Stage primaryStage = (Stage) btn_Close.getScene().getWindow();
 			Parent main = FXMLLoader.load(getClass().getResource("/gui/Ban.fxml"));
 			Scene scene = new Scene(main);
 			primaryStage.setTitle("GuessWhat/" + className);

@@ -1,31 +1,81 @@
 package gui;
 
 import java.net.URL;
+import java.util.Iterator;
 import java.util.ResourceBundle;
 
+import exam.StuNumResult;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.chart.PieChart;
+import javafx.scene.chart.PieChart.Data;
 import javafx.scene.control.Button;
-import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import user.Student;
 
 public class StuResultController implements Initializable {
+
 	@FXML
-	private Pane Pane_Answer;
+	private Button btn_Detail, btn_num1, btn_num2, btn_num3, btn_num4, btn_num5, btn_num6, btn_num7, btn_num8, btn_num9,
+			btn_num10, btn_num11, btn_num12, btn_num13, btn_num14, btn_num15, btn_num16, btn_num17, btn_num18,
+			btn_num19, btn_num20;
 	@FXML
-	private Button btn_Detail, btn_num1, btn_num2, btn_num3, btn_num4, btn_num5,
-	btn_num6, btn_num7, btn_num8, btn_num9, btn_num10, btn_num11, btn_num12, btn_num13, btn_num14, btn_num15,
-	btn_num16, btn_num17, btn_num18, btn_num19, btn_num20;
+	private PieChart pc_result;
+
+	private Button [] btn;
+	
+	private ObservableList<Data> Pie;
+
+	private Student student;
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// TODO Auto-generated method stub
 		
-	}
+		btn = new Button[] { btn_num1, btn_num2, btn_num3, btn_num4, btn_num5, btn_num6, btn_num7, btn_num8, btn_num9,
+				btn_num10, btn_num11, btn_num12, btn_num13, btn_num14, btn_num15, btn_num16, btn_num17, btn_num18,
+				btn_num19, btn_num20 };
+		
+		String[] result = this.student.result();
+		int PB_size = result.length;
+		int[] value = new int[3]; // value[0]="X", value[1]="O", value[2] = "N"
+
+		for (int i = 0; i < PB_size; i++) {
+			if (result.equals("O")) {
+				value[1]++;
+				btn[i].setStyle("-fx-background-color: #5ad18f;");
+			}
+			else if (result.equals("X")) {
+				value[0]++;
+				btn[i].setStyle("-fx-background-color: #ff848f;");
+			}
+			else if (result.equals("N")) {
+				value[2]++;
+				btn[i].setStyle("-fx-background-color: #f0fff0;");
+			}
+		}
 	
+		//pie
+		for (int i = 0; i < 3; i++) {
+			value[i] = value[i] * 100 / PB_size;
+		}
+		
+		this.Pie = FXCollections.observableArrayList();
+
+		Pie.add(new PieChart.Data("", value[0]));
+		Pie.add(new PieChart.Data("", value[1]));
+		Pie.add(new PieChart.Data("", value[2]));
+
+		pc_result.setData(Pie);
+		//pie
+
+	}
+
 	public void btn_Detail_Action() {
 		try {
 			Stage primaryStage = (Stage) btn_Detail.getScene().getWindow();

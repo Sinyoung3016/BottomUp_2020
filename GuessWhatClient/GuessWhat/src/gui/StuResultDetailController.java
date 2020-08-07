@@ -1,7 +1,14 @@
 package gui;
 
+import java.net.URL;
+import java.util.ResourceBundle;
+
+import exam.Problem;
+import exam.StuNumResult;
+import exam.Workbook;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -12,17 +19,25 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
-public class StuResultDetailController extends BaseController {
+public class StuResultDetailController extends BaseController implements Initializable {
 
 	@FXML
-	private Button btn_Close, btn_Previous, btn_Next, btn_num1, btn_num2, btn_num3, btn_num4,
-			btn_num5, btn_num6, btn_num7, btn_num8, btn_num9, btn_num10, btn_num11, btn_num12, btn_num13, btn_num14,
-			btn_num15, btn_num16, btn_num17, btn_num18, btn_num19, btn_num20;
+	private Button btn_Close, btn_Previous, btn_Next, btn_num1, btn_num2, btn_num3, btn_num4, btn_num5, btn_num6,
+			btn_num7, btn_num8, btn_num9, btn_num10, btn_num11, btn_num12, btn_num13, btn_num14, btn_num15, btn_num16,
+			btn_num17, btn_num18, btn_num19, btn_num20;
 	@FXML
-	private Label lb_Question; 
-	@FXML
-	private Pane Pane_Answer;
+	private Label lb_Question, lb_MyAnswer, lb_TeacherAnswer;
+
+	private Workbook workbook;
+	private Problem problem;
+	private StuNumResult result;
 	
+	@Override
+	public void initialize(URL arg0, ResourceBundle arg1) {
+		// TODO Auto-generated method stub
+
+	}
+
 	public void btn_Close_Action() {
 		try {
 			Stage primaryStage = (Stage) btn_Close.getScene().getWindow();
@@ -37,7 +52,7 @@ public class StuResultDetailController extends BaseController {
 	}
 
 	public void btn_Next_Action() {
-		
+
 	}
 
 	public void btn_Previous_Action() {

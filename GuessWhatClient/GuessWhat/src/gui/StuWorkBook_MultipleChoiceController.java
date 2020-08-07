@@ -5,6 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.RadioButton;
@@ -24,8 +25,7 @@ public class StuWorkBook_MultipleChoiceController extends BaseController {
 	@FXML
 	private Label lb_Question;
 	@FXML
-	private Pane Pane_Answer;
-
+	private CheckBox cb_1, cb_2, cb_3, cb_4, cb_5;
 
 	public void btn_Next_Action() {
 

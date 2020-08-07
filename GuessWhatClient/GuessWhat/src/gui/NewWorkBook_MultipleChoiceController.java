@@ -23,7 +23,7 @@ import javafx.stage.Stage;
 public class NewWorkBook_MultipleChoiceController extends BaseController implements Initializable {
 
 	@FXML
-	private Button btn_Cancel, btn_CreateProblem, btn_SaveWorkBook, btn_num1, btn_num2, btn_num3, btn_num4, btn_num5,
+	private Button btn_DeleteWorkBook, btn_CreateProblem, btn_SaveWorkBook, btn_num1, btn_num2, btn_num3, btn_num4, btn_num5,
 			btn_num6, btn_num7, btn_num8, btn_num9, btn_num10, btn_num11, btn_num12, btn_num13, btn_num14, btn_num15,
 			btn_num16, btn_num17, btn_num18, btn_num19, btn_num20;
 	@FXML
@@ -144,7 +144,7 @@ public class NewWorkBook_MultipleChoiceController extends BaseController impleme
 
 		rbtn_ShortAnswer.setOnAction((ActionEvent) -> {
 			try {
-				Stage primaryStage = (Stage) btn_Main.getScene().getWindow();
+				Stage primaryStage = (Stage) rbtn_ShortAnswer.getScene().getWindow();
 				Parent main = FXMLLoader.load(getClass().getResource("/gui/NewWorkBook_ShortAnswer.fxml"));
 				Scene scene = new Scene(main);
 				primaryStage.setTitle("GuessWhat/WorkBook");
@@ -156,7 +156,7 @@ public class NewWorkBook_MultipleChoiceController extends BaseController impleme
 		});
 		rbtn_Subjective.setOnAction((ActionEvent) -> {
 			try {
-				Stage primaryStage = (Stage) btn_Main.getScene().getWindow();
+				Stage primaryStage = (Stage) rbtn_Subjective.getScene().getWindow();
 				Parent main = FXMLLoader.load(getClass().getResource("/gui/NewWorkBook_Subjective.fxml"));
 				Scene scene = new Scene(main);
 				primaryStage.setTitle("GuessWhat/WorkBookList");
@@ -179,11 +179,11 @@ public class NewWorkBook_MultipleChoiceController extends BaseController impleme
 		return false;
 	}
 
-	public void btn_Cancel_Action() {
+	public void btn_DeleteWorkBook_Action() {
 		//워크북 삭제
 		
 		try {
-			Stage primaryStage = (Stage) btn_Main.getScene().getWindow();
+			Stage primaryStage = (Stage) btn_DeleteWorkBook.getScene().getWindow();
 			Parent main = FXMLLoader.load(getClass().getResource("/gui/WorkBookList.fxml"));
 			Scene scene = new Scene(main);
 			primaryStage.setTitle("GuessWhat/WorkBookList");
@@ -199,7 +199,7 @@ public class NewWorkBook_MultipleChoiceController extends BaseController impleme
 		this.changeName();
 		
 		try {
-			Stage primaryStage = (Stage) btn_Main.getScene().getWindow();
+			Stage primaryStage = (Stage) btn_SaveWorkBook.getScene().getWindow();
 			Parent main = FXMLLoader.load(getClass().getResource("/gui/WorkBookList.fxml"));
 			Scene scene = new Scene(main);
 			primaryStage.setTitle("GuessWhat/WorkBook");
