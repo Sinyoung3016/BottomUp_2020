@@ -79,7 +79,7 @@
                   <Insets />
                </VBox.margin>
                <children>
-                  <Button fx:id="btn_Delete" mnemonicParsing="false" onAction="#btn_Delete_Action" prefHeight="40.0" prefWidth="150.0" style="-fx-background-color: #5ad18f;" text="Delete" textFill="WHITE">
+                  <Button fx:id="btn_Delete" mnemonicParsing="false" onAction="#btn_Delete_Action" prefHeight="40.0" prefWidth="150.0" style="-fx-background-color: #ff848f;" text="Delete" textFill="WHITE">
                      <font>
                         <Font name="Dubai Medium" size="18.0" />
                      </font>

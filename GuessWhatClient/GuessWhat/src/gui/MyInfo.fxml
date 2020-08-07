@@ -26,7 +26,7 @@
                   </Label>
                   <Label prefHeight="25.0" prefWidth="250.0" style="-fx-text-fill: #22741C;">
                      <font>
-                        <Font name="Dubai Medium" size="12.0" />
+                        <Font name="Dubai Medium" size="15.0" />
                      </font>
                      <padding>
                         <Insets left="5.0" />
@@ -49,7 +49,7 @@
                   </Label>
                   <PasswordField fx:id="pf_PassWord" prefWidth="250.0">
                      <font>
-                        <Font name="Dubai Medium" size="12.0" />
+                        <Font name="Dubai Medium" size="15.0" />
                      </font>
                      <HBox.margin>
                         <Insets />
@@ -72,7 +72,7 @@
                   </Label>
                   <PasswordField fx:id="pf_CheckPW" prefWidth="250.0">
                      <font>
-                        <Font name="Dubai Medium" size="12.0" />
+                        <Font name="Dubai Medium" size="15.0" />
                      </font>
                      <HBox.margin>
                         <Insets />
@@ -95,7 +95,7 @@
                   </Label>
                   <TextField fx:id="tf_Email" prefWidth="250.0">
                      <font>
-                        <Font name="Dubai Medium" size="12.0" />
+                        <Font name="Dubai Medium" size="15.0" />
                      </font>
                   </TextField>
                </children>

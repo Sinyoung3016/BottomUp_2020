@@ -30,7 +30,7 @@
             </Label>
             <TextField fx:id="tf_RoomCode" prefWidth="200.0">
                <font>
-                  <Font name="Dubai Medium" size="12.0" />
+                  <Font name="Dubai Medium" size="15.0" />
                </font>
             </TextField>
          </children>

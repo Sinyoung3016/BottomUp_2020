@@ -2,10 +2,10 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
@@ -21,7 +21,7 @@
                   <Font name="Dubai Medium" size="17.0" />
                </font>
             </Button>
-            <Button fx:id="btn_Close" mnemonicParsing="false" onAction="#btn_Close_Action" prefHeight="40.0" prefWidth="150.0" style="-fx-background-color: #5ad18f; -fx-text-fill: #ffffff;" text="Close">
+            <Button fx:id="btn_Close" mnemonicParsing="false" onAction="#btn_Close_Action" prefHeight="40.0" prefWidth="150.0" style="-fx-background-color: ff848f; -fx-text-fill: #ffffff;" text="Close">
                <HBox.margin>
                   <Insets right="5.0" top="5.0" />
                </HBox.margin>
@@ -160,9 +160,9 @@
                               <Font name="Dubai Medium" size="23.0" />
                            </font>
                         </Label>
-                        <Label fx:id="lb_Question" prefHeight="150.0" prefWidth="600.0" style="-fx-background-color: #f0fff0;">
+                        <Label fx:id="lb_Question" prefHeight="150.0" prefWidth="600.0" style="-fx-text-fill: #22741C; -fx-background-color: #f0fff0;">
                            <font>
-                              <Font name="Dubai Medium" size="13.0" />
+                              <Font name="Dubai Medium" size="15.0" />
                            </font>
                         </Label>
                         <Label prefHeight="40.0" style="-fx-text-fill: #5ad18f;" text="My Answer">
@@ -178,10 +178,70 @@
                         <Insets />
                      </VBox.margin>
                   </VBox>
-                  <Pane fx:id="Pane_Answer" prefHeight="265.0" prefWidth="650.0" style="-fx-background-color: #f0fff0;">
-                     <VBox.margin>
-                        <Insets />
-                     </VBox.margin></Pane>
+                  <VBox alignment="CENTER" prefHeight="265.0" prefWidth="650.0" spacing="10.0" style="-fx-background-color: #f0fff0;">
+                     <children>
+                        <HBox alignment="CENTER_LEFT" prefHeight="40.0" spacing="10.0">
+                           <children>
+                              <CheckBox fx:id="cb_1" mnemonicParsing="false" prefHeight="40.0" prefWidth="570.0" style="-fx-text-fill: #22741C;">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </CheckBox>
+                           </children>
+                           <padding>
+                              <Insets left="10.0" />
+                           </padding>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" prefHeight="40.0" spacing="10.0">
+                           <children>
+                              <CheckBox fx:id="cb_2" mnemonicParsing="false" prefHeight="40.0" prefWidth="570.0" style="-fx-text-fill: #22741C;">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </CheckBox>
+                           </children>
+                           <padding>
+                              <Insets left="10.0" />
+                           </padding>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" prefHeight="40.0" spacing="10.0">
+                           <children>
+                              <CheckBox fx:id="cb_3" mnemonicParsing="false" prefHeight="40.0" prefWidth="570.0" style="-fx-text-fill: #22741C;">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </CheckBox>
+                           </children>
+                           <padding>
+                              <Insets left="10.0" />
+                           </padding>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" prefHeight="40.0" spacing="10.0">
+                           <children>
+                              <CheckBox fx:id="cb_4" mnemonicParsing="false" prefHeight="40.0" prefWidth="570.0" style="-fx-text-fill: #22741C;">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </CheckBox>
+                           </children>
+                           <padding>
+                              <Insets left="10.0" />
+                           </padding>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" prefHeight="40.0" spacing="10.0">
+                           <children>
+                              <CheckBox fx:id="cb_5" mnemonicParsing="false" prefHeight="40.0" prefWidth="570.0" style="-fx-text-fill: #22741C;">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </CheckBox>
+                           </children>
+                           <padding>
+                              <Insets left="10.0" />
+                           </padding>
+                        </HBox>
+                     </children>
+                  </VBox>
                </children>
                <VBox.margin>
                   <Insets />

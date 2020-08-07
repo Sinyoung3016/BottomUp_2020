@@ -228,14 +228,14 @@
          </children></VBox>
    </center>
    <bottom>
-      <HBox prefHeight="70.0" prefWidth="200.0" spacing="280.0" BorderPane.alignment="CENTER">
+      <HBox prefHeight="70.0" prefWidth="200.0" spacing="260.0" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="btn_Cancel" mnemonicParsing="false" onAction="#btn_Cancel_Action" prefHeight="40.0" prefWidth="150.0" style="-fx-background-color: #5ad18f;" text="Cancel" textFill="WHITE">
+            <Button fx:id="btn_Cancel" mnemonicParsing="false" onAction="#btn_Cancel_Action" prefHeight="40.0" prefWidth="160.0" style="-fx-background-color: ff848f;" text="DeleteWorkBook" textFill="WHITE">
                <font>
                   <Font name="Dubai Medium" size="18.0" />
                </font>
             </Button>
-            <Button fx:id="btn_SaveWorkBook" mnemonicParsing="false" onAction="#btn_SaveWorkBook_Action" prefHeight="40.0" prefWidth="150.0" style="-fx-background-color: #5ad18f;" text="SaveWorkBook" textFill="WHITE">
+            <Button fx:id="btn_SaveWorkBook" mnemonicParsing="false" onAction="#btn_SaveWorkBook_Action" prefHeight="40.0" prefWidth="160.0" style="-fx-background-color: #5ad18f;" text="SaveWorkBook" textFill="WHITE">
                <font>
                   <Font name="Dubai Medium" size="18.0" />
                </font>

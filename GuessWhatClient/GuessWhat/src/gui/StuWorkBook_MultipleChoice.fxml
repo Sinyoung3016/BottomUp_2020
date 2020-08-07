@@ -2,8 +2,8 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ListView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
@@ -21,7 +21,7 @@
                   <Font name="Dubai Medium" size="17.0" />
                </font>
             </Button>
-            <Button fx:id="btn_Submit" mnemonicParsing="false" onAction="#btn_Submit_Action" prefHeight="40.0" prefWidth="150.0" style="-fx-background-color: #5ad18f; -fx-text-fill: #ffffff;" text="Submit">
+            <Button fx:id="btn_Submit" mnemonicParsing="false" onAction="#btn_Submit_Action" prefHeight="40.0" prefWidth="150.0" style="-fx-background-color: ff848f; -fx-text-fill: #ffffff;" text="Submit">
                <HBox.margin>
                   <Insets right="5.0" top="5.0" />
                </HBox.margin>
@@ -178,12 +178,75 @@
                         <Insets />
                      </VBox.margin>
                   </VBox>
+                  <VBox alignment="CENTER" prefHeight="265.0" prefWidth="650.0" spacing="10.0" style="-fx-background-color: #f0fff0;">
+                     <children>
+                        <HBox alignment="CENTER_LEFT" prefHeight="40.0" spacing="10.0">
+                           <children>
+                              <CheckBox fx:id="cb_1" mnemonicParsing="false" prefHeight="40.0" prefWidth="570.0" style="-fx-text-fill: #22741C;">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </CheckBox>
+                           </children>
+                           <padding>
+                              <Insets left="10.0" />
+                           </padding>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" prefHeight="40.0" spacing="10.0">
+                           <children>
+                              <CheckBox fx:id="cb_2" mnemonicParsing="false" prefHeight="40.0" prefWidth="570.0" style="-fx-text-fill: #22741C;">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </CheckBox>
+                           </children>
+                           <padding>
+                              <Insets left="10.0" />
+                           </padding>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" prefHeight="40.0" spacing="10.0">
+                           <children>
+                              <CheckBox fx:id="cb_3" mnemonicParsing="false" prefHeight="40.0" prefWidth="570.0" style="-fx-text-fill: #22741C;">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </CheckBox>
+                           </children>
+                           <padding>
+                              <Insets left="10.0" />
+                           </padding>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" prefHeight="40.0" spacing="10.0">
+                           <children>
+                              <CheckBox fx:id="cb_4" mnemonicParsing="false" prefHeight="40.0" prefWidth="570.0" style="-fx-text-fill: #22741C;">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </CheckBox>
+                           </children>
+                           <padding>
+                              <Insets left="10.0" />
+                           </padding>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" prefHeight="40.0" spacing="10.0">
+                           <children>
+                              <CheckBox fx:id="cb_5" mnemonicParsing="false" prefHeight="40.0" prefWidth="570.0" style="-fx-text-fill: #22741C;">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </CheckBox>
+                           </children>
+                           <padding>
+                              <Insets left="10.0" />
+                           </padding>
+                        </HBox>
+                     </children>
+                  </VBox>
                </children>
                <VBox.margin>
                   <Insets />
                </VBox.margin>
             </VBox>
-            <ListView fx:id="lv_AnswerList" prefHeight="265.0" prefWidth="200.0" style="-fx-background-color: #f0fff0;" />
          </children></VBox>
    </center>
    <bottom>

@@ -68,7 +68,7 @@
                   </Label>
                   <Label fx:id="lb_WorkBook" prefHeight="40.0" prefWidth="200.0" style="-fx-text-fill: #22741C;" textAlignment="CENTER">
                      <font>
-                        <Font name="Dubai Medium" size="15.0" />
+                        <Font name="Dubai Medium" size="18.0" />
                      </font>
                   </Label>
                </children>
@@ -80,11 +80,6 @@
                </VBox.margin>
                <children>
                   <Button fx:id="btn_End" mnemonicParsing="false" onAction="#btn_End_Action" prefHeight="40.0" prefWidth="150.0" style="-fx-background-color: #5ad18f;" text="End" textFill="WHITE">
-                     <font>
-                        <Font name="Dubai Medium" size="18.0" />
-                     </font>
-                  </Button>
-                  <Button fx:id="btn_Close" mnemonicParsing="false" onAction="#btn_Close_Action" prefHeight="40.0" prefWidth="150.0" style="-fx-background-color: #5ad18f;" text="Close" textFill="WHITE">
                      <font>
                         <Font name="Dubai Medium" size="18.0" />
                      </font>

@@ -21,7 +21,7 @@
                   <Font name="Dubai Medium" size="17.0" />
                </font>
             </Button>
-            <Button fx:id="btn_Submit" mnemonicParsing="false" onAction="#btn_Submit_Action" prefHeight="40.0" prefWidth="150.0" style="-fx-background-color: #5ad18f; -fx-text-fill: #ffffff;" text="Submit">
+            <Button fx:id="btn_Submit" mnemonicParsing="false" onAction="#btn_Submit_Action" prefHeight="40.0" prefWidth="150.0" style="-fx-background-color: ff848f; -fx-text-fill: #ffffff;" text="Submit">
                <HBox.margin>
                   <Insets right="5.0" top="5.0" />
                </HBox.margin>
@@ -160,7 +160,7 @@
                               <Font name="Dubai Medium" size="23.0" />
                            </font>
                         </Label>
-                        <Label fx:id="lb_Question" prefHeight="150.0" prefWidth="600.0" style="-fx-background-color: #f0fff0;">
+                        <Label fx:id="lb_Question" prefHeight="150.0" prefWidth="600.0" style="-fx-background-color: #f0fff0; -fx-text-fill: #22741C;">
                            <font>
                               <Font name="Dubai Medium" size="13.0" />
                            </font>
