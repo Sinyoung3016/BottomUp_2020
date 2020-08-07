@@ -20,30 +20,40 @@ public class BanManager {
 	private String BM_name;
 	public enum State { OPEN, ING, CLOSE };
 	private State BM_state;
-	private String BM_password;
-	private int BNum;
-	private int size; 
-	private Workbook workbook;
+	private String BM_roomcode;
+	private int B_Num;
+	private int student_size; 
+	private String workbook;
 	private AnswerSet answerSet;
 	
 	//Constructor start
-	public BanManager(int num, String name, String password, Workbook workbook) {
+	public BanManager(int num, String name, String password, String workbook) {
 		this.BM_name = name;
 		this.BM_num = num;
-		this.BM_password = password;
+		this.BM_roomcode = password;
 		this.BM_state = State.OPEN;
 		this.workbook = workbook;
 		this.answerSet = new AnswerSet();
 	}
 	
+	public BanManager(int PNum, int bNum, int BMNum, String name, String state, String code, String workbookName, int studentSize) {
+		this.P_num = PNum;
+		this.B_Num = bNum;
+		this.BM_num = BMNum;
+		this.BM_name = name;
+		this.BM_state = stateOf(state);
+		this.BM_roomcode = code;
+		this.workbook = workbookName;
+		this.student_size = studentSize;
+	}
 	
 	public BanManager(String[] banManagerInfo) {
 		this.BM_num = Integer.parseInt(banManagerInfo[0]);
 		this.BM_name = banManagerInfo[1];
 		this.BM_state = this.stateOf(banManagerInfo[2]);
-		this.BM_password = banManagerInfo[3];
-		this.BNum = Integer.parseInt(banManagerInfo[4]);
-		this.size = Integer.parseInt(banManagerInfo[5]);
+		this.BM_roomcode = banManagerInfo[3];
+		this.B_Num = Integer.parseInt(banManagerInfo[4]);
+		this.student_size = Integer.parseInt(banManagerInfo[5]);
 	}
 	
 	//Constructor end
@@ -51,10 +61,10 @@ public class BanManager {
 	//Getter start
 	public int BM_num() { return BM_num; } 
 	public String BM_name() { return BM_name; }
-	public String BM_password() { return BM_password; }
-	public Workbook workbook() { return workbook; }
+	public String BM_password() { return BM_roomcode; }
+	public String workbook() { return workbook; }
 	public AnswerSet answerSet() { return answerSet; }
-	public int BNum() {return this.BNum;}
+	public int BNum() {return this.B_Num;}
 	//Getter end
 	
 	
@@ -88,7 +98,7 @@ public class BanManager {
 	
 	public String tokenString() {
 		StringBuilder sb = new StringBuilder("");
-		sb.append(this.P_num + "-" + this.BNum() + "-" + this.BM_num + "-" + this.BM_name + "-" + this.BM_password + "-" + this.BM_state.toString() + "-" + this.size   );
+		sb.append(this.P_num + "-" + this.BNum() + "-" + this.BM_num + "-" + this.BM_name + "-" + this.BM_roomcode + "-" + this.BM_state.toString() + "-" + this.student_size   );
 		return new String(sb);
 	}
 	
