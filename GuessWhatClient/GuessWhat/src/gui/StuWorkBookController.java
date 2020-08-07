@@ -11,6 +11,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ResourceBundle;
 
 import exam.Problem;
+import exam.ProblemType;
 import exam.Workbook;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -26,39 +27,97 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import model.ProfessorDataModel;
 import model.StudentDataModel;
+import user.Student;
 
-public class StuWorkBookController extends BaseController implements Initializable{
+public class StuWorkBookController extends BaseController implements Initializable {
 
 	@FXML
-	private Button btn_Submit, btn_Previous, btn_Next, btn_num1, btn_num2, btn_num3, btn_num4, btn_num5,
-			btn_num6, btn_num7, btn_num8, btn_num9, btn_num10, btn_num11, btn_num12, btn_num13, btn_num14, btn_num15,
-			btn_num16, btn_num17, btn_num18, btn_num19, btn_num20;
+	private Button btn_Submit, btn_Previous, btn_Next, btn_num1, btn_num2, btn_num3, btn_num4, btn_num5, btn_num6,
+			btn_num7, btn_num8, btn_num9, btn_num10, btn_num11, btn_num12, btn_num13, btn_num14, btn_num15, btn_num16,
+			btn_num17, btn_num18, btn_num19, btn_num20;
 	@FXML
 	private Label lb_Question;
 	@FXML
 	private TextArea ta_Answer;
-	
+
+	private Button[] btn;
+	private int workBookSize;
+
 	private Socket socket;
-	private Workbook workbook;
-	private Problem[] problemList;
-	
+	private Problem problem;
+	private String[] answer;
+	private int PB_num;
+
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
+
 		this.socket = StudentDataModel.socket;
+		this.problem = StudentDataModel.problem;
 		
-		
-				
-		
+		if (problem.getType().equals(ProblemType.MultipleChoice)) {
+			try {
+				Stage primaryStage = (Stage) btn_Submit.getScene().getWindow();
+				Parent main = FXMLLoader.load(getClass().getResource("/gui/StuWorkBook_MultipleChoice.fxml"));
+				Scene scene = new Scene(main);
+				primaryStage.setTitle("GuessWhat/Workbook");
+				primaryStage.setScene(scene);
+				primaryStage.show();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+
+		this.workBookSize = StudentDataModel.workbook.WorkBooksize();
+		this.answer = StudentDataModel.student.answer();
+		this.PB_num = problem.PB_Num();
+
+		// setting
+		btn = new Button[] { btn_num1, btn_num2, btn_num3, btn_num4, btn_num5, btn_num6, btn_num7, btn_num8, btn_num9,
+				btn_num10, btn_num11, btn_num12, btn_num13, btn_num14, btn_num15, btn_num16, btn_num17, btn_num18,
+				btn_num19, btn_num20 };
+
+		for (int i = 0; i < workBookSize; i++) {
+			if (answer[i] == null)
+				btn[i].setStyle("-fx-background-color: #dcdcdc;");
+			else
+				btn[i].setStyle("-fx-background-color: #5ad18f;");
+
+			btn[i].setDisable(false);
+		}
+
+		btn[PB_num].setStyle("-fx-background-color: #54bd54;");
+
+		for (int i = workBookSize + 1; i < 20; i++) {
+			btn[i].setStyle("-fx-background-color: #f0fff0;");
+			btn[i].setDisable(true);
+		}
+
+		lb_Question.setText(problem.question());
+		// setting
+
 	}
+
 	public void btn_Next_Action() {
+
+		String anwer = ta_Answer.getText();
+		// if(answer != null) 저장
+
+		StudentDataModel.currentPB = StudentDataModel.currentPB + 1;
 
 	}
 
 	public void btn_Previous_Action() {
 
+		String anwer = ta_Answer.getText();
+		// if(answer != null) 저장
+
+		StudentDataModel.currentPB = StudentDataModel.currentPB - 1;
+
 	}
 
 	public void btn_Submit_Action() {
+
+		// workbook 전체 저장
 
 		try {
 			Stage primaryStage = (Stage) btn_Submit.getScene().getWindow();
@@ -70,89 +129,114 @@ public class StuWorkBookController extends BaseController implements Initializab
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
+	}
+
+	private void changeProblem() {
+		// 여기가 만들어주세용 정현
 	}
 
 	public void btn_num1_Action() {
-
+		StudentDataModel.currentPB = 1;
+		changeProblem();
 	}
 
 	public void btn_num2_Action() {
+		StudentDataModel.currentPB = 2;
+		changeProblem();
 
 	}
 
 	public void btn_num3_Action() {
+		StudentDataModel.currentPB = 3;
+		changeProblem();
 
 	}
 
 	public void btn_num4_Action() {
+		StudentDataModel.currentPB = 4;
+		changeProblem();
 
 	}
 
 	public void btn_num5_Action() {
-
+		StudentDataModel.currentPB = 5;
+		changeProblem();
 	}
 
 	public void btn_num6_Action() {
-
+		StudentDataModel.currentPB = 6;
+		changeProblem();
 	}
 
 	public void btn_num7_Action() {
-
+		StudentDataModel.currentPB = 7;
+		changeProblem();
 	}
 
 	public void btn_num8_Action() {
-
+		StudentDataModel.currentPB = 8;
+		changeProblem();
 	}
 
 	public void btn_num9_Action() {
-
+		StudentDataModel.currentPB = 9;
+		changeProblem();
 	}
 
 	public void btn_num10_Action() {
-
+		StudentDataModel.currentPB = 10;
+		changeProblem();
 	}
 
 	public void btn_num11_Action() {
-
+		StudentDataModel.currentPB = 11;
+		changeProblem();
 	}
 
 	public void btn_num12_Action() {
-
+		StudentDataModel.currentPB = 12;
+		changeProblem();
 	}
 
 	public void btn_num13_Action() {
-
+		StudentDataModel.currentPB = 13;
+		changeProblem();
 	}
 
 	public void btn_num14_Action() {
-
+		StudentDataModel.currentPB = 14;
+		changeProblem();
 	}
 
 	public void btn_num15_Action() {
-
+		StudentDataModel.currentPB = 15;
+		changeProblem();
 	}
 
 	public void btn_num16_Action() {
-
+		StudentDataModel.currentPB = 16;
+		changeProblem();
 	}
 
 	public void btn_num17_Action() {
-
+		StudentDataModel.currentPB = 17;
+		changeProblem();
 	}
 
 	public void btn_num18_Action() {
-
+		StudentDataModel.currentPB = 18;
+		changeProblem();
 	}
 
 	public void btn_num19_Action() {
-
+		StudentDataModel.currentPB = 19;
+		changeProblem();
 	}
 
 	public void btn_num20_Action() {
-
+		StudentDataModel.currentPB = 20;
+		changeProblem();
 	}
-	
-	
-	
+
 }
