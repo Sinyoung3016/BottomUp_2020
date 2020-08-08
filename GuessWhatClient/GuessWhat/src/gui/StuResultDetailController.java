@@ -83,7 +83,7 @@ public class StuResultDetailController extends BaseController implements Initial
 			else if (result.equals("X"))
 				btn[i].setStyle("-fx-background-color: #ff848f;");
 			else if (result.equals("N"))
-				btn[i].setStyle("-fx-background-color: #f0fff0;");
+				btn[i].setStyle("-fx-background-color: #5ad18f;");
 
 			btn[i].setDisable(false);
 		}
@@ -94,7 +94,7 @@ public class StuResultDetailController extends BaseController implements Initial
 
 		// setting
 		
-		btn[problem.PB_Num()].setStyle("-fx-background-color: #22741C;");
+		btn[problem.PB_Num()].setStyle("-fx-background-color: #22941C;");
 		lb_Question.setText(this.problem.question());
 		String T_answer = this.problem.answer();
 		String S_answer = this.student.answer()[problem.PB_Num()];
