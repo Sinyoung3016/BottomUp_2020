@@ -93,9 +93,9 @@ public class BanManager {
 
 	private State stateOf(String state) {
 		switch (state) {
-		case "Open":
+		case "OPEN":
 			return State.OPEN;
-		case "Ing":
+		case "ING":
 			return State.ING;
 		default:
 			return State.CLOSE;

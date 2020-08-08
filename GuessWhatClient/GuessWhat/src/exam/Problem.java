@@ -10,8 +10,8 @@ public class Problem {
 	private ProblemType type;
 	private String question;
 	private String answer;
-	private String answerContent;
-	private String[] answerContentList;
+	private String answerContent; //"N1`N2`N3`N4`N5"
+	private String[] answerContentList; //[N1][N2][N3][N4][N5] 
 	
 	//Constructor start
 	public Problem(String[] problemInfo) {
@@ -53,6 +53,7 @@ public class Problem {
 		this.answer = tokens[3];
 		this.type = ProblemType.toProblemType(tokens[4]);
 		this.answerContent = tokens[5];
+		this.answerContentList = this.answerContent.split("_");
 	}
 	//Constructor end
 	
