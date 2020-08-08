@@ -227,11 +227,12 @@ public class ServerThread extends Thread{
 
 		pw.flush();
 	}
-	private void addBanManager(String PNum, String BNum, String name, String code, String workbook) {
+	private void addBanManager(String PNum, String BNum, String name, String code, String WNum) {
 		int pNum = Integer.parseInt(PNum);
 		int bNum = Integer.parseInt(BNum);
+		int wNum = Integer.parseInt(WNum);
 
-		if(DB_BanManager.insertBanManager(pNum, bNum, name, code, workbook))
+		if(DB_BanManager.insertBanManager(pNum, bNum, name, code, wNum))
 			pw.println("AddBan:Success");
 		else pw.println(">>FAIL [AddBan]<<");
 

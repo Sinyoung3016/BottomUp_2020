@@ -23,27 +23,27 @@ public class BanManager {
 	private String BM_roomcode;
 	private int B_Num;
 	private int student_size; 
-	private String workbook;
+	private int W_Num;
 	private AnswerSet answerSet;
 	
 	//Constructor start
-	public BanManager(int num, String name, String password, String workbook) {
+	public BanManager(int num, String name, String password, int workbook) {
 		this.BM_name = name;
 		this.BM_num = num;
 		this.BM_roomcode = password;
 		this.BM_state = State.OPEN;
-		this.workbook = workbook;
+		this.W_Num = workbook;
 		this.answerSet = new AnswerSet();
 	}
 	
-	public BanManager(int PNum, int bNum, int BMNum, String name, String state, String code, String workbookName, int studentSize) {
+	public BanManager(int PNum, int bNum, int BMNum, String name, String state, String code, int wNum, int studentSize) {
 		this.P_num = PNum;
 		this.B_Num = bNum;
 		this.BM_num = BMNum;
 		this.BM_name = name;
 		this.BM_state = stateOf(state);
 		this.BM_roomcode = code;
-		this.workbook = workbookName;
+		this.W_Num = wNum;
 		this.student_size = studentSize;
 	}
 	
@@ -63,7 +63,7 @@ public class BanManager {
 	public String BM_name() { return BM_name; }
 	public State BM_sate() { return BM_state; }
 	public String BM_roomcode() { return BM_roomcode; }
-	public String workbook() { return workbook; }
+	public int workbook() { return W_Num; }
 	public AnswerSet answerSet() { return answerSet; }
 	public int BNum() {return this.B_Num;}
 	public int student_size() { return student_size; }

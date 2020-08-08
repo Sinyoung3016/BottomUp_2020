@@ -54,7 +54,7 @@ public class DB_BanManager extends DBManager {
 		}
 	}
 	
-	public synchronized static boolean insertBanManager(int PNum, int BNum, String name, String code, String workbook) {
+	public synchronized static boolean insertBanManager(int PNum, int BNum, String name, String code, int wNum) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 
@@ -105,7 +105,7 @@ public class DB_BanManager extends DBManager {
 		String name = null;
 		String state = null;
 		String code = null;
-		String workbook = null;
+		int wNum = -1;
 		int size = -1;
 
 		try {
@@ -120,9 +120,9 @@ public class DB_BanManager extends DBManager {
 				name = rs.getString("Name");
 				state = rs.getString("State");
 				code = rs.getString("Code");
-				workbook = rs.getString("WorkBook");
+				wNum = rs.getInt("WorkBook");
 				
-				banManagerList.add(new BanManager(PNum, BNum, BMNum, name, state, code, workbook, size));
+				banManagerList.add(new BanManager(PNum, BNum, BMNum, name, state, code, wNum, size));
 			}
 			return banManagerList;
 		}catch(Exception e) {
@@ -149,7 +149,7 @@ public class DB_BanManager extends DBManager {
 		String name = null;
 		String state = null;
 		String code = null;
-		String workbook = null;
+		int wNum = -1;
 		int size = -1;
 
 		try {
@@ -164,9 +164,9 @@ public class DB_BanManager extends DBManager {
 				name = rs.getString("Name");
 				state = rs.getString("State");
 				code = rs.getString("Code");
-				workbook = rs.getString("WorkBook");
+				wNum = rs.getInt("WorkBook");
 				
-				banManager = new BanManager(PNum, BNum, BMNum, name, state, code, workbook, size);
+				banManager = new BanManager(PNum, BNum, BMNum, name, state, code, wNum, size);
 			}
 			return banManager;
 		}catch(Exception e) {
