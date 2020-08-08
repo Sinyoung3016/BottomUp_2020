@@ -11,6 +11,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ResourceBundle;
 
 import exam.Problem;
+import exam.ProblemType;
 import exam.Workbook;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -38,6 +39,7 @@ public class StudentInfoController implements Initializable{
 	private Label lb_ClassRoomName;
 	
 	private boolean IsTestStarted = false;
+	private boolean isMultipleChoice = false;
 	private Socket socket;
 	public BanManager banManager;
 	
@@ -90,7 +92,8 @@ public class StudentInfoController implements Initializable{
 	}
 
 	public void btn_Join_Action(){
-			if(StudentDataModel.banManager.stringOfState() == "ING")
+			System.out.println(StudentDataModel.banManager.BM_state().toString());
+			if(StudentDataModel.banManager.BM_state().toString() == "ING")
 				this.IsTestStarted = true;
 		
 			if(IsTestStarted) {
@@ -124,25 +127,43 @@ public class StudentInfoController implements Initializable{
 								}
 								else {
 									Problem problem = new Problem(responseTokens[5]);
+									if(problem.getType().equals(ProblemType.MultipleChoice)) {
+										this.isMultipleChoice = true;
+									}
 									StudentDataModel.setProblem(problem);
 									StudentDataModel.hasAnswer = new boolean[workbook.WorkBooksize()];
 									StudentDataModel.student = new Student();
 									StudentDataModel.student.setAnswer(new String[workbook.WorkBooksize()]);
+									StudentDataModel.student.setResultWithList(new String[workbook.WorkBooksize()]);
 								}
 							}
 						}
 					}
-
-					try {
-						Stage primaryStage = (Stage) btn_Close.getScene().getWindow();
-						Parent main = FXMLLoader.load(getClass().getResource("/gui/StuWorkBook.fxml"));
-						Scene scene = new Scene(main);
-						primaryStage.setTitle("GuessWhat/Test");
-						primaryStage.setScene(scene);
-						primaryStage.show();
-					} catch (Exception e) {
-						e.printStackTrace();
+					if(this.isMultipleChoice) {
+						try {
+							Stage primaryStage = (Stage) btn_Close.getScene().getWindow();
+							Parent main = FXMLLoader.load(getClass().getResource("/gui/StuWorkBook_MultipleChoice.fxml"));
+							Scene scene = new Scene(main);
+							primaryStage.setTitle("GuessWhat/Test");
+							primaryStage.setScene(scene);
+							primaryStage.show();
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
 					}
+					else {
+						try {
+							Stage primaryStage = (Stage) btn_Close.getScene().getWindow();
+							Parent main = FXMLLoader.load(getClass().getResource("/gui/StuWorkBook.fxml"));
+							Scene scene = new Scene(main);
+							primaryStage.setTitle("GuessWhat/Test");
+							primaryStage.setScene(scene);
+							primaryStage.show();
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
+					
 				}
 				else {
 					new Alert(Alert.AlertType.WARNING, "Invalid Name", ButtonType.CLOSE).show();
@@ -152,18 +173,6 @@ public class StudentInfoController implements Initializable{
 			else {
 			
 				new Alert(Alert.AlertType.WARNING, "Class has not been opened yet. Please wait in a moment.", ButtonType.CLOSE).show();
-
-				/*try {
-					Stage primaryStage = (Stage) btn_Close.getScene().getWindow();
-					Parent main = FXMLLoader.load(getClass().getResource("/gui/StuInfoToStuWB.fxml"));
-					Scene scene = new Scene(main);
-					primaryStage.setTitle("GuessWhat/Loading");
-					primaryStage.setScene(scene);
-					primaryStage.show();
-				
-				} catch (Exception e) {
-					e.printStackTrace();
-				}*/
 				
 			}
 

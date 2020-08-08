@@ -41,7 +41,6 @@ public class Student {
 		
 	}
 	
-	public void setResult(String result) { this.result = result.split(":"); }
 	
 	//Getter start
 	public int P_num() { return this.P_num; }
@@ -58,7 +57,16 @@ public class Student {
 	public void setAnswer(String[] answer) {
 		this.answer = answer;
 	}
+	public void setResult(String result) { 
+		for(int i = 0; i < result.length(); i++) {
+			this.result[i] = result.charAt(i) + "";
+		}
+	}
+	public void setResultWithList(String[] result) {
+		this.result = result;
+	}
 	
+	//Setter End
 	public String tokenAnswer() {
 		StringBuilder sb = new StringBuilder("");
 		for(int i = 0; i<this.answer.length-1; i++) {
@@ -70,6 +78,12 @@ public class Student {
 	}
 	
 	public String tokenResult() {
-		return null;
+		StringBuilder sb = new StringBuilder("");
+		for(int i = 0; i<this.result.length-1; i++) {
+			sb.append(this.result()[i]);
+			sb.append("`");
+		}
+		sb.append(this.result()[this.result().length-1]);
+		return new String(sb);
 	}
 }

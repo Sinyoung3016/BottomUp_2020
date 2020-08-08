@@ -58,7 +58,7 @@ public class StuWorkBook_MultipleChoiceController extends BaseController impleme
 
 		if (!problem.getType().equals(ProblemType.MultipleChoice)) {
 			try {
-				Stage primaryStage = (Stage) btn_Submit.getScene().getWindow();
+				Stage primaryStage = (Stage) lb_Question.getScene().getWindow();
 				Parent main = FXMLLoader.load(getClass().getResource("/gui/StuWorkBook.fxml"));
 				Scene scene = new Scene(main);
 				primaryStage.setTitle("GuessWhat/Workbook");
@@ -194,82 +194,95 @@ public class StuWorkBook_MultipleChoiceController extends BaseController impleme
 	}
 
 	public void btn_num1_Action() {
+		savePro();
 		StudentDataModel.currentPB = 0;
 		changeProblem();
 	}
 
 	public void btn_num2_Action() {
+		savePro();
 		StudentDataModel.currentPB = 1;
 		changeProblem();
-
 	}
 
 	public void btn_num3_Action() {
+		savePro();
 		StudentDataModel.currentPB = 2;
 		changeProblem();
-
 	}
 
 	public void btn_num4_Action() {
+		savePro();
 		StudentDataModel.currentPB = 3;
 		changeProblem();
-
 	}
 
 	public void btn_num5_Action() {
+		savePro();
 		StudentDataModel.currentPB = 4;
 		changeProblem();
 	}
 
 	public void btn_num6_Action() {
+		savePro();
 		StudentDataModel.currentPB = 5;
 		changeProblem();
 	}
 
 	public void btn_num7_Action() {
+		savePro();
 		StudentDataModel.currentPB = 6;
 		changeProblem();
 	}
 
 	public void btn_num8_Action() {
+		savePro();
 		StudentDataModel.currentPB = 7;
 		changeProblem();
 	}
 
 	public void btn_num9_Action() {
+		savePro();
 		StudentDataModel.currentPB = 8;
 		changeProblem();
 	}
 
 	public void btn_num10_Action() {
+		savePro();
 		StudentDataModel.currentPB = 9;
 		changeProblem();
 	}
 
 	public void btn_num11_Action() {
+		savePro();
 		StudentDataModel.currentPB = 10;
 		changeProblem();
 	}
 
 	public void btn_num12_Action() {
+		savePro();
 		StudentDataModel.currentPB = 11;
 		changeProblem();
 	}
 
 	public void btn_num13_Action() {
+		savePro();
 		StudentDataModel.currentPB = 12;
 		changeProblem();
 	}
 
 	public void btn_num14_Action() {
+		savePro();
 		StudentDataModel.currentPB = 13;
 		changeProblem();
 	}
 
 	public void btn_num15_Action() {
+		savePro();
 		StudentDataModel.currentPB = 14;
 		changeProblem();
 	}
+
 
 	private void markAnswer() {
 
@@ -279,15 +292,21 @@ public class StuWorkBook_MultipleChoiceController extends BaseController impleme
 		StringBuilder sb = new StringBuilder("");
 		if (studentAnswer != null) {
 			for (int i = 0; i < studentAnswer.length; i++) {
-				if (typeList[i].equals("Subjective")) {
-					sb.append("N");
-				} else { 
-					if (studentAnswer[i].equals(professorAnswer[i])) {
-						sb.append("O");
-					} else {
-						sb.append("X");
+				if(studentAnswer[i] != null) {
+					if (typeList[i].equals("Subjective")) {
+						sb.append("N");
+					} else { 
+						if (studentAnswer[i].equals(professorAnswer[i])) {
+							sb.append("O");
+						} else {
+							sb.append("X");
+						}
 					}
 				}
+				else {
+					sb.append("X");
+				}
+				
 			}
 			this.student.setResult(new String(sb));
 		}
