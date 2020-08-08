@@ -61,7 +61,7 @@ public class DB_BanManager extends DBManager {
 		try {
 			conn = getConn();
 			String sql;
-			sql = "INSERT INTO BanManager (PNum, BNum, Name, State, Code, WorkBook) VALUES (?,?,?,?,?,?)";
+			sql = "INSERT INTO BanManager (PNum, BNum, Name, State, Code, WNum) VALUES (?,?,?,?,?,?)";
 			pstmt = conn.prepareStatement(sql);
 
 			pstmt.setInt(1, PNum);
@@ -70,7 +70,7 @@ public class DB_BanManager extends DBManager {
 			pstmt.setString(4, "OPEN");
 			
 			pstmt.setString(5, code);
-			pstmt.setString(6, "workbookName");
+			pstmt.setInt(6, wNum);
 
 			pstmt.executeUpdate();
 			
@@ -120,7 +120,7 @@ public class DB_BanManager extends DBManager {
 				name = rs.getString("Name");
 				state = rs.getString("State");
 				code = rs.getString("Code");
-				wNum = rs.getInt("WorkBook");
+				wNum = rs.getInt("WNum");
 				
 				banManagerList.add(new BanManager(PNum, BNum, BMNum, name, state, code, wNum, size));
 			}
@@ -164,7 +164,7 @@ public class DB_BanManager extends DBManager {
 				name = rs.getString("Name");
 				state = rs.getString("State");
 				code = rs.getString("Code");
-				wNum = rs.getInt("WorkBook");
+				wNum = rs.getInt("WNum");
 				
 				banManager = new BanManager(PNum, BNum, BMNum, name, state, code, wNum, size);
 			}
