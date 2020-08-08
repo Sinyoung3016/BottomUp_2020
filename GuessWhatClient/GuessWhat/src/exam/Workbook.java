@@ -16,9 +16,9 @@ public class Workbook {
 	private int P_Num;
 	private int BM_Num;
 	private int W_Num;
-	private String W_name;
+	private String W_name = "NewWorkBook";
 	
-	private int WorkBook_size;
+	private int WorkBook_size = 0;
 	
 	//Constructor start
 	public Workbook(String[] workbookInfo) {
@@ -36,10 +36,15 @@ public class Workbook {
 		this.W_name = tokens[3];
 		this.WorkBook_size = Integer.parseInt(tokens[4]);
 	}
+	public Workbook() {
+	}
 	//Constructor end
 	
 	public void setName(String name) { 
 		this.W_name = name;
+	}
+	public void setSize(int n) {
+		this.WorkBook_size = n;
 	}
 	
 	//Getter start

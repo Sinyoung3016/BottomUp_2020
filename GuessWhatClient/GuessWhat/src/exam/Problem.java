@@ -14,6 +14,10 @@ public class Problem {
 	private String[] answerContentList; //[N1][N2][N3][N4][N5] 
 	
 	//Constructor start
+	public Problem(int PB_Num) {
+		this.PB_Num = PB_Num;
+	}
+	
 	public Problem(String[] problemInfo) {
 		this.P_Num = Integer.parseInt(problemInfo[0]);
 		this.W_Num = Integer.parseInt(problemInfo[1]);
@@ -56,6 +60,23 @@ public class Problem {
 		this.answerContentList = this.answerContent.split("_");
 	}
 	//Constructor end
+
+	public void setPB_num(int n) {
+		this.PB_Num = n;
+	}
+	public void setQuestion(String question) {
+		this.question = question;
+	}
+	public void setAnswer(String answer) {
+		this.answer= answer;
+	}
+	public void setType(ProblemType type) {
+		this.type = type;
+	}
+	public void setAnswerContent(String answerContent) {
+		this.answerContent = answerContent;
+		this.answerContentList = answerContent.split("`");
+	}
 	
 	//Getter start
 	public int P_Num() { return this.P_Num; }

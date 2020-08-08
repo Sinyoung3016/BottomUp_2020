@@ -28,35 +28,34 @@ public class BanManager {
 	private int P_num;
 	private int ban_num;
 	private int BM_num;
+	private int W_num;
 	
 	private State BM_state;
 	private String BM_name;
 	private String BM_roomcode;
 	private int Student_size;
-	
-	private String workBook;
 
 	// Constructor start
-	public BanManager(int P_num, int ban_num, int BM_num, String name, String roomcode, String workBook ) {
+	public BanManager(int P_num, int ban_num, int BM_num, String name, String roomcode, int workBook ) {
 		this.P_num = P_num;
 		this.ban_num = ban_num;
 		this.BM_num = BM_num;
 		this.BM_name = name;
 		this.BM_roomcode = roomcode; //gui 내부에서 초기화
-		this.workBook = workBook;
+		this.W_num = workBook;
 		
 		this.BM_state = State.OPEN;
 		this.Student_size = 0;
 	}	
 	
-	public BanManager(int P_num, int ban_num, int BM_num, String name, String state, String roomcode, String workbok, int student_size) {
+	public BanManager(int P_num, int ban_num, int BM_num, String name, String state, String roomcode, int workbook, int student_size) {
 		this.P_num = P_num;
 		this.ban_num = ban_num;
 		this.BM_num = BM_num;
 		this.BM_name = name;
 		this.BM_state = this.stateOf(state);
 		this.BM_roomcode = roomcode;
-		this.workBook = workbok;
+		this.W_num = workbook;
 		this.Student_size = student_size;
 	}
 	
@@ -86,7 +85,7 @@ public class BanManager {
 	public int BM_num() { return this.BM_num; }
 	public String BM_name() { return this.BM_name; }
 	public String BM_roomcode() { return this.BM_roomcode; }
-	public String workbook() { return this.workBook; }
+	public int W_num() { return this.W_num; }
 	public State BM_state() { return this.BM_state; }
 	public int Student_size() {	return this.Student_size; }
 	// Getter end
