@@ -32,9 +32,8 @@ import user.Student;
 public class StuWorkBookController extends BaseController implements Initializable {
 
 	@FXML
-	private Button btn_Submit, btn_Previous, btn_Next, btn_num1, btn_num2, btn_num3, btn_num4, btn_num5, btn_num6,
-			btn_num7, btn_num8, btn_num9, btn_num10, btn_num11, btn_num12, btn_num13, btn_num14, btn_num15, btn_num16,
-			btn_num17, btn_num18, btn_num19, btn_num20;
+	private Button btn_Submit, btn_Previous, btn_Next, btn_num0, btn_num1, btn_num2, btn_num3, btn_num4, btn_num5,
+			btn_num6, btn_num7, btn_num8, btn_num9, btn_num10, btn_num11, btn_num12, btn_num13, btn_num14, btn_num15;
 	@FXML
 	private Label lb_Question;
 	@FXML
@@ -43,7 +42,6 @@ public class StuWorkBookController extends BaseController implements Initializab
 	private Socket socket;
 	private Problem problem;
 	private Student student;
-	private String[] answer;
 	private Button[] btn;
 	private int PB_num;
 	private int workBookSize;
@@ -71,14 +69,13 @@ public class StuWorkBookController extends BaseController implements Initializab
 		}
 
 		this.workBookSize = StudentDataModel.workbook.WorkBooksize();
-		this.PB_num = problem.PB_Num();
+		this.PB_num = StudentDataModel.currentPB;
 
 		// setting
-		btn = new Button[] { btn_num1, btn_num2, btn_num3, btn_num4, btn_num5, btn_num6, btn_num7, btn_num8, btn_num9,
-				btn_num10, btn_num11, btn_num12, btn_num13, btn_num14, btn_num15, btn_num16, btn_num17, btn_num18,
-				btn_num19, btn_num20 };
+		btn = new Button[] { btn_num0,  btn_num1, btn_num2, btn_num3, btn_num4, btn_num5, btn_num6, btn_num7, btn_num8, btn_num9,
+				btn_num10, btn_num11, btn_num12, btn_num13, btn_num14, btn_num15 };
 
-		for (int i = 0; i < workBookSize; i++) {
+		for (int i = 1; i <= workBookSize; i++) {
 			if (hasAnswer[i])
 				btn[i].setStyle("-fx-background-color: #f0fff0;");
 			else
@@ -92,7 +89,7 @@ public class StuWorkBookController extends BaseController implements Initializab
 		if (hasAnswer[PB_num])
 			ta_Answer.setText(student.answer()[PB_num]);
 
-		for (int i = workBookSize; i < 20; i++) {
+		for (int i = workBookSize + 1; i <= 15; i++) {
 			btn[i].setStyle("-fx-background-color: #dcdcdc;");
 			btn[i].setDisable(true);
 		}
@@ -106,10 +103,10 @@ public class StuWorkBookController extends BaseController implements Initializab
 		if (S_answer.equals(null))
 			return;
 		else {
-
 			this.student.answer()[StudentDataModel.currentPB] = S_answer;
 			StudentDataModel.hasAnswer[StudentDataModel.currentPB] = true;
 		}
+		
 	}
 
 	public void btn_Next_Action() {
@@ -135,12 +132,12 @@ public class StuWorkBookController extends BaseController implements Initializab
 	}
 
 	public void btn_Submit_Action() {
-		
+
 		savePro();
-		
+
 		this.markAnswer();
-		
-		//서버에 student정보 넘기기 구현할것!
+
+		// 서버에 student정보 넘기기 구현할것!
 
 		try {
 			Stage primaryStage = (Stage) btn_Submit.getScene().getWindow();
@@ -154,7 +151,6 @@ public class StuWorkBookController extends BaseController implements Initializab
 		}
 
 	}
-
 
 	public void btn_num1_Action() {
 		StudentDataModel.currentPB = 1;
@@ -258,7 +254,7 @@ public class StuWorkBookController extends BaseController implements Initializab
 		StudentDataModel.currentPB = 20;
 		changeProblem();
 	}
-	
+
 	private void changeProblem() {
 
 		String responseMessage = null;
@@ -286,23 +282,24 @@ public class StuWorkBookController extends BaseController implements Initializab
 
 			}
 		}
+		
+		this.initialize(null, null);
 	}
-	
+
 	private void markAnswer() {
+
 		String[] studentAnswer = this.student.answer;
 		String[] professorAnswer = this.getAnswerList();
 		String[] typeList = this.getTypeList();
 		StringBuilder sb = new StringBuilder("");
-		if(studentAnswer != null) {
-			for(int i = 0; i< studentAnswer.length; i++) {
-				if(typeList[i].equals("Subjective")) {
+		if (studentAnswer != null) {
+			for (int i = 0; i < studentAnswer.length; i++) {
+				if (typeList[i].equals("Subjective")) {
 					sb.append("N");
-				}
-				else {
-					if(studentAnswer[i].equals(professorAnswer[i])) {
+				} else {
+					if (studentAnswer[i].equals(professorAnswer[i])) {
 						sb.append("O");
-					}
-					else {
+					} else {
 						sb.append("X");
 					}
 				}
@@ -311,7 +308,7 @@ public class StuWorkBookController extends BaseController implements Initializab
 		}
 
 	}
-	
+
 	private String[] getAnswerList() {
 		String responseMessage = null;
 		try {
@@ -326,7 +323,7 @@ public class StuWorkBookController extends BaseController implements Initializab
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		//GetAnswer:Success:Answer(A1`A2`A3 ...)
+		// GetAnswer:Success:Answer(A1`A2`A3 ...)
 		String[] answerList = null;
 		String[] responseTokens = responseMessage.split(":");
 		if (responseTokens[0].equals("GetAnswerList")) {
@@ -339,7 +336,7 @@ public class StuWorkBookController extends BaseController implements Initializab
 		}
 		return answerList;
 	}
-	
+
 	private String[] getTypeList() {
 		String responseMessage = null;
 		try {
@@ -354,7 +351,7 @@ public class StuWorkBookController extends BaseController implements Initializab
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		//GetAnswer:Success:Type
+		// GetAnswer:Success:Type
 		String[] typeList = null;
 		String[] responseTokens = responseMessage.split(":");
 		if (responseTokens[0].equals("GetTypeList")) {
