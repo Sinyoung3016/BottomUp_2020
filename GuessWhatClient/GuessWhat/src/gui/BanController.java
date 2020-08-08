@@ -58,7 +58,6 @@ public class BanController extends BaseController implements Initializable {
 				System.out.println("Fail : GetAllBanManager");
 			}
 			else {
-				System.out.println("Success: GetAllBanManager");
 				int n = 1;
 				for(int i = 2 ; i < responseTokens.length ; i++) {	
 					int BMNum = Integer.parseInt(responseTokens[i]);
@@ -106,7 +105,6 @@ public class BanController extends BaseController implements Initializable {
 		} catch(IOException e1) {
 			e1.printStackTrace();
 		}
-		System.out.println(responseMessage);
 		String[] responseTokens = responseMessage.split(":");
 		
 		if(responseTokens[0].equals("DeleteBan")) {
@@ -114,7 +112,7 @@ public class BanController extends BaseController implements Initializable {
 				System.out.println("Fail : DeleteBan");
 			}
 			else {
-				System.out.println("Success: DeleteBan");
+				//System.out.println("Success: DeleteBan");
 			}
 		}
 		

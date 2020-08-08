@@ -1,7 +1,13 @@
 package gui;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ResourceBundle;
 
 import exam.Workbook;
@@ -87,7 +93,27 @@ public class BanManagerSoonController extends BaseController implements Initiali
 
 	public void btn_Delete_Action() {
 		
-		ProfessorDataModel.removeBanManager(1, banManager);
+		String responseMessage = null;
+		try {
+			String requestMessage = "DeleteBanManager:" + this.banManager.P_num() + ":" + this.banManager.ban_num() + ":" + this.banManager.BM_num();
+			BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
+			PrintWriter writer = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8));
+			writer.println(requestMessage);
+			writer.flush();
+			responseMessage = reader.readLine();
+		} catch(IOException e1) {
+			e1.printStackTrace();
+		}
+		String[] responseTokens = responseMessage.split(":");
+		
+		if(responseTokens[0].equals("DeleteBanManager")) {
+			if(! responseTokens[1].equals("Success")) {
+				System.out.println("Fail : DeleteBanManager");
+			}
+			else {
+				System.out.println("    [Delete] BM: " + this.banManager.BM_name());
+			}
+		}
 		
 		try {
 			Stage primaryStage = (Stage) btn_Close.getScene().getWindow();

@@ -9,6 +9,7 @@ import java.net.Socket;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
+import java.util.Random;
 import java.util.ResourceBundle;
 
 import exception.MyException;
@@ -68,19 +69,36 @@ public class CreateNewBanManagerController extends BaseController implements Ini
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// TODO Auto-generated method stub
+		
+		this.makeRoomCode();
+		
 		this.socket = ProfessorDataModel.socket;
 		this.professor = ProfessorDataModel.professor;
 		this.ban = ProfessorDataModel.ban;
 		
 		className = ban.ban_name();
-		this.btn_Main.setText(className);
-		this.lv_roomcode.setText("C" + this.professor.P_Num() + this.ban.ban_num());
-		
+		this.btn_Main.setText(className);		
 	}
 	
 	private void makeRoomCode() { //값 만들기
-		String roomcode= "";
-		lv_roomcode.setText(roomcode);
+		StringBuffer temp = new StringBuffer();
+		Random random = new Random();
+		for (int i = 0 ; i < 10 ; i++) {
+			int index = random.nextInt(3);
+			switch(index) {
+			case 0:
+				temp.append((char) ((int) (random.nextInt(26)) + 97));
+				break;
+			case 1:
+				temp.append((char) ((int) random.nextInt(26) + 65));
+				break;
+			case 2:
+				temp.append(random.nextInt(10));
+				break;
+			}
+		}
+		String roomcode = temp.toString();
+		this.lv_roomcode.setText(roomcode);
 	}
 
 	@Override

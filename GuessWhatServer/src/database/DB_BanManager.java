@@ -67,7 +67,7 @@ public class DB_BanManager extends DBManager {
 			pstmt.setInt(1, PNum);
 			pstmt.setInt(2, BNum);
 			pstmt.setString(3, name);
-			pstmt.setString(4, "Open");
+			pstmt.setString(4, "OPEN");
 			
 			pstmt.setString(5, code);
 			pstmt.setString(6, "workbookName");
@@ -179,6 +179,40 @@ public class DB_BanManager extends DBManager {
 				if(rs != null) rs.close();
 			} catch(SQLException e) {
 				System.out.println("Error : " + e.getMessage() + "FROM getAllBan (SQL)");
+			}
+		}
+	}
+	public synchronized static boolean deleteBanManager(int PNum, int BNum, int BMNum) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+
+		try {
+			conn = getConn();
+
+			String s;
+			s = "DELETE FROM BanManager WHERE PNum = ? AND BNum = ? AND BMNum = ?";
+			pstmt = conn.prepareStatement(s);
+
+			pstmt.setInt(1, PNum);
+			pstmt.setInt(2, BNum);
+			pstmt.setInt(3, BMNum);
+
+			pstmt.executeUpdate();
+			
+			updateBan(PNum, BNum);
+			pstmt.close();
+			conn.close();
+			return true;
+			
+		}catch(Exception e) {
+			System.out.println("Error : " + e.getMessage() + "FROM deleteBanManager");
+			return false;
+		} finally {
+			try {
+				if(pstmt != null) pstmt.close();
+				if(conn != null) conn.close();
+			} catch(SQLException e) {
+				System.out.println("Error : " + e.getMessage() + "FROM deleteBanManager (SQL)");
 			}
 		}
 	}
