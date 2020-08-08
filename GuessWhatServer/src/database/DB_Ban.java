@@ -12,52 +12,6 @@ import room.Ban;
 
 public class DB_Ban extends DBManager {
 	
-	public synchronized static Boolean updateBan(int PNum, int BNum) {
-		Connection conn = null;
-		Statement stmt = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-
-		int bmSize = 0;
-		
-		try {
-			conn = getConn();
-			stmt = conn.createStatement();
-			String sql;
-			sql = "SELECT * FROM BanManager WHERE PNum = '" + PNum + "' AND BNum = '" + BNum + "'";
-			rs = stmt.executeQuery(sql);
-
-			while(rs.next()) {
-				bmSize++;
-			}
-			
-			String sql2;
-			sql2 = "Update Ban SET Size = ? WHERE PNum = ? AND BNum = ?";
-			pstmt = conn.prepareStatement(sql2);
-			
-			pstmt.setInt(1, bmSize);
-			pstmt.setInt(2, PNum);
-			pstmt.setInt(3, BNum);
-
-			pstmt.executeUpdate();
-			pstmt.close();
-			conn.close();
-			
-			return true;
-		}catch(Exception e) {
-			System.out.println("Error : " + e.getMessage() + "FROM update Ban");
-			return null;
-		} finally {
-			try {
-				if(stmt != null) stmt.close();
-				if(conn != null) conn.close();
-				if(rs != null) rs.close();
-			} catch(SQLException e) {
-				System.out.println("Error : " + e.getMessage() + "FROM update Ban (SQL)");
-			}
-		}
-	}
-	
 	public synchronized static boolean insertBan(int PNum, String Name) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -151,7 +105,6 @@ public class DB_Ban extends DBManager {
 				name = rs.getString("Name");
 				size = rs.getInt("Size");
 				
-				updateBan(PNum, BNum);
 				banList.add(new Ban(PNum, BNum, name, size));
 			}
 			return banList;

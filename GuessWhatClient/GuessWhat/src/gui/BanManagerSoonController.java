@@ -104,7 +104,6 @@ public class BanManagerSoonController extends BaseController implements Initiali
 		} catch(IOException e1) {
 			e1.printStackTrace();
 		}
-		System.out.println(responseMessage);
 		String[] responseTokens = responseMessage.split(":");
 		
 		if(responseTokens[0].equals("DeleteBanManager")) {
@@ -112,7 +111,7 @@ public class BanManagerSoonController extends BaseController implements Initiali
 				System.out.println("Fail : DeleteBanManager");
 			}
 			else {
-				System.out.println("[Delete] " + this.banManager.BM_name());
+				System.out.println("    [Delete] BM: " + this.banManager.BM_name());
 			}
 		}
 		
