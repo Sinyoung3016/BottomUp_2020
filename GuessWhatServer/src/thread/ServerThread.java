@@ -97,6 +97,9 @@ public class ServerThread extends Thread{
 						}else if(requestTokens[0].equals(Request.DELETE_BAN.getRequest())) { //DeleteBan:PNum:BNum
 							clientRequest = "DeleteBan";
 							this.deleteBan(requestTokens[1], requestTokens[2]);
+						}else if(requestTokens[0].equals(Request.DELETE_BANMANAGER.getRequest())) { //DeleteBanManager:PNum:BNum:BMNum
+							clientRequest = "DeleteBanManager";
+							this.deleteBanManager(requestTokens[1], requestTokens[2], requestTokens[3]);
 						}
 						else if(requestTokens[0].equals(Request.DELETE_WORKBOOK.getRequest())) { //DeleteWorkbook:WNum
 							clientRequest = "DeleteWorkbook";
@@ -251,6 +254,17 @@ public class ServerThread extends Thread{
 		if(DB_Ban.deleteBan(pNum, bNum))
 			pw.println(">>SUCCESS [DeleteBan]<<");
 		else pw.println(">>FAIL [DeleteBan[<<");
+
+		pw.flush();
+	}
+	private void deleteBanManager(String PNum, String BNum, String BMNum) {
+		int pNum = Integer.parseInt(PNum);
+		int bNum = Integer.parseInt(BNum);
+		int bmNum = Integer.parseInt(BMNum);
+
+		if(DB_BanManager.deleteBanManager(pNum, bNum, bmNum))
+			pw.println(">>SUCCESS [DeleteBanManger]<<");
+		else pw.println(">>FAIL [DeleteBanManager[<<");
 
 		pw.flush();
 	}
