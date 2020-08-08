@@ -32,9 +32,8 @@ import user.Student;
 public class StuWorkBook_MultipleChoiceController extends BaseController implements Initializable {
 
 	@FXML
-	private Button btn_Submit, btn_Previous, btn_Next, btn_num0, btn_num1, btn_num2, btn_num3, btn_num4, btn_num5, btn_num6,
-			btn_num7, btn_num8, btn_num9, btn_num10, btn_num11, btn_num12, btn_num13, btn_num14, btn_num15, btn_num16,
-			btn_num17, btn_num18, btn_num19, btn_num20;
+	private Button btn_Submit, btn_Previous, btn_Next, btn_num1, btn_num2, btn_num3, btn_num4, btn_num5, btn_num6,
+			btn_num7, btn_num8, btn_num9, btn_num10, btn_num11, btn_num12, btn_num13, btn_num14, btn_num15;
 	@FXML
 	private Label lb_Question;
 	@FXML
@@ -43,19 +42,18 @@ public class StuWorkBook_MultipleChoiceController extends BaseController impleme
 	private Socket socket;
 	private Problem problem;
 	private Student student;
-	private String[] answer;
 	private Button[] btn;
 	private CheckBox[] cb;
 	private int PB_num;
 	private int workBookSize;
-	private boolean[] answerIsFull;
+	private boolean[] hasAnswer;
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// TODO Auto-generated method stub
 		this.socket = StudentDataModel.socket;
 		this.problem = StudentDataModel.problem;
-		this.answerIsFull = StudentDataModel.hasAnswer;
+		this.hasAnswer = StudentDataModel.hasAnswer;
 		this.student = StudentDataModel.student;
 
 		if (!problem.getType().equals(ProblemType.MultipleChoice)) {
@@ -72,15 +70,14 @@ public class StuWorkBook_MultipleChoiceController extends BaseController impleme
 		}
 
 		this.workBookSize = StudentDataModel.workbook.WorkBooksize();
-		this.PB_num = problem.PB_Num();
+		this.PB_num = StudentDataModel.currentPB;
 
 		// setting
 		btn = new Button[] { btn_num1, btn_num2, btn_num3, btn_num4, btn_num5, btn_num6, btn_num7, btn_num8, btn_num9,
-				btn_num10, btn_num11, btn_num12, btn_num13, btn_num14, btn_num15, btn_num16, btn_num17, btn_num18,
-				btn_num19, btn_num20 };
+				btn_num10, btn_num11, btn_num12, btn_num13, btn_num14, btn_num15 };
 
 		for (int i = 0; i < workBookSize; i++) {
-			if (answerIsFull[i])
+			if (hasAnswer[i])
 				btn[i].setStyle("-fx-background-color: #f0fff0;");
 			else
 				btn[i].setStyle("-fx-background-color: #5ad18f;");
@@ -91,18 +88,16 @@ public class StuWorkBook_MultipleChoiceController extends BaseController impleme
 		btn[PB_num].setStyle("-fx-background-color: #54bd54;");
 		lb_Question.setText(problem.question());
 		cb = new CheckBox[] { cb_1, cb_2, cb_3, cb_4, cb_5 };
-		for (int i = 0; i < 5; i++) {
+		for (int i = 0; i < 5; i++)
 			cb[i].setText(problem.getAnswerContentList()[i]);
 
-			if (answerIsFull[PB_num]) {
-				String S_answer = this.student.answer()[PB_num];
-				for (int j = 0; j < S_answer.length(); j++)
-					cb[S_answer.charAt(j)].setSelected(true);
-			}
-
+		if (hasAnswer[PB_num]) {
+			String S_answer = this.student.answer()[PB_num];
+			for (int j = 0; j < S_answer.length(); j++)
+				cb[S_answer.charAt(j)].setSelected(true);
 		}
 
-		for (int i = workBookSize; i < 20; i++) {
+		for (int i = workBookSize; i < 15; i++) {
 			btn[i].setStyle("-fx-background-color: #dcdcdc;");
 			btn[i].setDisable(true);
 		}
@@ -136,7 +131,7 @@ public class StuWorkBook_MultipleChoiceController extends BaseController impleme
 
 			}
 		}
-		
+
 		this.initialize(null, null);
 	}
 
@@ -150,8 +145,8 @@ public class StuWorkBook_MultipleChoiceController extends BaseController impleme
 		if (S_answer.equals(""))
 			return;
 		else {
-
-			// 디비에 저장
+			this.student.answer()[StudentDataModel.currentPB] = S_answer;
+			StudentDataModel.hasAnswer[StudentDataModel.currentPB] = true;
 		}
 
 	}
@@ -159,7 +154,7 @@ public class StuWorkBook_MultipleChoiceController extends BaseController impleme
 	public void btn_Next_Action() {
 		savePro();
 
-		if (workBookSize == StudentDataModel.currentPB)
+		if (workBookSize == StudentDataModel.currentPB + 1)
 			btn_Submit_Action();
 		else {
 			StudentDataModel.currentPB = StudentDataModel.currentPB + 1;
@@ -170,7 +165,7 @@ public class StuWorkBook_MultipleChoiceController extends BaseController impleme
 	public void btn_Previous_Action() {
 		savePro();
 
-		if (1 == StudentDataModel.currentPB)
+		if (0 == StudentDataModel.currentPB)
 			btn_num1_Action();
 		else {
 			StudentDataModel.currentPB = StudentDataModel.currentPB - 1;
@@ -180,7 +175,11 @@ public class StuWorkBook_MultipleChoiceController extends BaseController impleme
 
 	public void btn_Submit_Action() {
 
-		savePro();
+		this.savePro();
+		this.markAnswer();
+
+		// 서버에 student정보 넘기기 구현할것!
+
 		try {
 			Stage primaryStage = (Stage) btn_Submit.getScene().getWindow();
 			Parent main = FXMLLoader.load(getClass().getResource("/gui/StuResult.fxml"));
@@ -195,106 +194,160 @@ public class StuWorkBook_MultipleChoiceController extends BaseController impleme
 	}
 
 	public void btn_num1_Action() {
-		StudentDataModel.currentPB = 1;
+		StudentDataModel.currentPB = 0;
 		changeProblem();
 	}
 
 	public void btn_num2_Action() {
-		StudentDataModel.currentPB = 2;
+		StudentDataModel.currentPB = 1;
 		changeProblem();
 
 	}
 
 	public void btn_num3_Action() {
-		StudentDataModel.currentPB = 3;
+		StudentDataModel.currentPB = 2;
 		changeProblem();
 
 	}
 
 	public void btn_num4_Action() {
-		StudentDataModel.currentPB = 4;
+		StudentDataModel.currentPB = 3;
 		changeProblem();
 
 	}
 
 	public void btn_num5_Action() {
-		StudentDataModel.currentPB = 5;
+		StudentDataModel.currentPB = 4;
 		changeProblem();
 	}
 
 	public void btn_num6_Action() {
-		StudentDataModel.currentPB = 6;
+		StudentDataModel.currentPB = 5;
 		changeProblem();
 	}
 
 	public void btn_num7_Action() {
-		StudentDataModel.currentPB = 7;
+		StudentDataModel.currentPB = 6;
 		changeProblem();
 	}
 
 	public void btn_num8_Action() {
-		StudentDataModel.currentPB = 8;
+		StudentDataModel.currentPB = 7;
 		changeProblem();
 	}
 
 	public void btn_num9_Action() {
-		StudentDataModel.currentPB = 9;
+		StudentDataModel.currentPB = 8;
 		changeProblem();
 	}
 
 	public void btn_num10_Action() {
-		StudentDataModel.currentPB = 10;
+		StudentDataModel.currentPB = 9;
 		changeProblem();
 	}
 
 	public void btn_num11_Action() {
-		StudentDataModel.currentPB = 11;
+		StudentDataModel.currentPB = 10;
 		changeProblem();
 	}
 
 	public void btn_num12_Action() {
-		StudentDataModel.currentPB = 12;
+		StudentDataModel.currentPB = 11;
 		changeProblem();
 	}
 
 	public void btn_num13_Action() {
-		StudentDataModel.currentPB = 13;
+		StudentDataModel.currentPB = 12;
 		changeProblem();
 	}
 
 	public void btn_num14_Action() {
-		StudentDataModel.currentPB = 14;
+		StudentDataModel.currentPB = 13;
 		changeProblem();
 	}
 
 	public void btn_num15_Action() {
-		StudentDataModel.currentPB = 15;
+		StudentDataModel.currentPB = 14;
 		changeProblem();
 	}
 
-	public void btn_num16_Action() {
-		StudentDataModel.currentPB = 16;
-		changeProblem();
+	private void markAnswer() {
+
+		String[] studentAnswer = this.student.answer;
+		String[] professorAnswer = this.getAnswerList();
+		String[] typeList = this.getTypeList();
+		StringBuilder sb = new StringBuilder("");
+		if (studentAnswer != null) {
+			for (int i = 0; i < studentAnswer.length; i++) {
+				if (typeList[i].equals("Subjective")) {
+					sb.append("N");
+				} else { 
+					if (studentAnswer[i].equals(professorAnswer[i])) {
+						sb.append("O");
+					} else {
+						sb.append("X");
+					}
+				}
+			}
+			this.student.setResult(new String(sb));
+		}
+
 	}
 
-	public void btn_num17_Action() {
-		StudentDataModel.currentPB = 17;
-		changeProblem();
+	private String[] getAnswerList() {
+		String responseMessage = null;
+		try {
+			String requestTokens = "GetAnswerList:" + StudentDataModel.workbook.W_Num();
+			BufferedReader br = new BufferedReader(
+					new InputStreamReader(this.socket.getInputStream(), StandardCharsets.UTF_8));
+			PrintWriter pw = new PrintWriter(
+					new OutputStreamWriter(this.socket.getOutputStream(), StandardCharsets.UTF_8));
+			pw.println(requestTokens);
+			pw.flush();
+			responseMessage = br.readLine();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		// GetAnswer:Success:Answer(A1`A2`A3 ...)
+		String[] answerList = null;
+		String[] responseTokens = responseMessage.split(":");
+		if (responseTokens[0].equals("GetAnswerList")) {
+			if (!responseTokens[1].equals("Success")) {
+				System.out.println(responseTokens[1]);
+			} else {
+				// Success GetAnswer
+				answerList = responseTokens[2].split("`");
+			}
+		}
+		return answerList;
 	}
 
-	public void btn_num18_Action() {
-		StudentDataModel.currentPB = 18;
-		changeProblem();
-	}
-
-	public void btn_num19_Action() {
-		StudentDataModel.currentPB = 19;
-		changeProblem();
-	}
-
-	public void btn_num20_Action() {
-		StudentDataModel.currentPB = 20;
-		changeProblem();
+	private String[] getTypeList() {
+		String responseMessage = null;
+		try {
+			String requestTokens = "GetTypeList:" + StudentDataModel.workbook.W_Num();
+			BufferedReader br = new BufferedReader(
+					new InputStreamReader(this.socket.getInputStream(), StandardCharsets.UTF_8));
+			PrintWriter pw = new PrintWriter(
+					new OutputStreamWriter(this.socket.getOutputStream(), StandardCharsets.UTF_8));
+			pw.println(requestTokens);
+			pw.flush();
+			responseMessage = br.readLine();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		// GetAnswer:Success:Type
+		String[] typeList = null;
+		String[] responseTokens = responseMessage.split(":");
+		if (responseTokens[0].equals("GetTypeList")) {
+			if (!responseTokens[1].equals("Success")) {
+				System.out.println(responseTokens[1]);
+			} else {
+				// Success GetTypeList
+				typeList = responseTokens[2].split("-");
+			}
+		}
+		return typeList;
 	}
 
 }

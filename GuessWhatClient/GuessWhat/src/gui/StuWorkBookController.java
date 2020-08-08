@@ -57,7 +57,7 @@ public class StuWorkBookController extends BaseController implements Initializab
 
 		if (problem.getType().equals(ProblemType.MultipleChoice)) {
 			try {
-				Stage primaryStage = (Stage) btn_Submit.getScene().getWindow();
+				Stage primaryStage = (Stage) btn_num0.getScene().getWindow();
 				Parent main = FXMLLoader.load(getClass().getResource("/gui/StuWorkBook_MultipleChoice.fxml"));
 				Scene scene = new Scene(main);
 				primaryStage.setTitle("GuessWhat/Workbook");
@@ -72,10 +72,10 @@ public class StuWorkBookController extends BaseController implements Initializab
 		this.PB_num = StudentDataModel.currentPB;
 
 		// setting
-		btn = new Button[] { btn_num0,  btn_num1, btn_num2, btn_num3, btn_num4, btn_num5, btn_num6, btn_num7, btn_num8, btn_num9,
+		btn = new Button[] { btn_num1, btn_num2, btn_num3, btn_num4, btn_num5, btn_num6, btn_num7, btn_num8, btn_num9,
 				btn_num10, btn_num11, btn_num12, btn_num13, btn_num14, btn_num15 };
 
-		for (int i = 1; i <= workBookSize; i++) {
+		for (int i = 0; i < workBookSize; i++) {
 			if (hasAnswer[i])
 				btn[i].setStyle("-fx-background-color: #f0fff0;");
 			else
@@ -89,7 +89,7 @@ public class StuWorkBookController extends BaseController implements Initializab
 		if (hasAnswer[PB_num])
 			ta_Answer.setText(student.answer()[PB_num]);
 
-		for (int i = workBookSize + 1; i <= 15; i++) {
+		for (int i = workBookSize; i < 15; i++) {
 			btn[i].setStyle("-fx-background-color: #dcdcdc;");
 			btn[i].setDisable(true);
 		}
@@ -112,7 +112,7 @@ public class StuWorkBookController extends BaseController implements Initializab
 	public void btn_Next_Action() {
 		savePro();
 
-		if (workBookSize == StudentDataModel.currentPB)
+		if (workBookSize == StudentDataModel.currentPB + 1)
 			btn_Submit_Action();
 		else {
 			StudentDataModel.currentPB = StudentDataModel.currentPB + 1;
@@ -123,7 +123,7 @@ public class StuWorkBookController extends BaseController implements Initializab
 	public void btn_Previous_Action() {
 		savePro();
 
-		if (1 == StudentDataModel.currentPB)
+		if (0 == StudentDataModel.currentPB)
 			btn_num1_Action();
 		else {
 			StudentDataModel.currentPB = StudentDataModel.currentPB - 1;
@@ -133,8 +133,7 @@ public class StuWorkBookController extends BaseController implements Initializab
 
 	public void btn_Submit_Action() {
 
-		savePro();
-
+		this.savePro();
 		this.markAnswer();
 
 		// 서버에 student정보 넘기기 구현할것!
@@ -152,106 +151,82 @@ public class StuWorkBookController extends BaseController implements Initializab
 
 	}
 
+
 	public void btn_num1_Action() {
-		StudentDataModel.currentPB = 1;
+		StudentDataModel.currentPB = 0;
 		changeProblem();
 	}
 
 	public void btn_num2_Action() {
-		StudentDataModel.currentPB = 2;
+		StudentDataModel.currentPB = 1;
 		changeProblem();
 
 	}
 
 	public void btn_num3_Action() {
-		StudentDataModel.currentPB = 3;
+		StudentDataModel.currentPB = 2;
 		changeProblem();
 
 	}
 
 	public void btn_num4_Action() {
-		StudentDataModel.currentPB = 4;
+		StudentDataModel.currentPB = 3;
 		changeProblem();
 
 	}
 
 	public void btn_num5_Action() {
-		StudentDataModel.currentPB = 5;
+		StudentDataModel.currentPB = 4;
 		changeProblem();
 	}
 
 	public void btn_num6_Action() {
-		StudentDataModel.currentPB = 6;
+		StudentDataModel.currentPB = 5;
 		changeProblem();
 	}
 
 	public void btn_num7_Action() {
-		StudentDataModel.currentPB = 7;
+		StudentDataModel.currentPB = 6;
 		changeProblem();
 	}
 
 	public void btn_num8_Action() {
-		StudentDataModel.currentPB = 8;
+		StudentDataModel.currentPB = 7;
 		changeProblem();
 	}
 
 	public void btn_num9_Action() {
-		StudentDataModel.currentPB = 9;
+		StudentDataModel.currentPB = 8;
 		changeProblem();
 	}
 
 	public void btn_num10_Action() {
-		StudentDataModel.currentPB = 10;
+		StudentDataModel.currentPB = 9;
 		changeProblem();
 	}
 
 	public void btn_num11_Action() {
-		StudentDataModel.currentPB = 11;
+		StudentDataModel.currentPB = 10;
 		changeProblem();
 	}
 
 	public void btn_num12_Action() {
-		StudentDataModel.currentPB = 12;
+		StudentDataModel.currentPB = 11;
 		changeProblem();
 	}
 
 	public void btn_num13_Action() {
-		StudentDataModel.currentPB = 13;
+		StudentDataModel.currentPB = 12;
 		changeProblem();
 	}
 
 	public void btn_num14_Action() {
-		StudentDataModel.currentPB = 14;
+		StudentDataModel.currentPB = 13;
 		changeProblem();
 	}
 
 	public void btn_num15_Action() {
-		StudentDataModel.currentPB = 15;
-		changeProblem();
-	}
-
-	public void btn_num16_Action() {
-		StudentDataModel.currentPB = 16;
-		changeProblem();
-	}
-
-	public void btn_num17_Action() {
-		StudentDataModel.currentPB = 17;
-		changeProblem();
-	}
-
-	public void btn_num18_Action() {
-		StudentDataModel.currentPB = 18;
-		changeProblem();
-	}
-
-	public void btn_num19_Action() {
-		StudentDataModel.currentPB = 19;
-		changeProblem();
-	}
-
-	public void btn_num20_Action() {
-		StudentDataModel.currentPB = 20;
+		StudentDataModel.currentPB = 14;
 		changeProblem();
 	}
 
@@ -296,7 +271,7 @@ public class StuWorkBookController extends BaseController implements Initializab
 			for (int i = 0; i < studentAnswer.length; i++) {
 				if (typeList[i].equals("Subjective")) {
 					sb.append("N");
-				} else {
+				} else { 
 					if (studentAnswer[i].equals(professorAnswer[i])) {
 						sb.append("O");
 					} else {
