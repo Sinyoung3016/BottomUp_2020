@@ -31,8 +31,8 @@ import user.Student;
 public class StuResultDetail_MultipleChoiceController extends BaseController implements Initializable {
 
 	@FXML
-	private Button btn_Close, btn_Previous, btn_Next, btn_num0, btn_num1, btn_num2, btn_num3, btn_num4, btn_num5, btn_num6,
-			btn_num7, btn_num8, btn_num9, btn_num10, btn_num11, btn_num12, btn_num13, btn_num14, btn_num15;
+	private Button btn_Close, btn_Previous, btn_Next, btn_num0, btn_num1, btn_num2, btn_num3, btn_num4, btn_num5,
+			btn_num6, btn_num7, btn_num8, btn_num9, btn_num10, btn_num11, btn_num12, btn_num13, btn_num14, btn_num15;
 	@FXML
 	private Label lb_Question;
 	@FXML
@@ -71,8 +71,8 @@ public class StuResultDetail_MultipleChoiceController extends BaseController imp
 		this.PB_num = StudentDataModel.currentPB;
 
 		// setting
-		btn = new Button[] { btn_num0, btn_num1, btn_num2, btn_num3, btn_num4, btn_num5, btn_num6, btn_num7, btn_num8, btn_num9,
-				btn_num10, btn_num11, btn_num12, btn_num13, btn_num14, btn_num15};
+		btn = new Button[] { btn_num0, btn_num1, btn_num2, btn_num3, btn_num4, btn_num5, btn_num6, btn_num7, btn_num8,
+				btn_num9, btn_num10, btn_num11, btn_num12, btn_num13, btn_num14, btn_num15 };
 
 		String[] result = this.student.result();
 		int[] value = new int[3]; // value[0]="X", value[1]="O", value[2] = "N"
@@ -83,7 +83,7 @@ public class StuResultDetail_MultipleChoiceController extends BaseController imp
 			else if (result.equals("X"))
 				btn[i].setStyle("-fx-background-color: #ff848f;");
 			else if (result.equals("N"))
-				btn[i].setStyle("-fx-background-color: #f0fff0;");
+				btn[i].setStyle("-fx-background-color: #5ad18f;");
 
 			btn[i].setDisable(false);
 		}
@@ -94,7 +94,7 @@ public class StuResultDetail_MultipleChoiceController extends BaseController imp
 
 		// setting
 
-		btn[PB_num].setStyle("-fx-background-color: #54bd54;");
+		btn[PB_num].setStyle("-fx-background-color: #22941C;");
 		lb_Question.setText(this.problem.question());
 		String T_answer = this.problem.answer();
 		String S_answer = this.student.answer()[problem.PB_Num()];
@@ -102,16 +102,17 @@ public class StuResultDetail_MultipleChoiceController extends BaseController imp
 		cb = new CheckBox[] { cb_1, cb_2, cb_3, cb_4, cb_5 };
 		for (int i = 0; i < 5; i++)
 			cb[i].setText(problem.getAnswerContentList()[i]);
+		
+		for (int i = 0; i < S_answer.length(); i++) {
+			int a = S_answer.charAt(i) - '0';
+			cb[a].setSelected(true);
+			cb[a].setStyle("-fx-background-color: #ff848f;");
+		}
 
 		for (int i = 0; i < T_answer.length(); i++) {
 			int a = T_answer.charAt(i) - '0';
 			cb[a].setStyle("-fx-background-color: #64d6ff;");
 		}
-		for (int i = 0; i < S_answer.length(); i++) {
-			int a = S_answer.charAt(i) - '0';
-			cb[a].setSelected(true);
-		}
-
 	}
 
 	private void changeProblem() {
@@ -157,7 +158,7 @@ public class StuResultDetail_MultipleChoiceController extends BaseController imp
 
 	public void btn_Next_Action() {
 		if (workBookSize == StudentDataModel.currentPB)
-			new Alert(AlertType.CONFIRMATION, "마지막 번호입니다.", ButtonType.CLOSE).show();	
+			new Alert(AlertType.CONFIRMATION, "마지막 번호입니다.", ButtonType.CLOSE).show();
 		else {
 			StudentDataModel.currentPB = StudentDataModel.currentPB + 1;
 			changeProblem();
@@ -166,7 +167,7 @@ public class StuResultDetail_MultipleChoiceController extends BaseController imp
 
 	public void btn_Previous_Action() {
 		if (1 == StudentDataModel.currentPB)
-			new Alert(AlertType.CONFIRMATION, "첫 번호입니다.", ButtonType.CLOSE).show();	
+			new Alert(AlertType.CONFIRMATION, "첫 번호입니다.", ButtonType.CLOSE).show();
 		else {
 			StudentDataModel.currentPB = StudentDataModel.currentPB - 1;
 			changeProblem();
@@ -174,82 +175,78 @@ public class StuResultDetail_MultipleChoiceController extends BaseController imp
 	}
 
 	public void btn_num1_Action() {
-		StudentDataModel.currentPB = 1;
+		StudentDataModel.currentPB = 0;
 		changeProblem();
 	}
 
 	public void btn_num2_Action() {
-		StudentDataModel.currentPB = 2;
+		StudentDataModel.currentPB = 1;
 		changeProblem();
-
 	}
 
 	public void btn_num3_Action() {
-		StudentDataModel.currentPB = 3;
+		StudentDataModel.currentPB = 2;
 		changeProblem();
-
 	}
 
 	public void btn_num4_Action() {
-		StudentDataModel.currentPB = 4;
+		StudentDataModel.currentPB = 3;
 		changeProblem();
-
 	}
 
 	public void btn_num5_Action() {
-		StudentDataModel.currentPB = 5;
+		StudentDataModel.currentPB = 4;
 		changeProblem();
 	}
 
 	public void btn_num6_Action() {
-		StudentDataModel.currentPB = 6;
+		StudentDataModel.currentPB = 5;
 		changeProblem();
 	}
 
 	public void btn_num7_Action() {
-		StudentDataModel.currentPB = 7;
+		StudentDataModel.currentPB = 6;
 		changeProblem();
 	}
 
 	public void btn_num8_Action() {
-		StudentDataModel.currentPB = 8;
+		StudentDataModel.currentPB = 7;
 		changeProblem();
 	}
 
 	public void btn_num9_Action() {
-		StudentDataModel.currentPB = 9;
+		StudentDataModel.currentPB = 8;
 		changeProblem();
 	}
 
 	public void btn_num10_Action() {
-		StudentDataModel.currentPB = 10;
+		StudentDataModel.currentPB = 9;
 		changeProblem();
 	}
 
 	public void btn_num11_Action() {
-		StudentDataModel.currentPB = 11;
+		StudentDataModel.currentPB = 10;
 		changeProblem();
 	}
 
 	public void btn_num12_Action() {
-		StudentDataModel.currentPB = 12;
+		StudentDataModel.currentPB = 11;
 		changeProblem();
 	}
 
 	public void btn_num13_Action() {
-		StudentDataModel.currentPB = 13;
+		StudentDataModel.currentPB = 12;
 		changeProblem();
 	}
 
 	public void btn_num14_Action() {
-		StudentDataModel.currentPB = 14;
+		StudentDataModel.currentPB = 13;
 		changeProblem();
 	}
 
 	public void btn_num15_Action() {
-		StudentDataModel.currentPB = 15;
+		StudentDataModel.currentPB = 14;
 		changeProblem();
 	}
-
 
 }

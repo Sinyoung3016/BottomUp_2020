@@ -12,7 +12,6 @@ import java.util.ResourceBundle;
 
 import exam.Problem;
 import exam.ProblemType;
-import exam.Workbook;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -20,12 +19,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import model.ProfessorDataModel;
 import model.StudentDataModel;
 import user.Student;
 
@@ -77,14 +72,14 @@ public class StuWorkBookController extends BaseController implements Initializab
 
 		for (int i = 0; i < workBookSize; i++) {
 			if (hasAnswer[i])
-				btn[i].setStyle("-fx-background-color: #f0fff0;");
+				btn[i].setStyle("-fx-background-color: #54bd54;");
 			else
 				btn[i].setStyle("-fx-background-color: #5ad18f;");
 
 			btn[i].setDisable(false);
 		}
 
-		btn[PB_num].setStyle("-fx-background-color: #54bd54;");
+		btn[PB_num].setStyle("-fx-background-color: #22941C ;");
 		lb_Question.setText(problem.question());
 		if (hasAnswer[PB_num])
 			ta_Answer.setText(student.answer()[PB_num]);

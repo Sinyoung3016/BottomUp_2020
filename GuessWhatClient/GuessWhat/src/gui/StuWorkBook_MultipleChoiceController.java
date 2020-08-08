@@ -78,14 +78,14 @@ public class StuWorkBook_MultipleChoiceController extends BaseController impleme
 
 		for (int i = 0; i < workBookSize; i++) {
 			if (hasAnswer[i])
-				btn[i].setStyle("-fx-background-color: #f0fff0;");
+				btn[i].setStyle("-fx-background-color: #54bd54;");
 			else
 				btn[i].setStyle("-fx-background-color: #5ad18f;");
 
 			btn[i].setDisable(false);
 		}
 
-		btn[PB_num].setStyle("-fx-background-color: #54bd54;");
+		btn[PB_num].setStyle("-fx-background-color: #22941C;");
 		lb_Question.setText(problem.question());
 		cb = new CheckBox[] { cb_1, cb_2, cb_3, cb_4, cb_5 };
 		for (int i = 0; i < 5; i++)
