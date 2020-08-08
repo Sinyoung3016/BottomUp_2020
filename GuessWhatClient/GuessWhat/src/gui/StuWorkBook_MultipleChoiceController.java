@@ -96,6 +96,10 @@ public class StuWorkBook_MultipleChoiceController extends BaseController impleme
 			for (int j = 0; j < S_answer.length(); j++)
 				cb[S_answer.charAt(j)].setSelected(true);
 		}
+		else {
+			for (int j = 0; j < 5; j++)
+				cb[j].setSelected(false);
+		}
 
 		for (int i = workBookSize; i < 15; i++) {
 			btn[i].setStyle("-fx-background-color: #dcdcdc;");
@@ -143,7 +147,7 @@ public class StuWorkBook_MultipleChoiceController extends BaseController impleme
 				S_answer = S_answer + (i + 1);
 
 		if (S_answer.equals(""))
-			return;
+			StudentDataModel.hasAnswer[StudentDataModel.currentPB] = false;
 		else {
 			this.student.answer()[StudentDataModel.currentPB] = S_answer;
 			StudentDataModel.hasAnswer[StudentDataModel.currentPB] = true;

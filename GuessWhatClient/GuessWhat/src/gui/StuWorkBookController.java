@@ -97,7 +97,7 @@ public class StuWorkBookController extends BaseController implements Initializab
 
 		String S_answer = ta_Answer.getText();
 		if (S_answer.equals(null))
-			return;
+			StudentDataModel.hasAnswer[StudentDataModel.currentPB] = false;
 		else {
 			this.student.answer()[StudentDataModel.currentPB] = S_answer;
 			StudentDataModel.hasAnswer[StudentDataModel.currentPB] = true;
