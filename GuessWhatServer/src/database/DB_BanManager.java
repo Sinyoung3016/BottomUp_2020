@@ -67,7 +67,7 @@ public class DB_BanManager extends DBManager {
 			pstmt.setInt(1, PNum);
 			pstmt.setInt(2, BNum);
 			pstmt.setString(3, name);
-			pstmt.setString(4, "Open");
+			pstmt.setString(4, "OPEN");
 			
 			pstmt.setString(5, code);
 			pstmt.setString(6, "workbookName");
