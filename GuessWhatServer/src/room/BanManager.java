@@ -73,9 +73,9 @@ public class BanManager {
 	//Private Method
 	private State stateOf(String state) {
 		switch(state) {
-		case "Open":
+		case "OPEN":
 			return State.OPEN;
-		case "Ing":
+		case "ING":
 			return State.ING;
 		default:
 			return State.CLOSE;
@@ -85,11 +85,11 @@ public class BanManager {
 	public String stateToString(State state) {
 		switch(state) {
 		case OPEN:
-			return "Open";
+			return "OPEN";
 		case ING:
-			return "Ing";
+			return "ING";
 		default:
-			return "Close";
+			return "CLOSE";
 		}
 	}
 	
