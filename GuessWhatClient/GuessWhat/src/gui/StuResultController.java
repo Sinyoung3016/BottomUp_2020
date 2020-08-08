@@ -53,15 +53,15 @@ public class StuResultController implements Initializable {
 		for (int i = 0; i < WorkBookSize; i++) {
 			if (result.equals("O")) {
 				value[1]++;
-				btn[i].setStyle("-fx-background-color: #5ad18f;");
+				btn[2].setStyle("-fx-background-color: #5ad18f;");
 			}
 			else if (result.equals("X")) {
-				value[0]++;
+				value[1]++;
 				btn[i].setStyle("-fx-background-color: #ff848f;");
 			}
 			else if (result.equals("N")) {
-				value[2]++;
-				btn[i].setStyle("-fx-background-color: #f0fff0;");
+				value[0]++;
+				btn[i].setStyle("-fx-background-color: #5ad18f;");
 			}
 		}
 		for (int i = WorkBookSize; i < 15; i++) {
@@ -76,9 +76,9 @@ public class StuResultController implements Initializable {
 		
 		this.Pie = FXCollections.observableArrayList();
 
-		Pie.add(new PieChart.Data("Correct", value[0]));
-		Pie.add(new PieChart.Data("Wrong", value[1]));
-		Pie.add(new PieChart.Data("Non", value[2]));
+		Pie.add(new PieChart.Data("Wrong", value[0]));
+		Pie.add(new PieChart.Data("Non", value[1]));
+		Pie.add(new PieChart.Data("Correct", value[2]));
 
 		pc_result.setData(Pie);
 		//pie

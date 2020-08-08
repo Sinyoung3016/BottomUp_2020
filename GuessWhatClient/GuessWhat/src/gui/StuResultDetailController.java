@@ -94,7 +94,7 @@ public class StuResultDetailController extends BaseController implements Initial
 
 		// setting
 		
-		btn[problem.PB_Num()].setStyle("-fx-background-color: #22941C;");
+		btn[PB_num].setStyle("-fx-background-color: #22941C;");
 		lb_Question.setText(this.problem.question());
 		String T_answer = this.problem.answer();
 		String S_answer = this.student.answer()[problem.PB_Num()];
