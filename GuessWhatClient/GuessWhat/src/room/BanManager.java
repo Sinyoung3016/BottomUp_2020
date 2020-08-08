@@ -167,7 +167,6 @@ public class BanManager {
 						} catch(IOException e1) {
 							e1.printStackTrace();
 						}
-						System.out.println(responseMessage);
 						String[] responseTokens = responseMessage.split(":");
 						
 						if(responseTokens[0].equals("GetCurrentBanManager")) {
@@ -186,11 +185,11 @@ public class BanManager {
 								BanManager newBanManager = new BanManager(P_num, ban_Num, BMNum, name, state, code, workbook, student_size);
 								
 								ProfessorDataModel.banManager = newBanManager;
-								System.out.println("Enter BM: " + name + 
-												   "  	(State: " + state + 
-												   " 	 Code: " + code + 
-												   "	 Workbook " + workbook + 
-												   "	 Student_size " + student_size); 
+								System.out.println("    [Enter] BM: " + name + 
+												   "  (State: " + state + 
+												   "  -Code: " + code + 
+												   "  -Workbook " + workbook + 
+												   "  -Student_size " + student_size + ")"); 
 							}
 						}
 						

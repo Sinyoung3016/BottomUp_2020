@@ -198,6 +198,8 @@ public class DB_BanManager extends DBManager {
 			pstmt.setInt(3, BMNum);
 
 			pstmt.executeUpdate();
+			
+			updateBan(PNum, BNum);
 			pstmt.close();
 			conn.close();
 			return true;

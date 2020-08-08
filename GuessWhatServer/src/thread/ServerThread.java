@@ -263,8 +263,8 @@ public class ServerThread extends Thread{
 		int bmNum = Integer.parseInt(BMNum);
 
 		if(DB_BanManager.deleteBanManager(pNum, bNum, bmNum))
-			pw.println(">>SUCCESS [DeleteBanManger]<<");
-		else pw.println(">>FAIL [DeleteBanManager[<<");
+			pw.println("DeleteBanManager:Success");
+		else pw.println("DeleteBanManager:Fail");
 
 		pw.flush();
 	}
