@@ -112,7 +112,7 @@ public class BanManagerSoonController extends BaseController implements Initiali
 				System.out.println("Fail : DeleteBanManager");
 			}
 			else {
-				System.out.println("Success: DeleteBanManager");
+				System.out.println("[Delete] " + this.banManager.BM_name());
 			}
 		}
 		

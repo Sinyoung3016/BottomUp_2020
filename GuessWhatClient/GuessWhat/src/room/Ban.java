@@ -109,7 +109,7 @@ public class Ban {
 							System.out.println("Fail : GetBan");
 						}
 						else {
-							System.out.println("Success: GetBan");
+							System.out.println("Enter Ban: " + responseTokens[3]);
 							//GetAllBan:Success:BNum:Name:BM_Size
 							
 							int BNum = Integer.parseInt(responseTokens[2]);

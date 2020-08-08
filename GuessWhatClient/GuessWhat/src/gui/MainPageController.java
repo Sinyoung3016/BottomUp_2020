@@ -56,8 +56,6 @@ public class MainPageController implements Initializable{
 				System.out.println("Fail : GetAllBan");
 			}
 			else {
-				System.out.println("Success: GetAllBan");
-				
 				int n = 1;
 				for(int i = 2 ; i < responseTokens.length ; i++) {	//[0]GetBan:[1]Success:[2]BNum:[3]Name:[4]BM_Size
 					
