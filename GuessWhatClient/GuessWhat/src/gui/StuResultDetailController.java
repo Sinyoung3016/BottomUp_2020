@@ -35,8 +35,8 @@ import user.Student;
 public class StuResultDetailController extends BaseController implements Initializable {
 
 	@FXML
-	private Button btn_Close, btn_Previous, btn_Next, btn_num1, btn_num2, btn_num3, btn_num4, btn_num5, btn_num6,
-			btn_num7, btn_num8, btn_num9, btn_num10, btn_num11, btn_num12, btn_num13, btn_num14, btn_num15;
+	private Button btn_Close, btn_Previous, btn_Next, btn_num0, btn_num1, btn_num2, btn_num3, btn_num4, btn_num5,
+			btn_num6, btn_num7, btn_num8, btn_num9, btn_num10, btn_num11, btn_num12, btn_num13, btn_num14, btn_num15;
 	@FXML
 	private Label lb_Question, lb_MyAnswer, lb_TeacherAnswer;
 
@@ -69,12 +69,12 @@ public class StuResultDetailController extends BaseController implements Initial
 		this.workBookSize = StudentDataModel.workbook.WorkBooksize();
 
 		// setting
-		btn = new Button[] { btn_num1, btn_num2, btn_num3, btn_num4, btn_num5, btn_num6, btn_num7, btn_num8, btn_num9,
-				btn_num10, btn_num11, btn_num12, btn_num13, btn_num14, btn_num15 };
+		btn = new Button[] { btn_num0, btn_num1, btn_num2, btn_num3, btn_num4, btn_num5, btn_num6, btn_num7, btn_num8,
+				btn_num9, btn_num10, btn_num11, btn_num12, btn_num13, btn_num14, btn_num15 };
 
 		String[] result = this.student.result();
 
-		for (int i = 0; i < workBookSize; i++) {
+		for (int i = 1; i <= workBookSize; i++) {
 			if (result.equals("O"))
 				btn[i].setStyle("-fx-background-color: #5ad18f;");
 			else if (result.equals("X"))
@@ -84,13 +84,12 @@ public class StuResultDetailController extends BaseController implements Initial
 
 			btn[i].setDisable(false);
 		}
-		for (int i = workBookSize; i < 15; i++) {
+		for (int i = workBookSize + 1; i <= 15; i++) {
 			btn[i].setStyle("-fx-background-color: #dcdcdc;");
 			btn[i].setDisable(true);
 		}
 
 		// setting
-
 		btn[problem.PB_Num()].setStyle("-fx-background-color: #22741C;");
 		lb_Question.setText(this.problem.question());
 		String T_answer = this.problem.answer();
