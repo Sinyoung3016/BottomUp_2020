@@ -15,6 +15,7 @@ import authentication.RoomCode;
 import database.DB_Ban;
 import database.DB_BanManager;
 import database.DB_Problem;
+import database.DB_Student;
 import database.DB_USER;
 import database.DB_Workbook;
 import exam.Problem;
@@ -94,7 +95,11 @@ public class ServerThread extends Thread{
 						else if(requestTokens[0].equals(Request.ADD_PROBLEM.getRequest())) { //AddProblem:WNum:Question:Answer:Type:AnswerContents
 							clientRequest = "AddProblem";
 							this.addProblem(requestTokens[1], requestTokens[2], requestTokens[3], requestTokens[4], requestTokens[5]);
-						}else if(requestTokens[0].equals(Request.DELETE_BAN.getRequest())) { //DeleteBan:PNum:BNum
+						}else if(requestTokens[0].equals(Request.ADD_STUDENT.getRequest())) { //AddStudent:BNum:BMNum:WNum:Name:Answer:Result
+							clientRequest = "AddStudent";
+							this.addStudent(requestTokens[1], requestTokens[2], requestTokens[3], requestTokens[4], requestTokens[5],requestTokens[6]);
+						}
+						else if(requestTokens[0].equals(Request.DELETE_BAN.getRequest())) { //DeleteBan:PNum:BNum
 							clientRequest = "DeleteBan";
 							this.deleteBan(requestTokens[1], requestTokens[2]);
 						}else if(requestTokens[0].equals(Request.DELETE_BANMANAGER.getRequest())) { //DeleteBanManager:PNum:BNum:BMNum
@@ -245,6 +250,15 @@ public class ServerThread extends Thread{
 			pw.println(">>SUCCESS [AddProblem]<<");
 		else pw.println(">>FAIL [AddProblem]");
 
+		pw.flush();
+	}
+	
+	private void addStudent(String BNum, String BMNum, String WNum, String Name,String Answer,String Result) {
+		if(DB_Student.insertStudent(BNum, BMNum, WNum, Name, Answer, Result)) 
+			pw.println("AddStudent:Success");
+		
+		else 
+			pw.println("AddStudent:Fail");
 		pw.flush();
 	}
 	private void deleteBan(String PNum, String BNum) {

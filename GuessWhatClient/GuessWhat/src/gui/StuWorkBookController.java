@@ -142,8 +142,8 @@ public class StuWorkBookController extends BaseController implements Initializab
 					new OutputStreamWriter(this.socket.getOutputStream(), StandardCharsets.UTF_8));
 			pw.println(requestTokens);
 			pw.flush();
-			responseMessage = "fdfdf";
-			//responseMessage = br.readLine();
+			responseMessage = br.readLine();
+			System.out.println("reponseMessage : " +responseMessage);
 		} catch(IOException e) {
 			e.printStackTrace();
 		}
