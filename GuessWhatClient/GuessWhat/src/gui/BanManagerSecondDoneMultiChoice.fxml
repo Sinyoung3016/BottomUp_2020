@@ -76,102 +76,77 @@
             </HBox>
             <HBox prefHeight="40.0" prefWidth="200.0">
                <children>
-                  <Button fx:id="btn_num1" mnemonicParsing="false" onAction="#btn_num1_Action" prefHeight="40.0" prefWidth="30.0" style="-fx-background-color: #5ad18f;" text="1" textFill="WHITE">
+                  <Button fx:id="btn_num1" mnemonicParsing="false" onAction="#btn_num1_Action" prefHeight="40.0" prefWidth="40.0" style="-fx-background-color: #5ad18f;" text="1" textFill="WHITE">
                      <font>
                         <Font name="Dubai Medium" size="12.0" />
                      </font>
                   </Button>
-                  <Button fx:id="btn_num2" mnemonicParsing="false" onAction="#btn_num2_Action" prefHeight="40.0" prefWidth="30.0" style="-fx-background-color: #f0fff0;" text="2" textFill="WHITE">
+                  <Button fx:id="btn_num2" mnemonicParsing="false" onAction="#btn_num2_Action" prefHeight="40.0" prefWidth="40.0" style="-fx-background-color: #f0fff0;" text="2" textFill="WHITE">
                      <font>
                         <Font name="Dubai Medium" size="12.0" />
                      </font>
                   </Button>
-                  <Button fx:id="btn_num3" mnemonicParsing="false" onAction="#btn_num3_Action" prefHeight="40.0" prefWidth="30.0" style="-fx-background-color: #f0fff0;" text="3" textFill="WHITE">
+                  <Button fx:id="btn_num3" mnemonicParsing="false" onAction="#btn_num3_Action" prefHeight="40.0" prefWidth="40.0" style="-fx-background-color: #f0fff0;" text="3" textFill="WHITE">
                      <font>
                         <Font name="Dubai Medium" size="12.0" />
                      </font>
                   </Button>
-                  <Button fx:id="btn_num4" mnemonicParsing="false" onAction="#btn_num4_Action" prefHeight="40.0" prefWidth="30.0" style="-fx-background-color: #f0fff0;" text="4" textFill="WHITE">
+                  <Button fx:id="btn_num4" mnemonicParsing="false" onAction="#btn_num4_Action" prefHeight="40.0" prefWidth="40.0" style="-fx-background-color: #f0fff0;" text="4" textFill="WHITE">
                      <font>
                         <Font name="Dubai Medium" size="12.0" />
                      </font>
                   </Button>
-                  <Button fx:id="btn_num5" mnemonicParsing="false" onAction="#btn_num5_Action" prefHeight="40.0" prefWidth="30.0" style="-fx-background-color: #f0fff0;" text="5" textFill="WHITE">
+                  <Button fx:id="btn_num5" mnemonicParsing="false" onAction="#btn_num5_Action" prefHeight="40.0" prefWidth="40.0" style="-fx-background-color: #f0fff0;" text="5" textFill="WHITE">
                      <font>
                         <Font name="Dubai Medium" size="12.0" />
                      </font>
                   </Button>
-                  <Button fx:id="btn_num6" mnemonicParsing="false" onAction="#btn_num6_Action" prefHeight="40.0" prefWidth="30.0" style="-fx-background-color: #f0fff0;" text="6" textFill="WHITE">
+                  <Button fx:id="btn_num6" mnemonicParsing="false" onAction="#btn_num6_Action" prefHeight="40.0" prefWidth="40.0" style="-fx-background-color: #f0fff0;" text="6" textFill="WHITE">
                      <font>
                         <Font name="Dubai Medium" size="12.0" />
                      </font>
                   </Button>
-                  <Button fx:id="btn_num7" mnemonicParsing="false" onAction="#btn_num7_Action" prefHeight="40.0" prefWidth="30.0" style="-fx-background-color: #f0fff0;" text="7" textFill="WHITE">
+                  <Button fx:id="btn_num7" mnemonicParsing="false" onAction="#btn_num7_Action" prefHeight="40.0" prefWidth="40.0" style="-fx-background-color: #f0fff0;" text="7" textFill="WHITE">
                      <font>
                         <Font name="Dubai Medium" size="12.0" />
                      </font>
                   </Button>
-                  <Button fx:id="btn_num8" mnemonicParsing="false" onAction="#btn_num8_Action" prefHeight="40.0" prefWidth="30.0" style="-fx-background-color: #f0fff0;" text="8" textFill="WHITE">
+                  <Button fx:id="btn_num8" mnemonicParsing="false" onAction="#btn_num8_Action" prefHeight="40.0" prefWidth="40.0" style="-fx-background-color: #f0fff0;" text="8" textFill="WHITE">
                      <font>
                         <Font name="Dubai Medium" size="12.0" />
                      </font>
                   </Button>
-                  <Button fx:id="btn_num9" mnemonicParsing="false" onAction="#btn_num9_Action" prefHeight="40.0" prefWidth="30.0" style="-fx-background-color: #f0fff0;" text="9" textFill="WHITE">
+                  <Button fx:id="btn_num9" mnemonicParsing="false" onAction="#btn_num9_Action" prefHeight="40.0" prefWidth="40.0" style="-fx-background-color: #f0fff0;" text="9" textFill="WHITE">
                      <font>
                         <Font name="Dubai Medium" size="12.0" />
                      </font>
                   </Button>
-                  <Button fx:id="btn_num10" mnemonicParsing="false" onAction="#btn_num10_Action" prefHeight="40.0" prefWidth="30.0" style="-fx-background-color: #f0fff0;" text="10" textFill="WHITE">
+                  <Button fx:id="btn_num10" mnemonicParsing="false" onAction="#btn_num10_Action" prefHeight="40.0" prefWidth="40.0" style="-fx-background-color: #f0fff0;" text="10" textFill="WHITE">
                      <font>
                         <Font name="Dubai Medium" size="12.0" />
                      </font>
                   </Button>
-                  <Button fx:id="btn_num11" mnemonicParsing="false" onAction="#btn_num11_Action" prefHeight="40.0" prefWidth="30.0" style="-fx-background-color: #f0fff0;" text="11" textFill="WHITE">
+                  <Button fx:id="btn_num11" mnemonicParsing="false" onAction="#btn_num11_Action" prefHeight="40.0" prefWidth="40.0" style="-fx-background-color: #f0fff0;" text="11" textFill="WHITE">
                      <font>
                         <Font name="Dubai Medium" size="12.0" />
                      </font>
                   </Button>
-                  <Button fx:id="btn_num12" mnemonicParsing="false" onAction="#btn_num12_Action" prefHeight="40.0" prefWidth="30.0" style="-fx-background-color: #f0fff0;" text="12" textFill="WHITE">
+                  <Button fx:id="btn_num12" mnemonicParsing="false" onAction="#btn_num12_Action" prefHeight="40.0" prefWidth="40.0" style="-fx-background-color: #f0fff0;" text="12" textFill="WHITE">
                      <font>
                         <Font name="Dubai Medium" size="12.0" />
                      </font>
                   </Button>
-                  <Button fx:id="btn_num13" mnemonicParsing="false" onAction="#btn_num13_Action" prefHeight="40.0" prefWidth="30.0" style="-fx-background-color: #f0fff0;" text="13" textFill="WHITE">
+                  <Button fx:id="btn_num13" mnemonicParsing="false" onAction="#btn_num13_Action" prefHeight="40.0" prefWidth="40.0" style="-fx-background-color: #f0fff0;" text="13" textFill="WHITE">
                      <font>
                         <Font name="Dubai Medium" size="12.0" />
                      </font>
                   </Button>
-                  <Button fx:id="btn_num14" mnemonicParsing="false" onAction="#btn_num14_Action" prefHeight="40.0" prefWidth="30.0" style="-fx-background-color: #f0fff0;" text="14" textFill="WHITE">
+                  <Button fx:id="btn_num14" mnemonicParsing="false" onAction="#btn_num14_Action" prefHeight="40.0" prefWidth="40.0" style="-fx-background-color: #f0fff0;" text="14" textFill="WHITE">
                      <font>
                         <Font name="Dubai Medium" size="12.0" />
                      </font>
                   </Button>
-                  <Button fx:id="btn_num15" mnemonicParsing="false" onAction="#btn_num15_Action" prefHeight="40.0" prefWidth="30.0" style="-fx-background-color: #f0fff0;" text="15" textFill="WHITE">
-                     <font>
-                        <Font name="Dubai Medium" size="12.0" />
-                     </font>
-                  </Button>
-                  <Button fx:id="btn_num16" mnemonicParsing="false" onAction="#btn_num16_Action" prefHeight="40.0" prefWidth="30.0" style="-fx-background-color: #f0fff0;" text="16" textFill="WHITE">
-                     <font>
-                        <Font name="Dubai Medium" size="12.0" />
-                     </font>
-                  </Button>
-                  <Button fx:id="btn_num17" mnemonicParsing="false" onAction="#btn_num17_Action" prefHeight="40.0" prefWidth="30.0" style="-fx-background-color: #f0fff0;" text="17" textFill="WHITE">
-                     <font>
-                        <Font name="Dubai Medium" size="12.0" />
-                     </font>
-                  </Button>
-                  <Button fx:id="btn_num18" mnemonicParsing="false" onAction="#btn_num18_Action" prefHeight="40.0" prefWidth="30.0" style="-fx-background-color: #f0fff0;" text="18" textFill="WHITE">
-                     <font>
-                        <Font name="Dubai Medium" size="12.0" />
-                     </font>
-                  </Button>
-                  <Button fx:id="btn_num19" mnemonicParsing="false" onAction="#btn_num19_Action" prefHeight="40.0" prefWidth="30.0" style="-fx-background-color: #f0fff0;" text="19" textFill="WHITE">
-                     <font>
-                        <Font name="Dubai Medium" size="12.0" />
-                     </font>
-                  </Button>
-                  <Button fx:id="btn_num20" mnemonicParsing="false" onAction="#btn_num20_Action" prefHeight="40.0" prefWidth="30.0" style="-fx-background-color: #f0fff0;" text="20" textFill="WHITE">
+                  <Button fx:id="btn_num15" mnemonicParsing="false" onAction="#btn_num15_Action" prefHeight="40.0" prefWidth="40.0" style="-fx-background-color: #f0fff0;" text="15" textFill="WHITE">
                      <font>
                         <Font name="Dubai Medium" size="12.0" />
                      </font>
