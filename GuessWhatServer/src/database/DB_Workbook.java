@@ -179,6 +179,42 @@ public class DB_Workbook extends DBManager{
 			}
 		}
 	}
+	public synchronized static Workbook getCurrentWorkbook(int WNum) {
+		Connection conn = null;
+		Statement stmt = null;
+		ResultSet rs = null;
+
+		Workbook workbook = null;
+		String name = null;
+		int size = -1;
+
+		try {
+			conn = getConn();
+			stmt = conn.createStatement();
+			String sql;
+			sql = "SELECT * FROM Workbook WHERE WNum = '" + WNum + "'";
+			rs = stmt.executeQuery(sql);
+
+			if(rs.next()) {
+				name = rs.getString("Name");
+				size = rs.getInt("Size");
+				
+				workbook = new Workbook(WNum, name, size);
+			}
+			return workbook;
+		}catch(Exception e) {
+			System.out.println("Error : " + e.getMessage() + "FROM getCurrentWB");
+			return null;
+		} finally {
+			try {
+				if(stmt != null) stmt.close();
+				if(conn != null) conn.close();
+				if(rs != null) rs.close();
+			} catch(SQLException e) {
+				System.out.println("Error : " + e.getMessage() + "FROM getCurrentWB (SQL)");
+			}
+		}
+	}
 	public synchronized static Workbook getWorkbookOf(int BMNum) {
 		Connection conn = null;
 		Statement state = null;

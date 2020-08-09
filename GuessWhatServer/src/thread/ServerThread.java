@@ -154,6 +154,9 @@ public class ServerThread extends Thread{
 						}else if(requestTokens[0].equals(Request.GET_ALLWORKBOOK.getRequest())) { //GetAllWorkbook:PNum
 							clientRequest = "GetAllWorkbook";
 							this.getAllWorkbook(requestTokens[1]); 
+						}else if(requestTokens[0].equals(Request.GET_CURRENTWORKBOOK.getRequest())) { //GetCurrentWorkbook:WNum
+							clientRequest = "GetCurrentWorkbook";
+							this.getCurrentWorkbook(requestTokens[1]);
 						}
 						else if(requestTokens[0].equals(Request.GET_PROBLEM.getRequest())) { //GetProblem:WNum:Index
 							clientRequest = "GetProblem";
@@ -490,6 +493,22 @@ public class ServerThread extends Thread{
 				Workbook workbook = iterator.next();
 				result = result + ":" + workbook.getWBNum() + ":" + workbook.getName() + ":" + workbook.getSize();
 			}
+			pw.println(result);
+			pw.flush();
+		}
+	}
+	private void getCurrentWorkbook(String WNum) { 
+
+		Workbook workbook = DB_Workbook.getCurrentWorkbook(Integer.parseInt(WNum));
+
+		if (workbook == null) {
+			pw.println("GetCurrentWorkbook:Fail");
+			pw.flush();
+		}
+		else {
+			String result = "GetCurrentWorkbook:Success";
+			result = result + ":" + workbook.getName() + ":" + workbook.getSize();
+
 			pw.println(result);
 			pw.flush();
 		}

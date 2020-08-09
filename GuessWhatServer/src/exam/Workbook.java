@@ -13,7 +13,11 @@ public class Workbook {
 	public Workbook() {
 		problemSet = new Problem[10];
 	}
-	
+	public Workbook(int wNum, String wbName, int wbSize) {
+		this.WNum = wNum;
+		this.name = wbName;
+		this.size = wbSize;
+	}
 	public Workbook(String[] workbookInfo) {
 		this.PNum = Integer.parseInt(workbookInfo[0]);
 		this.BMNum = Integer.parseInt(workbookInfo[1]);
