@@ -3,6 +3,7 @@ package model;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
 
 import exam.Problem;
 import exam.StuNumResult;
@@ -35,6 +36,7 @@ public class ProfessorDataModel {
 	public static ObservableList<HBoxModel> ItemList_MyBanManager = FXCollections.observableArrayList();
 	public static ObservableList<HBoxModel> ItemList_MyClass = FXCollections.observableArrayList();
 	public static ObservableList<HBoxModel> ItemList_MyWorkBook = FXCollections.observableArrayList();
+	public static LinkedList<Student> Students = null;
 	
 
 	public static void addClass(int n, Ban newBan) {
