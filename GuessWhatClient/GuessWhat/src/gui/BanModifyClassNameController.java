@@ -66,9 +66,9 @@ public class BanModifyClassNameController extends BaseController implements Init
 					String name = responseTokens[i+1];
 					String state = responseTokens[i+2];
 					String code = responseTokens[i+3];
-					String workbook = responseTokens[i+4];
+					int wNum = Integer.parseInt(responseTokens[i+4]);
 					int student_size = Integer.parseInt(responseTokens[i+5]);
-					BanManager newBanManager = new BanManager(PNum, BNum, BMNum, name, state, code, workbook, student_size);
+					BanManager newBanManager = new BanManager(PNum, BNum, BMNum, name, state, code, wNum, student_size);
 					ProfessorDataModel.addBanManager(n, newBanManager);					
 					i = i+5;
 					n++;

@@ -36,6 +36,13 @@ public class Workbook {
 		this.W_name = tokens[3];
 		this.WorkBook_size = Integer.parseInt(tokens[4]);
 	}
+	public Workbook(int PNum, int WNum, String name, int size) {
+		this.P_Num = PNum;
+		this.BM_Num = 0;
+		this.W_Num = WNum;
+		this.W_name = name;
+		this.WorkBook_size = size;
+	}
 	public Workbook() {
 	}
 	//Constructor end

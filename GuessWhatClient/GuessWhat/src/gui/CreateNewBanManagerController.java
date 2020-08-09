@@ -44,10 +44,10 @@ public class CreateNewBanManagerController extends BaseController implements Ini
 	
 	private String className;
 	
-	private void createNewBanManager(int PNum, int BNum, String name, String code, String workbook) throws MyException, SQLException {
+	private void createNewBanManager(int PNum, int BNum, String name, String code, int wNum) throws MyException, SQLException {
 		String responseMessage = null;
 		try {
-			String requestMessage = "AddBanManager:" + PNum + ":" + BNum + ":" + name + ":" + code + ":" + workbook;
+			String requestMessage = "AddBanManager:" + PNum + ":" + BNum + ":" + name + ":" + code + ":" + wNum;
 			BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
 			PrintWriter writer = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8));
 			writer.println(requestMessage);
@@ -133,7 +133,7 @@ public class CreateNewBanManagerController extends BaseController implements Ini
 			int pNum = this.professor.P_Num();
 			int bNum = this.ban.ban_num();
 			
-			this.createNewBanManager(pNum, bNum, this.tf_NewBanManagerName.getText(), this.lv_roomcode.getText(), "workbook");
+			this.createNewBanManager(pNum, bNum, this.tf_NewBanManagerName.getText(), this.lv_roomcode.getText(), -1);
 			
 			Stage primaryStage = (Stage) btn_CreateNewBanManager.getScene().getWindow();
 			Parent main = FXMLLoader.load(getClass().getResource("/gui/Ban.fxml"));

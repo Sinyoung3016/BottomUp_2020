@@ -26,7 +26,6 @@ public class ProfessorDataModel {
 	public static Workbook workbook;
 	public static Problem problem;
 	public static Problem [] problemList;
-	public static BanManager[] banManagerList;
 	public static boolean[] hasQValue = null;
 	public static boolean[] hasAValue = null;
 	
@@ -35,10 +34,6 @@ public class ProfessorDataModel {
 	public static ObservableList<HBoxModel> ItemList_MyBanManager = FXCollections.observableArrayList();
 	public static ObservableList<HBoxModel> ItemList_MyClass = FXCollections.observableArrayList();
 	public static ObservableList<HBoxModel> ItemList_MyWorkBook = FXCollections.observableArrayList();
-
-	public static ObservableList<Student> ItemList_Students = FXCollections.observableArrayList();
-	public static ObservableList<StuNumResult> ItemList_Results = FXCollections.observableArrayList();
-	public static ObservableList<StuNumResult> ItemList_Results2 = FXCollections.observableArrayList();
 	
 
 	public static void addClass(int n, Ban newBan) {
