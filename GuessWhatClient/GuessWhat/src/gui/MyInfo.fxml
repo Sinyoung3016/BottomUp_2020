@@ -24,7 +24,7 @@
                         <Insets right="10.0" />
                      </HBox.margin>
                   </Label>
-                  <Label prefHeight="25.0" prefWidth="250.0" style="-fx-text-fill: #22741C;">
+                  <Label fx:id="lb_ID" prefHeight="25.0" prefWidth="250.0" style="-fx-text-fill: #22741C;">
                      <font>
                         <Font name="Dubai Medium" size="15.0" />
                      </font>
