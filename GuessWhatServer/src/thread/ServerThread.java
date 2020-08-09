@@ -151,7 +151,11 @@ public class ServerThread extends Thread{
 						else if(requestTokens[0].equals(Request.GET_WORKBOOK.getRequest())) { //GetWorkbook
 							clientRequest = "GetWorkbook";
 							this.getWorkbook(); 
-						}else if(requestTokens[0].equals(Request.GET_PROBLEM.getRequest())) { //GetProblem:WNum:Index
+						}else if(requestTokens[0].equals(Request.GET_ALLWORKBOOK.getRequest())) { //GetAllWorkbook
+							clientRequest = "GetAllWorkbook";
+							this.getAllWorkbook(requestTokens[1]); 
+						}
+						else if(requestTokens[0].equals(Request.GET_PROBLEM.getRequest())) { //GetProblem:WNum:Index
 							clientRequest = "GetProblem";
 							this.getProblem(requestTokens[1],requestTokens[2]);
 						}else if(requestTokens[0].equals(Request.GET_WORKBOOK_PROBLEM.getRequest())) {
@@ -452,7 +456,28 @@ public class ServerThread extends Thread{
 			}
 		}
 	}
+	private void getAllWorkbook(String PNum) { //GetAllWorkbook:PNum
 
+		int pNum = Integer.parseInt(PNum);
+		
+		List<Workbook> listWorkbook = DB_Workbook.getWorkbookList(pNum);
+
+		if (listWorkbook == null) {
+			pw.println("GetAllWorkbook:Fail");
+			pw.flush();
+		}
+		else {
+			String result = "GetAllWorkbook:Success";
+
+			Iterator<Workbook> iterator = listWorkbook.iterator();
+			while(iterator.hasNext()) {
+				Workbook workbook = iterator.next();
+				result = result + ":" + workbook.getWBNum() + ":" + workbook.getName() + ":" + workbook.getSize();
+			}
+			pw.println(result);
+			pw.flush();
+		}
+	}
 	private void getProblem(String WNum, String index) {
 		Problem problem = DB_Problem.getProblemOf(Integer.parseInt(WNum), Integer.parseInt(index));
 		if(problem == null) 

@@ -142,7 +142,44 @@ public class DB_Workbook extends DBManager{
 			}
 		}
 	}
-	
+	public synchronized static List<Workbook> getWorkbookList(int PNum) {
+		Connection conn = null;
+		Statement state = null;
+		ResultSet rs = null;
+		
+		List<Workbook> workbookList = new ArrayList<>();
+		
+		String[] workbookInfo = new String[5];
+		try {
+			conn = getConn();
+			state = conn.createStatement();
+			String sql;
+			sql = "SELECT * FROM Workbook WHERE PNum = '" + PNum + "'";
+			rs = state.executeQuery(sql);
+			
+			while(rs.next()) {
+				workbookInfo[0] = Integer.toString(PNum);
+				workbookInfo[1] = "0";
+				workbookInfo[2] = Integer.toBinaryString(rs.getInt("WNum"));
+				workbookInfo[3] = rs.getString("Name");
+				workbookInfo[4] = Integer.toString(rs.getInt("Size"));
+				workbookList.add(new Workbook(workbookInfo));
+			}
+			
+			return workbookList;
+		}catch(Exception e) {
+			System.out.println("Error : " + e.getMessage() + "FROM getAllWorkbook.1");
+			return null;
+		} finally {
+			try {
+				if(state != null) state.close();
+				if(conn != null) conn.close();
+				if(rs != null) rs.close();
+			} catch(SQLException e) {
+				System.out.println("Error : " + e.getMessage() + "FROM getWorkbookOf.2");
+			}
+		}
+	}
 	public synchronized static Workbook getWorkbookOf(int BMNum) {
 		Connection conn = null;
 		Statement state = null;
