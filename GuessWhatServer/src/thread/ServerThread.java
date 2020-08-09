@@ -92,9 +92,9 @@ public class ServerThread extends Thread{
 							clientRequest = "AddWorkbook";
 							this.addWorkbook(requestTokens[1], requestTokens[2], requestTokens[3]);
 						}
-						else if(requestTokens[0].equals(Request.ADD_PROBLEM.getRequest())) { //AddProblem:WNum:Question:Answer:Type:AnswerContents
+						else if(requestTokens[0].equals(Request.ADD_PROBLEM.getRequest())) { //AddProblem:problem1_problem2(WNum`question`answer`type`answerContents)...
 							clientRequest = "AddProblem";
-							this.addProblem(requestTokens[1], requestTokens[2], requestTokens[3], requestTokens[4], requestTokens[5]);
+							this.addProblem(requestTokens[1]);
 						}else if(requestTokens[0].equals(Request.ADD_STUDENT.getRequest())) { //AddStudent:BNum:BMNum:WNum:Name:Answer:Result
 							clientRequest = "AddStudent";
 							this.addStudent(requestTokens[1], requestTokens[2], requestTokens[3], requestTokens[4], requestTokens[5],requestTokens[6]);
@@ -242,20 +242,36 @@ public class ServerThread extends Thread{
 
 		pw.flush();
 	}
+	
 	private void addWorkbook(String PNum, String Name, String Size) {
-		if(DB_Workbook.insertWorkbook(PNum,Name,Size)) 
-			pw.println("AddWorkbook:Success");
+		if(DB_Workbook.insertWorkbook(PNum,Name,Size)) {
+			int WNum = DB_Workbook.getWNumOf(Name);
+			if(WNum < 0) {
+				pw.println("AddWorkbook:Fail");
+			}
+			else {
+				pw.println("AddWorkbook:Success:" + WNum);
+			}
+		}
+			
 		else pw.println("AddWorkbook:Fail");
-
 		pw.flush();
 	}
 
-	private void addProblem(String WNum, String Question, String Answer, String Type, String AnswerContents) {
-		if(DB_Problem.insertProblem(WNum, Question, Question, Type, AnswerContents))
-			pw.println(">>SUCCESS [AddProblem]<<");
-		else pw.println(">>FAIL [AddProblem]");
-
+	private void addProblem(String problems) {
+		String[] problemList = problems.split("_");
+		for(int i = 0; i < problemList.length; i++) {
+			//WNum`question`answer`type`answerContents
+			String[] problemInfo = problemList[i].split("`");
+			if(!DB_Problem.insertProblem(problemInfo[0], problemInfo[1], problemInfo[2], problemInfo[3],problemInfo[4])) {
+				pw.println("AddProblem:Fail");
+				pw.flush();
+				break;
+			}
+		}
+		pw.println("AddProblem:Success");
 		pw.flush();
+	
 	}
 	
 	private void addStudent(String BNum, String BMNum, String WNum, String Name,String Answer,String Result) {

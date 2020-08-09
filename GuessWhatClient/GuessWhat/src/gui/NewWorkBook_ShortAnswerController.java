@@ -59,7 +59,7 @@ public class NewWorkBook_ShortAnswerController extends BaseController implements
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// TODO Auto-generated method stub
-
+		
 		this.socket = ProfessorDataModel.socket;
 		this.workBook = ProfessorDataModel.workbook;
 		this.problemList = ProfessorDataModel.problemList;
@@ -197,6 +197,21 @@ public class NewWorkBook_ShortAnswerController extends BaseController implements
 		problemList[PB_num] = problem;
 
 	}
+	
+	private String tokenProblemList(Problem[] problem, int wnum) {
+		StringBuilder sb = new StringBuilder("");
+		int n = 0;
+		while(problem[n] != null) {
+			sb.append(problem[n].tokenString(wnum));
+			sb.append("_");
+			n++;
+		}
+		sb.deleteCharAt(sb.length()-1);
+		
+		return new String(sb);
+
+	}
+
 
 	public void btn_DeleteWorkBook_Action() {
 
@@ -219,7 +234,6 @@ public class NewWorkBook_ShortAnswerController extends BaseController implements
 
 	public void btn_SaveWorkBook_Action() {
 
-		this.savePro();
 
 		boolean canMakeWB = true;
 		for (int i = 0; i < workBookSize; i++) {
@@ -254,6 +268,26 @@ public class NewWorkBook_ShortAnswerController extends BaseController implements
 				if(!responseTokens[1].equals("Success")) {
 					System.out.println("AddWorkbook:Fail");
 				}
+				else {
+					this.workBook.setW_Num(Integer.parseInt(responseTokens[2]));
+					try {
+						//AddProblem:problem1_problem2(WNum`question`answer`type`answerContents)...
+						String requestMessage = "AddProblem:" +this.tokenProblemList(this.problemList,this.workBook.W_Num());
+						BufferedReader br = new BufferedReader(
+								new InputStreamReader(this.socket.getInputStream(), StandardCharsets.UTF_8));
+						PrintWriter pw = new PrintWriter(
+								new OutputStreamWriter(this.socket.getOutputStream(), StandardCharsets.UTF_8));
+						pw.println(requestMessage);
+						pw.flush();
+						responseMessage = br.readLine();
+					} catch(IOException e) {
+						e.printStackTrace();
+					}
+					responseTokens = responseMessage.split(":");
+					if(responseTokens[0].equals("AddProblem")){
+						if(!responseTokens[1].equals("Success"))
+							System.out.println("AddProblem:Fail");
+				}
 			}
 			try {
 				Stage primaryStage = (Stage) btn_DeleteWorkBook.getScene().getWindow();
@@ -268,6 +302,7 @@ public class NewWorkBook_ShortAnswerController extends BaseController implements
 
 		}
 
+	}
 	}
 
 	public void btn_CreateProblem_Action() {
@@ -290,8 +325,8 @@ public class NewWorkBook_ShortAnswerController extends BaseController implements
 
 			this.problem = new Problem(ProfessorDataModel.currentPB);
 			try {
-				Stage primaryStage = (Stage) btn_Main.getScene().getWindow();
-				Parent main = FXMLLoader.load(getClass().getResource("/gui/NewWorkBook_MultipleChoice.fxml"));
+				Stage primaryStage = (Stage) btn_CreateProblem.getScene().getWindow();
+				Parent main = FXMLLoader.load(getClass().getResource("/gui/NewWorkBook_ShortAnswer.fxml"));
 				Scene scene = new Scene(main);
 				primaryStage.setTitle("GuessWhat/WorkBook");
 				primaryStage.setScene(scene);
