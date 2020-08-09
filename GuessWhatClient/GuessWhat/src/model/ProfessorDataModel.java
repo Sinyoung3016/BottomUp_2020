@@ -25,7 +25,7 @@ public class ProfessorDataModel {
 	public static BanManager banManager;
 	public static Workbook workbook;
 	public static Problem problem;
-	public static Workbook [] WorkbookList = null;
+	public static Workbook[] WorkbookList = null;
 	public static Problem [] problemList;
 	public static boolean[] hasQValue = null;
 	public static boolean[] hasAValue = null;
@@ -36,6 +36,7 @@ public class ProfessorDataModel {
 	public static ObservableList<HBoxModel> ItemList_MyClass = FXCollections.observableArrayList();
 	public static ObservableList<HBoxModel> ItemList_MyWorkBook = FXCollections.observableArrayList();
 	
+	public static ObservableList<Workbook> ChoiceList_MyWorkBook = FXCollections.observableArrayList();
 
 	public static void addClass(int n, Ban newBan) {
 		ItemList_MyClass.add(newBan.getBan(n));
@@ -59,6 +60,10 @@ public class ProfessorDataModel {
 
 	public static void removeBanManager(int n, BanManager newBanManager) {
 		ItemList_MyBanManager.remove(newBanManager.getBanManager(n));
+	}
+	
+	public static void addWBList(Workbook newWorkbook) {
+		ChoiceList_MyWorkBook.add(newWorkbook);
 	}
 
 }

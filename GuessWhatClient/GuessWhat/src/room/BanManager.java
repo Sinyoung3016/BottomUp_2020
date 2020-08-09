@@ -179,7 +179,7 @@ public class BanManager {
 								String name = responseTokens[3];
 								String state = responseTokens[4];
 								String code = responseTokens[5];
-								String workbook = responseTokens[6];
+								int workbook = Integer.parseInt(responseTokens[6]);
 								int student_size = Integer.parseInt(responseTokens[7]);
 								BanManager newBanManager = new BanManager(P_num, ban_Num, BMNum, name, state, code, workbook, student_size);
 								

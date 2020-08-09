@@ -109,9 +109,9 @@ public class LoginController implements Initializable {
 					try {
 						ProfessorDataModel.professor = new Professor(responseTokens[2]);
 						ProfessorDataModel.ID = tf_Id.getText();
-						
+
 						this.getAllWorkbook(ProfessorDataModel.professor.P_Num());
-						
+
 						Stage primaryStage = (Stage) btn_Login.getScene().getWindow();
 						Platform.runLater(() -> {
 							Parent login;
@@ -135,8 +135,8 @@ public class LoginController implements Initializable {
 		} else
 			new Alert(Alert.AlertType.WARNING, "빈칸을 전부 채워주세요.", ButtonType.OK).show();
 	}
-	
-	
+
+
 	//Private Method
 	private void getAllWorkbook(int pNum) {
 		String responseMessage = null;
@@ -157,29 +157,19 @@ public class LoginController implements Initializable {
 		String[] responseTokens = responseMessage.split(":");
 		if(responseTokens[0].equals("GetAllWorkbook")) {
 			if(!responseTokens[1].equals("Success")) {
-				System.out.println("AddWorkbook:Fail");
+				System.out.println("GetAllWorkbook:Fail");
 			}
 			else {
-				String[] workbookInfo = new String[4];
-				Workbook workbook;
-				int listIndex = 0;
-				int tokenIndex = 2;
-				while(tokenIndex < responseTokens.length) {
-					for(int infoIndex = 0; infoIndex <4; infoIndex++) {
-						if(infoIndex == 0) {
-							workbookInfo[infoIndex] = "0";
-						}
-						else {
-							workbookInfo[infoIndex] = responseTokens[tokenIndex];
-							tokenIndex++;
-						}
-						
-					}
-					workbook = new Workbook(workbookInfo);
-					ProfessorDataModel.WorkbookList[listIndex] = workbook;
-					listIndex++;
-				}		
+				for(int i = 2 ; i < responseTokens.length ; i++) {		// <- GetAllWorkbook:Success:WNum:Name:Size
+					int WBNum = Integer.parseInt(responseTokens[i]);
+					String name = responseTokens[i+1];
+					int size = Integer.parseInt(responseTokens[i+2]);
+
+					Workbook newWorkbook = new Workbook(pNum, WBNum, name, size);
+					ProfessorDataModel.addWBList(newWorkbook);			
+					i = i+2;
+				}
 			}
-			}
+		}
 	}
 }

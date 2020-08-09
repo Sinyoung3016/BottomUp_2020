@@ -44,7 +44,7 @@ public class CreateNewBanManagerController implements Initializable {
 	@FXML
 	private TextField tf_NewBanManagerName;
 	@FXML
-	private ChoiceBox<String> cb_NewBanManagerWorkBook;
+	private ChoiceBox<Workbook> cb_NewBanManagerWorkBook;
 	@FXML
 	private Label lv_roomcode;
 
@@ -90,6 +90,8 @@ public class CreateNewBanManagerController implements Initializable {
 		this.professor = ProfessorDataModel.professor;
 		this.ban = ProfessorDataModel.ban;
 		this.workbookList = ProfessorDataModel.WorkbookList;
+		
+		this.cb_NewBanManagerWorkBook.setItems(ProfessorDataModel.ChoiceList_MyWorkBook);
 
 		className = ban.ban_name();
 		this.btn_Main.setText(className);
@@ -176,8 +178,9 @@ public class CreateNewBanManagerController implements Initializable {
 		try {
 			int pNum = this.professor.P_Num();
 			int bNum = this.ban.ban_num();
-
-			this.createNewBanManager(pNum, bNum, this.tf_NewBanManagerName.getText(), this.lv_roomcode.getText(), -1);
+			int wNum = this.cb_NewBanManagerWorkBook.getSelectionModel().getSelectedItem().W_Num();
+			
+			this.createNewBanManager(pNum, bNum, this.tf_NewBanManagerName.getText(), this.lv_roomcode.getText(), wNum);
 
 			Stage primaryStage = (Stage) btn_CreateNewBanManager.getScene().getWindow();
 			Parent main = FXMLLoader.load(getClass().getResource("/gui/Ban.fxml"));
