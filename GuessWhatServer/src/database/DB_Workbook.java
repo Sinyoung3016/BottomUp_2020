@@ -10,7 +10,7 @@ import java.util.List;
 import exam.Workbook;
 
 public class DB_Workbook extends DBManager{
-	public synchronized static boolean insertWorkbook(String BMNum, String PNum, String Name, String Size) {
+	public synchronized static boolean insertWorkbook(String PNum, String Name, String Size) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		
@@ -18,13 +18,12 @@ public class DB_Workbook extends DBManager{
 			conn = getConn();
 			
 			String sql;
-			sql = "INSERT INTO Workbook (BMNum, PNum, Name, Size) VALUES (?,?,?,?)";
+			sql = "INSERT INTO Workbook (PNum, Name, Size) VALUES (?,?,?)";
 			pstmt = conn.prepareStatement(sql);
 			
-			pstmt.setString(1, BMNum);
-			pstmt.setString(2, PNum);
-			pstmt.setString(3, Name);
-			pstmt.setString(4, Size);
+			pstmt.setString(1, PNum);
+			pstmt.setString(2, Name);
+			pstmt.setString(3, Size);
 			
 			pstmt.executeUpdate();
 			pstmt.close();

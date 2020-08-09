@@ -47,6 +47,10 @@ public class Workbook {
 		this.WorkBook_size = n;
 	}
 	
+	public void setP_Num(int num) {
+		this.P_Num = num;
+	}
+	
 	//Getter start
 	public int P_Num() { return this.P_Num;}
 	public int W_Num() { return this.W_Num; }
@@ -58,6 +62,12 @@ public class Workbook {
 	public String toString() {
 		StringBuilder sb = new StringBuilder("");
 		sb.append("Name:"+ this.W_name + ", Size:" + this.WorkBook_size);
+		return new String(sb);
+	}
+	
+	public String tokenString() {
+		StringBuilder sb = new StringBuilder("");
+		sb.append(this.P_Num() + ":" + this.W_name());
 		return new String(sb);
 	}
 	

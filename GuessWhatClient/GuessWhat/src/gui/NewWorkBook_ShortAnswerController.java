@@ -66,8 +66,7 @@ public class NewWorkBook_ShortAnswerController extends BaseController implements
 		this.problem = ProfessorDataModel.problem;
 		this.hasQValue = ProfessorDataModel.hasQValue;
 		this.hasAValue = ProfessorDataModel.hasAValue;
-
-		this.workBookSize = workBook.WorkBooksize();
+		this.workBookSize = this.workBook.WorkBooksize();
 		this.PB_num = ProfessorDataModel.currentPB;
 
 		// setting
@@ -158,6 +157,7 @@ public class NewWorkBook_ShortAnswerController extends BaseController implements
 	}
 
 	private void changeName() {
+		//String name = "name";
 		String name = tf_ChangeName.getText();
 		if (!name.equals(null) || !name.equals(""))
 			workBook.setName(name);
@@ -230,10 +230,31 @@ public class NewWorkBook_ShortAnswerController extends BaseController implements
 		if (!canMakeWB)
 			new Alert(AlertType.CONFIRMATION, "저장못함.", ButtonType.CLOSE).show();
 		else {
-
+			
 			// problemList db에 저장
 			// workbook db에 저장
-
+			
+			this.workBook.setP_Num(ProfessorDataModel.professor.P_Num());
+			String responseMessage = null;
+			try {
+				//AddWorkbook:PNum:Name:Size
+				String requestTokens = "AddWorkbook:" + this.workBook.tokenString() + ":" + this.workBookSize;
+				BufferedReader br = new BufferedReader(
+						new InputStreamReader(this.socket.getInputStream(), StandardCharsets.UTF_8));
+				PrintWriter pw = new PrintWriter(
+						new OutputStreamWriter(this.socket.getOutputStream(), StandardCharsets.UTF_8));
+				pw.println(requestTokens);
+				pw.flush();
+				responseMessage = br.readLine();
+			} catch(IOException e) {
+				e.printStackTrace();
+			}
+			String[] responseTokens = responseMessage.split(":");
+			if(responseTokens[0].equals("AddWorkbook")) {
+				if(!responseTokens[1].equals("Success")) {
+					System.out.println("AddWorkbook:Fail");
+				}
+			}
 			try {
 				Stage primaryStage = (Stage) btn_DeleteWorkBook.getScene().getWindow();
 				Parent main = FXMLLoader.load(getClass().getResource("/gui/WorkBookList.fxml"));

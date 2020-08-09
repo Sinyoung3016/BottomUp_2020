@@ -6,6 +6,7 @@ public class Workbook {
 	private int PNum;
 	private String name;
 	private int size;
+	
 	private Problem[] problemSet;
 	
 	//Constructor start

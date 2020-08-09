@@ -88,9 +88,9 @@ public class ServerThread extends Thread{
 							clientRequest = "AddBanManager";
 							this.addBanManager(requestTokens[1], requestTokens[2], requestTokens[3], requestTokens[4], requestTokens[5]);
 						}
-						else if(requestTokens[0].equals(Request.ADD_WORKBOOK.getRequest())) { //AddWorkbook:BMNum:PNum:Name:Size
+						else if(requestTokens[0].equals(Request.ADD_WORKBOOK.getRequest())) { //AddWorkbook:PNum:Name:Size
 							clientRequest = "AddWorkbook";
-							this.addWorkbook(requestTokens[1], requestTokens[2], requestTokens[3], requestTokens[4]);
+							this.addWorkbook(requestTokens[1], requestTokens[2], requestTokens[3]);
 						}
 						else if(requestTokens[0].equals(Request.ADD_PROBLEM.getRequest())) { //AddProblem:WNum:Question:Answer:Type:AnswerContents
 							clientRequest = "AddProblem";
@@ -237,10 +237,10 @@ public class ServerThread extends Thread{
 
 		pw.flush();
 	}
-	private void addWorkbook(String BMNum, String PNum, String Name, String Size) {
-		if(DB_Workbook.insertWorkbook(BMNum,PNum,Name,Size)) 
-			pw.println(">>SUCCESS [AddWorkbook]<<");
-		else pw.println(">>FAIL [AddWorkbook]<<");
+	private void addWorkbook(String PNum, String Name, String Size) {
+		if(DB_Workbook.insertWorkbook(PNum,Name,Size)) 
+			pw.println("AddWorkbook:Success");
+		else pw.println("AddWorkbook:Fail");
 
 		pw.flush();
 	}
