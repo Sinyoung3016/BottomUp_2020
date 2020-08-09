@@ -109,7 +109,6 @@ public class HomeController implements Initializable{
 			new Alert(Alert.AlertType.WARNING, "RoomCode를 입력해주세요.", ButtonType.CLOSE).show();
 		}
 		//MoonDD's code end
-
 		
 	}
 

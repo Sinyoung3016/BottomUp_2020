@@ -37,10 +37,10 @@ import model.ProfessorDataModel;
 import room.Ban;
 import user.Professor;
 
-public class CreateNewBanManagerController extends BaseController implements Initializable {
+public class CreateNewBanManagerController implements Initializable {
 
 	@FXML
-	private Button btn_Cancel, btn_CreateNewBanManager;
+	private Button btn_Cancel, btn_CreateNewBanManager, btn_Main, btn_Logo, btn_MyInfo;
 	@FXML
 	private TextField tf_NewBanManagerName;
 	@FXML
@@ -76,7 +76,6 @@ public class CreateNewBanManagerController extends BaseController implements Ini
 				System.out.println("Fail : AddBanManager");
 			} else {
 				System.out.println("Success : AddBanManager");
-				new Alert(AlertType.CONFIRMATION, "(Class) " + className + "에 (TestRoom) " + name + "(이)가 생성되었습니다.", ButtonType.YES).show();
 			}
 		}
 	}
@@ -96,8 +95,8 @@ public class CreateNewBanManagerController extends BaseController implements Ini
 		this.btn_Main.setText(className);
 
 		if (workbookList.length == 0) {
-			new Alert(AlertType.CONFIRMATION, "생성된 WorkBook이 없습니다. MainPage의 WorkBookList를 눌러 WorkBook을 먼저 만드세요.")
-					.show();
+			new Alert(AlertType.CONFIRMATION, "생성된 WorkBook이 없습니다. MainPage의 WorkBookList를 눌러 WorkBook을 먼저 만드세요.",
+					ButtonType.CLOSE).show();
 
 			try {
 				Stage primaryStage = (Stage) btn_Cancel.getScene().getWindow();
@@ -111,11 +110,9 @@ public class CreateNewBanManagerController extends BaseController implements Ini
 			}
 		}
 
-		ObservableList<String> list = FXCollections.observableArrayList();
-		for (int i = 0; i < workbookList.length; i++)
-			list.add(workbookList[i].W_name());
-		cb_NewBanManagerWorkBook.setItems(list);
 
+		
+		
 	}
 
 	private void makeRoomCode() { // 값 만들기
@@ -139,11 +136,9 @@ public class CreateNewBanManagerController extends BaseController implements Ini
 		this.lv_roomcode.setText(roomcode);
 	}
 
-	@Override
 	public void btn_Main_Action() {
-		Alert alert = new Alert(AlertType.WARNING, "(Class) " +className + "(으)로 이동하시겠습니까? 진행중이던 작업이 날아갈 수 있습니다.", ButtonType.YES,
-				ButtonType.NO);
-		alert.show();
+		Alert alert = new Alert(AlertType.WARNING, "(Class) " + className + "(으)로 이동하시겠습니까? 진행중이던 작업이 날아갈 수 있습니다.",
+				ButtonType.YES, ButtonType.NO);
 		Optional<ButtonType> result = alert.showAndWait();
 
 		if (result.get() == ButtonType.YES) {
@@ -161,11 +156,8 @@ public class CreateNewBanManagerController extends BaseController implements Ini
 	}
 
 	public void btn_Cancel_Action() {
-		Alert alert = new Alert(AlertType.WARNING, "해당 작업을 그만두시겠습니까?", ButtonType.YES,
-				ButtonType.NO);
-		alert.show();
+		Alert alert = new Alert(AlertType.WARNING, "해당 작업을 그만두시겠습니까?", ButtonType.YES, ButtonType.NO);
 		Optional<ButtonType> result = alert.showAndWait();
-
 		if (result.get() == ButtonType.YES) {
 			try {
 				Stage primaryStage = (Stage) btn_Cancel.getScene().getWindow();
@@ -195,6 +187,42 @@ public class CreateNewBanManagerController extends BaseController implements Ini
 			primaryStage.show();
 		} catch (Exception e) {
 			e.printStackTrace();
+		}
+	}
+
+	public void btn_Logo_Action() {
+		Alert alert = new Alert(AlertType.WARNING, "MainPage로 이동하시겠습니까? 진행중이던 작업이 날아갈 수 있습니다.", ButtonType.YES,
+				ButtonType.NO);
+		Optional<ButtonType> result = alert.showAndWait();
+		if (result.get() == ButtonType.YES) {
+			try {
+				Stage primaryStage = (Stage) btn_Logo.getScene().getWindow();
+				Parent main = FXMLLoader.load(getClass().getResource("/gui/MainPage.fxml"));
+				Scene scene = new Scene(main);
+				primaryStage.setTitle("GuessWhat/MainPage");
+				primaryStage.setScene(scene);
+				primaryStage.show();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	public void btn_MyInfo_Action() {
+		Alert alert = new Alert(AlertType.WARNING, "MyInfo로 이동하시겠습니까? 진행중이던 작업이 날아갈 수 있습니다.", ButtonType.YES,
+				ButtonType.NO);
+		Optional<ButtonType> result = alert.showAndWait();
+		if (result.get() == ButtonType.YES) {
+			try {
+				Stage primaryStage = (Stage) btn_MyInfo.getScene().getWindow();
+				Parent main = FXMLLoader.load(getClass().getResource("/gui/MyInfo.fxml"));
+				Scene scene = new Scene(main);
+				primaryStage.setTitle("GuessWhat/MyInfo");
+				primaryStage.setScene(scene);
+				primaryStage.show();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 

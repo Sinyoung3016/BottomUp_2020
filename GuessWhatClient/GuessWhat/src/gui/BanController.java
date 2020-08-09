@@ -27,10 +27,10 @@ import user.Professor;
 import room.Ban;
 import room.BanManager;
 
-public class BanController extends BaseController implements Initializable {
+public class BanController implements Initializable {
 
 	@FXML
-	private Button btn_CreateNewBanManager, btn_ModifyClassName, btn_DeleteBan;
+	private Button btn_CreateNewBanManager, btn_ModifyClassName, btn_DeleteBan, btn_Main, btn_Logo, btn_MyInfo;;
 	@FXML
 	private ListView<HBoxModel> lv_BanManagerList;
 
@@ -97,9 +97,8 @@ public class BanController extends BaseController implements Initializable {
 
 		Alert alert = new Alert(AlertType.WARNING, "(Class) " + className + "을(를) 정말로 삭제하시겠습니까?", ButtonType.YES,
 				ButtonType.NO);
-		alert.show();
 		Optional<ButtonType> result = alert.showAndWait();
-		
+
 		if (result.get() == ButtonType.YES) {
 			// delete
 			String responseMessage = null;
@@ -122,7 +121,6 @@ public class BanController extends BaseController implements Initializable {
 					System.out.println("Fail : DeleteBan");
 				} else {
 					System.out.println("Success: DeleteBan");
-					new Alert(AlertType.CONFIRMATION, "(Class) " + className + "을(를) 삭제했습니다.", ButtonType.CLOSE).show();
 				}
 			}
 
@@ -136,7 +134,7 @@ public class BanController extends BaseController implements Initializable {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-		} 
+		}
 	}
 
 	public void btn_CreateNewBanManager_Action() {
@@ -158,6 +156,45 @@ public class BanController extends BaseController implements Initializable {
 			Parent main = FXMLLoader.load(getClass().getResource("/gui/BanModifyClassName.fxml"));
 			Scene scene = new Scene(main);
 			primaryStage.setTitle("GuessWhat/" + className);
+			primaryStage.setScene(scene);
+			primaryStage.show();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void btn_Main_Action() {
+		try {
+			Stage primaryStage = (Stage) btn_Main.getScene().getWindow();
+			Parent main = FXMLLoader.load(getClass().getResource("/gui/MainPage.fxml"));
+			Scene scene = new Scene(main);
+			primaryStage.setTitle("GuessWhat/MainPage");
+			primaryStage.setScene(scene);
+			primaryStage.show();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void btn_Logo_Action() {
+		try {
+			Stage primaryStage = (Stage) btn_Logo.getScene().getWindow();
+			Parent main = FXMLLoader.load(getClass().getResource("/gui/MainPage.fxml"));
+			Scene scene = new Scene(main);
+			primaryStage.setTitle("GuessWhat/MainPage");
+			primaryStage.setScene(scene);
+			primaryStage.show();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void btn_MyInfo_Action() {
+		try {
+			Stage primaryStage = (Stage) btn_MyInfo.getScene().getWindow();
+			Parent main = FXMLLoader.load(getClass().getResource("/gui/MyInfo.fxml"));
+			Scene scene = new Scene(main);
+			primaryStage.setTitle("GuessWhat/MyInfo");
 			primaryStage.setScene(scene);
 			primaryStage.show();
 		} catch (Exception e) {
