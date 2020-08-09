@@ -72,9 +72,7 @@ public class Workbook {
 	
 	@Override
 	public String toString() {
-		StringBuilder sb = new StringBuilder("");
-		sb.append("Name:"+ this.W_name + ", Size:" + this.WorkBook_size);
-		return new String(sb);
+		return this.W_name;
 	}
 	
 	public String tokenString() {
