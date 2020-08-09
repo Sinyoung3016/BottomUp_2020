@@ -58,6 +58,10 @@ public class Workbook {
 		this.P_Num = num;
 	}
 	
+	public void setW_Num(int num) {
+		this.W_Num = num;
+	}
+	
 	//Getter start
 	public int P_Num() { return this.P_Num;}
 	public int W_Num() { return this.W_Num; }

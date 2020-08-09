@@ -216,6 +216,38 @@ public class DB_Workbook extends DBManager{
 			}
 		}
 	}
+	
+	public synchronized static int getWNumOf(String name) {
+		Connection conn = null;
+		Statement state = null;
+		ResultSet rs = null;
+		
+		try {
+			conn = getConn();
+			state = conn.createStatement();
+			String sql;
+			sql = "SELECT * FROM Workbook WHERE Name = '" + name + "'";
+			rs = state.executeQuery(sql);
+			
+			if(rs.next()) {
+				return rs.getInt("WNum");
+			}
+			
+			return -1;
+		}catch(Exception e) {
+			System.out.println("Error : " + e.getMessage() + "FROM getWNumOf.1");
+			e.printStackTrace();
+			return -1;
+		} finally {
+			try {
+				if(state != null) state.close();
+				if(conn != null) conn.close();
+				if(rs != null) rs.close();
+			} catch(SQLException e) {
+				System.out.println("Error : " + e.getMessage() + "FROM getWNumOf.2");
+			}
+		}
+	}
 }
 
 

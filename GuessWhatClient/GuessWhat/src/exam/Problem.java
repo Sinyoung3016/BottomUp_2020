@@ -95,4 +95,8 @@ public class Problem {
 		sb.append("PBNum : " + this.PB_Num + " WNum : " + this.W_Num + " Question : " + this.question +", Answer: " + this.answer + ", Type: " +this.type + ", AnswerContent: " + this.answerContent);
 		return new String(sb);
 	}
+	
+	public String tokenString(int wnum) {
+		return wnum + " ` " + this.question + "`" + this.answer + "`" + this.type + "`" + this.answerContent;
+	}
 }
