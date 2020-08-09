@@ -9,6 +9,7 @@ import java.net.Socket;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 import authentication.Authentication;
@@ -29,6 +30,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 import model.ProfessorDataModel;
 
@@ -44,24 +46,30 @@ public class SignUpController implements Initializable {
 	private Button btn_GuessWhat, btn_SignUp, btn_Overlap;
 
 	private boolean check_Overlap_Id = false, check_checkPW = false;
-	
+
 	public Socket socket;
-	
-	public void btn_GuessWhat_Action() {//Login으로 이동
-		try {
-			Stage primaryStage = (Stage) btn_GuessWhat.getScene().getWindow();
-			Parent main = FXMLLoader.load(getClass().getResource("/gui/Login.fxml"));
-			Scene scene = new Scene(main);
-			primaryStage.setTitle("GuessWhat/LogIn");
-			primaryStage.setScene(scene);
-			primaryStage.show();
-		} catch (Exception e) {
-			e.printStackTrace();
+
+	public void btn_GuessWhat_Action() {// Login으로 이동
+		Alert alert = new Alert(AlertType.WARNING, "로그인 창으로 이동하시겠습니까? 진행중이던 작업이 날아갈 수 있습니다.", ButtonType.YES,
+				ButtonType.NO);
+		alert.show();
+		Optional<ButtonType> result = alert.showAndWait();
+		if (result.get() == ButtonType.YES) {
+			try {
+				Stage primaryStage = (Stage) btn_GuessWhat.getScene().getWindow();
+				Parent main = FXMLLoader.load(getClass().getResource("/gui/Login.fxml"));
+				Scene scene = new Scene(main);
+				primaryStage.setTitle("GuessWhat/LogIn");
+				primaryStage.setScene(scene);
+				primaryStage.show();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
 	public void btn_Overlap_Action() {
-		if(tf_ID.getText().length() != 0 ) { // !isEmpty(tf_ID);
+		if (tf_ID.getText().length() != 0) { // !isEmpty(tf_ID);
 			String responseMessage = null;
 			try {
 				String requestTokens = "OverLap:" + tf_ID.getText();
@@ -76,37 +84,36 @@ public class SignUpController implements Initializable {
 				e.printStackTrace();
 			}
 			String[] responseTokens = responseMessage.split(":");
-			if(responseTokens[0].equals("OverLap")) {
-				if(!responseTokens[1].equals("Success")) {
-					new Alert(Alert.AlertType.WARNING, responseTokens[1], ButtonType.CLOSE).show();
-				}
-				else {
+			if (responseTokens[0].equals("OverLap")) {
+				if (!responseTokens[1].equals("Success")) {
+					new Alert(Alert.AlertType.WARNING, responseTokens[1], ButtonType.OK).show();
+				} else {
 					check_Overlap_Id = true;
-					new Alert(Alert.AlertType.CONFIRMATION, "가능한 ID입니다.", ButtonType.CLOSE).show();
+					new Alert(Alert.AlertType.CONFIRMATION, "가능한 ID입니다.", ButtonType.OK).show();
 				}
-				}
+			}
+		} else { // isEmpty(tf_ID);
+			new Alert(Alert.AlertType.WARNING, "빈칸을 전부 채워주세요.", ButtonType.OK).show();
 		}
-		else { //isEmpty(tf_ID);
-			new Alert(Alert.AlertType.WARNING, "빈칸을 전부 채워주세요.", ButtonType.CLOSE).show();
-		}
-		
+
 	}
 
 	public void btn_SignUp_Action() {
 
 		if (!check_checkPW) {
-			new Alert(Alert.AlertType.WARNING, "비밀번호를 확인해주세요.", ButtonType.CLOSE).show();
-			return ;
-		}
-		
-		if (!check_Overlap_Id) {
-			new Alert(Alert.AlertType.WARNING, "ID 중복 체크를 해주세요.", ButtonType.CLOSE).show();
-			return ;
+			new Alert(Alert.AlertType.WARNING, "비밀번호가 정확하지 않습니다.", ButtonType.OK).show();
+			return;
 		}
 
-		if (tf_ID.getText().length() != 0 && pf_PassWord.getText().length() != 0 && tf_Email.getText().length() != 0 && check_Overlap_Id && check_checkPW) {
+		if (!check_Overlap_Id) {
+			new Alert(Alert.AlertType.WARNING, "ID 중복 체크를 해주세요.", ButtonType.OK).show();
+			return;
+		}
+
+		if (tf_ID.getText().length() != 0 && pf_PassWord.getText().length() != 0 && tf_Email.getText().length() != 0
+				&& check_Overlap_Id && check_checkPW) {
 			try {
-				this.signUp(tf_ID.getText(), pf_PassWord.getText(), tf_Email.getText());				
+				this.signUp(tf_ID.getText(), pf_PassWord.getText(), tf_Email.getText());
 			} catch (Exception e) {
 				System.out.println("회원가입 : 실패");
 			}
@@ -128,28 +135,29 @@ public class SignUpController implements Initializable {
 
 			btn_SignUp.setDisable(true);
 		} else
-			new Alert(Alert.AlertType.WARNING, "빈칸을 전부 채워주세요.", ButtonType.CLOSE).show();
+			new Alert(Alert.AlertType.WARNING, "빈칸을 전부 채워주세요.", ButtonType.OK).show();
 	}
 
 	private void signUp(String id, String password, String Email) throws MyException, SQLException {
 		String responseMessage = null;
 		try {
 			String requestMessage = "SignUp:" + id + ":" + password + ":" + Email;
-			BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
+			BufferedReader br = new BufferedReader(
+					new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
 			PrintWriter pw = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8));
 			pw.println(requestMessage);
 			pw.flush();
 			responseMessage = br.readLine();
-		} catch(IOException e) {
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		String[] responseTokens = responseMessage.split(":");
-		if(responseTokens[0].equals("SignUp")) {
-			if(!responseTokens[1].equals("Success")) {
-				new Alert(Alert.AlertType.WARNING, responseTokens[2], ButtonType.CLOSE).show();
-			}
-			else {
-				new Alert(Alert.AlertType.CONFIRMATION, "회원가입 되었습니다.", ButtonType.CLOSE).show();
+		if (responseTokens[0].equals("SignUp")) {
+			if (!responseTokens[1].equals("Success")) {
+				new Alert(Alert.AlertType.WARNING, "회원가입에 실패했습니다. 잠시후 다시 진행해주세요.", ButtonType.OK).show();
+				System.out.println("id :" + responseTokens[2]);
+			} else {
+				new Alert(Alert.AlertType.CONFIRMATION, "회원가입이 성공적으로 진행되었습니다.", ButtonType.OK).show();
 			}
 		}
 	}
@@ -162,9 +170,8 @@ public class SignUpController implements Initializable {
 			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
 				if (!pf_CheckPW.isFocused()) {
 					if (!pf_PassWord.getText().equals(pf_CheckPW.getText())) {
-						lb_warning_CheckPW.setText("비밀번호를 다시 확인해 주세요.");
-					}
-					else {
+						lb_warning_CheckPW.setText("비밀번호가 정확하지 않습니다.");
+					} else {
 						check_checkPW = true;
 						lb_warning_CheckPW.setText("");
 					}
