@@ -13,6 +13,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 import model.ProfessorDataModel;
 import user.Professor;
@@ -24,13 +25,14 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 import authentication.Authentication;
 import database.DB_USER;
 import exception.MyException;
 
-public class LoginController implements Initializable{
+public class LoginController implements Initializable {
 
 	@FXML
 	private Button btn_GuessWhat, btn_SignUp, btn_Login;
@@ -38,26 +40,33 @@ public class LoginController implements Initializable{
 	private TextField tf_Id;
 	@FXML
 	private PasswordField pf_Password;
-	
+
 	public Socket socket;
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		this.socket = ProfessorDataModel.socket;
 	}
-	public void btn_GuessWhat_Action() {//Home으로 이동
-		try {
-			Stage primaryStage = (Stage) btn_GuessWhat.getScene().getWindow();
-			Parent main = FXMLLoader.load(getClass().getResource("/gui/Home.fxml"));
-			Scene scene = new Scene(main);
-			primaryStage.setTitle("GuessWhat/Home");
-			primaryStage.setScene(scene);
-			primaryStage.show();
-		} catch (Exception e) {
-			e.printStackTrace();
+
+	public void btn_GuessWhat_Action() {// Home으로 이동
+		Alert alert = new Alert(AlertType.WARNING, "Home창으로 이동하시겠습니까? 진행중이던 작업이 날아갈 수 있습니다.", ButtonType.YES,
+				ButtonType.NO);
+		alert.show();
+		Optional<ButtonType> result = alert.showAndWait();
+		if (result.get() == ButtonType.YES) {
+			try {
+				Stage primaryStage = (Stage) btn_GuessWhat.getScene().getWindow();
+				Parent main = FXMLLoader.load(getClass().getResource("/gui/Home.fxml"));
+				Scene scene = new Scene(main);
+				primaryStage.setTitle("GuessWhat/Home");
+				primaryStage.setScene(scene);
+				primaryStage.show();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
-	
+
 	public void btn_SignUp_Action() {
 		try {
 			Stage primaryStage = (Stage) btn_SignUp.getScene().getWindow();
@@ -76,23 +85,25 @@ public class LoginController implements Initializable{
 		if (tf_Id.getText().length() != 0 && pf_Password.getText().length() != 0) {
 			String responseMessage = null;
 			try {
-				//this.logIn(tf_Id.getText(), pf_Password.getText());
-				String requestTokens = "Login:" + tf_Id.getText()+ ":" +pf_Password.getText();
-				BufferedReader br = new BufferedReader(new InputStreamReader(this.socket.getInputStream(), StandardCharsets.UTF_8));
-				PrintWriter pw = new PrintWriter(new OutputStreamWriter(this.socket.getOutputStream(), StandardCharsets.UTF_8));
+				// this.logIn(tf_Id.getText(), pf_Password.getText());
+				String requestTokens = "Login:" + tf_Id.getText() + ":" + pf_Password.getText();
+				BufferedReader br = new BufferedReader(
+						new InputStreamReader(this.socket.getInputStream(), StandardCharsets.UTF_8));
+				PrintWriter pw = new PrintWriter(
+						new OutputStreamWriter(this.socket.getOutputStream(), StandardCharsets.UTF_8));
 				pw.println(requestTokens);
 				pw.flush();
 				responseMessage = br.readLine();
 			} catch (Exception e) {
-				new Alert(Alert.AlertType.WARNING, e.getMessage(), ButtonType.CLOSE).show();
-				return;
+				System.out.println("login 실패" +  e.getMessage());
+				new Alert(Alert.AlertType.WARNING, "해당하는 ID가 없습니다. 회원가입을 해주세요.", ButtonType.OK).show();
 			}
 			String[] responseTokens = responseMessage.split(":");
 			System.out.println(responseMessage);
-			if(responseTokens[0].equals("LogIn")) {
-				if(!responseTokens[1].equals("Success")) {
-					new Alert(Alert.AlertType.WARNING, responseTokens[1], ButtonType.CLOSE).show();
-				}else {
+			if (responseTokens[0].equals("LogIn")) {
+				if (!responseTokens[1].equals("Success")) {
+					new Alert(Alert.AlertType.WARNING, "로그인에 실패하였습니다. 다시 입력해주세요.", ButtonType.OK).show();
+				} else {
 					try {
 						ProfessorDataModel.professor = new Professor(responseTokens[2]);
 						ProfessorDataModel.ID = tf_Id.getText();
@@ -100,8 +111,7 @@ public class LoginController implements Initializable{
 						Platform.runLater(() -> {
 							Parent login;
 							try {
-								login = FXMLLoader.load(getClass().getResource("/gui/MyInfo.fxml"));
-								//login = FXMLLoader.load(getClass().getResource("/gui/MainPage.fxml"));
+								login = FXMLLoader.load(getClass().getResource("/gui/MainPage.fxml"));
 								Scene scene = new Scene(login);
 								primaryStage.setTitle("GuessWhat/Main");
 								primaryStage.setScene(scene);
@@ -111,27 +121,13 @@ public class LoginController implements Initializable{
 								e.printStackTrace();
 							}
 						});
-					} catch(Exception e) {
+					} catch (Exception e) {
 						e.printStackTrace();
 					}
 				}
 			}
-			
 
-			//btn_Login.setDisable(true);
-			//btn_SignUp.setDisable(true);
-			
 		} else
-			new Alert(Alert.AlertType.WARNING, "빈칸을 전부 채워주세요.", ButtonType.CLOSE).show();
+			new Alert(Alert.AlertType.WARNING, "빈칸을 전부 채워주세요.", ButtonType.OK).show();
 	}
-
-	/*private void logIn(String id, String password) throws MyException, SQLException {
-		if (Authentication.LogIn(id, password)) {
-			DB_USER.userLogIn(id);
-			System.out.println("LogIn:성공" + DB_USER.getUser(id).toString());
-		}else
-			System.out.println("LogIn:실패");
-	}*/
-	
-	
 }

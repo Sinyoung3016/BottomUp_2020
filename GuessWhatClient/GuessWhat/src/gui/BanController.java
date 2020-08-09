@@ -8,20 +8,21 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.Optional;
 import java.util.ResourceBundle;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ListView;
+import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 import model.ProfessorDataModel;
 import model.HBoxModel;
-import room.BanManager.HBoxCell;
 import user.Professor;
 import room.Ban;
 import room.BanManager;
@@ -32,49 +33,12 @@ public class BanController extends BaseController implements Initializable {
 	private Button btn_CreateNewBanManager, btn_ModifyClassName, btn_DeleteBan;
 	@FXML
 	private ListView<HBoxModel> lv_BanManagerList;
-	
+
 	public Socket socket;
-	public Professor professor; 
+	public Professor professor;
 	public Ban ban;
-	
+
 	private String className;
-	
-	private void showBanManagerList(int PNum, int BNum) {
-		ProfessorDataModel.ItemList_MyBanManager.clear();
-		String responseMessage = null;
-		try {
-			String requestMessage = "GetAllBanManager:" + PNum + ":" + BNum;
-			BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
-			PrintWriter writer = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8));
-			writer.println(requestMessage);
-			writer.flush();
-			responseMessage = reader.readLine();
-		} catch(IOException e) {
-			e.printStackTrace();
-		}
-		String[] responseTokens = responseMessage.split(":");
-		if(responseTokens[0].equals("GetAllBanManager")) {
-			if(! responseTokens[1].equals("Success")) {
-				System.out.println("Fail : GetAllBanManager");
-			}
-			else {
-				int n = 1;
-				for(int i = 2 ; i < responseTokens.length ; i++) {	
-					int BMNum = Integer.parseInt(responseTokens[i]);
-					String name = responseTokens[i+1];
-					String state = responseTokens[i+2];
-					String code = responseTokens[i+3];
-					int WNum = Integer.parseInt(responseTokens[i+4]);
-					int student_size = Integer.parseInt(responseTokens[i+5]);
-					BanManager newBanManager = new BanManager(PNum, BNum, BMNum, name, state, code, WNum, student_size);
-					ProfessorDataModel.addBanManager(n, newBanManager);					
-					i = i+5;
-					n++;
-				}
-				lv_BanManagerList.setItems(ProfessorDataModel.ItemList_MyBanManager);
-			}
-		}  
-	}
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
@@ -83,49 +47,96 @@ public class BanController extends BaseController implements Initializable {
 		this.socket = ProfessorDataModel.socket;
 		this.professor = ProfessorDataModel.professor;
 		this.ban = ProfessorDataModel.ban;
-		
+
 		this.showBanManagerList(professor.P_Num(), ban.ban_num());
-		
+
 		className = this.ban.ban_name();
 		this.btn_Main.setText(className);
 
 	}
-	
-	public void btn_DeleteBan_Action() {
-		
-		//delete
+
+	private void showBanManagerList(int PNum, int BNum) {
+		ProfessorDataModel.ItemList_MyBanManager.clear();
 		String responseMessage = null;
 		try {
-			String requestMessage = "DeleteBan:" + this.professor.P_Num() + ":" + this.ban.ban_num();
-			BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
-			PrintWriter writer = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8));
+			String requestMessage = "GetAllBanManager:" + PNum + ":" + BNum;
+			BufferedReader reader = new BufferedReader(
+					new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
+			PrintWriter writer = new PrintWriter(
+					new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8));
 			writer.println(requestMessage);
 			writer.flush();
 			responseMessage = reader.readLine();
-		} catch(IOException e1) {
-			e1.printStackTrace();
-		}
-		String[] responseTokens = responseMessage.split(":");
-		
-		if(responseTokens[0].equals("DeleteBan")) {
-			if(! responseTokens[1].equals("Success")) {
-				System.out.println("Fail : DeleteBan");
-			}
-			else {
-				//System.out.println("Success: DeleteBan");
-			}
-		}
-		
-		try {
-			Stage primaryStage = (Stage) btn_CreateNewBanManager.getScene().getWindow();
-			Parent main = FXMLLoader.load(getClass().getResource("/gui/MainPage.fxml"));
-			Scene scene = new Scene(main);
-			primaryStage.setTitle("GuessWhat/MainPage");
-			primaryStage.setScene(scene);
-			primaryStage.show();
-		} catch (Exception e) {
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		String[] responseTokens = responseMessage.split(":");
+		if (responseTokens[0].equals("GetAllBanManager")) {
+			if (!responseTokens[1].equals("Success")) {
+				System.out.println("Fail : GetAllBanManager");
+			} else {
+				int n = 1;
+				for (int i = 2; i < responseTokens.length; i++) {
+					int BMNum = Integer.parseInt(responseTokens[i]);
+					String name = responseTokens[i + 1];
+					String state = responseTokens[i + 2];
+					String code = responseTokens[i + 3];
+					int WNum = Integer.parseInt(responseTokens[i + 4]);
+					int student_size = Integer.parseInt(responseTokens[i + 5]);
+					BanManager newBanManager = new BanManager(PNum, BNum, BMNum, name, state, code, WNum, student_size);
+					ProfessorDataModel.addBanManager(n, newBanManager);
+					i = i + 5;
+					n++;
+				}
+				lv_BanManagerList.setItems(ProfessorDataModel.ItemList_MyBanManager);
+			}
+		}
+	}
+
+	public void btn_DeleteBan_Action() {
+
+		Alert alert = new Alert(AlertType.WARNING, "(Class) " + className + "을(를) 정말로 삭제하시겠습니까?", ButtonType.YES,
+				ButtonType.NO);
+		alert.show();
+		Optional<ButtonType> result = alert.showAndWait();
+		
+		if (result.get() == ButtonType.YES) {
+			// delete
+			String responseMessage = null;
+			try {
+				String requestMessage = "DeleteBan:" + this.professor.P_Num() + ":" + this.ban.ban_num();
+				BufferedReader reader = new BufferedReader(
+						new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
+				PrintWriter writer = new PrintWriter(
+						new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8));
+				writer.println(requestMessage);
+				writer.flush();
+				responseMessage = reader.readLine();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+			String[] responseTokens = responseMessage.split(":");
+
+			if (responseTokens[0].equals("DeleteBan")) {
+				if (!responseTokens[1].equals("Success")) {
+					System.out.println("Fail : DeleteBan");
+				} else {
+					System.out.println("Success: DeleteBan");
+					new Alert(AlertType.CONFIRMATION, "(Class) " + className + "을(를) 삭제했습니다.", ButtonType.CLOSE).show();
+				}
+			}
+
+			try {
+				Stage primaryStage = (Stage) btn_CreateNewBanManager.getScene().getWindow();
+				Parent main = FXMLLoader.load(getClass().getResource("/gui/MainPage.fxml"));
+				Scene scene = new Scene(main);
+				primaryStage.setTitle("GuessWhat/MainPage");
+				primaryStage.setScene(scene);
+				primaryStage.show();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		} 
 	}
 
 	public void btn_CreateNewBanManager_Action() {

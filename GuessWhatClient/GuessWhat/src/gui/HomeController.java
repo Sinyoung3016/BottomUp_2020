@@ -113,9 +113,4 @@ public class HomeController implements Initializable{
 		
 	}
 
-	public static Object CloseButtonActione() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 }

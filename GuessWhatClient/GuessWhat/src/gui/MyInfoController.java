@@ -8,6 +8,7 @@ import java.net.Socket;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 import authentication.Authentication;
@@ -28,6 +29,8 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextInputDialog;
+import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 import model.ProfessorDataModel;
 
@@ -113,55 +116,64 @@ public class MyInfoController implements Initializable {
 		// ModifyProfessor:ID:NewEmail:NewPassWord
 		boolean canRequest = true; // 요청을 보낼 수 있는 상태인가
 
-		if (tf_Email.getLength() == 0) { // email 수정안함
-			if (pf_PassWord.getLength() == 0) { // email, password 모두 수정안함
-				canRequest = false;
-				new Alert(Alert.AlertType.WARNING, "수정된 내용이 없습니다..", ButtonType.CLOSE).show();
-				return;
-			} else { // passWord만 수정
-				if (!this.checkNewPassword(pf_PassWord.getText(), pf_CheckPW.getText())) {
+		TextInputDialog pass = new TextInputDialog();
+		pass.setTitle("Modify MyInfo");
+		pass.setHeaderText("본인 확인을 위해 비밀번호를 입력해주세요.");
+		pass.setContentText("PassWord : ");
+		TextField input = pass.getEditor();
+		if (input.getText().equals(ProfessorDataModel.professor.password())) {
+			
+			if (tf_Email.getLength() == 0) { // email 수정안함
+				if (pf_PassWord.getLength() == 0) { // email, password 모두 수정안함
 					canRequest = false;
-					new Alert(Alert.AlertType.WARNING, "비밀번호를 확인해주세요.", ButtonType.CLOSE).show();
-					return;
-				} else {
+					btn_Close_Action();
+				} else { // passWord만 수정
+					if (!this.checkNewPassword(pf_PassWord.getText(), pf_CheckPW.getText())) {
+						canRequest = false;
+						new Alert(Alert.AlertType.WARNING, "비밀번호가 정확하지 않습니다.", ButtonType.CLOSE).show();
+						return;
+					} else {
+						NewPassword = pf_PassWord.getText();
+					}
+				}
+			} else { // email 수정
+				if (pf_PassWord.getLength() == 0) { // email만 수정
+					Email = tf_Email.getText();
+				} else { // email, password 모두 수정
 					NewPassword = pf_PassWord.getText();
+					Email = tf_Email.getText();
 				}
 			}
-		} else { // email 수정
-			if (pf_PassWord.getLength() == 0) { // email만 수정
-				Email = tf_Email.getText();
-			} else { // email, password 모두 수정
-				NewPassword = pf_PassWord.getText();
-				Email = tf_Email.getText();
-			}
-		}
 
-		if (canRequest) {
-			String responseMessage = null;
-			try {
-				String requestTokens = "ModifyProfessor:" + ProfessorDataModel.ID + ":" + Email + ":" + NewPassword;
-				BufferedReader br = new BufferedReader(
-						new InputStreamReader(this.socket.getInputStream(), StandardCharsets.UTF_8));
-				PrintWriter pw = new PrintWriter(
-						new OutputStreamWriter(this.socket.getOutputStream(), StandardCharsets.UTF_8));
-				pw.println(requestTokens);
-				pw.flush();
-				responseMessage = br.readLine();
-			} catch (Exception e) {
-				System.out.println("Error : " + e.getMessage() + " FROM btn_Update_Action");
-			}
-			String[] responseTokens = responseMessage.split(":");
-			if (responseTokens[0].equals("ModifyProfessor")) {
-				if (!responseTokens[1].equals("Success")) {
-					new Alert(Alert.AlertType.WARNING, responseTokens[1], ButtonType.CLOSE).show();
-				} else {
-					ProfessorDataModel.professor.setEmail(Email);
+			if (canRequest) {
+				String responseMessage = null;
+				try {
+					String requestTokens = "ModifyProfessor:" + ProfessorDataModel.ID + ":" + Email + ":" + NewPassword;
+					BufferedReader br = new BufferedReader(
+							new InputStreamReader(this.socket.getInputStream(), StandardCharsets.UTF_8));
+					PrintWriter pw = new PrintWriter(
+							new OutputStreamWriter(this.socket.getOutputStream(), StandardCharsets.UTF_8));
+					pw.println(requestTokens);
+					pw.flush();
+					responseMessage = br.readLine();
+				} catch (Exception e) {
+					System.out.println("Error : " + e.getMessage() + " FROM btn_Update_Action");
+				}
+				String[] responseTokens = responseMessage.split(":");
+				if (responseTokens[0].equals("ModifyProfessor")) {
+					if (!responseTokens[1].equals("Success")) {
+						new Alert(Alert.AlertType.WARNING, responseTokens[1], ButtonType.CLOSE).show();
+					} else {
+						ProfessorDataModel.professor.setEmail(Email);
 
-					new Alert(Alert.AlertType.CONFIRMATION, "개인정보가 수정되었습니다.", ButtonType.CLOSE).show();
+						new Alert(Alert.AlertType.CONFIRMATION, "개인정보가 수정되었습니다.", ButtonType.CLOSE).show();
+					}
 				}
 			}
 		}
-
+		else {
+			new Alert(AlertType.WARNING, "본인확인에 실패했습니다.");
+		}
 	}
 
 	private boolean checkNewPassword(String password, String checkPW) {

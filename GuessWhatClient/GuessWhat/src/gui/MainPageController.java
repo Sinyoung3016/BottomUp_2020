@@ -17,8 +17,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ListView;
+import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 import model.HBoxModel;
 import model.ProfessorDataModel;
@@ -126,19 +129,6 @@ public class MainPageController implements Initializable{
 			this.createNewClass(P_num);
 		} catch (Exception e) {
 			System.out.println("Failed : Create New Class");
-			e.printStackTrace();
-		}
-	}
-
-	public void btn_MyInfo_Action() {
-		try {
-			Stage primaryStage = (Stage) btn_MyInfo.getScene().getWindow();
-			Parent main = FXMLLoader.load(getClass().getResource("/gui/MyInfo.fxml"));
-			Scene scene = new Scene(main);
-			primaryStage.setTitle("GuessWhat/MyInfo");
-			primaryStage.setScene(scene);
-			primaryStage.show();
-		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
