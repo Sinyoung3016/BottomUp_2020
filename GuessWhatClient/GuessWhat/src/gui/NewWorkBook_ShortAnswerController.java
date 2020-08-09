@@ -157,7 +157,7 @@ public class NewWorkBook_ShortAnswerController extends BaseController implements
 	}
 
 	private void changeName() {
-		//String name = "name";
+		//String name = "Workbook1";
 		String name = tf_ChangeName.getText();
 		if (!name.equals(null) || !name.equals(""))
 			workBook.setName(name);

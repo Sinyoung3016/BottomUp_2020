@@ -19,6 +19,7 @@ import model.ProfessorDataModel;
 import user.Professor;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
@@ -30,6 +31,7 @@ import java.util.ResourceBundle;
 
 import authentication.Authentication;
 import database.DB_USER;
+import exam.Workbook;
 import exception.MyException;
 
 public class LoginController implements Initializable {
@@ -107,6 +109,9 @@ public class LoginController implements Initializable {
 					try {
 						ProfessorDataModel.professor = new Professor(responseTokens[2]);
 						ProfessorDataModel.ID = tf_Id.getText();
+						
+						this.getAllWorkbook(ProfessorDataModel.professor.P_Num());
+						
 						Stage primaryStage = (Stage) btn_Login.getScene().getWindow();
 						Platform.runLater(() -> {
 							Parent login;
@@ -129,5 +134,52 @@ public class LoginController implements Initializable {
 
 		} else
 			new Alert(Alert.AlertType.WARNING, "빈칸을 전부 채워주세요.", ButtonType.OK).show();
+	}
+	
+	
+	//Private Method
+	private void getAllWorkbook(int pNum) {
+		String responseMessage = null;
+		try {
+			//GetAllWorkbook:PNum
+			String requestTokens = "GetAllWorkbook:" + pNum;
+			BufferedReader br = new BufferedReader(
+					new InputStreamReader(this.socket.getInputStream(), StandardCharsets.UTF_8));
+			PrintWriter pw = new PrintWriter(
+					new OutputStreamWriter(this.socket.getOutputStream(), StandardCharsets.UTF_8));
+			pw.println(requestTokens);
+			pw.flush();
+			responseMessage = br.readLine();
+		} catch(IOException e) {
+			e.printStackTrace();
+		}
+		System.out.println(responseMessage);
+		String[] responseTokens = responseMessage.split(":");
+		if(responseTokens[0].equals("GetAllWorkbook")) {
+			if(!responseTokens[1].equals("Success")) {
+				System.out.println("AddWorkbook:Fail");
+			}
+			else {
+				String[] workbookInfo = new String[4];
+				Workbook workbook;
+				int listIndex = 0;
+				int tokenIndex = 2;
+				while(tokenIndex < responseTokens.length) {
+					for(int infoIndex = 0; infoIndex <4; infoIndex++) {
+						if(infoIndex == 0) {
+							workbookInfo[infoIndex] = "0";
+						}
+						else {
+							workbookInfo[infoIndex] = responseTokens[tokenIndex];
+							tokenIndex++;
+						}
+						
+					}
+					workbook = new Workbook(workbookInfo);
+					ProfessorDataModel.WorkbookList[listIndex] = workbook;
+					listIndex++;
+				}		
+			}
+			}
 	}
 }

@@ -151,7 +151,7 @@ public class ServerThread extends Thread{
 						else if(requestTokens[0].equals(Request.GET_WORKBOOK.getRequest())) { //GetWorkbook
 							clientRequest = "GetWorkbook";
 							this.getWorkbook(); 
-						}else if(requestTokens[0].equals(Request.GET_ALLWORKBOOK.getRequest())) { //GetAllWorkbook
+						}else if(requestTokens[0].equals(Request.GET_ALLWORKBOOK.getRequest())) { //GetAllWorkbook:PNum
 							clientRequest = "GetAllWorkbook";
 							this.getAllWorkbook(requestTokens[1]); 
 						}
