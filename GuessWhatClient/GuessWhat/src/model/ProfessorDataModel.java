@@ -25,6 +25,7 @@ public class ProfessorDataModel {
 	public static BanManager banManager;
 	public static Workbook workbook;
 	public static Problem problem;
+	public static Workbook [] WorkbookList = null;
 	public static Problem [] problemList;
 	public static boolean[] hasQValue = null;
 	public static boolean[] hasAValue = null;
