@@ -117,9 +117,9 @@ public class Workbook {
 		public void handle(ActionEvent e) {
 		try {
 			Stage primaryStage = (Stage) name.getScene().getWindow();
-			Parent search = FXMLLoader.load(getClass().getResource("/gui/Ban.fxml"));
+			Parent search = FXMLLoader.load(getClass().getResource("/gui/NewWorkBook_MultipleChoice.fxml"));
 			Scene scene = new Scene(search);
-			primaryStage.setTitle("HelloBooks/" + name.getText());
+			primaryStage.setTitle("GuessWhat/" + name.getText());
 			primaryStage.setScene(scene);
 			primaryStage.show();
 			} catch (Exception a) {
