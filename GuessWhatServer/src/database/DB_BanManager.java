@@ -273,31 +273,37 @@ public class DB_BanManager extends DBManager {
 		}	
 	}
 	
-	public synchronized static void modifyState(int BNum, String state, String name) throws SQLException {
-
-		Connection con = null;
+	public synchronized static boolean modifyState(int BMNum, String state) {
+		Connection conn = null;
 		PreparedStatement pstmt = null;
 
 		try {
-
-			con = getConn();
+			conn = getConn();
 
 			String s;
-			s = "UPDATE BanManager SET State = ? WHERE BNum = ? AND Name = ?";
-			pstmt = con.prepareStatement(s);
-
+			s = "UPDATE BanManager SET State = ? WHERE BMNum = ? ";
+			pstmt = conn.prepareStatement(s);
+			
+			pstmt.setInt(2, BMNum);
 			pstmt.setString(1, state);
-			pstmt.setInt(2, BNum);
-			pstmt.setString(3, name);
 
 			pstmt.executeUpdate();
+			
 			pstmt.close();
-			con.close();
-
-		} catch (SQLException e) {
-			System.out.println(e.getMessage());
-			System.exit(0);
-		}	
+			conn.close();
+			return true;
+			
+		}catch(Exception e) {
+			System.out.println("Error : " + e.getMessage() + "FROM changeState");
+			return false;
+		} finally {
+			try {
+				if(pstmt != null) pstmt.close();
+				if(conn != null) conn.close();
+			} catch(SQLException e) {
+				System.out.println("Error : " + e.getMessage() + "FROM changeState (SQL)");
+			}
+		}
 	}
 
 	public synchronized static void searchAllBanManager(int bNum) {
@@ -348,7 +354,7 @@ public class DB_BanManager extends DBManager {
 		Connection conn = null;
 		Statement stmt = null;
 		ResultSet rs = null;
-		String[] banManagerInfo = new String[6];
+		String[] banManagerInfo = new String[7];
 		
 		try {
 
@@ -368,6 +374,7 @@ public class DB_BanManager extends DBManager {
 				banManagerInfo[3] = rs.getString("Code");
 				banManagerInfo[4] = rs.getString("BNum");
 				banManagerInfo[5] = rs.getString("StudentSize");
+				banManagerInfo[6] = rs.getString("WNum");
 				banManager = new BanManager(banManagerInfo);
 				
 			}

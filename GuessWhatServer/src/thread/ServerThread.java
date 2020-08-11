@@ -95,9 +95,9 @@ public class ServerThread extends Thread{
 						else if(requestTokens[0].equals(Request.ADD_PROBLEM.getRequest())) { //AddProblem:problem1_problem2(WNum`question`answer`type`answerContents)...
 							clientRequest = "AddProblem";
 							this.addProblem(requestTokens[1]);
-						}else if(requestTokens[0].equals(Request.ADD_STUDENT.getRequest())) { //AddStudent:BNum:BMNum:WNum:Name:Answer:Result
+						}else if(requestTokens[0].equals(Request.ADD_STUDENT.getRequest())) { //AddStudent:BNum:BMNum:Name:Answer:Result
 							clientRequest = "AddStudent";
-							this.addStudent(requestTokens[1], requestTokens[2], requestTokens[3], requestTokens[4], requestTokens[5],requestTokens[6]);
+							this.addStudent(requestTokens[1], requestTokens[2], requestTokens[3], requestTokens[4], requestTokens[5]);
 						}
 						else if(requestTokens[0].equals(Request.DELETE_BAN.getRequest())) { //DeleteBan:PNum:BNum
 							clientRequest = "DeleteBan";
@@ -119,6 +119,9 @@ public class ServerThread extends Thread{
 						}else if(requestTokens[0].equals(Request.MODIFY_BAN.getRequest())) { //ModifyBan:PNum:BNum
 							clientRequest = "ModifyBan";
 							this.modifyBan(requestTokens[1], requestTokens[2], requestTokens[3]);
+						}else if(requestTokens[0].equals(Request.MODIFY_STATE.getRequest())) { //ModifyState:BMNum:State
+							clientRequest = "ModifyState";
+							this.modifyState(requestTokens[1], requestTokens[2]);
 						}
 						else if(requestTokens[0].equals(Request.MODIFY_WORKBOOK.getRequest())) { //ModifyWorkbook:WNum:newName
 							clientRequest = "ModifyWorkbook";
@@ -278,8 +281,8 @@ public class ServerThread extends Thread{
 	
 	}
 	
-	private void addStudent(String BNum, String BMNum, String WNum, String Name,String Answer,String Result) {
-		if(DB_Student.insertStudent(BNum, BMNum, WNum, Name, Answer, Result)) 
+	private void addStudent(String BNum, String BMNum, String Name,String Answer,String Result) {
+		if(DB_Student.insertStudent(BNum, BMNum, Name, Answer, Result)) 
 			pw.println("AddStudent:Success");
 		
 		else 
@@ -337,6 +340,15 @@ public class ServerThread extends Thread{
 		if(DB_Ban.modifyBanName(pNum, bNum, newName))
 			pw.println(">>SUCCESS [ModifyBan]<<");
 		else pw.println(">>FAIL [ModifyBan]<<");
+
+		pw.flush();
+	}
+	private void modifyState(String BMNum, String newState) {
+		int bmNum = Integer.parseInt(BMNum);
+		
+		if(DB_BanManager.modifyState(bmNum, newState))
+			pw.println("ModifyState:Success");
+		else pw.println("ModifyState:Fail");
 
 		pw.flush();
 	}
@@ -522,8 +534,8 @@ public class ServerThread extends Thread{
 		pw.flush();
 	}
 	
-	private void getWorkbookProblem(String BMNum) {
-		int num = Integer.parseInt(BMNum);
+	private void getWorkbookProblem(String WNum) {
+		int num = Integer.parseInt(WNum);
 		Workbook workbook = DB_Workbook.getWorkbookOf(num);
 		StringBuilder sb = new StringBuilder("");
 		if(workbook == null) {

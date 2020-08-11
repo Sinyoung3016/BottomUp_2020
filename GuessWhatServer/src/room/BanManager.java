@@ -54,6 +54,7 @@ public class BanManager {
 		this.BM_roomcode = banManagerInfo[3];
 		this.B_Num = Integer.parseInt(banManagerInfo[4]);
 		this.student_size = Integer.parseInt(banManagerInfo[5]);
+		this.W_Num = Integer.parseInt(banManagerInfo[6]);
 	}
 	
 	//Constructor end
@@ -100,7 +101,7 @@ public class BanManager {
 	
 	public String tokenString() {
 		StringBuilder sb = new StringBuilder("");
-		sb.append(this.P_num + "-" + this.BNum() + "-" + this.BM_num + "-" + this.BM_name + "-" + this.BM_roomcode + "-" + this.BM_state.toString() + "-" + this.student_size   );
+		sb.append(this.P_num + "-" + this.BNum() + "-" + this.BM_num + "-" + this.W_Num + "-"+ this.BM_name + "-" + this.BM_roomcode + "-" + this.BM_state.toString() + "-" + this.student_size   );
 		return new String(sb);
 	}
 	

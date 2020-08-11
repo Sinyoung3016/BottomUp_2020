@@ -65,11 +65,12 @@ public class BanManager {
 		this.P_num = Integer.parseInt(banManagerInfo[0]);
 		this.ban_num = Integer.parseInt(banManagerInfo[1]);
 		this.BM_num = Integer.parseInt(banManagerInfo[2]);
-		this.BM_name = banManagerInfo[3];
-		this.BM_roomcode = banManagerInfo[4];
+		this.W_num = Integer.parseInt(banManagerInfo[3]);
+		this.BM_name = banManagerInfo[4];
+		this.BM_roomcode = banManagerInfo[5];
 		//this.workBook = banManagerInfo[5];
-		this.BM_state = this.stateOf(banManagerInfo[5]);
-		this.Student_size = Integer.parseInt(banManagerInfo[6]);
+		this.BM_state = this.stateOf(banManagerInfo[6]);
+		this.Student_size = Integer.parseInt(banManagerInfo[7]);
 	}
 	// Constructor end
 
