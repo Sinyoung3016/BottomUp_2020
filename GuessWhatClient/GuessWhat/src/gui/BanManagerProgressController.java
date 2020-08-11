@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.net.Socket;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -13,6 +14,7 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 import exam.Workbook;
+import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -55,6 +57,44 @@ public class BanManagerProgressController implements Initializable {
 
 	private int WorkBookSize;
 
+	@Override
+	public void initialize(URL arg0, ResourceBundle arg1) {
+		// TODO Auto-generated method stub
+
+		this.socket = ProfessorDataModel.socket;
+		this.ban = ProfessorDataModel.ban;
+		this.banManager = ProfessorDataModel.banManager;
+		this.workbook = ProfessorDataModel.workbook;
+		this.WorkBookSize = workbook.WorkBooksize();
+
+		className = btn_Main.getText();
+
+		this.btn_Main.setText(ban.ban_name());
+		this.lb_BanManagerName.setText(banManager.BM_name());
+		this.lb_WorkBook.setText(workbook.W_name());
+
+		Thread thread = new Thread() {
+			@Override
+			public void run() {
+				while ((banManager.stringOfState()).equals("ING")) {
+					Platform.runLater(() -> {
+						upload();
+					});
+					try {
+						Thread.sleep(1000);
+					} catch (Exception e) {
+					}
+				}
+			}
+		};
+		thread.start();
+	}
+
+	private void upload() {
+		tv_Answer.getColumns().setAll(this.getColumns());
+		tv_Answer.getItems().setAll(ProfessorDataModel.Students);
+	}
+
 	private void changeBMState(int bmNum, String newState) {
 		String responseMessage = null;
 		try {
@@ -79,27 +119,6 @@ public class BanManagerProgressController implements Initializable {
 				System.out.println("Success: ModifyState");
 			}
 		}
-	}
-	
-	@Override
-	public void initialize(URL arg0, ResourceBundle arg1) {
-		// TODO Auto-generated method stub
-
-		this.socket = ProfessorDataModel.socket;
-		this.ban = ProfessorDataModel.ban;
-		this.banManager = ProfessorDataModel.banManager;
-		this.workbook = ProfessorDataModel.workbook;
-		this.WorkBookSize = workbook.WorkBooksize();
-
-		className = btn_Main.getText();
-
-		this.btn_Main.setText(ban.ban_name());
-		this.lb_BanManagerName.setText(banManager.BM_name());
-		this.lb_WorkBook.setText(workbook.W_name());
-
-		tv_Answer.getColumns().setAll(this.getColumns());
-		tv_Answer.getItems().setAll(ProfessorDataModel.Students);
-
 	}
 
 	private TableColumn<Student, String>[] getColumns() {
@@ -130,7 +149,7 @@ public class BanManagerProgressController implements Initializable {
 		if (result.get() == ButtonType.YES) {
 			if (banManager.BM_state().equals(State.ING))
 				this.changeBMState(this.banManager.BM_num(), "CLOSE");
-				this.banManager.setBM_state_CLOSE();
+			this.banManager.setBM_state_CLOSE();
 
 			try {
 				Stage primaryStage = (Stage) btn_End.getScene().getWindow();
