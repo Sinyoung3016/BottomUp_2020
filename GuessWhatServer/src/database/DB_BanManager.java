@@ -61,7 +61,7 @@ public class DB_BanManager extends DBManager {
 		try {
 			conn = getConn();
 			String sql;
-			sql = "INSERT INTO BanManager (PNum, BNum, Name, State, Code, WNum) VALUES (?,?,?,?,?,?)";
+			sql = "INSERT INTO BanManager (PNum, BNum, Name, State, Code, WNum, StudentSize) VALUES (?,?,?,?,?,?,?)";
 			pstmt = conn.prepareStatement(sql);
 
 			pstmt.setInt(1, PNum);
@@ -71,6 +71,7 @@ public class DB_BanManager extends DBManager {
 			
 			pstmt.setString(5, code);
 			pstmt.setInt(6, wNum);
+			pstmt.setInt(7, 0);
 
 			pstmt.executeUpdate();
 			
