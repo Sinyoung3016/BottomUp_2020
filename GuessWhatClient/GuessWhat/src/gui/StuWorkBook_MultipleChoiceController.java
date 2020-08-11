@@ -95,8 +95,7 @@ public class StuWorkBook_MultipleChoiceController extends BaseController impleme
 			String S_answer = this.student.answer()[PB_num];
 			for (int j = 0; j < S_answer.length(); j++)
 				cb[S_answer.charAt(j)].setSelected(true);
-		}
-		else {
+		} else {
 			for (int j = 0; j < 5; j++)
 				cb[j].setSelected(false);
 		}
@@ -180,21 +179,41 @@ public class StuWorkBook_MultipleChoiceController extends BaseController impleme
 	public void btn_Submit_Action() {
 
 		this.savePro();
-		this.markAnswer();
+		this.markAnswer(); // 체점하기
 
-		// 서버에 student정보 넘기기 구현할것!
-
+		String responseMessage = null;
 		try {
-			Stage primaryStage = (Stage) btn_Submit.getScene().getWindow();
-			Parent main = FXMLLoader.load(getClass().getResource("/gui/StuResult.fxml"));
-			Scene scene = new Scene(main);
-			primaryStage.setTitle("GuessWhat/Result");
-			primaryStage.setScene(scene);
-			primaryStage.show();
-		} catch (Exception e) {
+			String requestTokens = "AddStudent:" + StudentDataModel.tokenStudentData() + ":"
+					+ this.student.tokenAnswer() + ":" + this.student.tokenResult();
+			System.out.println("requestTokens : " + requestTokens);
+			BufferedReader br = new BufferedReader(
+					new InputStreamReader(this.socket.getInputStream(), StandardCharsets.UTF_8));
+			PrintWriter pw = new PrintWriter(
+					new OutputStreamWriter(this.socket.getOutputStream(), StandardCharsets.UTF_8));
+			pw.println(requestTokens);
+			pw.flush();
+			responseMessage = br.readLine();
+			System.out.println("reponseMessage : " + responseMessage);
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
+		String[] responseTokens = responseMessage.split(":");
+		if (responseTokens[0].equals("AddStudent")) {
+			if (!responseTokens[1].equals("Success")) {
+				System.out.println(responseTokens[1]);
+			} else {
+				try {
+					Stage primaryStage = (Stage) btn_Submit.getScene().getWindow();
+					Parent main = FXMLLoader.load(getClass().getResource("/gui/StuResult.fxml"));
+					Scene scene = new Scene(main);
+					primaryStage.setTitle("GuessWhat/Result");
+					primaryStage.setScene(scene);
+					primaryStage.show();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}
 	}
 
 	public void btn_num1_Action() {
@@ -287,7 +306,6 @@ public class StuWorkBook_MultipleChoiceController extends BaseController impleme
 		changeProblem();
 	}
 
-
 	private void markAnswer() {
 
 		String[] studentAnswer = this.student.answer;
@@ -296,21 +314,19 @@ public class StuWorkBook_MultipleChoiceController extends BaseController impleme
 		StringBuilder sb = new StringBuilder("");
 		if (studentAnswer != null) {
 			for (int i = 0; i < studentAnswer.length; i++) {
-				if(studentAnswer[i] != null) {
+				if (studentAnswer[i] != null) {
 					if (typeList[i].equals("Subjective")) {
 						sb.append("N");
-					} else { 
+					} else {
 						if (studentAnswer[i].equals(professorAnswer[i])) {
 							sb.append("O");
 						} else {
 							sb.append("X");
 						}
 					}
-				}
-				else {
+				} else {
 					sb.append("X");
 				}
-				
 			}
 			this.student.setResult(new String(sb));
 		}

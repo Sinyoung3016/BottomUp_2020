@@ -153,23 +153,18 @@ public class StuWorkBookController extends BaseController implements Initializab
 				System.out.println(responseTokens[1]);
 			}
 			else {
-				//Success AddStudent
+				try {
+					Stage primaryStage = (Stage) btn_Submit.getScene().getWindow();
+					Parent main = FXMLLoader.load(getClass().getResource("/gui/StuResult.fxml"));
+					Scene scene = new Scene(main);
+					primaryStage.setTitle("GuessWhat/Result");
+					primaryStage.setScene(scene);
+					primaryStage.show();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
 		}
-		
-		
-
-		try {
-			Stage primaryStage = (Stage) btn_Submit.getScene().getWindow();
-			Parent main = FXMLLoader.load(getClass().getResource("/gui/StuResult.fxml"));
-			Scene scene = new Scene(main);
-			primaryStage.setTitle("GuessWhat/Result");
-			primaryStage.setScene(scene);
-			primaryStage.show();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
 	}
 
 
