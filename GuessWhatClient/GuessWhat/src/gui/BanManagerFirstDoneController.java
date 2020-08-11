@@ -50,7 +50,7 @@ public class BanManagerFirstDoneController implements Initializable {
 	private TableView<Student> tv_Answer;
 
 	public Socket socket;
-	
+
 	private Ban ban;
 	private BanManager banManager;
 	private Workbook workbook;
@@ -103,9 +103,9 @@ public class BanManagerFirstDoneController implements Initializable {
 	public void btn_Main_Action() {
 		try {
 			Stage primaryStage = (Stage) btn_Main.getScene().getWindow();
-			Parent main = FXMLLoader.load(getClass().getResource("/gui/MainPage.fxml"));
+			Parent main = FXMLLoader.load(getClass().getResource("/gui/Ban.fxml"));
 			Scene scene = new Scene(main);
-			primaryStage.setTitle("GuessWhat/MainPage");
+			primaryStage.setTitle("GuessWhat/" + className);
 			primaryStage.setScene(scene);
 			primaryStage.show();
 		} catch (Exception e) {
@@ -127,48 +127,55 @@ public class BanManagerFirstDoneController implements Initializable {
 	}
 
 	public void btn_Delete_Action() {
-		
-		//해당 반 매니져 삭제
-		String responseMessage = null;
-		try {
-			String requestMessage = "DeleteBanManager:" + this.banManager.P_num() + ":" + this.banManager.ban_num()
-					+ ":" + this.banManager.BM_num();
-			BufferedReader reader = new BufferedReader(
-					new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
-			PrintWriter writer = new PrintWriter(
-					new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8));
-			writer.println(requestMessage);
-			writer.flush();
-			responseMessage = reader.readLine();
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
-		String[] responseTokens = responseMessage.split(":");
 
-		if (responseTokens[0].equals("DeleteBanManager")) {
-			if (!responseTokens[1].equals("Success")) {
-				System.out.println("Fail : DeleteBanManager");
-			} else {
-				System.out.println("[Delete] BM: " + this.banManager.BM_name());
+		Alert alert = new Alert(AlertType.WARNING, "(TestRoom) " + banManager.BM_name() + "을(를) 정말로 삭제하시겠습니까?",
+				ButtonType.YES, ButtonType.NO);
+		Optional<ButtonType> result = alert.showAndWait();
+
+		if (result.get() == ButtonType.YES) {
+
+			String responseMessage = null;
+			try {
+				String requestMessage = "DeleteBanManager:" + this.banManager.P_num() + ":" + this.banManager.ban_num()
+						+ ":" + this.banManager.BM_num();
+				BufferedReader reader = new BufferedReader(
+						new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
+				PrintWriter writer = new PrintWriter(
+						new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8));
+				writer.println(requestMessage);
+				writer.flush();
+				responseMessage = reader.readLine();
+			} catch (IOException e1) {
+				e1.printStackTrace();
 			}
-		}
-		
-		try {
-			Stage primaryStage = (Stage) btn_Close.getScene().getWindow();
-			Parent main = FXMLLoader.load(getClass().getResource("/gui/Ban.fxml"));
-			Scene scene = new Scene(main);
-			primaryStage.setTitle("GuessWhat/" + className);
-			primaryStage.setScene(scene);
-			primaryStage.show();
-		} catch (Exception e) {
-			e.printStackTrace();
+			String[] responseTokens = responseMessage.split(":");
+
+			if (responseTokens[0].equals("DeleteBanManager")) {
+				if (!responseTokens[1].equals("Success")) {
+					System.out.println("Fail : DeleteBanManager");
+				} else {
+					System.out.println("[Delete] BM: " + this.banManager.BM_name());
+
+					try {
+						Stage primaryStage = (Stage) btn_Close.getScene().getWindow();
+						Parent main = FXMLLoader.load(getClass().getResource("/gui/Ban.fxml"));
+						Scene scene = new Scene(main);
+						primaryStage.setTitle("GuessWhat/" + className);
+						primaryStage.setScene(scene);
+						primaryStage.show();
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			}
+
 		}
 	}
 
 	public void btn_Next_Action() {
 		try {
 			Stage primaryStage = (Stage) btn_Next.getScene().getWindow();
-			Parent main = FXMLLoader.load(getClass().getResource("/gui/BanManagerSecondDoneController.fxml"));
+			Parent main = FXMLLoader.load(getClass().getResource("/gui/BanManagerSecondDone.fxml"));
 			Scene scene = new Scene(main);
 			primaryStage.setTitle("GuessWhat/" + className);
 			primaryStage.setScene(scene);

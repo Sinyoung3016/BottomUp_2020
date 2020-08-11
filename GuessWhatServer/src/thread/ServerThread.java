@@ -119,6 +119,9 @@ public class ServerThread extends Thread{
 						}else if(requestTokens[0].equals(Request.MODIFY_BAN.getRequest())) { //ModifyBan:PNum:BNum
 							clientRequest = "ModifyBan";
 							this.modifyBan(requestTokens[1], requestTokens[2], requestTokens[3]);
+						}else if(requestTokens[0].equals(Request.MODIFY_STATE.getRequest())) { //ModifyState:BMNum:State
+							clientRequest = "ModifyState";
+							this.modifyState(requestTokens[1], requestTokens[2]);
 						}
 						else if(requestTokens[0].equals(Request.MODIFY_WORKBOOK.getRequest())) { //ModifyWorkbook:WNum:newName
 							clientRequest = "ModifyWorkbook";
@@ -337,6 +340,15 @@ public class ServerThread extends Thread{
 		if(DB_Ban.modifyBanName(pNum, bNum, newName))
 			pw.println(">>SUCCESS [ModifyBan]<<");
 		else pw.println(">>FAIL [ModifyBan]<<");
+
+		pw.flush();
+	}
+	private void modifyState(String BMNum, String newState) {
+		int bmNum = Integer.parseInt(BMNum);
+		
+		if(DB_BanManager.modifyState(bmNum, newState))
+			pw.println("ModifyState:Success");
+		else pw.println("ModifyState:Fail");
 
 		pw.flush();
 	}

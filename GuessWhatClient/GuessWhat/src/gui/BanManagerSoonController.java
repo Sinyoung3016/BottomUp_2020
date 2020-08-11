@@ -47,6 +47,32 @@ public class BanManagerSoonController implements Initializable {
 
 	private String className;
 
+	private void changeBMState(int bmNum, String newState) {
+		String responseMessage = null;
+		try {
+			String requestMessage = "ModifyState:" + bmNum + ":" + newState;
+			BufferedReader reader = new BufferedReader(
+					new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
+			PrintWriter writer = new PrintWriter(
+					new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8));
+			writer.println(requestMessage);
+			writer.flush();
+			responseMessage = reader.readLine();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+		System.out.println(responseMessage);
+		String[] responseTokens = responseMessage.split(":");
+
+		if (responseTokens[0].equals("ModifyState")) {
+			if (!responseTokens[1].equals("Success")) {
+				System.out.println("Fail : ModifyState");
+			} else {
+				System.out.println("Success: ModifyState");
+			}
+		}
+	}
+	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// TODO Auto-generated method stub
@@ -117,7 +143,8 @@ public class BanManagerSoonController implements Initializable {
 
 		if (result.get() == ButtonType.YES) {
 			if (banManager.BM_state().equals(State.OPEN))
-				banManager.setBM_state_ING();
+				this.changeBMState(this.banManager.BM_num(), "ING");
+			
 			try {
 				Stage primaryStage = (Stage) btn_Start.getScene().getWindow();
 				Parent main = FXMLLoader.load(getClass().getResource("/gui/BanManagerProgress.fxml"));

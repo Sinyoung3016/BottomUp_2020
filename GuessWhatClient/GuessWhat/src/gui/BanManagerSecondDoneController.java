@@ -1,7 +1,20 @@
 package gui;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.net.Socket;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.Optional;
 import java.util.ResourceBundle;
+
+import exam.ProblemType;
 import exam.StuNumResult;
 import exam.Workbook;
 import javafx.beans.property.ReadOnlyStringWrapper;
@@ -11,56 +24,61 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 import model.ProfessorDataModel;
+import model.StudentDataModel;
 import room.Ban;
 import room.BanManager;
+import user.Student;
 
-public class BanManagerSecondDoneController extends BaseController implements Initializable {
+public class BanManagerSecondDoneController implements Initializable {
 
 	@FXML
-	private Button btn_Delete, btn_Close, btn_Previous;
+	private Button btn_Delete, btn_Close, btn_Previous, btn_Main, btn_Logo, btn_MyInfo;
 	@FXML
 	private Button btn_num1, btn_num2, btn_num3, btn_num4, btn_num5, btn_num6, btn_num7, btn_num8, btn_num9, btn_num10,
-			btn_num11, btn_num12, btn_num13, btn_num14, btn_num15, btn_num16, btn_num17, btn_num18, btn_num19,
-			btn_num20;
+			btn_num11, btn_num12, btn_num13, btn_num14, btn_num15;
 	@FXML
-	private TableView<StuNumResult> tv_Result;
+	private TableView<StuNum> tv_Result;
 	@FXML
 	private Label lb_BanManagerName, lb_WorkBook;
-	@FXML
-	private ObservableList<StuNumResult> tableDataList;
 
-	private Button[] btn;
-
+	private StuNumResult tableDataList;
+	private Socket socket;
 	private Ban ban;
 	private BanManager banManager;
 	private Workbook workbook;
-
 	private String className;
-
+	private int PB_num;
+	private Button[] btn;
 	private int WorkBookSize;
+	private int StudentSize;
+	
+	private ArrayList<StuNum> list;
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 
+		this.socket = ProfessorDataModel.socket;
 		this.ban = ProfessorDataModel.ban;
 		this.banManager = ProfessorDataModel.banManager;
 		this.workbook = ProfessorDataModel.workbook;
-		this.tableDataList = ProfessorDataModel.ItemList_Results;
-		this.WorkBookSize = workbook.WorkBooksize();
+
+		this.changeNum();
 
 		this.btn_Main.setText(ban.ban_name());
 		this.lb_BanManagerName.setText(banManager.BM_name());
 		this.lb_WorkBook.setText(workbook.W_name());
 
 		btn = new Button[] { btn_num1, btn_num2, btn_num3, btn_num4, btn_num5, btn_num6, btn_num7, btn_num8, btn_num9,
-				btn_num10, btn_num11, btn_num12, btn_num13, btn_num14, btn_num15, btn_num16, btn_num17, btn_num18,
-				btn_num19, btn_num20 };
+				btn_num10, btn_num11, btn_num12, btn_num13, btn_num14, btn_num15 };
 
 		className = btn_Main.getText();
 
@@ -68,41 +86,64 @@ public class BanManagerSecondDoneController extends BaseController implements In
 			btn[i].setStyle("-fx-background-color: #5ad18f;");
 			btn[i].setDisable(false);
 		}
-		for (int i = WorkBookSize; i < 20; i++) {
-			btn[i].setStyle("-fx-background-color: #f0fff0;");
+		btn[PB_num].setStyle("-fx-background-color: #22941C;");
+		for (int i = WorkBookSize; i < 15; i++) {
+			btn[i].setStyle("-fx-background-color: #cdcdcd;");
 			btn[i].setDisable(true);
 		}
 
-		// start
-		btn_num1_Action();
+	}
+
+	private void changeNum() {
+		this.PB_num = ProfessorDataModel.currentPB;
+		this.tableDataList = ProfessorDataModel.NumStudents.get(PB_num);
+		this.StudentSize = tableDataList.S_name().length;
+		
+		list = new ArrayList<>();
+		for(int i = 0;  i < StudentSize; i++)
+			list.add(new StuNum(tableDataList.S_name()[PB_num],tableDataList.S_answer()[PB_num],tableDataList.S_result()[PB_num]));
+
+		if ((tableDataList.problemType()).equals(ProblemType.MultipleChoice)) {
+			try {
+				Stage primaryStage = (Stage) btn_Main.getScene().getWindow();
+				Parent main = FXMLLoader.load(getClass().getResource("/gui/BanManagerSecondDoneMultiChoice.fxml"));
+				Scene scene = new Scene(main);
+				primaryStage.setTitle("GuessWhat/Workbook");
+				primaryStage.setScene(scene);
+				primaryStage.show();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	private void settingColumn() {
 		tv_Result.getColumns().setAll(this.getColumns());
-		tv_Result.getItems().setAll(this.tableDataList);
+		tv_Result.getItems().setAll(this.list);
 	}
 
-	private TableColumn<StuNumResult, String>[] getColumns() {
+	private TableColumn<StuNum, String>[] getColumns() {
 
-		TableColumn<StuNumResult, String> nameColumn = new TableColumn<>("Name");
-		nameColumn.setCellValueFactory(item -> new ReadOnlyStringWrapper(item.getValue().S_name()));
+		TableColumn<StuNum, String> nameColumn = new TableColumn<>("Name");
+		nameColumn.setCellValueFactory(item -> new ReadOnlyStringWrapper(item.getValue().name()));
 		nameColumn.setPrefWidth(50);
 
-		TableColumn<StuNumResult, String> resultColumn = new TableColumn<>("Result");
-		resultColumn.setCellValueFactory(item -> new ReadOnlyStringWrapper(item.getValue().S_result()));
+		TableColumn<StuNum, String> answerColumn = new TableColumn<>("Answer");
+		answerColumn.setCellValueFactory(item -> new ReadOnlyStringWrapper(item.getValue().answer()));
 
-		TableColumn<StuNumResult, String>[] returnTable = new TableColumn[] { nameColumn, resultColumn };
+		TableColumn<StuNum, String> resultColumn = new TableColumn<>("Result");
+		resultColumn.setCellValueFactory(item -> new ReadOnlyStringWrapper(item.getValue().result()));
 
+		TableColumn<StuNum, String>[] returnTable = new TableColumn [] {nameColumn, answerColumn, resultColumn};
 		return returnTable;
 	}
 
-	@Override
 	public void btn_Main_Action() {
 		try {
 			Stage primaryStage = (Stage) btn_Main.getScene().getWindow();
 			Parent main = FXMLLoader.load(getClass().getResource("/gui/Ban.fxml"));
 			Scene scene = new Scene(main);
-			primaryStage.setTitle("GuessWhat/Class");
+			primaryStage.setTitle("GuessWhat/" + className);
 			primaryStage.setScene(scene);
 			primaryStage.show();
 		} catch (Exception e) {
@@ -124,17 +165,48 @@ public class BanManagerSecondDoneController extends BaseController implements In
 	}
 
 	public void btn_Delete_Action() {
-		try {
-			Stage primaryStage = (Stage) btn_Delete.getScene().getWindow();
-			Parent main = FXMLLoader.load(getClass().getResource("/gui/Ban.fxml"));
-			Scene scene = new Scene(main);
-			primaryStage.setTitle("GuessWhat/" + className);
-			primaryStage.setScene(scene);
-			primaryStage.show();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		Alert alert = new Alert(AlertType.WARNING, "(TestRoom) " + banManager.BM_name() + "을(를) 정말로 삭제하시겠습니까?",
+				ButtonType.YES, ButtonType.NO);
+		Optional<ButtonType> result = alert.showAndWait();
 
+		if (result.get() == ButtonType.YES) {
+
+			String responseMessage = null;
+			try {
+				String requestMessage = "DeleteBanManager:" + this.banManager.P_num() + ":" + this.banManager.ban_num()
+						+ ":" + this.banManager.BM_num();
+				BufferedReader reader = new BufferedReader(
+						new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
+				PrintWriter writer = new PrintWriter(
+						new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8));
+				writer.println(requestMessage);
+				writer.flush();
+				responseMessage = reader.readLine();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+			String[] responseTokens = responseMessage.split(":");
+
+			if (responseTokens[0].equals("DeleteBanManager")) {
+				if (!responseTokens[1].equals("Success")) {
+					System.out.println("Fail : DeleteBanManager");
+				} else {
+					System.out.println("[Delete] BM: " + this.banManager.BM_name());
+
+					try {
+						Stage primaryStage = (Stage) btn_Close.getScene().getWindow();
+						Parent main = FXMLLoader.load(getClass().getResource("/gui/Ban.fxml"));
+						Scene scene = new Scene(main);
+						primaryStage.setTitle("GuessWhat/" + className);
+						primaryStage.setScene(scene);
+						primaryStage.show();
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			}
+
+		}
 	}
 
 	public void btn_Previous_Action() {
@@ -150,114 +222,119 @@ public class BanManagerSecondDoneController extends BaseController implements In
 		}
 	}
 
-	private boolean checkProblemType() {
-
-		StuNumResult t = tableDataList.iterator().next();
-
-		if ((t.problemType()).equals("MultipleChoice")) {
-			try {
-				Stage primaryStage = (Stage) btn_Main.getScene().getWindow();
-				Parent main = FXMLLoader.load(getClass().getResource("/gui/BanManagerSecondDoneMultiChoice.fxml"));
-				Scene scene = new Scene(main);
-				primaryStage.setTitle("GuessWhat/" + className);
-				primaryStage.setScene(scene);
-				primaryStage.show();
-			} catch (Exception c) {
-				c.printStackTrace();
-			}
-		}
-		return true;
-	}
-
-	public void btn_Action() {
-		this.tableDataList = ProfessorDataModel.ItemList_Results;
-		if (checkProblemType())
-			settingColumn();
-	}
-
-	public void btn_CreateProblem_Action() {
-		 this.btn_Action();
-	}
-
 	public void btn_num1_Action() {
-		 this.btn_Action();
+		StudentDataModel.currentPB = 0;
+		changeNum();
 	}
 
 	public void btn_num2_Action() {
-		 this.btn_Action();
+		StudentDataModel.currentPB = 1;
+		changeNum();
 	}
 
 	public void btn_num3_Action() {
-		 this.btn_Action();
+		StudentDataModel.currentPB = 2;
+		changeNum();
 	}
 
 	public void btn_num4_Action() {
-		 this.btn_Action();
+		StudentDataModel.currentPB = 3;
+		changeNum();
 	}
 
 	public void btn_num5_Action() {
-		 this.btn_Action();
+		StudentDataModel.currentPB = 4;
+		changeNum();
 	}
 
 	public void btn_num6_Action() {
-		 this.btn_Action();
+		StudentDataModel.currentPB = 5;
+		changeNum();
 	}
 
 	public void btn_num7_Action() {
-		 this.btn_Action();
+		StudentDataModel.currentPB = 6;
+		changeNum();
 	}
 
 	public void btn_num8_Action() {
-		 this.btn_Action();
+		StudentDataModel.currentPB = 7;
+		changeNum();
 	}
 
 	public void btn_num9_Action() {
-		 this.btn_Action();
+		StudentDataModel.currentPB = 8;
+		changeNum();
 	}
 
 	public void btn_num10_Action() {
-		 this.btn_Action();
+		StudentDataModel.currentPB = 9;
+		changeNum();
 	}
 
 	public void btn_num11_Action() {
-		 this.btn_Action();
+		StudentDataModel.currentPB = 10;
+		changeNum();
 	}
 
 	public void btn_num12_Action() {
-		 this.btn_Action();
+		StudentDataModel.currentPB = 11;
+		changeNum();
 	}
 
 	public void btn_num13_Action() {
-		 this.btn_Action();
+		StudentDataModel.currentPB = 12;
+		changeNum();
 	}
 
 	public void btn_num14_Action() {
-		 this.btn_Action();
+		StudentDataModel.currentPB = 13;
+		changeNum();
 	}
 
 	public void btn_num15_Action() {
-		 this.btn_Action();
+		StudentDataModel.currentPB = 14;
+		changeNum();
 	}
 
-	public void btn_num16_Action() {
-		 this.btn_Action();
+	public void btn_Logo_Action() {
+		try {
+			Stage primaryStage = (Stage) btn_Logo.getScene().getWindow();
+			Parent main = FXMLLoader.load(getClass().getResource("/gui/MainPage.fxml"));
+			Scene scene = new Scene(main);
+			primaryStage.setTitle("GuessWhat/MainPage");
+			primaryStage.setScene(scene);
+			primaryStage.show();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
-	public void btn_num17_Action() {
-		 this.btn_Action();
+	public void btn_MyInfo_Action() {
+		try {
+			Stage primaryStage = (Stage) btn_MyInfo.getScene().getWindow();
+			Parent main = FXMLLoader.load(getClass().getResource("/gui/MyInfo.fxml"));
+			Scene scene = new Scene(main);
+			primaryStage.setTitle("GuessWhat/MyInfo");
+			primaryStage.setScene(scene);
+			primaryStage.show();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
-	public void btn_num18_Action() {
-		 this.btn_Action();
-	}
-
-	public void btn_num19_Action() {
-		 this.btn_Action();
-	}
-
-	public void btn_num20_Action() {
-		 this.btn_Action();
+	private class StuNum {
+		private String name;
+		private String answer;
+		private String result;
+		private StuNum(String name, String answer, String result){
+			this.name = name;
+			this.answer = answer;
+			this.result = result;
+		}
+		public String name() { return this.name; }
+		public String answer() { return this.answer; }
+		public String result() { return this.result; }
 	}
 
 }
-
