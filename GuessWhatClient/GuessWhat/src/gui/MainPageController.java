@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+import exam.Workbook;
 import exception.MyException;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -79,7 +80,40 @@ public class MainPageController implements Initializable {
 			}
 		}
 	}
+	private void getAllWorkbook(int pNum) {
+		ProfessorDataModel.ChoiceList_MyWorkBook.clear();
+		String responseMessage = null;
+		try {
+			//GetAllWorkbook:PNum
+			String requestTokens = "GetAllWorkbook:" + pNum;
+			BufferedReader br = new BufferedReader(
+					new InputStreamReader(this.socket.getInputStream(), StandardCharsets.UTF_8));
+			PrintWriter pw = new PrintWriter(
+					new OutputStreamWriter(this.socket.getOutputStream(), StandardCharsets.UTF_8));
+			pw.println(requestTokens);
+			pw.flush();
+			responseMessage = br.readLine();
+		} catch(IOException e) {
+			e.printStackTrace();
+		}
+		String[] responseTokens = responseMessage.split(":");
+		if(responseTokens[0].equals("GetAllWorkbook")) {
+			if(!responseTokens[1].equals("Success")) {
+				System.out.println("GetAllWorkbook:Fail");
+			}
+			else {
+				for(int i = 2 ; i < responseTokens.length ; i++) {		// <- GetAllWorkbook:Success:WNum:Name:Size
+					int WBNum = Integer.parseInt(responseTokens[i]);
+					String name = responseTokens[i+1];
+					int size = Integer.parseInt(responseTokens[i+2]);
 
+					Workbook newWorkbook = new Workbook(pNum, WBNum, name, size);
+					ProfessorDataModel.addWBList(newWorkbook);			
+					i = i+2;
+				}
+			}
+		}
+	}
 	private void createNewClass(int PNum) throws MyException, SQLException {
 		String responseMessage = null;
 		try {
@@ -111,6 +145,7 @@ public class MainPageController implements Initializable {
 		this.socket = ProfessorDataModel.socket;
 		this.professor = ProfessorDataModel.professor;
 		this.showBanList(professor.P_Num());
+		this.getAllWorkbook(professor.P_Num());
 
 	}
 

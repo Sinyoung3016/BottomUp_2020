@@ -121,6 +121,7 @@ public class DB_BanManager extends DBManager {
 				state = rs.getString("State");
 				code = rs.getString("Code");
 				wNum = rs.getInt("WNum");
+				size = rs.getInt("StudentSize");
 				
 				banManagerList.add(new BanManager(PNum, BNum, BMNum, name, state, code, wNum, size));
 			}
@@ -138,14 +139,14 @@ public class DB_BanManager extends DBManager {
 			}
 		}
 	}
-	public synchronized static BanManager getCurrentBanManager(int PNum, int BNum) {
+	public synchronized static BanManager getCurrentBanManager(int PNum, int BMNum) {
 		Connection conn = null;
 		Statement stmt = null;
 		ResultSet rs = null;
 
 		BanManager banManager = null;
 		//Name, State, Code, WorkBook
-		int BMNum = -1;
+		int bNum = -1;
 		String name = null;
 		String state = null;
 		String code = null;
@@ -156,17 +157,18 @@ public class DB_BanManager extends DBManager {
 			conn = getConn();
 			stmt = conn.createStatement();
 			String sql;
-			sql = "SELECT * FROM BanManager WHERE PNum = '" + PNum + "' AND BNum = '" + BNum + "'";
+			sql = "SELECT * FROM BanManager WHERE PNum = '" + PNum + "' AND BMNum = '" + BMNum + "'";
 			rs = stmt.executeQuery(sql);
 
 			while(rs.next()) {
-				BMNum = rs.getInt("BMNum");
+				bNum = rs.getInt("BNum");
 				name = rs.getString("Name");
 				state = rs.getString("State");
 				code = rs.getString("Code");
 				wNum = rs.getInt("WNum");
+				size = rs.getInt("StudentSize");
 				
-				banManager = new BanManager(PNum, BNum, BMNum, name, state, code, wNum, size);
+				banManager = new BanManager(PNum, bNum, BMNum, name, state, code, wNum, size);
 			}
 			return banManager;
 		}catch(Exception e) {

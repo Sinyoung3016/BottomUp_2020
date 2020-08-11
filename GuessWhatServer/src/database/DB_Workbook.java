@@ -158,10 +158,9 @@ public class DB_Workbook extends DBManager{
 			
 			while(rs.next()) {
 				workbookInfo[0] = Integer.toString(PNum);
-				workbookInfo[1] = "0";
-				workbookInfo[2] = Integer.toString(rs.getInt("WNum"));
-				workbookInfo[3] = rs.getString("Name");
-				workbookInfo[4] = Integer.toString(rs.getInt("Size"));
+				workbookInfo[1] = Integer.toString(rs.getInt("WNum"));
+				workbookInfo[2] = rs.getString("Name");
+				workbookInfo[3] = Integer.toString(rs.getInt("Size"));
 				workbookList.add(new Workbook(workbookInfo));
 			}
 			

@@ -79,7 +79,6 @@ public class BanModifyClassNameController extends BaseController implements Init
 			if (!responseTokens[1].equals("Success")) {
 				System.out.println("Fail : GetAllBanManager");
 			} else {
-				System.out.println("Success: GetAllBanManager");
 				int n = 1;
 				for (int i = 2; i < responseTokens.length; i++) {
 					int BMNum = Integer.parseInt(responseTokens[i]);
@@ -112,14 +111,13 @@ public class BanModifyClassNameController extends BaseController implements Init
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
-		System.out.println(responseMessage);
 		String[] responseTokens = responseMessage.split(":");
 
 		if (responseTokens[0].equals("ModifyBan")) {
 			if (!responseTokens[1].equals("Success")) {
 				System.out.println("Fail : ModifyBan");
 			} else {
-				System.out.println("Success: ModifyBan");
+				System.out.println("  [Modify] " + this.ban.ban_name() + " -> " + newName);
 				new Alert(AlertType.CONFIRMATION, "반이름이 성공적으로 변경되였습니다.", ButtonType.OK).show();
 			}
 		}
