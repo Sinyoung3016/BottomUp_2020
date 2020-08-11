@@ -121,6 +121,7 @@ public class DB_BanManager extends DBManager {
 				state = rs.getString("State");
 				code = rs.getString("Code");
 				wNum = rs.getInt("WNum");
+				size = rs.getInt("StudentSize");
 				
 				banManagerList.add(new BanManager(PNum, BNum, BMNum, name, state, code, wNum, size));
 			}
@@ -165,6 +166,7 @@ public class DB_BanManager extends DBManager {
 				state = rs.getString("State");
 				code = rs.getString("Code");
 				wNum = rs.getInt("WNum");
+				size = rs.getInt("StudentSize");
 				
 				banManager = new BanManager(PNum, BNum, BMNum, name, state, code, wNum, size);
 			}
