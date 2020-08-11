@@ -66,10 +66,6 @@ public class BanManagerProgressController implements Initializable {
 		tv_Answer.getColumns().setAll(this.getColumns());
 		tv_Answer.getItems().setAll(ProfessorDataModel.Students);
 
-		btn_Main.setDisable(true);
-		btn_Logo.setDisable(true);
-		btn_MyInfo.setDisable(true);
-
 	}
 
 	private TableColumn<Student, String>[] getColumns() {
