@@ -22,6 +22,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -32,20 +33,17 @@ import javafx.stage.Stage;
 import model.ProfessorDataModel;
 import model.StudentDataModel;
 
-public class NewWorkBook_SubjectiveController extends BaseController implements Initializable {
+public class WorkBook_MultipleChoiceController extends BaseController implements Initializable {
 
 	@FXML
-	private Button btn_DeleteWorkBook, btn_CreateProblem, btn_SaveWorkBook, btn_num1, btn_num2, btn_num3, btn_num4,
-			btn_num5, btn_num6, btn_num7, btn_num8, btn_num9, btn_num10, btn_num11, btn_num12, btn_num13, btn_num14,
-			btn_num15;
+	private Button btn_DeleteWorkBook, btn_Cancel, btn_SaveWorkBook, btn_num1, btn_num2, btn_num3, btn_num4, btn_num5,
+			btn_num6, btn_num7, btn_num8, btn_num9, btn_num10, btn_num11, btn_num12, btn_num13, btn_num14, btn_num15;
 	@FXML
-	private RadioButton rbtn_MultipleChoice, rbtn_ShortAnswer, rbtn_Subjective;
+	private TextField tf_Answer1, tf_Answer2, tf_Answer3, tf_Answer4, tf_Answer5, tf_ChangeName;
 	@FXML
-	private TextField tf_ChangeName;
+	private CheckBox cb_1, cb_2, cb_3, cb_4, cb_5;
 	@FXML
-	private TextArea ta_Question, ta_Answer;
-	@FXML
-	private Pane Pane_Answer;
+	private TextArea ta_Question;
 
 	private Socket socket;
 	private Workbook workBook;
@@ -54,56 +52,66 @@ public class NewWorkBook_SubjectiveController extends BaseController implements 
 	private Button[] btn;
 	private int PB_num;
 	private int workBookSize;
-	private boolean[] hasQValue;
-	private boolean[] hasAValue;
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// TODO Auto-generated method stub
-
 		this.socket = ProfessorDataModel.socket;
 		this.workBook = ProfessorDataModel.workbook;
 		this.problemList = ProfessorDataModel.problemList;
 		this.problem = ProfessorDataModel.problem;
-		this.hasQValue = ProfessorDataModel.hasQValue;
-		this.hasAValue = ProfessorDataModel.hasAValue;
 		this.workBookSize = this.workBook.WorkBooksize();
 		this.PB_num = ProfessorDataModel.currentPB;
 
 		// setting
-		if (hasQValue[PB_num] || hasAValue[PB_num]) {
-			if (problem.getType().equals(ProblemType.MultipleChoice)) {
-				try {
-					Stage primaryStage = (Stage) btn_Main.getScene().getWindow();
-					Parent main = FXMLLoader.load(getClass().getResource("/gui/NewWorkBook_MultipleChoice.fxml"));
-					Scene scene = new Scene(main);
-					primaryStage.setTitle("GuessWhat/WorkBook");
-					primaryStage.setScene(scene);
-					primaryStage.show();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			} else if (problem.getType().equals(ProblemType.MultipleChoice)) {
-				try {
-					Stage primaryStage = (Stage) btn_Main.getScene().getWindow();
-					Parent main = FXMLLoader.load(getClass().getResource("/gui/NewWorkBook_MultipleChoice.fxml"));
-					Scene scene = new Scene(main);
-					primaryStage.setTitle("GuessWhat/WorkBook");
-					primaryStage.setScene(scene);
-					primaryStage.show();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
+		if (problem.getType().equals(ProblemType.MultipleChoice)) {
+			try {
+				Stage primaryStage = (Stage) btn_Main.getScene().getWindow();
+				Parent main = FXMLLoader.load(getClass().getResource("/gui/NewWorkBook_MultipleChoice.fxml"));
+				Scene scene = new Scene(main);
+				primaryStage.setTitle("GuessWhat/WorkBook");
+				primaryStage.setScene(scene);
+				primaryStage.show();
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
-
-			ta_Question.setText(problem.question());
-			ta_Answer.setText(problem.answer());
-			tf_ChangeName.setText(workBook.W_name());
-		} else {
-			ta_Question.setText("");
-			ta_Answer.setText("");
-			tf_ChangeName.setText("NewWorkBook");
+		} else if (problem.getType().equals(ProblemType.Subjective)) {
+			try {
+				Stage primaryStage = (Stage) btn_Main.getScene().getWindow();
+				Parent main = FXMLLoader.load(getClass().getResource("/gui/NewWorkBook_Subjective.fxml"));
+				Scene scene = new Scene(main);
+				primaryStage.setTitle("GuessWhat/WorkBook");
+				primaryStage.setScene(scene);
+				primaryStage.show();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
+
+		ta_Question.setText(problem.question());
+		String[] answerContent = problem.getAnswerContent().split("_");
+		tf_Answer1.setText(answerContent[0]);
+		tf_Answer2.setText(answerContent[1]);
+		tf_Answer3.setText(answerContent[2]);
+		tf_Answer4.setText(answerContent[3]);
+		tf_Answer5.setText(answerContent[4]);
+
+		String answer = problem.answer();
+		for (int i = 0; i < answer.length(); i++) {
+			char num = answer.charAt(i);
+			if (num == '1')
+				cb_1.setSelected(true);
+			if (num == '2')
+				cb_2.setSelected(true);
+			if (num == '3')
+				cb_3.setSelected(true);
+			if (num == '4')
+				cb_4.setSelected(true);
+			if (num == '5')
+				cb_5.setSelected(true);
+		}
+
+		tf_ChangeName.setText(workBook.W_name());
 
 		btn = new Button[] { btn_num1, btn_num2, btn_num3, btn_num4, btn_num5, btn_num6, btn_num7, btn_num8, btn_num9,
 				btn_num10, btn_num11, btn_num12, btn_num13, btn_num14, btn_num15 };
@@ -113,48 +121,12 @@ public class NewWorkBook_SubjectiveController extends BaseController implements 
 			btn[i].setDisable(false);
 		}
 		for (int i = workBookSize; i < 15; i++) {
-			btn[i].setStyle("-fx-background-color: #dcdcdc;");
+			btn[i].setStyle("-fx-background-color: #f0fff0;");
 			btn[i].setDisable(true);
 		}
 		btn[PB_num].setStyle("-fx-background-color: #22941C;");
 		btn[PB_num].setDisable(false);
 		// setting
-
-		// radiobtn
-		ToggleGroup group = new ToggleGroup();
-		rbtn_MultipleChoice.setToggleGroup(group);
-		rbtn_ShortAnswer.setToggleGroup(group);
-		rbtn_Subjective.setToggleGroup(group);
-
-		rbtn_MultipleChoice.setSelected(false);
-		rbtn_ShortAnswer.setSelected(false);
-		rbtn_Subjective.setSelected(true);
-
-		rbtn_MultipleChoice.setOnAction((ActionEvent) -> {
-			try {
-				Stage primaryStage = (Stage) rbtn_MultipleChoice.getScene().getWindow();
-				Parent main = FXMLLoader.load(getClass().getResource("/gui/NewWorkBook_MultipleChoice.fxml"));
-				Scene scene = new Scene(main);
-				primaryStage.setTitle("GuessWhat/WorkBook");
-				primaryStage.setScene(scene);
-				primaryStage.show();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		});
-		rbtn_ShortAnswer.setOnAction((ActionEvent) -> {
-			try {
-				Stage primaryStage = (Stage) rbtn_ShortAnswer.getScene().getWindow();
-				Parent main = FXMLLoader.load(getClass().getResource("/gui/NewWorkBook_ShortAnswer.fxml"));
-				Scene scene = new Scene(main);
-				primaryStage.setTitle("GuessWhat/WorkBook");
-				primaryStage.setScene(scene);
-				primaryStage.show();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		});
-		// radiobtn
 
 	}
 
@@ -168,37 +140,41 @@ public class NewWorkBook_SubjectiveController extends BaseController implements 
 
 	private void savePro() {
 
+		String answerContent = tf_Answer1.getText() + "_" + tf_Answer2.getText() + "_" + tf_Answer3.getText() + "_"
+				+ tf_Answer4.getText() + "_" + tf_Answer5.getText();
+		String answer = new String();
+		if (cb_1.isSelected())
+			answer = answer + "1";
+		if (cb_2.isSelected())
+			answer = answer + "2";
+		if (cb_3.isSelected())
+			answer = answer + "3";
+		if (cb_4.isSelected())
+			answer = answer + "4";
+		if (cb_5.isSelected())
+			answer = answer + "5";
+
 		this.changeName();
 
 		String S_question = ta_Question.getText();
-		String S_answer = ta_Answer.getText();
-		if (S_question.equals("") && S_answer.equals("")) {
-			hasQValue[PB_num] = false;
-			hasAValue[PB_num] = false;
-		} else if ((S_question.equals(null) || S_question.equals(""))
-				&& (!S_answer.equals(null) || !S_answer.equals(""))) {
-			problem.setAnswer(S_answer);
-			hasQValue[PB_num] = false;
-			hasAValue[PB_num] = true;
-		} else if ((!S_question.equals(null) || !S_question.equals(""))
-				&& (S_answer.equals(null) || S_answer.equals(""))) {
+		String S_answer = answerContent;
+		String S_answerContent = answer; // content가 있으면 answer도 저장
+
+		if (!S_question.equals(null) || !S_question.equals(""))
 			problem.setQuestion(S_question);
-			hasQValue[PB_num] = true;
-			hasAValue[PB_num] = false;
-		} else {
+
+		if (!S_answerContent.equals(null) || !S_answerContent.equals(""))
+			problem.setAnswerContent(answerContent);
+
+		if (!S_answer.equals(null) || !S_answer.equals(""))
 			problem.setAnswer(S_answer);
-			problem.setQuestion(S_question);
-			hasAValue[PB_num] = true;
-			hasQValue[PB_num] = true;
+		else {
+			new Alert(AlertType.WARNING, "답을 체크해주세요.", ButtonType.CLOSE);
+			return;
 		}
 
-		problem.setPB_num(PB_num);
-		problem.setType(ProblemType.Subjective);
-
-		problemList[PB_num] = problem;
-
 	}
-	
+
 	private String tokenProblemList(Problem[] problem, int wnum) {
 		StringBuilder sb = new StringBuilder("");
 		int n = 0;
@@ -214,7 +190,6 @@ public class NewWorkBook_SubjectiveController extends BaseController implements 
 	}
 
 	public void btn_DeleteWorkBook_Action() {
-
 		Alert alert = new Alert(AlertType.WARNING, "(Workbook) " + workBook.W_name() + "을(를) 정말로 삭제하시겠습니까?",
 				ButtonType.YES, ButtonType.NO);
 		Optional<ButtonType> result = alert.showAndWait();
@@ -312,7 +287,7 @@ public class NewWorkBook_SubjectiveController extends BaseController implements 
 		}
 	}
 
-	public void btn_CreateProblem_Action() {
+	public void btn_Cancel_Action() {
 
 		this.savePro();
 
@@ -332,8 +307,8 @@ public class NewWorkBook_SubjectiveController extends BaseController implements 
 
 			this.problem = new Problem(ProfessorDataModel.currentPB);
 			try {
-				Stage primaryStage = (Stage) btn_CreateProblem.getScene().getWindow();
-				Parent main = FXMLLoader.load(getClass().getResource("/gui/NewWorkBook_ShortAnswer.fxml"));
+				Stage primaryStage = (Stage) btn_Cancel.getScene().getWindow();
+				Parent main = FXMLLoader.load(getClass().getResource("/gui/NewWorkBook_MultipleChoice.fxml"));
 				Scene scene = new Scene(main);
 				primaryStage.setTitle("GuessWhat/WorkBook");
 				primaryStage.setScene(scene);
@@ -464,4 +439,5 @@ public class NewWorkBook_SubjectiveController extends BaseController implements 
 		StudentDataModel.currentPB = 14;
 		changeProblem();
 	}
+
 }

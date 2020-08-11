@@ -9,6 +9,7 @@ import java.net.Socket;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 import exam.Problem;
@@ -59,7 +60,7 @@ public class NewWorkBook_ShortAnswerController extends BaseController implements
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// TODO Auto-generated method stub
-		
+
 		this.socket = ProfessorDataModel.socket;
 		this.workBook = ProfessorDataModel.workbook;
 		this.problemList = ProfessorDataModel.problemList;
@@ -111,11 +112,12 @@ public class NewWorkBook_ShortAnswerController extends BaseController implements
 			btn[i].setStyle("-fx-background-color: #5ad18f;");
 			btn[i].setDisable(false);
 		}
-		btn[PB_num].setStyle("-fx-background-color: #22941C;");
 		for (int i = workBookSize; i < 15; i++) {
 			btn[i].setStyle("-fx-background-color: #dcdcdc;");
 			btn[i].setDisable(true);
 		}
+		btn[PB_num].setStyle("-fx-background-color: #22941C;");
+		btn[PB_num].setDisable(false);
 		// setting
 
 		// radiobtn
@@ -157,7 +159,6 @@ public class NewWorkBook_ShortAnswerController extends BaseController implements
 	}
 
 	private void changeName() {
-		//String name = "Workbook1";
 		String name = tf_ChangeName.getText();
 		if (!name.equals(null) || !name.equals(""))
 			workBook.setName(name);
@@ -197,99 +198,33 @@ public class NewWorkBook_ShortAnswerController extends BaseController implements
 		problemList[PB_num] = problem;
 
 	}
-	
+
 	private String tokenProblemList(Problem[] problem, int wnum) {
 		StringBuilder sb = new StringBuilder("");
 		int n = 0;
-		while(problem[n] != null) {
+		while (problem[n] != null) {
 			sb.append(problem[n].tokenString(wnum));
 			sb.append("_");
 			n++;
 		}
-		sb.deleteCharAt(sb.length()-1);
-		
+		sb.deleteCharAt(sb.length() - 1);
+
 		return new String(sb);
 
 	}
 
-
 	public void btn_DeleteWorkBook_Action() {
+		Alert alert = new Alert(AlertType.WARNING, "(Workbook) " + workBook.W_name() + "을(를) 정말로 삭제하시겠습니까?",
+				ButtonType.YES, ButtonType.NO);
+		Optional<ButtonType> result = alert.showAndWait();
 
-		ProfessorDataModel.workbook = null;
-		ProfessorDataModel.problem = null;
-		ProfessorDataModel.hasAValue = null;
-		ProfessorDataModel.hasQValue = null;
+		if (result.get() == ButtonType.YES) {
 
-		try {
-			Stage primaryStage = (Stage) btn_DeleteWorkBook.getScene().getWindow();
-			Parent main = FXMLLoader.load(getClass().getResource("/gui/WorkBookList.fxml"));
-			Scene scene = new Scene(main);
-			primaryStage.setTitle("GuessWhat/WorkBookList");
-			primaryStage.setScene(scene);
-			primaryStage.show();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+			ProfessorDataModel.workbook = null;
+			ProfessorDataModel.problem = null;
+			ProfessorDataModel.hasAValue = null;
+			ProfessorDataModel.hasQValue = null;
 
-	public void btn_SaveWorkBook_Action() {
-
-
-		boolean canMakeWB = true;
-		for (int i = 0; i < workBookSize; i++) {
-			if (problemList[i] == null)
-				canMakeWB = false;
-		}
-
-		if (!canMakeWB)
-			new Alert(AlertType.CONFIRMATION, "저장못함.", ButtonType.CLOSE).show();
-		else {
-			
-			// problemList db에 저장
-			// workbook db에 저장
-			
-			this.workBook.setP_Num(ProfessorDataModel.professor.P_Num());
-			String responseMessage = null;
-			try {
-				//AddWorkbook:PNum:Name:Size
-				String requestTokens = "AddWorkbook:" + this.workBook.tokenString() + ":" + this.workBookSize;
-				BufferedReader br = new BufferedReader(
-						new InputStreamReader(this.socket.getInputStream(), StandardCharsets.UTF_8));
-				PrintWriter pw = new PrintWriter(
-						new OutputStreamWriter(this.socket.getOutputStream(), StandardCharsets.UTF_8));
-				pw.println(requestTokens);
-				pw.flush();
-				responseMessage = br.readLine();
-			} catch(IOException e) {
-				e.printStackTrace();
-			}
-			String[] responseTokens = responseMessage.split(":");
-			if(responseTokens[0].equals("AddWorkbook")) {
-				if(!responseTokens[1].equals("Success")) {
-					System.out.println("AddWorkbook:Fail");
-				}
-				else {
-					this.workBook.setW_Num(Integer.parseInt(responseTokens[2]));
-					try {
-						//AddProblem:problem1_problem2(WNum`question`answer`type`answerContents)...
-						String requestMessage = "AddProblem:" +this.tokenProblemList(this.problemList,this.workBook.W_Num());
-						BufferedReader br = new BufferedReader(
-								new InputStreamReader(this.socket.getInputStream(), StandardCharsets.UTF_8));
-						PrintWriter pw = new PrintWriter(
-								new OutputStreamWriter(this.socket.getOutputStream(), StandardCharsets.UTF_8));
-						pw.println(requestMessage);
-						pw.flush();
-						responseMessage = br.readLine();
-					} catch(IOException e) {
-						e.printStackTrace();
-					}
-					responseTokens = responseMessage.split(":");
-					if(responseTokens[0].equals("AddProblem")){
-						if(!responseTokens[1].equals("Success"))
-							System.out.println("AddProblem:Fail");
-				}
-					ProfessorDataModel.currentPB = 0;
-			}
 			try {
 				Stage primaryStage = (Stage) btn_DeleteWorkBook.getScene().getWindow();
 				Parent main = FXMLLoader.load(getClass().getResource("/gui/WorkBookList.fxml"));
@@ -300,10 +235,80 @@ public class NewWorkBook_ShortAnswerController extends BaseController implements
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
+		}
+	}
 
+	public void btn_SaveWorkBook_Action() {
+
+		boolean canMakeWB = true;
+		for (int i = 0; i < workBookSize; i++) {
+			if (problemList[i] == null)
+				canMakeWB = false;
 		}
 
-	}
+		if (!canMakeWB)
+			new Alert(AlertType.CONFIRMATION, "저장못함.", ButtonType.CLOSE).show();
+		else {
+
+			// problemList db에 저장
+			// workbook db에 저장
+
+			this.workBook.setP_Num(ProfessorDataModel.professor.P_Num());
+			String responseMessage = null;
+			try {
+				// AddWorkbook:PNum:Name:Size
+				String requestTokens = "AddWorkbook:" + this.workBook.tokenString() + ":" + this.workBookSize;
+				BufferedReader br = new BufferedReader(
+						new InputStreamReader(this.socket.getInputStream(), StandardCharsets.UTF_8));
+				PrintWriter pw = new PrintWriter(
+						new OutputStreamWriter(this.socket.getOutputStream(), StandardCharsets.UTF_8));
+				pw.println(requestTokens);
+				pw.flush();
+				responseMessage = br.readLine();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			String[] responseTokens = responseMessage.split(":");
+			if (responseTokens[0].equals("AddWorkbook")) {
+				if (!responseTokens[1].equals("Success")) {
+					System.out.println("AddWorkbook:Fail");
+				} else {
+					this.workBook.setW_Num(Integer.parseInt(responseTokens[2]));
+					try {
+						// AddProblem:problem1_problem2(WNum`question`answer`type`answerContents)...
+						String requestMessage = "AddProblem:"
+								+ this.tokenProblemList(this.problemList, this.workBook.W_Num());
+						BufferedReader br = new BufferedReader(
+								new InputStreamReader(this.socket.getInputStream(), StandardCharsets.UTF_8));
+						PrintWriter pw = new PrintWriter(
+								new OutputStreamWriter(this.socket.getOutputStream(), StandardCharsets.UTF_8));
+						pw.println(requestMessage);
+						pw.flush();
+						responseMessage = br.readLine();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+					responseTokens = responseMessage.split(":");
+					if (responseTokens[0].equals("AddProblem")) {
+						if (!responseTokens[1].equals("Success"))
+							System.out.println("AddProblem:Fail");
+					}
+					ProfessorDataModel.currentPB = 0;
+				}
+				try {
+					Stage primaryStage = (Stage) btn_DeleteWorkBook.getScene().getWindow();
+					Parent main = FXMLLoader.load(getClass().getResource("/gui/WorkBookList.fxml"));
+					Scene scene = new Scene(main);
+					primaryStage.setTitle("GuessWhat/WorkBookList");
+					primaryStage.setScene(scene);
+					primaryStage.show();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+
+			}
+
+		}
 	}
 
 	public void btn_CreateProblem_Action() {

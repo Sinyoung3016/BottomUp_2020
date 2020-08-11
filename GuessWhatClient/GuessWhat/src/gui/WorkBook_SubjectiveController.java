@@ -32,14 +32,11 @@ import javafx.stage.Stage;
 import model.ProfessorDataModel;
 import model.StudentDataModel;
 
-public class NewWorkBook_SubjectiveController extends BaseController implements Initializable {
+public class WorkBook_SubjectiveController extends BaseController implements Initializable {
 
 	@FXML
-	private Button btn_DeleteWorkBook, btn_CreateProblem, btn_SaveWorkBook, btn_num1, btn_num2, btn_num3, btn_num4,
-			btn_num5, btn_num6, btn_num7, btn_num8, btn_num9, btn_num10, btn_num11, btn_num12, btn_num13, btn_num14,
-			btn_num15;
-	@FXML
-	private RadioButton rbtn_MultipleChoice, rbtn_ShortAnswer, rbtn_Subjective;
+	private Button btn_DeleteWorkBook, btn_Cancel, btn_SaveWorkBook, btn_num1, btn_num2, btn_num3, btn_num4, btn_num5,
+			btn_num6, btn_num7, btn_num8, btn_num9, btn_num10, btn_num11, btn_num12, btn_num13, btn_num14, btn_num15;
 	@FXML
 	private TextField tf_ChangeName;
 	@FXML
@@ -120,42 +117,24 @@ public class NewWorkBook_SubjectiveController extends BaseController implements 
 		btn[PB_num].setDisable(false);
 		// setting
 
-		// radiobtn
-		ToggleGroup group = new ToggleGroup();
-		rbtn_MultipleChoice.setToggleGroup(group);
-		rbtn_ShortAnswer.setToggleGroup(group);
-		rbtn_Subjective.setToggleGroup(group);
+		ta_Question.setText(problem.question());
+		ta_Answer.setText(problem.answer());
+		tf_ChangeName.setText(workBook.W_name());
 
-		rbtn_MultipleChoice.setSelected(false);
-		rbtn_ShortAnswer.setSelected(false);
-		rbtn_Subjective.setSelected(true);
+		btn = new Button[] { btn_num1, btn_num2, btn_num3, btn_num4, btn_num5, btn_num6, btn_num7, btn_num8, btn_num9,
+				btn_num10, btn_num11, btn_num12, btn_num13, btn_num14, btn_num15 };
 
-		rbtn_MultipleChoice.setOnAction((ActionEvent) -> {
-			try {
-				Stage primaryStage = (Stage) rbtn_MultipleChoice.getScene().getWindow();
-				Parent main = FXMLLoader.load(getClass().getResource("/gui/NewWorkBook_MultipleChoice.fxml"));
-				Scene scene = new Scene(main);
-				primaryStage.setTitle("GuessWhat/WorkBook");
-				primaryStage.setScene(scene);
-				primaryStage.show();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		});
-		rbtn_ShortAnswer.setOnAction((ActionEvent) -> {
-			try {
-				Stage primaryStage = (Stage) rbtn_ShortAnswer.getScene().getWindow();
-				Parent main = FXMLLoader.load(getClass().getResource("/gui/NewWorkBook_ShortAnswer.fxml"));
-				Scene scene = new Scene(main);
-				primaryStage.setTitle("GuessWhat/WorkBook");
-				primaryStage.setScene(scene);
-				primaryStage.show();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		});
-		// radiobtn
-
+		for (int i = 0; i < workBookSize; i++) {
+			btn[i].setStyle("-fx-background-color: #5ad18f;");
+			btn[i].setDisable(false);
+		}
+		for (int i = workBookSize; i < 15; i++) {
+			btn[i].setStyle("-fx-background-color: #dcdcdc;");
+			btn[i].setDisable(true);
+		}
+		btn[PB_num].setStyle("-fx-background-color: #22941C;");
+		btn[PB_num].setDisable(false);
+		// setting
 	}
 
 	private void changeName() {
@@ -172,33 +151,15 @@ public class NewWorkBook_SubjectiveController extends BaseController implements 
 
 		String S_question = ta_Question.getText();
 		String S_answer = ta_Answer.getText();
-		if (S_question.equals("") && S_answer.equals("")) {
-			hasQValue[PB_num] = false;
-			hasAValue[PB_num] = false;
-		} else if ((S_question.equals(null) || S_question.equals(""))
-				&& (!S_answer.equals(null) || !S_answer.equals(""))) {
-			problem.setAnswer(S_answer);
-			hasQValue[PB_num] = false;
-			hasAValue[PB_num] = true;
-		} else if ((!S_question.equals(null) || !S_question.equals(""))
-				&& (S_answer.equals(null) || S_answer.equals(""))) {
-			problem.setQuestion(S_question);
-			hasQValue[PB_num] = true;
-			hasAValue[PB_num] = false;
-		} else {
-			problem.setAnswer(S_answer);
-			problem.setQuestion(S_question);
-			hasAValue[PB_num] = true;
-			hasQValue[PB_num] = true;
-		}
 
-		problem.setPB_num(PB_num);
-		problem.setType(ProblemType.Subjective);
+		if (!S_question.equals(null) || !S_question.equals(""))
+			problem.setQuestion(S_question);
 
-		problemList[PB_num] = problem;
+		if (!S_question.equals(null) || !S_question.equals(""))
+			problem.setAnswer(S_answer);
 
 	}
-	
+
 	private String tokenProblemList(Problem[] problem, int wnum) {
 		StringBuilder sb = new StringBuilder("");
 		int n = 0;
@@ -214,17 +175,13 @@ public class NewWorkBook_SubjectiveController extends BaseController implements 
 	}
 
 	public void btn_DeleteWorkBook_Action() {
-
 		Alert alert = new Alert(AlertType.WARNING, "(Workbook) " + workBook.W_name() + "을(를) 정말로 삭제하시겠습니까?",
 				ButtonType.YES, ButtonType.NO);
 		Optional<ButtonType> result = alert.showAndWait();
 
 		if (result.get() == ButtonType.YES) {
 
-			ProfessorDataModel.workbook = null;
-			ProfessorDataModel.problem = null;
-			ProfessorDataModel.hasAValue = null;
-			ProfessorDataModel.hasQValue = null;
+			// ㄹㅇ삭제
 
 			try {
 				Stage primaryStage = (Stage) btn_DeleteWorkBook.getScene().getWindow();
@@ -241,108 +198,28 @@ public class NewWorkBook_SubjectiveController extends BaseController implements 
 
 	public void btn_SaveWorkBook_Action() {
 
-		boolean canMakeWB = true;
-		for (int i = 0; i < workBookSize; i++) {
-			if (problemList[i] == null)
-				canMakeWB = false;
-		}
+		// Problem 수정해서 저장
 
-		if (!canMakeWB)
-			new Alert(AlertType.CONFIRMATION, "저장못함.", ButtonType.CLOSE).show();
-		else {
-
-			// problemList db에 저장
-			// workbook db에 저장
-
-			this.workBook.setP_Num(ProfessorDataModel.professor.P_Num());
-			String responseMessage = null;
-			try {
-				// AddWorkbook:PNum:Name:Size
-				String requestTokens = "AddWorkbook:" + this.workBook.tokenString() + ":" + this.workBookSize;
-				BufferedReader br = new BufferedReader(
-						new InputStreamReader(this.socket.getInputStream(), StandardCharsets.UTF_8));
-				PrintWriter pw = new PrintWriter(
-						new OutputStreamWriter(this.socket.getOutputStream(), StandardCharsets.UTF_8));
-				pw.println(requestTokens);
-				pw.flush();
-				responseMessage = br.readLine();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			String[] responseTokens = responseMessage.split(":");
-			if (responseTokens[0].equals("AddWorkbook")) {
-				if (!responseTokens[1].equals("Success")) {
-					System.out.println("AddWorkbook:Fail");
-				} else {
-					this.workBook.setW_Num(Integer.parseInt(responseTokens[2]));
-					try {
-						// AddProblem:problem1_problem2(WNum`question`answer`type`answerContents)...
-						String requestMessage = "AddProblem:"
-								+ this.tokenProblemList(this.problemList, this.workBook.W_Num());
-						BufferedReader br = new BufferedReader(
-								new InputStreamReader(this.socket.getInputStream(), StandardCharsets.UTF_8));
-						PrintWriter pw = new PrintWriter(
-								new OutputStreamWriter(this.socket.getOutputStream(), StandardCharsets.UTF_8));
-						pw.println(requestMessage);
-						pw.flush();
-						responseMessage = br.readLine();
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-					responseTokens = responseMessage.split(":");
-					if (responseTokens[0].equals("AddProblem")) {
-						if (!responseTokens[1].equals("Success"))
-							System.out.println("AddProblem:Fail");
-					}
-					ProfessorDataModel.currentPB = 0;
-				}
-				try {
-					Stage primaryStage = (Stage) btn_DeleteWorkBook.getScene().getWindow();
-					Parent main = FXMLLoader.load(getClass().getResource("/gui/WorkBookList.fxml"));
-					Scene scene = new Scene(main);
-					primaryStage.setTitle("GuessWhat/WorkBookList");
-					primaryStage.setScene(scene);
-					primaryStage.show();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-
-			}
-
-		}
 	}
 
-	public void btn_CreateProblem_Action() {
+	public void btn_Cancel_Action() {
 
-		this.savePro();
+		Alert alert = new Alert(AlertType.WARNING, "해당 문제를 수정하시겠습니까?", ButtonType.YES, ButtonType.NO);
+		Optional<ButtonType> result = alert.showAndWait();
 
-		if (PB_num < workBookSize) {
-			new Alert(AlertType.CONFIRMATION, "저장함.", ButtonType.CLOSE).show();
+		if (result.equals(ButtonType.YES))
+			btn_SaveWorkBook_Action();
 
-			if (15 == PB_num + 1) {
-				return;
-			} else {
-				StudentDataModel.currentPB = StudentDataModel.currentPB + 1;
-				changeProblem();
-			}
-
-		} else if (PB_num == workBookSize) {
-			workBook.setSize(workBookSize + 1);
-			ProfessorDataModel.currentPB = ProfessorDataModel.currentPB + 1;
-
-			this.problem = new Problem(ProfessorDataModel.currentPB);
-			try {
-				Stage primaryStage = (Stage) btn_CreateProblem.getScene().getWindow();
-				Parent main = FXMLLoader.load(getClass().getResource("/gui/NewWorkBook_ShortAnswer.fxml"));
-				Scene scene = new Scene(main);
-				primaryStage.setTitle("GuessWhat/WorkBook");
-				primaryStage.setScene(scene);
-				primaryStage.show();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+		try {
+			Stage primaryStage = (Stage) btn_Cancel.getScene().getWindow();
+			Parent main = FXMLLoader.load(getClass().getResource("/gui/NewWorkBook_MultipleChoice.fxml"));
+			Scene scene = new Scene(main);
+			primaryStage.setTitle("GuessWhat/WorkBook");
+			primaryStage.setScene(scene);
+			primaryStage.show();
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-
 	}
 
 	private void changeProblem() {

@@ -135,7 +135,7 @@ public class ServerThread extends Thread{
 						}else if(requestTokens[0].equals(Request.GET_BANMANGER.getRequest())) { //GetBanManager:code
 							clientRequest = "GetBanManager";
 							this.getBanManager(requestTokens[1]);
-						}else if(requestTokens[0].equals(Request.GET_CURRENTBANMANAGER.getRequest())) { //GetCurrentBanManager:PNum:BNum
+						}else if(requestTokens[0].equals(Request.GET_CURRENTBANMANAGER.getRequest())) { //GetCurrentBanManager:PNum:BMNum
 							clientRequest = "GetCurrentBanManager";
 							this.getCurrentBanManager(requestTokens[1], requestTokens[2]);
 						}else if(requestTokens[0].equals(Request.GET_ALLBAN.getRequest())) { //GetAllBan:PNum
@@ -338,7 +338,7 @@ public class ServerThread extends Thread{
 		int bNum = Integer.parseInt(BNum);
 		
 		if(DB_Ban.modifyBanName(pNum, bNum, newName))
-			pw.println(">>SUCCESS [ModifyBan]<<");
+			pw.println("ModifyBan:Success");
 		else pw.println(">>FAIL [ModifyBan]<<");
 
 		pw.flush();
@@ -449,9 +449,9 @@ public class ServerThread extends Thread{
 		}
 
 	}
-	private void getCurrentBanManager(String PNum, String BNum) { //GetCurrentBanManager:Success:Name, State, Code, WorkBook
+	private void getCurrentBanManager(String PNum, String BMNum) { //GetCurrentBanManager:Success:Name, State, Code, WorkBook
 
-		BanManager banManager = DB_BanManager.getCurrentBanManager(Integer.parseInt(PNum), Integer.parseInt(BNum));
+		BanManager banManager = DB_BanManager.getCurrentBanManager(Integer.parseInt(PNum), Integer.parseInt(BMNum));
 
 		if (banManager == null) {
 			pw.println("GetCurrentBan:Fail " + PNum);

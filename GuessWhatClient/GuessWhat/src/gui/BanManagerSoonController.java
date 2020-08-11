@@ -143,6 +143,7 @@ public class BanManagerSoonController implements Initializable {
 
 		if (result.get() == ButtonType.YES) {
 			if (banManager.BM_state().equals(State.OPEN))
+				this.banManager.setBM_state_ING();
 				this.changeBMState(this.banManager.BM_num(), "ING");
 			
 			try {

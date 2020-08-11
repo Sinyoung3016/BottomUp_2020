@@ -126,31 +126,11 @@ public class CreateNewBanManagerController implements Initializable {
 		this.ban = ProfessorDataModel.ban;
 		this.workbookList = ProfessorDataModel.WorkbookList;
 		
-		this.getAllWorkbook(this.professor.P_Num());
 		this.cb_NewBanManagerWorkBook.setItems(ProfessorDataModel.ChoiceList_MyWorkBook);
 
 		className = ban.ban_name();
 		this.btn_Main.setText(className);
 
-		if (workbookList.length == 0) {
-			new Alert(AlertType.CONFIRMATION, "생성된 WorkBook이 없습니다. MainPage의 WorkBookList를 눌러 WorkBook을 먼저 만드세요.",
-					ButtonType.CLOSE).show();
-
-			try {
-				Stage primaryStage = (Stage) btn_Cancel.getScene().getWindow();
-				Parent main = FXMLLoader.load(getClass().getResource("/gui/MainPage.fxml"));
-				Scene scene = new Scene(main);
-				primaryStage.setTitle("GuessWhat/" + className);
-				primaryStage.setScene(scene);
-				primaryStage.show();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-
-
-		
-		
 	}
 
 	private void makeRoomCode() { // 값 만들기
