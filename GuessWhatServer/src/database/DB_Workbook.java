@@ -215,7 +215,7 @@ public class DB_Workbook extends DBManager{
 			}
 		}
 	}
-	public synchronized static Workbook getWorkbookOf(int BMNum) {
+	public synchronized static Workbook getWorkbookOf(int WNum) {
 		Connection conn = null;
 		Statement state = null;
 		ResultSet rs = null;
@@ -225,15 +225,14 @@ public class DB_Workbook extends DBManager{
 			conn = getConn();
 			state = conn.createStatement();
 			String sql;
-			sql = "SELECT * FROM Workbook WHERE BMNum = '" + BMNum + "'";
+			sql = "SELECT * FROM Workbook WHERE WNum = '" + WNum + "'";
 			rs = state.executeQuery(sql);
 			
 			if(rs.next()) {
 				workbookInfo[0] = rs.getString("PNum");
-				workbookInfo[1] = rs.getString("BMNum");
-				workbookInfo[2] = rs.getString("WNum");
-				workbookInfo[3] = rs.getString("Name");
-				workbookInfo[4] = rs.getString("Size");
+				workbookInfo[1] = rs.getString("WNum");
+				workbookInfo[2] = rs.getString("Name");
+				workbookInfo[3] = rs.getString("Size");
 				workbook = new Workbook(workbookInfo);
 			}
 			

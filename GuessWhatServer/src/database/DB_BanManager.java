@@ -348,7 +348,7 @@ public class DB_BanManager extends DBManager {
 		Connection conn = null;
 		Statement stmt = null;
 		ResultSet rs = null;
-		String[] banManagerInfo = new String[6];
+		String[] banManagerInfo = new String[7];
 		
 		try {
 
@@ -368,6 +368,7 @@ public class DB_BanManager extends DBManager {
 				banManagerInfo[3] = rs.getString("Code");
 				banManagerInfo[4] = rs.getString("BNum");
 				banManagerInfo[5] = rs.getString("StudentSize");
+				banManagerInfo[6] = rs.getString("WNum");
 				banManager = new BanManager(banManagerInfo);
 				
 			}

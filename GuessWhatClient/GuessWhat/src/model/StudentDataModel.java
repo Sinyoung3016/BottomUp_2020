@@ -34,7 +34,6 @@ public class StudentDataModel {
 		StringBuilder sb = new StringBuilder("");
 		sb.append(banManager.ban_num() + ":");
 		sb.append(banManager.BM_num() + ":");
-		sb.append(workbook.W_Num() + ":");
 		sb.append(studentName);
 		return new String(sb);
 	}

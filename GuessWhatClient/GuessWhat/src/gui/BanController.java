@@ -47,7 +47,7 @@ public class BanController implements Initializable {
 		this.socket = ProfessorDataModel.socket;
 		this.professor = ProfessorDataModel.professor;
 		this.ban = ProfessorDataModel.ban;
-
+		
 		this.showBanManagerList(professor.P_Num(), ban.ban_num());
 
 		className = this.ban.ban_name();

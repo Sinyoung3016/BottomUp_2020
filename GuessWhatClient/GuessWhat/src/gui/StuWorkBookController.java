@@ -49,7 +49,7 @@ public class StuWorkBookController extends BaseController implements Initializab
 		this.problem = StudentDataModel.problem;
 		this.student = StudentDataModel.student;
 		this.hasAnswer = StudentDataModel.hasAnswer;
-
+		
 		if (problem.getType().equals(ProblemType.MultipleChoice)) {
 			try {
 				Stage primaryStage = (Stage) lb_Question.getScene().getWindow();
@@ -135,7 +135,6 @@ public class StuWorkBookController extends BaseController implements Initializab
 		String responseMessage = null;
 		try {
 			String requestTokens = "AddStudent:" + StudentDataModel.tokenStudentData() + ":" + this.student.tokenAnswer() + ":" +this.student.tokenResult();
-			System.out.println("requestTokens : " +requestTokens);
 			BufferedReader br = new BufferedReader(
 					new InputStreamReader(this.socket.getInputStream(), StandardCharsets.UTF_8));
 			PrintWriter pw = new PrintWriter(
@@ -143,7 +142,6 @@ public class StuWorkBookController extends BaseController implements Initializab
 			pw.println(requestTokens);
 			pw.flush();
 			responseMessage = br.readLine();
-			System.out.println("reponseMessage : " +responseMessage);
 		} catch(IOException e) {
 			e.printStackTrace();
 		}
@@ -286,7 +284,6 @@ public class StuWorkBookController extends BaseController implements Initializab
 				// Success GetProblem
 				Problem problem = new Problem(responseTokens[2]);
 				StudentDataModel.setProblem(problem);
-				System.out.println(StudentDataModel.problem.toString());
 
 			}
 		}

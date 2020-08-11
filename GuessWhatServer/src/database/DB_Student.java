@@ -5,7 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public class DB_Student extends DBManager{
-	public synchronized static boolean insertStudent(String BNum, String BMNum, String WNum, String Name,String Answer,String Result) {
+	public synchronized static boolean insertStudent(String BNum, String BMNum, String Name,String Answer,String Result) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		
@@ -16,12 +16,12 @@ public class DB_Student extends DBManager{
 			String[] answerList = Answer.split("`");
 			int length = answerList.length;
 			
-			StringBuilder sb = new StringBuilder("INSERT INTO Student (BNum, BMNum, WNum, Name,");
+			StringBuilder sb = new StringBuilder("INSERT INTO Student (BNum, BMNum, Name,");
 			for(int i = 1; i <= length; i++) {
 				sb.append("N" + i + ",");
 			}
 			sb.append("Result) VALUES (?");
-			for(int i = 0; i < (length + 4); i++) {
+			for(int i = 0; i < (length + 3); i++) {
 				sb.append(",?");
 			}
 			sb.append(")");
@@ -31,9 +31,8 @@ public class DB_Student extends DBManager{
 			
 			pstmt.setInt(1, Integer.parseInt(BNum));
 			pstmt.setInt(2, Integer.parseInt(BMNum));
-			pstmt.setInt(3, Integer.parseInt(WNum));
-			pstmt.setString(4, Name);
-			int index = 5;
+			pstmt.setString(3, Name);
+			int index = 4;
 			int n = 0;
 			while(n < length) {
 				pstmt.setString(index, answerList[n]);

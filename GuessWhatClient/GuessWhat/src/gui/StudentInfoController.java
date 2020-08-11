@@ -101,7 +101,7 @@ public class StudentInfoController implements Initializable{
 					StudentDataModel.studentName = tf_StudentName.getText();
 					String responseMessage = null;
 					try {
-						String requestTokens = "GetWorkbookProblem:" + StudentDataModel.banManager.BM_num();
+						String requestTokens = "GetWorkbookProblem:" + StudentDataModel.banManager.W_num();
 						BufferedReader br = new BufferedReader(
 								new InputStreamReader(this.socket.getInputStream(), StandardCharsets.UTF_8));
 						PrintWriter pw = new PrintWriter(

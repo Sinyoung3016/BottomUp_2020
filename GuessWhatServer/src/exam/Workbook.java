@@ -20,10 +20,9 @@ public class Workbook {
 	}
 	public Workbook(String[] workbookInfo) {
 		this.PNum = Integer.parseInt(workbookInfo[0]);
-		this.BMNum = Integer.parseInt(workbookInfo[1]);
-		this.WNum = Integer.parseInt(workbookInfo[2]);
-		this.name = workbookInfo[3];
-		this.size = Integer.parseInt(workbookInfo[4]);
+		this.WNum = Integer.parseInt(workbookInfo[1]);
+		this.name = workbookInfo[2];
+		this.size = Integer.parseInt(workbookInfo[3]);
 	}
 	//Constructor end
 	

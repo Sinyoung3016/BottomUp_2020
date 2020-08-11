@@ -95,9 +95,9 @@ public class ServerThread extends Thread{
 						else if(requestTokens[0].equals(Request.ADD_PROBLEM.getRequest())) { //AddProblem:problem1_problem2(WNum`question`answer`type`answerContents)...
 							clientRequest = "AddProblem";
 							this.addProblem(requestTokens[1]);
-						}else if(requestTokens[0].equals(Request.ADD_STUDENT.getRequest())) { //AddStudent:BNum:BMNum:WNum:Name:Answer:Result
+						}else if(requestTokens[0].equals(Request.ADD_STUDENT.getRequest())) { //AddStudent:BNum:BMNum:Name:Answer:Result
 							clientRequest = "AddStudent";
-							this.addStudent(requestTokens[1], requestTokens[2], requestTokens[3], requestTokens[4], requestTokens[5],requestTokens[6]);
+							this.addStudent(requestTokens[1], requestTokens[2], requestTokens[3], requestTokens[4], requestTokens[5]);
 						}
 						else if(requestTokens[0].equals(Request.DELETE_BAN.getRequest())) { //DeleteBan:PNum:BNum
 							clientRequest = "DeleteBan";
@@ -278,8 +278,8 @@ public class ServerThread extends Thread{
 	
 	}
 	
-	private void addStudent(String BNum, String BMNum, String WNum, String Name,String Answer,String Result) {
-		if(DB_Student.insertStudent(BNum, BMNum, WNum, Name, Answer, Result)) 
+	private void addStudent(String BNum, String BMNum, String Name,String Answer,String Result) {
+		if(DB_Student.insertStudent(BNum, BMNum, Name, Answer, Result)) 
 			pw.println("AddStudent:Success");
 		
 		else 
@@ -522,8 +522,8 @@ public class ServerThread extends Thread{
 		pw.flush();
 	}
 	
-	private void getWorkbookProblem(String BMNum) {
-		int num = Integer.parseInt(BMNum);
+	private void getWorkbookProblem(String WNum) {
+		int num = Integer.parseInt(WNum);
 		Workbook workbook = DB_Workbook.getWorkbookOf(num);
 		StringBuilder sb = new StringBuilder("");
 		if(workbook == null) {
