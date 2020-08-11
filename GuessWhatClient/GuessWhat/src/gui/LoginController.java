@@ -139,6 +139,7 @@ public class LoginController implements Initializable {
 
 	//Private Method
 	private void getAllWorkbook(int pNum) {
+		ProfessorDataModel.ChoiceList_MyWorkBook.clear();
 		String responseMessage = null;
 		try {
 			//GetAllWorkbook:PNum
@@ -153,7 +154,6 @@ public class LoginController implements Initializable {
 		} catch(IOException e) {
 			e.printStackTrace();
 		}
-		System.out.println(responseMessage);
 		String[] responseTokens = responseMessage.split(":");
 		if(responseTokens[0].equals("GetAllWorkbook")) {
 			if(!responseTokens[1].equals("Success")) {
