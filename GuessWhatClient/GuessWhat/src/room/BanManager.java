@@ -158,7 +158,7 @@ public class BanManager {
 					
 					String responseMessage = null;
 					try {
-						String requestMessage = "GetCurrentBanManager:" + P_num + ":" + ban_Num;
+						String requestMessage = "GetCurrentBanManager:" + P_num + ":" + BM_num;
 						BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
 						PrintWriter writer = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8));
 						writer.println(requestMessage);
@@ -182,7 +182,7 @@ public class BanManager {
 							String code = responseTokens[5];
 							int workbook = Integer.parseInt(responseTokens[6]);
 							int student_size = Integer.parseInt(responseTokens[7]);
-							BanManager newBanManager = new BanManager(P_num, ban_Num, BMNum, name, state, code, workbook, student_size);
+							BanManager newBanManager = new BanManager(P_num, ban_Num, BM_num, name, state, code, workbook, student_size);
 							
 							ProfessorDataModel.banManager = newBanManager;
 							System.out.println("    [Enter] BM: " + name + 
