@@ -89,7 +89,7 @@ public class ServerController {
 		while(iterator.hasNext()) {
 			Socket socket = iterator.next();
 			PrintWriter pw=new PrintWriter(new OutputStreamWriter(socket.getOutputStream(),StandardCharsets.UTF_8));
-			pw.println("SizeUpBanManager:Moondd:1:3");
+			pw.println("UpdateStudent:ip:name:0:answer"); //UpdateStudent:ip:studentName:StudentIndex:StudentAnswer
 			pw.flush();
 		}
 		} catch(IOException e) {
@@ -136,4 +136,17 @@ while(iterator.hasNext()) {
 } catch(IOException e) {
 	System.out.println("Error: " +e.getMessage() + "FROM btn_Empty_Action");
 }
+
+----------------------SizeUpBanManager--------------------
+		try {
+		Iterator<Socket> iterator = dataModel.getSocketList().iterator();
+		while(iterator.hasNext()) {
+			Socket socket = iterator.next();
+			PrintWriter pw=new PrintWriter(new OutputStreamWriter(socket.getOutputStream(),StandardCharsets.UTF_8));
+			pw.println("SizeUpBanManager:Moondd:1:3");
+			pw.flush();
+		}
+		} catch(IOException e) {
+			System.out.println("Error: " +e.getMessage() + "FROM btn_Empty_Action");
+		}
 */

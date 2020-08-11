@@ -1,10 +1,17 @@
 package gui;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.Socket;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.Map;
 import java.util.Optional;
 import java.util.ResourceBundle;
+
 
 import exam.Workbook;
 import javafx.beans.property.ReadOnlyStringWrapper;
@@ -45,13 +52,16 @@ public class BanManagerProgressController implements Initializable {
 	private Workbook workbook;
 
 	private String className;
-
+	private Socket socket;
 	private int WorkBookSize;
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// TODO Auto-generated method stub
-
+		
+		ProfessorDataModel.Students = new LinkedList();
+		
+		this.socket = ProfessorDataModel.socket;
 		this.ban = ProfessorDataModel.ban;
 		this.banManager = ProfessorDataModel.banManager;
 		this.workbook = ProfessorDataModel.workbook;
@@ -65,7 +75,52 @@ public class BanManagerProgressController implements Initializable {
 
 		tv_Answer.getColumns().setAll(this.getColumns());
 		tv_Answer.getItems().setAll(ProfessorDataModel.Students);
-
+		
+		Thread thread = new Thread(new Runnable() {
+			
+			@Override
+			public void run() {
+				try {
+					BufferedReader br= new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
+					
+					while(true) {
+						String studentIp = null;
+						Student student = null;
+						
+						String requestMessage = br.readLine();
+						String[] requestTokens = requestMessage.split(":");
+						
+						if(requestTokens[0].equals("UpdateStudent")) {
+							Map<String,Student> ip_student = ProfessorDataModel.ip_student;
+							for(String ip : ip_student.keySet()) {
+								if(ip.equals(requestTokens[1])) {
+									studentIp = ip;
+									break;
+								}
+							}
+							if(studentIp == null) {
+								//Student 존재x
+								int answerSize = ProfessorDataModel.workbook.WorkBooksize();
+								student = new Student(answerSize, requestTokens[2]);
+								student.answer[Integer.parseInt(requestTokens[3])] = requestTokens[4];
+							}
+							else {
+								//Student 존재
+								student = ip_student.get(studentIp);
+								student.answer[Integer.parseInt(requestTokens[3])] = requestTokens[4];
+							}
+						}
+						
+					}
+				}
+				catch(IOException e) {
+					
+				}
+			
+			}
+		});
+		
+		thread.start();
 	}
 
 	private TableColumn<Student, String>[] getColumns() {

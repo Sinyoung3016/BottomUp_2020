@@ -12,14 +12,17 @@ import java.util.Vector;
 public class ServerDataModel {
 	private ServerSocket serverSocket;
 	private List<Socket> socketList;
-	private Map<String, String> client_id_ip;
+	public static Map<String, String> client_id_ip;
 	private Map<String, PrintWriter> listClient;
+	
+	
 	
 	public ServerDataModel() {
 		
 		client_id_ip = new HashMap<>();
 		listClient = new HashMap<>();
 		socketList = new Vector<>();
+		
 		try {
 			serverSocket = new ServerSocket();
 		} catch(IOException e) {

@@ -41,6 +41,11 @@ public class Student {
 		
 	}
 	
+	public Student(int answerSize, String name) {
+		this.answer = new String[answerSize];
+		this.name = name;
+	}
+	
 	
 	//Getter start
 	public int P_num() { return this.P_num; }

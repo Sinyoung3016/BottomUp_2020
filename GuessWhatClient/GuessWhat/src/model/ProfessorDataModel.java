@@ -3,7 +3,9 @@ package model;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
 
 import exam.Problem;
 import exam.StuNumResult;
@@ -30,6 +32,7 @@ public class ProfessorDataModel {
 	public static Problem [] problemList;
 	public static boolean[] hasQValue = null;
 	public static boolean[] hasAValue = null;
+	public static Map<String,Student> ip_student = new HashMap<>();
 	
 	public static int currentPB = 0;
 
