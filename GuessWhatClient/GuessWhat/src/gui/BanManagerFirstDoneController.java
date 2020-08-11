@@ -1,6 +1,13 @@
 package gui;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.net.Socket;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -42,6 +49,8 @@ public class BanManagerFirstDoneController implements Initializable {
 	@FXML
 	private TableView<Student> tv_Answer;
 
+	public Socket socket;
+	
 	private Ban ban;
 	private BanManager banManager;
 	private Workbook workbook;
@@ -53,6 +62,7 @@ public class BanManagerFirstDoneController implements Initializable {
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// TODO Auto-generated method stub
+		this.socket = ProfessorDataModel.socket;
 
 		this.ban = ProfessorDataModel.ban;
 		this.banManager = ProfessorDataModel.banManager;
@@ -119,6 +129,29 @@ public class BanManagerFirstDoneController implements Initializable {
 	public void btn_Delete_Action() {
 		
 		//해당 반 매니져 삭제
+		String responseMessage = null;
+		try {
+			String requestMessage = "DeleteBanManager:" + this.banManager.P_num() + ":" + this.banManager.ban_num()
+					+ ":" + this.banManager.BM_num();
+			BufferedReader reader = new BufferedReader(
+					new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
+			PrintWriter writer = new PrintWriter(
+					new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8));
+			writer.println(requestMessage);
+			writer.flush();
+			responseMessage = reader.readLine();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+		String[] responseTokens = responseMessage.split(":");
+
+		if (responseTokens[0].equals("DeleteBanManager")) {
+			if (!responseTokens[1].equals("Success")) {
+				System.out.println("Fail : DeleteBanManager");
+			} else {
+				System.out.println("[Delete] BM: " + this.banManager.BM_name());
+			}
+		}
 		
 		try {
 			Stage primaryStage = (Stage) btn_Close.getScene().getWindow();
