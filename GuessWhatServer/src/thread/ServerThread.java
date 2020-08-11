@@ -248,8 +248,9 @@ public class ServerThread extends Thread{
 	
 	private void addWorkbook(String PNum, String Name, String Size) {
 		if(DB_Workbook.insertWorkbook(PNum,Name,Size)) {
-			int WNum = DB_Workbook.getWNumOf(Name);
+			int WNum = DB_Workbook.getWNumOf(PNum, Name);
 			if(WNum < 0) {
+				System.out.println("AddWorkbook:Fail");
 				pw.println("AddWorkbook:Fail");
 			}
 			else {

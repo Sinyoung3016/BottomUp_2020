@@ -253,7 +253,7 @@ public class DB_Workbook extends DBManager{
 		}
 	}
 	
-	public synchronized static int getWNumOf(String name) {
+	public synchronized static int getWNumOf(String PNum, String name) {
 		Connection conn = null;
 		Statement state = null;
 		ResultSet rs = null;
@@ -262,7 +262,7 @@ public class DB_Workbook extends DBManager{
 			conn = getConn();
 			state = conn.createStatement();
 			String sql;
-			sql = "SELECT * FROM Workbook WHERE Name = '" + name + "'";
+			sql = "SELECT * FROM Workbook WHERE Name = '" + name + "' && PNum = '" + PNum + "'" ;
 			rs = state.executeQuery(sql);
 			
 			if(rs.next()) {
