@@ -1,6 +1,12 @@
 package gui;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Optional;
@@ -40,6 +46,7 @@ public class BanManagerProgressController implements Initializable {
 	@FXML
 	private TableView<Student> tv_Answer;
 
+	public Socket socket;
 	private Ban ban;
 	private BanManager banManager;
 	private Workbook workbook;
@@ -48,10 +55,37 @@ public class BanManagerProgressController implements Initializable {
 
 	private int WorkBookSize;
 
+	private void changeBMState(int bmNum, String newState) {
+		String responseMessage = null;
+		try {
+			String requestMessage = "ModifyState:" + bmNum + ":" + newState;
+			BufferedReader reader = new BufferedReader(
+					new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
+			PrintWriter writer = new PrintWriter(
+					new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8));
+			writer.println(requestMessage);
+			writer.flush();
+			responseMessage = reader.readLine();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+		System.out.println(responseMessage);
+		String[] responseTokens = responseMessage.split(":");
+
+		if (responseTokens[0].equals("ModifyState")) {
+			if (!responseTokens[1].equals("Success")) {
+				System.out.println("Fail : ModifyState");
+			} else {
+				System.out.println("Success: ModifyState");
+			}
+		}
+	}
+	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// TODO Auto-generated method stub
 
+		this.socket = ProfessorDataModel.socket;
 		this.ban = ProfessorDataModel.ban;
 		this.banManager = ProfessorDataModel.banManager;
 		this.workbook = ProfessorDataModel.workbook;
@@ -94,8 +128,9 @@ public class BanManagerProgressController implements Initializable {
 		Optional<ButtonType> result = alert.showAndWait();
 
 		if (result.get() == ButtonType.YES) {
-			if (banManager.BM_state().equals(State.CLOSE))
-				banManager.setBM_state_CLOSE();
+			if (banManager.BM_state().equals(State.ING))
+				this.changeBMState(this.banManager.BM_num(), "CLOSE");
+				this.banManager.setBM_state_CLOSE();
 
 			try {
 				Stage primaryStage = (Stage) btn_End.getScene().getWindow();
