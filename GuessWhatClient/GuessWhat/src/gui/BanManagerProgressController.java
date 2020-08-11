@@ -90,7 +90,6 @@ public class BanManagerProgressController implements Initializable {
 		for (int i = 1; i < WorkBookSize + 1; i++) {
 			returnTable[i] = scoreColumn[i - 1];
 		}
-
 		return returnTable;
 	}
 
