@@ -288,6 +288,7 @@ public class NewWorkBook_ShortAnswerController extends BaseController implements
 						if(!responseTokens[1].equals("Success"))
 							System.out.println("AddProblem:Fail");
 				}
+					ProfessorDataModel.currentPB = 0;
 			}
 			try {
 				Stage primaryStage = (Stage) btn_DeleteWorkBook.getScene().getWindow();
