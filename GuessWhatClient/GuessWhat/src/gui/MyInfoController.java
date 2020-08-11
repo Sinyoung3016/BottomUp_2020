@@ -129,34 +129,34 @@ public class MyInfoController implements Initializable {
 		} else {// password 수정 X
 			if (tf_Email.getLength() != 0) // email 수정
 				Email = tf_Email.getText();
-			if (canRequest) {
-				String responseMessage = null;
-				try {
-					String requestTokens = "ModifyProfessor:" + ProfessorDataModel.ID + ":" + Email + ":" + NewPassword;
-					BufferedReader br = new BufferedReader(
-							new InputStreamReader(this.socket.getInputStream(), StandardCharsets.UTF_8));
-					PrintWriter pw = new PrintWriter(
-							new OutputStreamWriter(this.socket.getOutputStream(), StandardCharsets.UTF_8));
-					pw.println(requestTokens);
-					pw.flush();
-					responseMessage = br.readLine();
-				} catch (Exception e) {
-					System.out.println("Error : " + e.getMessage() + " FROM btn_Update_Action");
-				}
-				String[] responseTokens = responseMessage.split(":");
-				if (responseTokens[0].equals("ModifyProfessor")) {
-					if (!responseTokens[1].equals("Success")) {
-						System.out.println(responseTokens[1]);
-						new Alert(Alert.AlertType.WARNING, "MyInfo가 수정에 실패했습니다. 잠시후 다시 시도해주세요.", ButtonType.CLOSE)
-								.show();
-					} else {
-						ProfessorDataModel.professor.setEmail(Email);
-						new Alert(Alert.AlertType.CONFIRMATION, "MyInfo가 수정되었습니다.", ButtonType.CLOSE).show();
-					}
-				}
-			} else
-				new Alert(AlertType.WARNING, "본인확인에 실패했습니다.").show();
 		}
+		if (canRequest) {
+			String responseMessage = null;
+			try {
+				String requestTokens = "ModifyProfessor:" + ProfessorDataModel.ID + ":" + Email + ":" + NewPassword;
+				BufferedReader br = new BufferedReader(
+						new InputStreamReader(this.socket.getInputStream(), StandardCharsets.UTF_8));
+				PrintWriter pw = new PrintWriter(
+						new OutputStreamWriter(this.socket.getOutputStream(), StandardCharsets.UTF_8));
+				pw.println(requestTokens);
+				pw.flush();
+				responseMessage = br.readLine();
+			} catch (Exception e) {
+				System.out.println("Error : " + e.getMessage() + " FROM btn_Updatea_Action");
+			}
+			String[] responseTokens = responseMessage.split(":");
+			if (responseTokens[0].equals("ModifyProfessor")) {
+				if (!responseTokens[1].equals("Success")) {
+					System.out.println(responseTokens[1]);
+					new Alert(Alert.AlertType.WARNING, "MyInfo가 수정에 실패했습니다. 잠시후 다시 시도해주세요.", ButtonType.CLOSE)
+							.show();
+				} else {
+					ProfessorDataModel.professor.setEmail(Email);
+					new Alert(Alert.AlertType.CONFIRMATION, "MyInfo가 수정되었습니다.", ButtonType.CLOSE).show();
+				}
+			}
+		} else
+			new Alert(AlertType.WARNING, "본인확인에 실패했습니다.").show();
 	}
 
 	private boolean checkNewPassword(String password, String checkPW) {
