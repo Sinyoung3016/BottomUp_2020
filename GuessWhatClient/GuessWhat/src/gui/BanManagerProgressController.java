@@ -110,6 +110,7 @@ public class BanManagerProgressController implements Initializable {
 	}
 
 	private void makeTable() {
+		ProfessorDataModel.Students = new LinkedList<>();
 		Iterator<Student> e = ProfessorDataModel.ip_student.values().iterator();
 		while(e.hasNext())
 			(ProfessorDataModel.Students).add(e.next());

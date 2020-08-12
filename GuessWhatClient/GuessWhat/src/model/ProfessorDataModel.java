@@ -40,7 +40,7 @@ public class ProfessorDataModel {
 	public static ObservableList<HBoxModel> ItemList_MyClass = FXCollections.observableArrayList();
 	public static ObservableList<HBoxModel> ItemList_MyWorkBook = FXCollections.observableArrayList();
 	
-	public static LinkedList<Student> Students = new LinkedList<>();
+	public static LinkedList<Student> Students = null;
 	public static ArrayList<StuNumResult> NumStudents = null;
 	
 	public static ObservableList<Workbook> ChoiceList_MyWorkBook = FXCollections.observableArrayList();
