@@ -30,7 +30,7 @@ import room.BanManager;
 public class BanController implements Initializable {
 
 	@FXML
-	private Button btn_CreateNewBanManager, btn_ModifyClassName, btn_DeleteBan, btn_Main, btn_Logo, btn_MyInfo;;
+	private Button btn_CreateNewBanManager, btn_ModifyClassName, btn_DeleteBan, btn_Main, btn_Logo, btn_MyInfo;
 	@FXML
 	private ListView<HBoxModel> lv_BanManagerList;
 
@@ -47,7 +47,7 @@ public class BanController implements Initializable {
 		this.socket = ProfessorDataModel.socket;
 		this.professor = ProfessorDataModel.professor;
 		this.ban = ProfessorDataModel.ban;
-		
+
 		this.showBanManagerList(professor.P_Num(), ban.ban_num());
 
 		className = this.ban.ban_name();
@@ -138,21 +138,22 @@ public class BanController implements Initializable {
 	}
 
 	public void btn_CreateNewBanManager_Action() {
-		try {
-			if (ProfessorDataModel.ChoiceList_MyWorkBook.isEmpty()) {
-				new Alert(AlertType.CONFIRMATION, "생성된 WorkBook이 없습니다. MainPage의 WorkBookList를 눌러 WorkBook을 먼저 만드세요.",
-						ButtonType.CLOSE).showAndWait();
-			}
-			else {
+
+		if (ProfessorDataModel.ChoiceList_MyWorkBook.isEmpty()) {
+			new Alert(AlertType.CONFIRMATION, "생성된 WorkBook이 없습니다. MainPage의 WorkBookList를 눌러 WorkBook을 먼저 만드세요.",
+					ButtonType.CLOSE).show();
+			
+		} else {
+			try {
 				Stage primaryStage = (Stage) btn_CreateNewBanManager.getScene().getWindow();
 				Parent main = FXMLLoader.load(getClass().getResource("/gui/CreateNewBanManager.fxml"));
 				Scene scene = new Scene(main);
 				primaryStage.setTitle("GuessWhat/" + className);
 				primaryStage.setScene(scene);
 				primaryStage.show();
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
 		}
 	}
 

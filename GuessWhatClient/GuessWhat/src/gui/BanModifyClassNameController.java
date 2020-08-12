@@ -29,10 +29,10 @@ import room.Ban;
 import room.BanManager;
 import user.Professor;
 
-public class BanModifyClassNameController extends BaseController implements Initializable {
+public class BanModifyClassNameController implements Initializable {
 
 	@FXML
-	private Button btn_CancelChangeName, btn_SaveClassName;
+	private Button btn_CancelChangeName, btn_SaveClassName, btn_Main, btn_Logo, btn_MyInfo;
 	@FXML
 	private TextField tf_ChangeClassName;
 	@FXML
