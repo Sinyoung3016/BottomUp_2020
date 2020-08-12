@@ -1,5 +1,13 @@
 package exam;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.net.Socket;
+import java.nio.charset.StandardCharsets;
+
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
@@ -9,6 +17,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import model.HBoxModel;
+import model.ProfessorDataModel;
 
 //Problem의 모음
 public class Workbook {
@@ -100,6 +109,7 @@ public class Workbook {
 
 	public static class HBoxCell extends HBoxModel {
 
+		public Socket socket = ProfessorDataModel.socket;
 		private Label size = new Label();
 
 		public HBoxCell(int n, int P_num, int W_num, String W_name, int W_size) {
@@ -132,6 +142,34 @@ public class Workbook {
 
 				@Override
 				public void handle(ActionEvent e) {
+					String responseMessage = null;
+					try {
+						String requestMessage = "GetCurrentWorkbook:" + W_num;
+						BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
+						PrintWriter writer = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8));
+						writer.println(requestMessage);
+						writer.flush();
+						responseMessage = reader.readLine();
+					} catch(IOException e1) {
+						e1.printStackTrace();
+					}
+					String[] responseTokens = responseMessage.split(":");
+					
+					if(responseTokens[0].equals("GetCurrentWorkbook")) {
+						if(! responseTokens[1].equals("Success")) {
+							System.out.println("Fail : GetCurrentWorkbook");
+						}
+						else {
+							System.out.println("  [Enter] Workbook: " + responseTokens[2]);
+							//GetAllBan:Success:BNum:Name:BM_Size
+							
+							String name = responseTokens[2];
+							int bmSize = Integer.parseInt(responseTokens[3]);
+							
+							Workbook wb = new Workbook(P_num, W_num, name, bmSize);
+							ProfessorDataModel.workbook = wb;
+						}
+					}
 					try {
 						Stage primaryStage = (Stage) name.getScene().getWindow();
 						Parent search = FXMLLoader.load(getClass().getResource("/gui/WorkBook_MultipleChoice.fxml"));
