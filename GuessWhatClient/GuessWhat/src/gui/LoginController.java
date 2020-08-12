@@ -1,7 +1,5 @@
 package gui;
 
-import java.sql.SQLException;
-
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -29,10 +27,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-import authentication.Authentication;
-import database.DB_USER;
 import exam.Workbook;
-import exception.MyException;
 
 public class LoginController implements Initializable {
 
@@ -97,7 +92,7 @@ public class LoginController implements Initializable {
 				pw.flush();
 				responseMessage = br.readLine();
 			} catch (Exception e) {
-				System.out.println("login 실패" +  e.getMessage());
+				System.out.println("login 실패" + e.getMessage());
 				new Alert(Alert.AlertType.WARNING, "해당하는 ID가 없습니다. 회원가입을 해주세요.", ButtonType.OK).show();
 			}
 			String[] responseTokens = responseMessage.split(":");
@@ -136,13 +131,12 @@ public class LoginController implements Initializable {
 			new Alert(Alert.AlertType.WARNING, "빈칸을 전부 채워주세요.", ButtonType.OK).show();
 	}
 
-
-	//Private Method
+	// Private Method
 	private void getAllWorkbook(int pNum) {
 		ProfessorDataModel.ChoiceList_MyWorkBook.clear();
 		String responseMessage = null;
 		try {
-			//GetAllWorkbook:PNum
+			// GetAllWorkbook:PNum
 			String requestTokens = "GetAllWorkbook:" + pNum;
 			BufferedReader br = new BufferedReader(
 					new InputStreamReader(this.socket.getInputStream(), StandardCharsets.UTF_8));
@@ -151,23 +145,22 @@ public class LoginController implements Initializable {
 			pw.println(requestTokens);
 			pw.flush();
 			responseMessage = br.readLine();
-		} catch(IOException e) {
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		String[] responseTokens = responseMessage.split(":");
-		if(responseTokens[0].equals("GetAllWorkbook")) {
-			if(!responseTokens[1].equals("Success")) {
+		if (responseTokens[0].equals("GetAllWorkbook")) {
+			if (!responseTokens[1].equals("Success")) {
 				System.out.println("GetAllWorkbook:Fail");
-			}
-			else {
-				for(int i = 2 ; i < responseTokens.length ; i++) {		// <- GetAllWorkbook:Success:WNum:Name:Size
+			} else {
+				for (int i = 2; i < responseTokens.length; i++) { // <- GetAllWorkbook:Success:WNum:Name:Size
 					int WBNum = Integer.parseInt(responseTokens[i]);
-					String name = responseTokens[i+1];
-					int size = Integer.parseInt(responseTokens[i+2]);
+					String name = responseTokens[i + 1];
+					int size = Integer.parseInt(responseTokens[i + 2]);
 
 					Workbook newWorkbook = new Workbook(pNum, WBNum, name, size);
-					ProfessorDataModel.addWBList(newWorkbook);			
-					i = i+2;
+					ProfessorDataModel.addWBList(newWorkbook);
+					i = i + 2;
 				}
 			}
 		}

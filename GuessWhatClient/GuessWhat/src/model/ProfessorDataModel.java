@@ -30,8 +30,6 @@ public class ProfessorDataModel {
 	public static Problem problem;
 	public static Workbook[] WorkbookList = null;
 	public static Problem [] problemList;
-	public static boolean[] hasQValue = null;
-	public static boolean[] hasAValue = null;
 	public static Map<String,Student> ip_student = new HashMap<>();
 	
 	public static int currentPB = 0;

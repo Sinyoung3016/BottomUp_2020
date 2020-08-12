@@ -32,11 +32,12 @@ import javafx.stage.Stage;
 import model.ProfessorDataModel;
 import model.StudentDataModel;
 
-public class WorkBook_SubjectiveController extends BaseController implements Initializable {
+public class WorkBook_SubjectiveController implements Initializable {
 
 	@FXML
 	private Button btn_DeleteWorkBook, btn_Cancel, btn_SaveWorkBook, btn_num1, btn_num2, btn_num3, btn_num4, btn_num5,
-			btn_num6, btn_num7, btn_num8, btn_num9, btn_num10, btn_num11, btn_num12, btn_num13, btn_num14, btn_num15;
+			btn_num6, btn_num7, btn_num8, btn_num9, btn_num10, btn_num11, btn_num12, btn_num13, btn_num14, btn_num15,
+			btn_Logo, btn_MyInfo;
 	@FXML
 	private TextField tf_ChangeName;
 	@FXML
@@ -71,7 +72,7 @@ public class WorkBook_SubjectiveController extends BaseController implements Ini
 		if (hasQValue[PB_num] || hasAValue[PB_num]) {
 			if (problem.getType().equals(ProblemType.MultipleChoice)) {
 				try {
-					Stage primaryStage = (Stage) btn_Main.getScene().getWindow();
+					Stage primaryStage = (Stage) ta_Question.getScene().getWindow();
 					Parent main = FXMLLoader.load(getClass().getResource("/gui/NewWorkBook_MultipleChoice.fxml"));
 					Scene scene = new Scene(main);
 					primaryStage.setTitle("GuessWhat/WorkBook");
@@ -82,7 +83,7 @@ public class WorkBook_SubjectiveController extends BaseController implements Ini
 				}
 			} else if (problem.getType().equals(ProblemType.MultipleChoice)) {
 				try {
-					Stage primaryStage = (Stage) btn_Main.getScene().getWindow();
+					Stage primaryStage = (Stage) ta_Question.getScene().getWindow();
 					Parent main = FXMLLoader.load(getClass().getResource("/gui/NewWorkBook_MultipleChoice.fxml"));
 					Scene scene = new Scene(main);
 					primaryStage.setTitle("GuessWhat/WorkBook");
@@ -340,5 +341,43 @@ public class WorkBook_SubjectiveController extends BaseController implements Ini
 		savePro();
 		StudentDataModel.currentPB = 14;
 		changeProblem();
+	}
+	
+	public void btn_Logo_Action() {
+		Alert alert = new Alert(AlertType.WARNING, "MainPage로 이동하시겠습니까? 진행중이던 작업이 날아갈 수 있습니다.", ButtonType.YES,
+				ButtonType.NO);
+		Optional<ButtonType> result = alert.showAndWait();
+
+		if (result.get() == ButtonType.YES) {
+			try {
+				Stage primaryStage = (Stage) btn_Logo.getScene().getWindow();
+				Parent main = FXMLLoader.load(getClass().getResource("/gui/MainPage.fxml"));
+				Scene scene = new Scene(main);
+				primaryStage.setTitle("GuessWhat/MainPage");
+				primaryStage.setScene(scene);
+				primaryStage.show();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	public void btn_MyInfo_Action() {
+		Alert alert = new Alert(AlertType.WARNING, "MyInfo로 이동하시겠습니까? 진행중이던 작업이 날아갈 수 있습니다.", ButtonType.YES,
+				ButtonType.NO);
+		Optional<ButtonType> result = alert.showAndWait();
+
+		if (result.get() == ButtonType.YES) {
+			try {
+				Stage primaryStage = (Stage) btn_MyInfo.getScene().getWindow();
+				Parent main = FXMLLoader.load(getClass().getResource("/gui/MyInfo.fxml"));
+				Scene scene = new Scene(main);
+				primaryStage.setTitle("GuessWhat/MyInfo");
+				primaryStage.setScene(scene);
+				primaryStage.show();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 	}
 }
