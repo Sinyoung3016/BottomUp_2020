@@ -105,7 +105,7 @@ public class NewWorkBook_SubjectiveController implements Initializable {
 		} else {
 			ta_Question.setText("");
 			ta_Answer.setText("");
-			tf_ChangeName.setText("NewWorkBook");
+			tf_ChangeName.setText(this.workBook.W_name());
 		}
 
 		btn = new Button[] { btn_num1, btn_num2, btn_num3, btn_num4, btn_num5, btn_num6, btn_num7, btn_num8, btn_num9,
@@ -164,9 +164,7 @@ public class NewWorkBook_SubjectiveController implements Initializable {
 	private void changeName() {
 		String name = tf_ChangeName.getText();
 		if (!name.equals(null) || !name.equals(""))
-			workBook.setName(name);
-		else
-			workBook.setName("NewWorkBook");
+			ProfessorDataModel.workbook.setName(name);
 	}
 
 	private void savePro() {
