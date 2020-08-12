@@ -57,8 +57,6 @@ public class NewWorkBook_SubjectiveController implements Initializable {
 	private Button[] btn;
 	private int PB_num;
 	private int workBookSize;
-	private boolean[] hasQValue;
-	private boolean[] hasAValue;
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
@@ -72,7 +70,7 @@ public class NewWorkBook_SubjectiveController implements Initializable {
 		this.PB_num = ProfessorDataModel.currentPB;
 
 		// setting
-		if (problemList[PB_num] != null) {
+		if (ProfessorDataModel.problemList[PB_num] != null) {
 			if (problem.getType().equals(ProblemType.MultipleChoice)) {
 				try {
 					Stage primaryStage = (Stage) stage.getScene().getWindow();
@@ -165,25 +163,28 @@ public class NewWorkBook_SubjectiveController implements Initializable {
 			ProfessorDataModel.workbook.setName(name);
 	}
 
-	private void savePro() {
+	private boolean savePro() {
 
 		this.changeName();
 
 		String S_question = ta_Question.getText();
 		String S_answer = ta_Answer.getText();
 		if  ((S_question.equals(null) || S_question.equals("")) && (S_answer.equals(null) || S_answer.equals(""))) {
-			return;
+			return false;
 		} else if (S_question.equals(null) || S_question.equals("")) {
 			new Alert(AlertType.WARNING, "문제를 입력해주세요.", ButtonType.CLOSE).showAndWait();
+			return false;
 		} else if (S_answer.equals(null) || S_answer.equals("")) {
 			new Alert(AlertType.WARNING, "정답을 입력해주세요.", ButtonType.CLOSE).showAndWait();
+			return false;
 		} else {
-			problem.setPB_num(PB_num);
-			problem.setAnswer(S_answer);
-			problem.setQuestion(S_question);
-			problem.setType(ProblemType.Subjective);
+			ProfessorDataModel.problem.setPB_num(PB_num);
+			ProfessorDataModel.problem.setAnswer(S_answer);
+			ProfessorDataModel.problem.setQuestion(S_question);
+			ProfessorDataModel.problem.setType(ProblemType.Subjective);
 			
-			problemList[PB_num] = problem;
+			ProfessorDataModel.problemList[PB_num] = ProfessorDataModel.problem;
+			return true;
 		}
 	}
 
@@ -299,9 +300,7 @@ public class NewWorkBook_SubjectiveController implements Initializable {
 
 	public void btn_CreateProblem_Action() {
 
-		this.savePro();
-
-		if (PB_num < workBookSize) { //문제 수정
+		if (savePro() && (PB_num < workBookSize)) { // 문제 수정
 			new Alert(AlertType.CONFIRMATION, "Problem 수정.", ButtonType.CLOSE).showAndWait();
 
 			if (15 == PB_num + 1) {
@@ -311,10 +310,13 @@ public class NewWorkBook_SubjectiveController implements Initializable {
 				changeProblem();
 			}
 
-		} else if (PB_num == workBookSize) { //새로운 문제 저장
+		} else if (!savePro() && (PB_num < workBookSize)) {
+			new Alert(AlertType.WARNING, "해당 문제를 작성해주세요.", ButtonType.CLOSE).showAndWait();
+			return;
+		} else if (savePro() && (PB_num == workBookSize)) { // 새로운 문제 저장
 			new Alert(AlertType.CONFIRMATION, "Problem 저장.", ButtonType.CLOSE).showAndWait();
 			
-			workBook.setSize(workBookSize + 1);
+			ProfessorDataModel.workbook.setSize(workBookSize + 1);
 			ProfessorDataModel.currentPB = PB_num + 1;
 			ProfessorDataModel.problem = new Problem(ProfessorDataModel.currentPB);
 			
@@ -334,8 +336,10 @@ public class NewWorkBook_SubjectiveController implements Initializable {
 
 	private void changeProblem() {
 		int index = StudentDataModel.currentPB;
-		ProfessorDataModel.problem = problemList[index];
-
+		if (index == workBookSize)
+			ProfessorDataModel.problem = new Problem(index);
+		else
+			ProfessorDataModel.problem = problemList[index];
 		initialize(null, null);
 	}
 
