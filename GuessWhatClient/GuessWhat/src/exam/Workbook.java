@@ -170,6 +170,33 @@ public class Workbook {
 							ProfessorDataModel.workbook = wb;
 						}
 					}
+					/*
+					String responseMessage2 = null;
+					try {
+						String requestMessage2 = "GetAllProblem:" + W_num;
+						BufferedReader reader2 = new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
+						PrintWriter writer2 = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8));
+						writer2.println(requestMessage2);
+						writer2.flush();
+						responseMessage = reader2.readLine();
+					} catch(IOException e1) {
+						e1.printStackTrace();
+					}
+					String[] responseTokens2 = responseMessage2.split(":");
+					
+					if(responseTokens2[0].equals("GetAllProblem")) {
+						if(! responseTokens2[1].equals("Success")) {
+							System.out.println("Fail : GetAllProblem");
+						}
+						else {
+							for(int i = 2 ; i < responseTokens.length ; i++) {
+								
+							}
+						}
+					}
+					*/
+					
+					
 					try {
 						Stage primaryStage = (Stage) name.getScene().getWindow();
 						Parent search = FXMLLoader.load(getClass().getResource("/gui/WorkBook_MultipleChoice.fxml"));

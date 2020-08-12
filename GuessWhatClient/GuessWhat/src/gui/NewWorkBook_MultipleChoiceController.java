@@ -198,8 +198,8 @@ public class NewWorkBook_MultipleChoiceController implements Initializable {
 		this.changeName();
 
 		String S_question = ta_Question.getText();
-		String S_answerContent = tf_Answer1.getText() + "_" + tf_Answer2.getText() + "_" + tf_Answer3.getText() + "_"
-				+ tf_Answer4.getText() + "_" + tf_Answer5.getText();
+		String S_answerContent = tf_Answer1.getText() + "~" + tf_Answer2.getText() + "~" + tf_Answer3.getText() + "~"
+				+ tf_Answer4.getText() + "~" + tf_Answer5.getText();
 		String S_answer = new String();
 		if (cb_1.isSelected())
 			S_answer = S_answer + "1";
