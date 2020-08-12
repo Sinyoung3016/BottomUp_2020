@@ -78,23 +78,28 @@ public class BanManagerProgressController implements Initializable {
 					BufferedReader br = new BufferedReader(
 							new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
 					while (true) {
+						BanManager banManager = ProfessorDataModel.banManager;
 						String studentIp = null;
 						Student student = null;
 						String requestMessage = br.readLine();
 						String[] requestTokens = requestMessage.split(":");
 						if (requestTokens[0].equals("UpdateStudent")) {
-							Map<String, Student> ip_student = ProfessorDataModel.ip_student;
-							if (ProfessorDataModel.ip_student.containsKey(requestTokens[1])) {
-								student = ip_student.get(studentIp);
-								student.answer[Integer.parseInt(requestTokens[3])] = requestTokens[4];
+							if(requestTokens[1].equals(Integer.toString(banManager.BM_num()))) {
+								studentIp = requestTokens[2];
+								Map<String, Student> ip_student = ProfessorDataModel.ip_student;
+								if (ProfessorDataModel.ip_student.containsKey(requestTokens[2])) {
+									student = ip_student.get(studentIp);
+									student.answer[Integer.parseInt(requestTokens[4])] = requestTokens[5];
 
-								ProfessorDataModel.ip_student.replace(studentIp, student);
-							} else {// Student 존재x
-								int answerSize = ProfessorDataModel.workbook.WorkBooksize();
-								student = new Student(answerSize, requestTokens[2]);
-								student.answer[Integer.parseInt(requestTokens[3])] = requestTokens[4];
-								ProfessorDataModel.ip_student.put(studentIp, student);
+									ProfessorDataModel.ip_student.replace(studentIp, student);
+								} else {// Student 존재x
+									int answerSize = ProfessorDataModel.workbook.WorkBooksize();
+									student = new Student(answerSize, requestTokens[3]);
+									student.answer[Integer.parseInt(requestTokens[4])] = requestTokens[5];
+									ProfessorDataModel.ip_student.put(studentIp, student);
+								}
 							}
+							
 						}
 						Platform.runLater(() -> {
 							makeTable();

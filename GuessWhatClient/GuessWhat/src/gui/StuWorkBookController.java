@@ -21,6 +21,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
+import model.ProfessorDataModel;
 import model.StudentDataModel;
 import user.Student;
 
@@ -168,6 +169,7 @@ public class StuWorkBookController extends BaseController implements Initializab
 
 	public void btn_num1_Action() {
 		savePro();
+		this.requestUpdateStudent();
 		StudentDataModel.currentPB = 0;
 		changeProblem();
 	}
@@ -369,6 +371,29 @@ public class StuWorkBookController extends BaseController implements Initializab
 			}
 		}
 		return typeList;
+	}
+	
+	private void requestUpdateStudent() {
+		String responseMessage = null;
+		try {
+			//UpdateStudent:BMNum:Ip:Index:answer;
+			String requestTokens = "UpdateStudent:" + StudentDataModel.banManager.BM_num() + ":" + StudentDataModel.studentIp + ":" + (StudentDataModel.currentPB +1) + ":" + this.student.answer()[StudentDataModel.currentPB];
+			BufferedReader br = new BufferedReader(
+					new InputStreamReader(this.socket.getInputStream(), StandardCharsets.UTF_8));
+			PrintWriter pw = new PrintWriter(
+					new OutputStreamWriter(this.socket.getOutputStream(), StandardCharsets.UTF_8));
+			pw.println(requestTokens);
+			pw.flush();
+			responseMessage = br.readLine();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		String[] responseTokens = responseMessage.split(":");
+		if (responseTokens[0].equals("UpdateStudent")) {
+			if (responseTokens[1].equals("Success")) {
+				System.out.println("Success");
+			}
+		}
 	}
 
 }

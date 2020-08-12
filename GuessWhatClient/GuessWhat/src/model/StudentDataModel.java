@@ -17,6 +17,7 @@ public class StudentDataModel {
 	public static int currentPB = 0;
 	public static Student student = null;
 	public static boolean[] hasAnswer = null;
+	public static String studentIp = null;
 	
 	public static Workbook workbook;
 	
