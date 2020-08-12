@@ -80,6 +80,9 @@ public class ServerThread extends Thread{
 						else if(requestTokens[0].equals(Request.Join.getRequest())) { //Join:Code
 							clientRequest = "Join";
 							this.join(requestTokens[1]);
+						}else if (requestTokens[0].equals(Request.UPDATE.getRequest())) { //UpdateStudent:BMNum:Ip:Index:answer;
+							clientRequest = "Update";
+							this.update(message);
 						}
 						else if(requestTokens[0].equals(Request.ADD_BAN.getRequest())) { //AddBan:(BNum):Name:PNum
 							clientRequest = "AddBan";
@@ -227,6 +230,24 @@ public class ServerThread extends Thread{
 		if(RoomCode.join(code)) {
 			pw.println("Join:Success");
 			pw.flush();
+		}
+	}
+	
+	private void update(String responseMessage) {
+		try {
+		Iterator<Socket> iterator = dataModel.getSocketList().iterator();
+		
+		while(iterator.hasNext()) {
+			Socket socket = iterator.next();
+			PrintWriter pw=new PrintWriter(new OutputStreamWriter(socket.getOutputStream(),StandardCharsets.UTF_8));
+			pw.println(responseMessage);
+			pw.flush();
+			socket.close();
+			iterator.remove();
+		}
+
+	} catch(Exception e) {
+		System.out.println("Error : " +e.getMessage() + "FROM update");
 		}
 	}
 	private void addBan(String PNum) {
