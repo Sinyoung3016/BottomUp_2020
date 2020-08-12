@@ -57,13 +57,33 @@ public class WorkBook_MultipleChoiceController extends BaseController implements
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// TODO Auto-generated method stub
+		
+		/*				// For Test //
+		this.socket = ProfessorDataModel.socket;
+		this.workBook = ProfessorDataModel.workbook;
+		this.problemList = ProfessorDataModel.problemList;
+		
+		this.problem = ProfessorDataModel.problemList[ProfessorDataModel.currentPB];
+		this.problem = ProfessorDataModel.problem;
+		this.workBookSize = this.workBook.WorkBooksize();
+		this.PB_num = ProfessorDataModel.currentPB;
+
+		this.tf_ChangeName.setText(this.workBook.W_name());
+		this.ta_Question.setText(this.problem.question());
+		this.tf_Answer1.setText(this.problem.getAnswerContentList()[0]);
+		this.tf_Answer2.setText(this.problem.getAnswerContentList()[1]);
+		this.tf_Answer3.setText(this.problem.getAnswerContentList()[2]);
+		this.tf_Answer4.setText(this.problem.getAnswerContentList()[3]);
+		this.tf_Answer5.setText(this.problem.getAnswerContentList()[4]);
+		
 		this.socket = ProfessorDataModel.socket;
 		this.workBook = ProfessorDataModel.workbook;
 		this.problemList = ProfessorDataModel.problemList;
 		this.problem = ProfessorDataModel.problem;
 		this.workBookSize = this.workBook.WorkBooksize();
 		this.PB_num = ProfessorDataModel.currentPB;
-
+		*/
+		
 		// setting
 		if (problem.getType().equals(ProblemType.MultipleChoice)) {
 			try {
@@ -197,10 +217,31 @@ public class WorkBook_MultipleChoiceController extends BaseController implements
 
 		if (result.get() == ButtonType.YES) {
 
+			String responseMessage = null;
+			try {
+				String requestMessage = "DeleteWorkbook:" + this.workBook.W_Num();
+				BufferedReader reader = new BufferedReader(
+						new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
+				PrintWriter writer = new PrintWriter(
+						new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8));
+				writer.println(requestMessage);
+				writer.flush();
+				responseMessage = reader.readLine();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+			String[] responseTokens = responseMessage.split(":");
+
+			if (responseTokens[0].equals("DeleteWorkbook")) {
+				if (!responseTokens[1].equals("Success")) {
+					System.out.println("Fail : DeleteWorkbook");
+				} else {
+					System.out.println("  [Delete] " + this.workBook.W_name());
+				}
+			}
+			
 			ProfessorDataModel.workbook = null;
 			ProfessorDataModel.problem = null;
-			ProfessorDataModel.hasAValue = null;
-			ProfessorDataModel.hasQValue = null;
 
 			try {
 				Stage primaryStage = (Stage) btn_DeleteWorkBook.getScene().getWindow();

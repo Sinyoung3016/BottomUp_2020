@@ -336,8 +336,8 @@ public class ServerThread extends Thread{
 	}
 	private void deleteWorkbook(String WNum) {
 		if(DB_Workbook.deleteWorkbook(WNum))
-			pw.println(">>SUCCESS [DeleteWorkbook]<<");
-		else pw.println(">>FAIL [DeleteWorkbook[<<");
+			pw.println("DeleteWorkbook:Success");
+		else pw.println("DeleteWorkbook:Fail");
 
 		pw.flush();
 	}

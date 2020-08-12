@@ -156,6 +156,31 @@ public class WorkBook_ShortAnswerController implements Initializable {
 		if (result.get() == ButtonType.YES) {
 
 			// ㄹㅇ삭제
+			String responseMessage = null;
+			try {
+				String requestMessage = "DeleteWorkbook:" + this.workBook.W_Num();
+				BufferedReader reader = new BufferedReader(
+						new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
+				PrintWriter writer = new PrintWriter(
+						new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8));
+				writer.println(requestMessage);
+				writer.flush();
+				responseMessage = reader.readLine();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+			String[] responseTokens = responseMessage.split(":");
+
+			if (responseTokens[0].equals("DeleteWorkbook")) {
+				if (!responseTokens[1].equals("Success")) {
+					System.out.println("Fail : DeleteWorkbook");
+				} else {
+					System.out.println("  [Delete] " + this.workBook.W_name());
+				}
+			}
+			
+			ProfessorDataModel.workbook = null;
+			ProfessorDataModel.problem = null;
 
 			try {
 				Stage primaryStage = (Stage) btn_DeleteWorkBook.getScene().getWindow();
