@@ -68,9 +68,8 @@ public class NewWorkBook_MultipleChoiceController implements Initializable {
 		this.PB_num = ProfessorDataModel.currentPB;
 
 		// setting
-
-		if (problemList[PB_num] != null) {
-			if (problem.getType().equals(ProblemType.MultipleChoice)) {
+		if (ProfessorDataModel.problemList[PB_num] != null) {
+			if (ProfessorDataModel.problem.getType().equals(ProblemType.MultipleChoice)) {
 				try {
 					Stage primaryStage = (Stage) stage.getScene().getWindow();
 					Parent main = FXMLLoader.load(getClass().getResource("/gui/NewWorkBook_MultipleChoice.fxml"));
@@ -81,7 +80,7 @@ public class NewWorkBook_MultipleChoiceController implements Initializable {
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
-			} else if (problem.getType().equals(ProblemType.Subjective)) {
+			} else if (ProfessorDataModel.problem.getType().equals(ProblemType.Subjective)) {
 				try {
 					Stage primaryStage = (Stage) stage.getScene().getWindow();
 					Parent main = FXMLLoader.load(getClass().getResource("/gui/NewWorkBook_Subjective.fxml"));
@@ -193,7 +192,7 @@ public class NewWorkBook_MultipleChoiceController implements Initializable {
 			ProfessorDataModel.workbook.setName(name);
 	}
 
-	private void savePro() {
+	private boolean savePro() {
 
 		this.changeName();
 
@@ -214,22 +213,26 @@ public class NewWorkBook_MultipleChoiceController implements Initializable {
 
 		if ((S_question.equals(null) || S_question.equals("")) && (S_answer.equals(null) || S_answer.equals(""))
 				&& (!S_answerContent.equals(null) || !S_answerContent.equals(""))) {
-			return;
+			return false;
 		} else if (S_question.equals(null) || S_question.equals("")) {
 			new Alert(AlertType.WARNING, "문제를 입력해주세요.", ButtonType.CLOSE).showAndWait();
+			return false;
 		} else if (S_answerContent.equals(null) || S_answerContent.equals("")) {
 			new Alert(AlertType.WARNING, "정답 항목을 입력해주세요.", ButtonType.CLOSE).showAndWait();
+			return false;
 		} else if (S_answer.equals(null) || S_answer.equals("")) {
 			new Alert(AlertType.WARNING, "정답을 체크해주세요.", ButtonType.CLOSE).showAndWait();
+			return false;
 		} else {
-			problem.setPB_num(PB_num);
-			problem.setType(ProblemType.MultipleChoice);
-			problem.setAnswer(S_answer);
-			problem.setQuestion(S_question);
-			problem.setAnswerContent(S_answerContent);
-			
-			problemList[PB_num] = problem;
+			ProfessorDataModel.problem.setPB_num(PB_num);
+			ProfessorDataModel.problem.setType(ProblemType.MultipleChoice);
+			ProfessorDataModel.problem.setAnswer(S_answer);
+			ProfessorDataModel.problem.setQuestion(S_question);
+			ProfessorDataModel.problem.setAnswerContent(S_answerContent);
+
+			ProfessorDataModel.problemList[PB_num] = ProfessorDataModel.problem;
 		}
+		return true;
 
 	}
 
@@ -255,6 +258,7 @@ public class NewWorkBook_MultipleChoiceController implements Initializable {
 		if (result.get() == ButtonType.YES) {
 
 			ProfessorDataModel.workbook = null;
+			ProfessorDataModel.problemList = null;
 			ProfessorDataModel.problem = null;
 
 			try {
@@ -345,9 +349,7 @@ public class NewWorkBook_MultipleChoiceController implements Initializable {
 
 	public void btn_CreateProblem_Action() {
 
-		this.savePro();
-
-		if (PB_num < workBookSize) { //문제 수정
+		if (savePro() && (PB_num < workBookSize)) { // 문제 수정
 			new Alert(AlertType.CONFIRMATION, "Problem 수정.", ButtonType.CLOSE).showAndWait();
 
 			if (15 == PB_num + 1) {
@@ -357,13 +359,16 @@ public class NewWorkBook_MultipleChoiceController implements Initializable {
 				changeProblem();
 			}
 
-		} else if (PB_num == workBookSize) { //새로운 문제 저장
+		} else if (!savePro() && (PB_num < workBookSize)) {
+			new Alert(AlertType.WARNING, "해당 문제를 작성해주세요.", ButtonType.CLOSE).showAndWait();
+			return;
+		} else if (savePro() && (PB_num == workBookSize)) { // 새로운 문제 저장
 			new Alert(AlertType.CONFIRMATION, "Problem 저장.", ButtonType.CLOSE).showAndWait();
-			
-			workBook.setSize(workBookSize + 1);
+
+			ProfessorDataModel.workbook.setSize(workBookSize + 1);
 			ProfessorDataModel.currentPB = PB_num + 1;
 			ProfessorDataModel.problem = new Problem(ProfessorDataModel.currentPB);
-			
+
 			try {
 				Stage primaryStage = (Stage) btn_CreateProblem.getScene().getWindow();
 				Parent main = FXMLLoader.load(getClass().getResource("/gui/NewWorkBook_MultipleChoice.fxml"));
@@ -380,7 +385,10 @@ public class NewWorkBook_MultipleChoiceController implements Initializable {
 
 	private void changeProblem() {
 		int index = StudentDataModel.currentPB;
-		ProfessorDataModel.problem = problemList[index];
+		if (index == workBookSize)
+			ProfessorDataModel.problem = new Problem(index);
+		else
+			ProfessorDataModel.problem = problemList[index];
 
 		initialize(null, null);
 	}
