@@ -69,50 +69,27 @@ public class NewWorkBook_MultipleChoiceController implements Initializable {
 
 		// setting
 		if (ProfessorDataModel.problemList[PB_num] != null) {
-			if (ProfessorDataModel.problem.getType().equals(ProblemType.MultipleChoice)) {
-				try {
-					Stage primaryStage = (Stage) stage.getScene().getWindow();
-					Parent main = FXMLLoader.load(getClass().getResource("/gui/NewWorkBook_MultipleChoice.fxml"));
-					Scene scene = new Scene(main);
-					primaryStage.setTitle("GuessWhat/WorkBook");
-					primaryStage.setScene(scene);
-					primaryStage.show();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			} else if (ProfessorDataModel.problem.getType().equals(ProblemType.Subjective)) {
-				try {
-					Stage primaryStage = (Stage) stage.getScene().getWindow();
-					Parent main = FXMLLoader.load(getClass().getResource("/gui/NewWorkBook_Subjective.fxml"));
-					Scene scene = new Scene(main);
-					primaryStage.setTitle("GuessWhat/WorkBook");
-					primaryStage.setScene(scene);
-					primaryStage.show();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			} else {
-				ta_Question.setText(problem.question());
-				String[] answerContent = problem.getAnswerContent().split("_");
-				tf_Answer1.setText(answerContent[0]);
-				tf_Answer2.setText(answerContent[1]);
-				tf_Answer3.setText(answerContent[2]);
-				tf_Answer4.setText(answerContent[3]);
-				tf_Answer5.setText(answerContent[4]);
-				String answer = problem.answer();
-				for (int i = 0; i < answer.length(); i++) {
-					char num = answer.charAt(i);
-					if (num == '1')
-						cb_1.setSelected(true);
-					if (num == '2')
-						cb_2.setSelected(true);
-					if (num == '3')
-						cb_3.setSelected(true);
-					if (num == '4')
-						cb_4.setSelected(true);
-					if (num == '5')
-						cb_5.setSelected(true);
-				}
+
+			ta_Question.setText(problem.question());
+			String[] answerContent = problem.getAnswerContent().split("_");
+			tf_Answer1.setText(answerContent[0]);
+			tf_Answer2.setText(answerContent[1]);
+			tf_Answer3.setText(answerContent[2]);
+			tf_Answer4.setText(answerContent[3]);
+			tf_Answer5.setText(answerContent[4]);
+			String answer = problem.answer();
+			for (int i = 0; i < answer.length(); i++) {
+				char num = answer.charAt(i);
+				if (num == '1')
+					cb_1.setSelected(true);
+				if (num == '2')
+					cb_2.setSelected(true);
+				if (num == '3')
+					cb_3.setSelected(true);
+				if (num == '4')
+					cb_4.setSelected(true);
+				if (num == '5')
+					cb_5.setSelected(true);
 			}
 
 		} else {
@@ -385,12 +362,46 @@ public class NewWorkBook_MultipleChoiceController implements Initializable {
 
 	private void changeProblem() {
 		int index = StudentDataModel.currentPB;
-		if (index == workBookSize)
+		if (index == workBookSize) {
 			ProfessorDataModel.problem = new Problem(index);
-		else
+			try {
+				Stage primaryStage = (Stage) stage.getScene().getWindow();
+				Parent main = FXMLLoader.load(getClass().getResource("/gui/NewWorkBook_MultipleChoice.fxml"));
+				Scene scene = new Scene(main);
+				primaryStage.setTitle("GuessWhat/WorkBook");
+				primaryStage.setScene(scene);
+				primaryStage.show();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		} else {
 			ProfessorDataModel.problem = problemList[index];
+			if (ProfessorDataModel.problem.getType().equals(ProblemType.MultipleChoice)) {
+				try {
+					Stage primaryStage = (Stage) stage.getScene().getWindow();
+					Parent main = FXMLLoader.load(getClass().getResource("/gui/NewWorkBook_MultipleChoice.fxml"));
+					Scene scene = new Scene(main);
+					primaryStage.setTitle("GuessWhat/WorkBook");
+					primaryStage.setScene(scene);
+					primaryStage.show();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			} else if (ProfessorDataModel.problem.getType().equals(ProblemType.Subjective)) {
+				try {
+					Stage primaryStage = (Stage) stage.getScene().getWindow();
+					Parent main = FXMLLoader.load(getClass().getResource("/gui/NewWorkBook_Subjective.fxml"));
+					Scene scene = new Scene(main);
+					primaryStage.setTitle("GuessWhat/WorkBook");
+					primaryStage.setScene(scene);
+					primaryStage.show();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			} else
+				initialize(null, null);
 
-		initialize(null, null);
+		}
 	}
 
 	public void btn_num1_Action() {

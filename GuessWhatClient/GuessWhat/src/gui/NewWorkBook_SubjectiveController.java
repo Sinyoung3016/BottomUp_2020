@@ -71,32 +71,8 @@ public class NewWorkBook_SubjectiveController implements Initializable {
 
 		// setting
 		if (ProfessorDataModel.problemList[PB_num] != null) {
-			if (problem.getType().equals(ProblemType.MultipleChoice)) {
-				try {
-					Stage primaryStage = (Stage) stage.getScene().getWindow();
-					Parent main = FXMLLoader.load(getClass().getResource("/gui/NewWorkBook_MultipleChoice.fxml"));
-					Scene scene = new Scene(main);
-					primaryStage.setTitle("GuessWhat/WorkBook");
-					primaryStage.setScene(scene);
-					primaryStage.show();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			} else if (problem.getType().equals(ProblemType.ShortAnswer)) {
-				try {
-					Stage primaryStage = (Stage) stage.getScene().getWindow();
-					Parent main = FXMLLoader.load(getClass().getResource("/gui/NewWorkBook_ShortAnswer.fxml"));
-					Scene scene = new Scene(main);
-					primaryStage.setTitle("GuessWhat/WorkBook");
-					primaryStage.setScene(scene);
-					primaryStage.show();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			} else {
-				ta_Question.setText(problem.question());
-				ta_Answer.setText(problem.answer());
-			}
+			ta_Question.setText(problem.question());
+			ta_Answer.setText(problem.answer());
 		} else {
 			ta_Question.setText("");
 			ta_Answer.setText("");
@@ -169,7 +145,7 @@ public class NewWorkBook_SubjectiveController implements Initializable {
 
 		String S_question = ta_Question.getText();
 		String S_answer = ta_Answer.getText();
-		if  ((S_question.equals(null) || S_question.equals("")) && (S_answer.equals(null) || S_answer.equals(""))) {
+		if ((S_question.equals(null) || S_question.equals("")) && (S_answer.equals(null) || S_answer.equals(""))) {
 			return false;
 		} else if (S_question.equals(null) || S_question.equals("")) {
 			new Alert(AlertType.WARNING, "문제를 입력해주세요.", ButtonType.CLOSE).showAndWait();
@@ -182,7 +158,7 @@ public class NewWorkBook_SubjectiveController implements Initializable {
 			ProfessorDataModel.problem.setAnswer(S_answer);
 			ProfessorDataModel.problem.setQuestion(S_question);
 			ProfessorDataModel.problem.setType(ProblemType.Subjective);
-			
+
 			ProfessorDataModel.problemList[PB_num] = ProfessorDataModel.problem;
 			return true;
 		}
@@ -315,11 +291,11 @@ public class NewWorkBook_SubjectiveController implements Initializable {
 			return;
 		} else if (savePro() && (PB_num == workBookSize)) { // 새로운 문제 저장
 			new Alert(AlertType.CONFIRMATION, "Problem 저장.", ButtonType.CLOSE).showAndWait();
-			
+
 			ProfessorDataModel.workbook.setSize(workBookSize + 1);
 			ProfessorDataModel.currentPB = PB_num + 1;
 			ProfessorDataModel.problem = new Problem(ProfessorDataModel.currentPB);
-			
+
 			try {
 				Stage primaryStage = (Stage) btn_CreateProblem.getScene().getWindow();
 				Parent main = FXMLLoader.load(getClass().getResource("/gui/NewWorkBook_MultipleChoice.fxml"));
@@ -336,11 +312,46 @@ public class NewWorkBook_SubjectiveController implements Initializable {
 
 	private void changeProblem() {
 		int index = StudentDataModel.currentPB;
-		if (index == workBookSize)
+		if (index == workBookSize) {
 			ProfessorDataModel.problem = new Problem(index);
-		else
+			try {
+				Stage primaryStage = (Stage) stage.getScene().getWindow();
+				Parent main = FXMLLoader.load(getClass().getResource("/gui/NewWorkBook_MultipleChoice.fxml"));
+				Scene scene = new Scene(main);
+				primaryStage.setTitle("GuessWhat/WorkBook");
+				primaryStage.setScene(scene);
+				primaryStage.show();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		} else {
 			ProfessorDataModel.problem = problemList[index];
-		initialize(null, null);
+			if (problem.getType().equals(ProblemType.MultipleChoice)) {
+				try {
+					Stage primaryStage = (Stage) stage.getScene().getWindow();
+					Parent main = FXMLLoader.load(getClass().getResource("/gui/NewWorkBook_MultipleChoice.fxml"));
+					Scene scene = new Scene(main);
+					primaryStage.setTitle("GuessWhat/WorkBook");
+					primaryStage.setScene(scene);
+					primaryStage.show();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			} else if (problem.getType().equals(ProblemType.ShortAnswer)) {
+				try {
+					Stage primaryStage = (Stage) stage.getScene().getWindow();
+					Parent main = FXMLLoader.load(getClass().getResource("/gui/NewWorkBook_ShortAnswer.fxml"));
+					Scene scene = new Scene(main);
+					primaryStage.setTitle("GuessWhat/WorkBook");
+					primaryStage.setScene(scene);
+					primaryStage.show();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			} else {
+				initialize(null, null);
+			}
+		}
 	}
 
 	public void btn_num1_Action() {
