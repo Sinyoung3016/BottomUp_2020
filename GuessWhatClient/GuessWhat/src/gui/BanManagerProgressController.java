@@ -7,6 +7,7 @@ import java.net.Socket;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Optional;
@@ -92,31 +93,27 @@ public class BanManagerProgressController implements Initializable {
 						
 						if(requestTokens[0].equals("UpdateStudent")) {
 							Map<String,Student> ip_student = ProfessorDataModel.ip_student;
-							for(String ip : ip_student.keySet()) {
-								if(ip.equals(requestTokens[1])) {
-									studentIp = ip;
-									break;
-								}
-							}
-							if(studentIp == null) {
-								//Student 존재x
-								int answerSize = ProfessorDataModel.workbook.WorkBooksize();
-								student = new Student(answerSize, requestTokens[2]);
-								student.answer[Integer.parseInt(requestTokens[3])] = requestTokens[4];
-							}
-							else {
-								//Student 존재
+							if(ProfessorDataModel.ip_student.containsKey(requestTokens[1])) {
 								student = ip_student.get(studentIp);
 								student.answer[Integer.parseInt(requestTokens[3])] = requestTokens[4];
+								
+								ProfessorDataModel.ip_student.replace(studentIp, student);
+							}
+							else {
+								//Student 존재x
+								int answerSize = ProfessorDataModel.workbook.WorkBooksize();
+								student = new Student(answerSize , requestTokens[2]);
+								student.answer[Integer.parseInt(requestTokens[3])] = requestTokens[4];
+								
+								ProfessorDataModel.ip_student.put(studentIp, student);
 							}
 						}
 						
 					}
 				}
-				catch(IOException e) {
-					
+				catch(IOException e) {					
 				}
-			
+				
 			}
 		});
 		
