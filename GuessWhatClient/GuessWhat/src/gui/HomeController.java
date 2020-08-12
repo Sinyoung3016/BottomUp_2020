@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.net.InetAddress;
 import java.net.Socket;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -34,7 +35,7 @@ public class HomeController implements Initializable{
 	
 	public Socket socket;
 		
-	private static final String SERVER_IP ="172.30.1.6";
+	private static final String SERVER_IP ="192.168.25.10";
 	private static final int SERVER_PORT =8000;
 	
 	
@@ -45,7 +46,7 @@ public class HomeController implements Initializable{
 
 			ProfessorDataModel.socket = this.socket;
 			StudentDataModel.socket = this.socket;
-			
+			StudentDataModel.studentIp = InetAddress.getLocalHost().getHostAddress();
 
 		} catch(Exception e) {
 			System.out.println("Error :" +e.getMessage() + " FROM initialize in HomeController");
