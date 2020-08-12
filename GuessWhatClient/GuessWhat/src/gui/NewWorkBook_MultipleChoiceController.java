@@ -28,17 +28,19 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import model.ProfessorDataModel;
 import model.StudentDataModel;
 
-public class NewWorkBook_MultipleChoiceController extends BaseController implements Initializable {
-
+public class NewWorkBook_MultipleChoiceController implements Initializable {
+	@FXML
+	private HBox stage;
 	@FXML
 	private Button btn_DeleteWorkBook, btn_CreateProblem, btn_SaveWorkBook, btn_num1, btn_num2, btn_num3, btn_num4,
 			btn_num5, btn_num6, btn_num7, btn_num8, btn_num9, btn_num10, btn_num11, btn_num12, btn_num13, btn_num14,
-			btn_num15;
+			btn_num15, btn_Logo, btn_MyInfo;
 	@FXML
 	private TextField tf_Answer1, tf_Answer2, tf_Answer3, tf_Answer4, tf_Answer5, tf_ChangeName;
 	@FXML
@@ -73,7 +75,7 @@ public class NewWorkBook_MultipleChoiceController extends BaseController impleme
 		// setting
 		if (problem.getType().equals(ProblemType.MultipleChoice)) {
 			try {
-				Stage primaryStage = (Stage) btn_Main.getScene().getWindow();
+				Stage primaryStage = (Stage) stage.getScene().getWindow();
 				Parent main = FXMLLoader.load(getClass().getResource("/gui/NewWorkBook_MultipleChoice.fxml"));
 				Scene scene = new Scene(main);
 				primaryStage.setTitle("GuessWhat/WorkBook");
@@ -84,7 +86,7 @@ public class NewWorkBook_MultipleChoiceController extends BaseController impleme
 			}
 		} else if (problem.getType().equals(ProblemType.Subjective)) {
 			try {
-				Stage primaryStage = (Stage) btn_Main.getScene().getWindow();
+				Stage primaryStage = (Stage) stage.getScene().getWindow();
 				Parent main = FXMLLoader.load(getClass().getResource("/gui/NewWorkBook_Subjective.fxml"));
 				Scene scene = new Scene(main);
 				primaryStage.setTitle("GuessWhat/WorkBook");
@@ -523,6 +525,56 @@ public class NewWorkBook_MultipleChoiceController extends BaseController impleme
 		savePro();
 		StudentDataModel.currentPB = 14;
 		changeProblem();
+	}
+
+	public void btn_Logo_Action() {
+		Alert alert = new Alert(AlertType.WARNING, "MainPage로 이동하시겠습니까? 진행중이던 작업이 날아갈 수 있습니다.", ButtonType.YES,
+				ButtonType.NO);
+		Optional<ButtonType> result = alert.showAndWait();
+
+		if (result.get() == ButtonType.YES) {
+
+			ProfessorDataModel.workbook = null;
+			ProfessorDataModel.problem = null;
+			ProfessorDataModel.hasAValue = null;
+			ProfessorDataModel.hasQValue = null;
+			
+			try {
+				Stage primaryStage = (Stage) btn_Logo.getScene().getWindow();
+				Parent main = FXMLLoader.load(getClass().getResource("/gui/MainPage.fxml"));
+				Scene scene = new Scene(main);
+				primaryStage.setTitle("GuessWhat/MainPage");
+				primaryStage.setScene(scene);
+				primaryStage.show();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	public void btn_MyInfo_Action() {
+		Alert alert = new Alert(AlertType.WARNING, "MyInfo로 이동하시겠습니까? 진행중이던 작업이 날아갈 수 있습니다.", ButtonType.YES,
+				ButtonType.NO);
+		Optional<ButtonType> result = alert.showAndWait();
+
+		if (result.get() == ButtonType.YES) {
+			
+			ProfessorDataModel.workbook = null;
+			ProfessorDataModel.problem = null;
+			ProfessorDataModel.hasAValue = null;
+			ProfessorDataModel.hasQValue = null;
+			
+			try {
+				Stage primaryStage = (Stage) btn_MyInfo.getScene().getWindow();
+				Parent main = FXMLLoader.load(getClass().getResource("/gui/MyInfo.fxml"));
+				Scene scene = new Scene(main);
+				primaryStage.setTitle("GuessWhat/MyInfo");
+				primaryStage.setScene(scene);
+				primaryStage.show();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 }
