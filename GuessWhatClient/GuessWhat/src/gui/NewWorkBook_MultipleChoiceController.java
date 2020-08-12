@@ -67,6 +67,8 @@ public class NewWorkBook_MultipleChoiceController implements Initializable {
 		this.workBookSize = this.workBook.WorkBooksize();
 		this.PB_num = ProfessorDataModel.currentPB;
 
+		ProfessorDataModel.workbook.setName("NewWorkbook " + ProfessorDataModel.ItemList_MyWorkBook.size());
+		
 		// setting
 		if (ProfessorDataModel.problemList[PB_num] != null) {
 

@@ -567,6 +567,8 @@ public class ServerThread extends Thread{
 				sb.append(iterator.next().tokenString());
 				sb.append("_");
 			}
+			pw.println(new String(sb));
+			pw.flush();
 		}
 		else {
 			pw.println("GetAllProblem:Fail");

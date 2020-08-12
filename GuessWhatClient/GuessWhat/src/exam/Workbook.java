@@ -170,7 +170,7 @@ public class Workbook {
 							ProfessorDataModel.workbook = wb;
 						}
 					}
-					/*
+					
 					String responseMessage2 = null;
 					try {
 						String requestMessage2 = "GetAllProblem:" + W_num;
@@ -182,21 +182,57 @@ public class Workbook {
 					} catch(IOException e1) {
 						e1.printStackTrace();
 					}
+					// GetAllProblem:Success:PPNum`WNum`Question`Answer`type`answercontent_...
 					String[] responseTokens2 = responseMessage2.split(":");
-					
 					if(responseTokens2[0].equals("GetAllProblem")) {
 						if(! responseTokens2[1].equals("Success")) {
 							System.out.println("Fail : GetAllProblem");
 						}
 						else {
-							for(int i = 2 ; i < responseTokens.length ; i++) {
-								
+							String[] pbList = responseTokens2[2].split("_");
+							for(int i = 2 ; i < responseTokens2.length ; i++) {
+								String[] problemInfo = pbList[i].split("`");
+								Problem newPB = new Problem(problemInfo);
+								ProfessorDataModel.problemList[i-2] = newPB;
 							}
 						}
 					}
-					*/
+					if(ProfessorDataModel.problemList[0].getType() == ProblemType.MultipleChoice) {
+						try {
+							Stage primaryStage = (Stage) name.getScene().getWindow();
+							Parent search = FXMLLoader.load(getClass().getResource("/gui/WorkBook_MultipleChoice.fxml"));
+							Scene scene = new Scene(search);
+							primaryStage.setTitle("GuessWhat/" + name.getText());
+							primaryStage.setScene(scene);
+							primaryStage.show();
+						} catch (Exception a) {
+							a.printStackTrace();
+						}
+					}else if (ProfessorDataModel.problemList[0].getType() == ProblemType.ShortAnswer) {
+						try {
+							Stage primaryStage = (Stage) name.getScene().getWindow();
+							Parent search = FXMLLoader.load(getClass().getResource("/gui/WorkBook_ShortAnswer.fxml"));
+							Scene scene = new Scene(search);
+							primaryStage.setTitle("GuessWhat/" + name.getText());
+							primaryStage.setScene(scene);
+							primaryStage.show();
+						} catch (Exception a) {
+							a.printStackTrace();
+						}
+					}else {
+						try {
+							Stage primaryStage = (Stage) name.getScene().getWindow();
+							Parent search = FXMLLoader.load(getClass().getResource("/gui/WorkBook_Subjective.fxml"));
+							Scene scene = new Scene(search);
+							primaryStage.setTitle("GuessWhat/" + name.getText());
+							primaryStage.setScene(scene);
+							primaryStage.show();
+						} catch (Exception a) {
+							a.printStackTrace();
+						}
+					}
 					
-					
+					/*
 					try {
 						Stage primaryStage = (Stage) name.getScene().getWindow();
 						Parent search = FXMLLoader.load(getClass().getResource("/gui/WorkBook_MultipleChoice.fxml"));
@@ -207,6 +243,7 @@ public class Workbook {
 					} catch (Exception a) {
 						a.printStackTrace();
 					}
+					*/
 				}
 			});
 
