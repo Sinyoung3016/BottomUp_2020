@@ -1,22 +1,19 @@
 package gui;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-
 import exam.Workbook;
+import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyStringWrapper;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -59,9 +56,9 @@ public class BanManagerProgressController implements Initializable {
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// TODO Auto-generated method stub
-		
+
 		ProfessorDataModel.Students = new LinkedList();
-		
+
 		this.socket = ProfessorDataModel.socket;
 		this.ban = ProfessorDataModel.ban;
 		this.banManager = ProfessorDataModel.banManager;
@@ -74,50 +71,51 @@ public class BanManagerProgressController implements Initializable {
 		this.lb_BanManagerName.setText(banManager.BM_name());
 		this.lb_WorkBook.setText(workbook.W_name());
 
-		tv_Answer.getColumns().setAll(this.getColumns());
-		tv_Answer.getItems().setAll(ProfessorDataModel.Students);
-		
 		Thread thread = new Thread(new Runnable() {
-			
 			@Override
 			public void run() {
 				try {
-					BufferedReader br= new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
-					
-					while(true) {
+					BufferedReader br = new BufferedReader(
+							new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
+					while (true) {
 						String studentIp = null;
 						Student student = null;
-						
 						String requestMessage = br.readLine();
 						String[] requestTokens = requestMessage.split(":");
-						
-						if(requestTokens[0].equals("UpdateStudent")) {
-							Map<String,Student> ip_student = ProfessorDataModel.ip_student;
-							if(ProfessorDataModel.ip_student.containsKey(requestTokens[1])) {
+						if (requestTokens[0].equals("UpdateStudent")) {
+							Map<String, Student> ip_student = ProfessorDataModel.ip_student;
+							if (ProfessorDataModel.ip_student.containsKey(requestTokens[1])) {
 								student = ip_student.get(studentIp);
 								student.answer[Integer.parseInt(requestTokens[3])] = requestTokens[4];
-								
+
 								ProfessorDataModel.ip_student.replace(studentIp, student);
-							}
-							else {
-								//Student 존재x
+							} else {// Student 존재x
 								int answerSize = ProfessorDataModel.workbook.WorkBooksize();
-								student = new Student(answerSize , requestTokens[2]);
+								student = new Student(answerSize, requestTokens[2]);
 								student.answer[Integer.parseInt(requestTokens[3])] = requestTokens[4];
-								
 								ProfessorDataModel.ip_student.put(studentIp, student);
 							}
 						}
-						
+						Platform.runLater(() -> {
+							makeTable();
+						});
+						Thread.sleep(1000);
 					}
+				} catch (Exception e) {
 				}
-				catch(IOException e) {					
-				}
-				
 			}
 		});
-		
 		thread.start();
+
+	}
+
+	private void makeTable() {
+		Iterator<Student> e = ProfessorDataModel.ip_student.values().iterator();
+		while(e.hasNext())
+			(ProfessorDataModel.Students).add(e.next());
+		
+		tv_Answer.getColumns().setAll(this.getColumns());
+		tv_Answer.getItems().setAll(ProfessorDataModel.Students);
 	}
 
 	private TableColumn<Student, String>[] getColumns() {
