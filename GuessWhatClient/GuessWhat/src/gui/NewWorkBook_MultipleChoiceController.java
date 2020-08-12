@@ -195,9 +195,7 @@ public class NewWorkBook_MultipleChoiceController extends BaseController impleme
 	private void changeName() {
 		String name = tf_ChangeName.getText();
 		if (!name.equals(null) || !name.equals(""))
-			workBook.setName(name);
-		else
-			workBook.setName("NewWorkBook");
+			ProfessorDataModel.workbook.setName(name);
 	}
 
 	private void savePro() {
