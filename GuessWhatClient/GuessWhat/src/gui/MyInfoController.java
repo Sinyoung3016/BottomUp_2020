@@ -113,7 +113,7 @@ public class MyInfoController implements Initializable {
 
 	public void btn_Update_Action() {
 
-		// ModifyProfessor:ID:NewEmail:NewPassWord
+		//ModifyProfessor:ID:NewEmail:NewPassWord
 		boolean canRequest = true; // 요청을 보낼 수 있는 상태인가
 
 		if (pf_PassWord.getLength() != 0) {// password 수정 O
