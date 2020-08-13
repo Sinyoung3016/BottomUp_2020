@@ -341,8 +341,9 @@ public class NewWorkBook_MultipleChoiceController implements Initializable {
 	}
 
 	public void btn_CreateProblem_Action() {
+		boolean save = savePro();
 
-		if (savePro() && (PB_num < workBookSize)) { // 문제 수정
+		if (save && (PB_num < workBookSize)) { // 문제 수정
 			new Alert(AlertType.CONFIRMATION, "Problem 수정.", ButtonType.CLOSE).showAndWait();
 
 			if (15 == PB_num + 1) {
@@ -352,10 +353,10 @@ public class NewWorkBook_MultipleChoiceController implements Initializable {
 				changeProblem();
 			}
 
-		} else if (!savePro() && (PB_num < workBookSize)) {
+		} else if (!save && (PB_num < workBookSize)) {
 			new Alert(AlertType.WARNING, "해당 문제를 작성해주세요.", ButtonType.CLOSE).showAndWait();
 			return;
-		} else if (savePro() && (PB_num == workBookSize)) { // 새로운 문제 저장
+		} else if (save && (PB_num == workBookSize)) { // 새로운 문제 저장
 			new Alert(AlertType.CONFIRMATION, "Problem 저장.", ButtonType.CLOSE).showAndWait();
 
 			ProfessorDataModel.workbook.setSize(workBookSize + 1);
