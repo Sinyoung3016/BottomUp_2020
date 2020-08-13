@@ -70,48 +70,8 @@ public class BanManagerProgressController implements Initializable {
 		this.btn_Main.setText(ban.ban_name());
 		this.lb_BanManagerName.setText(banManager.BM_name());
 		this.lb_WorkBook.setText(workbook.W_name());
-
-		Thread thread = new Thread(new Runnable() {
-			@Override
-			public void run() {
-				try {
-					BufferedReader br = new BufferedReader(
-							new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
-					while (true) {
-						BanManager banManager = ProfessorDataModel.banManager;
-						String studentIp = null;
-						Student student = null;
-						String requestMessage = br.readLine();
-						String[] requestTokens = requestMessage.split(":");
-						if (requestTokens[0].equals("UpdateStudent")) {
-							if(requestTokens[1].equals(Integer.toString(banManager.BM_num()))) {
-								studentIp = requestTokens[2];
-								Map<String, Student> ip_student = ProfessorDataModel.ip_student;
-								if (ProfessorDataModel.ip_student.containsKey(requestTokens[2])) {
-									student = ip_student.get(studentIp);
-									student.answer[Integer.parseInt(requestTokens[4])] = requestTokens[5];
-
-									ProfessorDataModel.ip_student.replace(studentIp, student);
-								} else {// Student 존재x
-									int answerSize = ProfessorDataModel.workbook.WorkBooksize();
-									student = new Student(answerSize, requestTokens[3]);
-									student.answer[Integer.parseInt(requestTokens[4])] = requestTokens[5];
-									ProfessorDataModel.ip_student.put(studentIp, student);
-								}
-							}
-							
-						}
-						Platform.runLater(() -> {
-							makeTable();
-						});
-						Thread.sleep(1000);
-					}
-				} catch (Exception e) {
-				}
-			}
-		});
-		thread.start();
-
+		
+		new UpdateStudentThread().start();
 	}
 
 	private void makeTable() {
@@ -177,5 +137,51 @@ public class BanManagerProgressController implements Initializable {
 	public void btn_MyInfo_Action() {
 		new Alert(AlertType.WARNING, "Test 중에는 화면 전환이 불가합니다.").show();
 	}
+	
+	class UpdateStudentThread extends Thread {
+		
+		@Override
+		public void run() {
+			try {
+				BufferedReader br = new BufferedReader(
+						new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
+				while (true) {
+					BanManager banManager = ProfessorDataModel.banManager;
+					String studentIp = null;
+					Student student = null;
+					
+					String requestMessage = br.readLine();
+					String[] requestTokens = requestMessage.split(":");
+					if (requestTokens[0].equals("UpdateStudent")) {
+						if(requestTokens[1].equals(Integer.toString(banManager.BM_num()))) {
+							studentIp = requestTokens[2];
+							Map<String, Student> ip_student = ProfessorDataModel.ip_student;
+							
+							if (ProfessorDataModel.ip_student.containsKey(requestTokens[2])) {
+								student = ip_student.get(studentIp);
+								student.answer[Integer.parseInt(requestTokens[4])] = requestTokens[5];
 
-}
+								ProfessorDataModel.ip_student.replace(studentIp, student);
+								
+							} else {// Student 존재x
+								int answerSize = ProfessorDataModel.workbook.WorkBooksize();
+								student = new Student(answerSize, requestTokens[3]);
+								student.answer[Integer.parseInt(requestTokens[4])] = requestTokens[5];
+								ProfessorDataModel.ip_student.put(studentIp, student);
+							}
+						}
+						
+					}
+					Platform.runLater(() -> {
+						makeTable();
+						
+					});
+					Thread.sleep(1000);
+				}
+			} catch (Exception e) {
+			}
+		}
+		
+	}
+	}
+

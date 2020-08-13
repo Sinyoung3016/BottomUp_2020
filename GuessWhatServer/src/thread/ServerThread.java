@@ -80,7 +80,7 @@ public class ServerThread extends Thread{
 						else if(requestTokens[0].equals(Request.Join.getRequest())) { //Join:Code
 							clientRequest = "Join";
 							this.join(requestTokens[1]);
-						}else if (requestTokens[0].equals(Request.UPDATE.getRequest())) { //UpdateStudent:BMNum:Ip:Index:answer;
+						}else if (requestTokens[0].equals(Request.UPDATE_STUDENT.getRequest())) { //UpdateStudent:BMNum:Ip:Index:answer;
 							clientRequest = "Update";
 							this.update(message);
 						}
@@ -336,8 +336,8 @@ public class ServerThread extends Thread{
 	}
 	private void deleteWorkbook(String WNum) {
 		if(DB_Workbook.deleteWorkbook(WNum))
-			pw.println(">>SUCCESS [DeleteWorkbook]<<");
-		else pw.println(">>FAIL [DeleteWorkbook[<<");
+			pw.println("DeleteWorkbook:Success");
+		else pw.println("DeleteWorkbook:Fail");
 
 		pw.flush();
 	}
@@ -567,6 +567,8 @@ public class ServerThread extends Thread{
 				sb.append(iterator.next().tokenString());
 				sb.append("_");
 			}
+			pw.println(new String(sb));
+			pw.flush();
 		}
 		else {
 			pw.println("GetAllProblem:Fail");

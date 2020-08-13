@@ -27,7 +27,16 @@ public class Problem {
 		this.answer = problemInfo[5];
 		this.answerContent = problemInfo[6];
 	}
-	
+	public Problem(int p, int w, int pb, String pbtype, String q, String a, String ac ) {
+		this.P_Num = p;
+		this.W_Num = w;
+		this.PB_Num = pb;
+		this.type = this.stringToType(pbtype);
+		this.question = q;
+		this.answer = a;
+		this.answerContent = ac;
+		this.answerContentList = this.answerContent.split("~");
+	}
 	public Problem(int P_num, int W_num, int PB_num, ProblemType type, String question, String answer, String answerContent ) {
 		this.P_Num = P_num;
 		this.W_Num = W_num;
@@ -89,7 +98,16 @@ public class Problem {
 	public String [] getAnswerContentList() {return this.answerContentList;}
 	//Getter end
 	
-	
+	private ProblemType stringToType(String type) {
+		switch(type){
+			case  "MultipleChoice":
+				return ProblemType.MultipleChoice;
+			case "ShortAnswer":
+				return ProblemType.ShortAnswer;
+			default:
+				return ProblemType.Subjective;
+		}
+	}
 	public String toString() {
 		StringBuilder sb = new StringBuilder("");
 		sb.append("PBNum : " + this.PB_Num + " WNum : " + this.W_Num + " Question : " + this.question +", Answer: " + this.answer + ", Type: " +this.type + ", AnswerContent: " + this.answerContent);
