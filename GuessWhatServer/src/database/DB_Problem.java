@@ -84,7 +84,7 @@ public class DB_Problem extends DBManager{
 		try {
 			conn = getConn();
 			
-			String sql = "UPDATE Problem SET Question = ? Answer = ? AnswerContents = ? WHERE PBNUM = ?";
+			String sql = "UPDATE Problem SET Question = ?, Answer = ?, AnswerContents = ? WHERE PBNUM = ?";
 			
 			try {
 				pstmt = conn.prepareStatement(sql);

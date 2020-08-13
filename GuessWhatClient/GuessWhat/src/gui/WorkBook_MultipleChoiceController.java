@@ -223,7 +223,7 @@ public class WorkBook_MultipleChoiceController extends BaseController implements
 		System.out.println(modifiedProblem);
 		String responseMessage = null;
 		try {
-			String requestTokens = "ModifyProblem:" + modifiedProblem; // + newQuestion:newAnswer:newContent
+			String requestTokens = "ModifyProblem:" + modifiedProblem;
 			BufferedReader br = new BufferedReader(
 					new InputStreamReader(this.socket.getInputStream(), StandardCharsets.UTF_8));
 			PrintWriter pw = new PrintWriter(
@@ -242,6 +242,8 @@ public class WorkBook_MultipleChoiceController extends BaseController implements
 				System.out.println("  [Modify] Problem");
 			}
 		}
+		Alert alert = new Alert(AlertType.INFORMATION,"수정되었습니다");
+		alert.show();
 	}
 
 	public void btn_Cancel_Action() {

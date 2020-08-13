@@ -247,6 +247,8 @@ public class WorkBook_SubjectiveController implements Initializable {
 				System.out.println("  [Modify] Problem");
 			}
 		}
+		Alert alert = new Alert(AlertType.INFORMATION,"수정되었습니다");
+		alert.show();
 	}
 
 	public void btn_Cancel_Action() {

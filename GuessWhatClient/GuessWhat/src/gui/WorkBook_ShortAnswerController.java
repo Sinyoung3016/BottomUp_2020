@@ -178,7 +178,7 @@ public class WorkBook_ShortAnswerController implements Initializable {
 		String modifiedProblem = this.problem.PB_Num() + ":" + this.problem.question() + ":" + this.problem.answer() + ":" + this.problem.getAnswerContent();
 		String responseMessage = null;
 		try {
-			String requestTokens = "ModifyProblem:" + modifiedProblem; // + newQuestion:newAnswer:newContent
+			String requestTokens = "ModifyProblem:" + modifiedProblem;
 			BufferedReader br = new BufferedReader(
 					new InputStreamReader(this.socket.getInputStream(), StandardCharsets.UTF_8));
 			PrintWriter pw = new PrintWriter(
@@ -197,6 +197,8 @@ public class WorkBook_ShortAnswerController implements Initializable {
 				System.out.println("  [Modify] Problem");
 			}
 		}
+		Alert alert = new Alert(AlertType.INFORMATION,"수정되었습니다");
+		alert.show();
 	}
 
 	public void btn_Cancel_Action() {
