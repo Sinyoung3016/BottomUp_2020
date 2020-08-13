@@ -34,7 +34,8 @@ import model.ProfessorDataModel;
 import model.StudentDataModel;
 
 public class WorkBook_MultipleChoiceController extends BaseController implements Initializable {
-
+	@FXML
+	private HBox stage;
 	@FXML
 	private Button btn_DeleteWorkBook, btn_Cancel, btn_SaveWorkBook, btn_num1, btn_num2, btn_num3, btn_num4, btn_num5,
 			btn_num6, btn_num7, btn_num8, btn_num9, btn_num10, btn_num11, btn_num12, btn_num13, btn_num14, btn_num15,
