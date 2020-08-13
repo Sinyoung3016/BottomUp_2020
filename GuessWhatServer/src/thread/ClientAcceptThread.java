@@ -29,6 +29,7 @@ public class ClientAcceptThread extends Thread{
 		try {
 			String localHostAddress = InetAddress.getLocalHost().getHostAddress();
 			serverSocket.bind(new InetSocketAddress(localHostAddress, SERVER_PORT));
+			System.out.println(serverSocket);
 			System.out.println("[server] binding \naddress: " + localHostAddress + ", port: " + SERVER_PORT);
 			
 			
