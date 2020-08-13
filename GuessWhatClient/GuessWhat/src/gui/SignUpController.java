@@ -12,9 +12,9 @@ import java.sql.SQLException;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-import authentication.Authentication;
+
 import exception.MyException;
-import database.DB_USER;
+
 
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;

@@ -388,17 +388,15 @@ public class StuWorkBookController extends BaseController implements Initializab
 	}
 	
 	private void requestUpdateStudent() {
-		String responseMessage = null;
+
 		try {
 			//UpdateStudent:BMNum:Ip:Index:answer;
 			String requestTokens = "UpdateStudent:" + StudentDataModel.banManager.BM_num() + ":" + StudentDataModel.studentIp + ":" + StudentDataModel.studentName + ":" +(StudentDataModel.currentPB +1) + ":" + this.student.answer()[StudentDataModel.currentPB];
-			BufferedReader br = new BufferedReader(
-					new InputStreamReader(this.socket.getInputStream(), StandardCharsets.UTF_8));
+			
 			PrintWriter pw = new PrintWriter(
 					new OutputStreamWriter(this.socket.getOutputStream(), StandardCharsets.UTF_8));
 			pw.println(requestTokens);
 			pw.flush();
-			System.out.println(requestTokens);
 
 		} catch (IOException e) {
 			e.printStackTrace();
