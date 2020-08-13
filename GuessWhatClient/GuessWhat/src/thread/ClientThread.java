@@ -25,42 +25,9 @@ public class ClientThread extends Thread { //for student
 
 	@Override
 	public void run() {
-		try {
-			BufferedReader br= new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
-			
-			while(true) {
-				String responseMessage = br.readLine();
-				String[] tokens = responseMessage.split(":");
-				
-				if(tokens[0].equals("ChangeState")) { //ChangeState
-					StudentDataModel.banManager.setBM_state_ING();				
-				}
-				else if(tokens[0].equals("SizeUpBanManger")) { //SizeUpBanManager:ID:BMNum:BMSize
-					if(tokens[1].equals(ProfessorDataModel.ID)) {
-						Iterator<BanManager> iterator = ProfessorDataModel.banManagerList.iterator();
-						while(iterator.hasNext()) {
-							BanManager banManager = iterator.next();
-							if(banManager.BM_num() == Integer.parseInt(tokens[2])) {
-								banManager.setSize(Integer.parseInt(tokens[3]));
-								System.out.println(banManager.Student_size());
-							}
-						}
-						
-						
-					}
-				}
-			}
-		} catch(IOException e) {
-			if(e.getMessage().equals("Connection reset")) {
-        		Platform.runLater(() -> {new Alert(Alert.AlertType.INFORMATION, "서버가 닫혔습니다.강제종료됩니다.", ButtonType.CLOSE).show();});
-        		try {
-					Thread.sleep(2000);
-				} catch (InterruptedException e1) {
-				}
-				System.exit(0);
-        	}
-        	System.out.println("Error : "  + e.getMessage() + " FROM ClientThread Run");
-		}
+	
+	
 		
 	}
+
 }

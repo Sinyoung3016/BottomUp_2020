@@ -27,6 +27,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import model.ProfessorDataModel;
@@ -65,8 +66,6 @@ public class WorkBook_SubjectiveController implements Initializable {
 		this.workBook = ProfessorDataModel.workbook;
 		this.problemList = ProfessorDataModel.problemList;
 		this.problem = ProfessorDataModel.problem;
-		this.hasQValue = ProfessorDataModel.hasQValue;
-		this.hasAValue = ProfessorDataModel.hasAValue;
 		this.workBookSize = this.workBook.WorkBooksize();
 		this.PB_num = ProfessorDataModel.currentPB;
 
