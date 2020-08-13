@@ -80,7 +80,7 @@ public class ServerThread extends Thread{
 						else if(requestTokens[0].equals(Request.Join.getRequest())) { //Join:Code
 							clientRequest = "Join";
 							this.join(requestTokens[1]);
-						}else if (requestTokens[0].equals(Request.UPDATE.getRequest())) { //UpdateStudent:BMNum:Ip:Index:answer;
+						}else if (requestTokens[0].equals(Request.UPDATE_STUDENT.getRequest())) { //UpdateStudent:BMNum:Ip:Index:answer;
 							clientRequest = "Update";
 							this.update(message);
 						}
