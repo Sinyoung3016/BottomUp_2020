@@ -14,7 +14,6 @@ import java.util.ResourceBundle;
 
 import authentication.Authentication;
 import exception.MyException;
-import database.DB_USER;
 
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
@@ -52,9 +51,8 @@ public class SignUpController implements Initializable {
 	public void btn_GuessWhat_Action() {// Login으로 이동
 		Alert alert = new Alert(AlertType.WARNING, "로그인 창으로 이동하시겠습니까? 진행중이던 작업이 날아갈 수 있습니다.", ButtonType.YES,
 				ButtonType.NO);
-		alert.show();
 		Optional<ButtonType> result = alert.showAndWait();
-		if (result.get() == ButtonType.YES) {
+		if (result.get().equals(ButtonType.YES)) {
 			try {
 				Stage primaryStage = (Stage) btn_GuessWhat.getScene().getWindow();
 				Parent main = FXMLLoader.load(getClass().getResource("/gui/Login.fxml"));
@@ -104,7 +102,7 @@ public class SignUpController implements Initializable {
 			new Alert(Alert.AlertType.WARNING, "비밀번호가 정확하지 않습니다.", ButtonType.OK).show();
 			return;
 		}
-
+		
 		if (!check_Overlap_Id) {
 			new Alert(Alert.AlertType.WARNING, "ID 중복 체크를 해주세요.", ButtonType.OK).show();
 			return;
