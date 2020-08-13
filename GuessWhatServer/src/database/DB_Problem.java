@@ -77,21 +77,21 @@ public class DB_Problem extends DBManager{
 		}
 	}
 	
-	public synchronized static boolean modifyProblem(int PNum, String newQuestion, String newAnswer, String newContent) {
+	public synchronized static boolean modifyProblem(int PBNum, String newQuestion, String newAnswer, String newContent) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		
 		try {
 			conn = getConn();
 			
-			String sql = "UPDATE Problem SET Question = ? Answer = ? AnswerContent = ? WHERE PNUM = ?";
+			String sql = "UPDATE Problem SET Question = ? Answer = ? AnswerContents = ? WHERE PBNUM = ?";
 			
 			try {
 				pstmt = conn.prepareStatement(sql);
 				pstmt.setString(1, newQuestion);
 				pstmt.setString(2, newAnswer);
 				pstmt.setString(3, newContent);
-				pstmt.setInt(4, PNum);
+				pstmt.setInt(4, PBNum);
 				pstmt.executeUpdate();
 				
 				pstmt.close();

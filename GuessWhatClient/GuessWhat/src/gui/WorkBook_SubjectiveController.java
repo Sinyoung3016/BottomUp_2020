@@ -224,9 +224,29 @@ public class WorkBook_SubjectiveController implements Initializable {
 	}
 
 	public void btn_SaveWorkBook_Action() {
-
-		// Problem 수정해서 저장
-
+		this.savePro();
+		String modifiedProblem = this.problem.PB_Num() + ":" + this.problem.question() + ":" + this.problem.answer() + ":" + this.problem.getAnswerContent();
+		String responseMessage = null;
+		try {
+			String requestTokens = "ModifyProblem:" + modifiedProblem;
+			BufferedReader br = new BufferedReader(
+					new InputStreamReader(this.socket.getInputStream(), StandardCharsets.UTF_8));
+			PrintWriter pw = new PrintWriter(
+					new OutputStreamWriter(this.socket.getOutputStream(), StandardCharsets.UTF_8));
+			pw.println(requestTokens);
+			pw.flush();
+			responseMessage = br.readLine();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		String[] responseTokens = responseMessage.split(":");
+		if (responseTokens[0].equals("ModifyProblem")) {
+			if (!responseTokens[1].equals("Success")) {
+				System.out.println("ModifyProblem:Fail");
+			} else {
+				System.out.println("  [Modify] Problem");
+			}
+		}
 	}
 
 	public void btn_Cancel_Action() {

@@ -174,11 +174,11 @@ public class WorkBook_ShortAnswerController implements Initializable {
 	}
 
 	public void btn_SaveWorkBook_Action() {
-
-		// Problem 수정해서 저장
+		this.savePro();
+		String modifiedProblem = this.problem.PB_Num() + ":" + this.problem.question() + ":" + this.problem.answer() + ":" + this.problem.getAnswerContent();
 		String responseMessage = null;
 		try {
-			String requestTokens = "ModifyProblem:" + this.PB_num; // + newQuestion:newAnswer:newContent
+			String requestTokens = "ModifyProblem:" + modifiedProblem; // + newQuestion:newAnswer:newContent
 			BufferedReader br = new BufferedReader(
 					new InputStreamReader(this.socket.getInputStream(), StandardCharsets.UTF_8));
 			PrintWriter pw = new PrintWriter(
@@ -195,16 +195,6 @@ public class WorkBook_ShortAnswerController implements Initializable {
 				System.out.println("ModifyProblem:Fail");
 			} else {
 				System.out.println("  [Modify] Problem");
-			}
-			try {
-				Stage primaryStage = (Stage) btn_SaveWorkBook.getScene().getWindow();
-				Parent main = FXMLLoader.load(getClass().getResource("/gui/WorkBookList.fxml"));
-				Scene scene = new Scene(main);
-				primaryStage.setTitle("GuessWhat/WorkBookList");
-				primaryStage.setScene(scene);
-				primaryStage.show();
-			} catch (Exception e) {
-				e.printStackTrace();
 			}
 		}
 	}
