@@ -73,7 +73,7 @@ public class NewWorkBook_MultipleChoiceController implements Initializable {
 		if (ProfessorDataModel.problemList[PB_num] != null) {
 
 			ta_Question.setText(problem.question());
-			String[] answerContent = problem.getAnswerContent().split("_");
+			String[] answerContent = problem.getAnswerContent().split("~");
 			tf_Answer1.setText(answerContent[0]);
 			tf_Answer2.setText(answerContent[1]);
 			tf_Answer3.setText(answerContent[2]);
@@ -115,16 +115,30 @@ public class NewWorkBook_MultipleChoiceController implements Initializable {
 		btn = new Button[] { btn_num1, btn_num2, btn_num3, btn_num4, btn_num5, btn_num6, btn_num7, btn_num8, btn_num9,
 				btn_num10, btn_num11, btn_num12, btn_num13, btn_num14, btn_num15 };
 
-		for (int i = 0; i < workBookSize; i++) {
-			btn[i].setStyle("-fx-background-color: #5ad18f;");
-			btn[i].setDisable(false);
+		if (PB_num == workBookSize) {
+			for (int i = 0; i < workBookSize; i++) {
+				btn[i].setStyle("-fx-background-color: #5ad18f;");
+				btn[i].setDisable(false);
+			}
+			for (int i = workBookSize; i < 15; i++) {
+				btn[i].setStyle("-fx-background-color: #f0fff0;");
+				btn[i].setDisable(true);
+			}
+			btn[PB_num].setStyle("-fx-background-color: #22941C;");
+			btn[PB_num].setDisable(false);
+		} else {
+			for (int i = 0; i < workBookSize + 1; i++) {
+				btn[i].setStyle("-fx-background-color: #5ad18f;");
+				btn[i].setDisable(false);
+			}
+			for (int i = workBookSize + 1; i < 15; i++) {
+				btn[i].setStyle("-fx-background-color: #f0fff0;");
+				btn[i].setDisable(true);
+			}
+			btn[PB_num].setStyle("-fx-background-color: #22941C;");
+			btn[PB_num].setDisable(false);
+		
 		}
-		for (int i = workBookSize; i < 15; i++) {
-			btn[i].setStyle("-fx-background-color: #f0fff0;");
-			btn[i].setDisable(true);
-		}
-		btn[PB_num].setStyle("-fx-background-color: #22941C;");
-		btn[PB_num].setDisable(false);
 		// setting
 
 		// radiobtn
@@ -334,7 +348,7 @@ public class NewWorkBook_MultipleChoiceController implements Initializable {
 			if (15 == PB_num + 1) {
 				return;
 			} else {
-				StudentDataModel.currentPB = StudentDataModel.currentPB + 1;
+				ProfessorDataModel.currentPB = ProfessorDataModel.currentPB + 1;
 				changeProblem();
 			}
 
@@ -363,7 +377,7 @@ public class NewWorkBook_MultipleChoiceController implements Initializable {
 	}
 
 	private void changeProblem() {
-		int index = StudentDataModel.currentPB;
+		int index = ProfessorDataModel.currentPB;
 		if (index == workBookSize) {
 			ProfessorDataModel.problem = new Problem(index);
 			try {
@@ -378,10 +392,10 @@ public class NewWorkBook_MultipleChoiceController implements Initializable {
 			}
 		} else {
 			ProfessorDataModel.problem = problemList[index];
-			if (ProfessorDataModel.problem.getType().equals(ProblemType.MultipleChoice)) {
+			if (ProfessorDataModel.problem.getType().equals(ProblemType.ShortAnswer)) {
 				try {
 					Stage primaryStage = (Stage) stage.getScene().getWindow();
-					Parent main = FXMLLoader.load(getClass().getResource("/gui/NewWorkBook_MultipleChoice.fxml"));
+					Parent main = FXMLLoader.load(getClass().getResource("/gui/NewWorkBook_ShortAnswer.fxml"));
 					Scene scene = new Scene(main);
 					primaryStage.setTitle("GuessWhat/WorkBook");
 					primaryStage.setScene(scene);
@@ -408,91 +422,91 @@ public class NewWorkBook_MultipleChoiceController implements Initializable {
 
 	public void btn_num1_Action() {
 		savePro();
-		StudentDataModel.currentPB = 0;
+		ProfessorDataModel.currentPB = 0;
 		changeProblem();
 	}
 
 	public void btn_num2_Action() {
 		savePro();
-		StudentDataModel.currentPB = 1;
+		ProfessorDataModel.currentPB = 1;
 		changeProblem();
 	}
 
 	public void btn_num3_Action() {
 		savePro();
-		StudentDataModel.currentPB = 2;
+		ProfessorDataModel.currentPB = 2;
 		changeProblem();
 	}
 
 	public void btn_num4_Action() {
 		savePro();
-		StudentDataModel.currentPB = 3;
+		ProfessorDataModel.currentPB = 3;
 		changeProblem();
 	}
 
 	public void btn_num5_Action() {
 		savePro();
-		StudentDataModel.currentPB = 4;
+		ProfessorDataModel.currentPB = 4;
 		changeProblem();
 	}
 
 	public void btn_num6_Action() {
 		savePro();
-		StudentDataModel.currentPB = 5;
+		ProfessorDataModel.currentPB = 5;
 		changeProblem();
 	}
 
 	public void btn_num7_Action() {
 		savePro();
-		StudentDataModel.currentPB = 6;
+		ProfessorDataModel.currentPB = 6;
 		changeProblem();
 	}
 
 	public void btn_num8_Action() {
 		savePro();
-		StudentDataModel.currentPB = 7;
+		ProfessorDataModel.currentPB = 7;
 		changeProblem();
 	}
 
 	public void btn_num9_Action() {
 		savePro();
-		StudentDataModel.currentPB = 8;
+		ProfessorDataModel.currentPB = 8;
 		changeProblem();
 	}
 
 	public void btn_num10_Action() {
 		savePro();
-		StudentDataModel.currentPB = 9;
+		ProfessorDataModel.currentPB = 9;
 		changeProblem();
 	}
 
 	public void btn_num11_Action() {
 		savePro();
-		StudentDataModel.currentPB = 10;
+		ProfessorDataModel.currentPB = 10;
 		changeProblem();
 	}
 
 	public void btn_num12_Action() {
 		savePro();
-		StudentDataModel.currentPB = 11;
+		ProfessorDataModel.currentPB = 11;
 		changeProblem();
 	}
 
 	public void btn_num13_Action() {
 		savePro();
-		StudentDataModel.currentPB = 12;
+		ProfessorDataModel.currentPB = 12;
 		changeProblem();
 	}
 
 	public void btn_num14_Action() {
 		savePro();
-		StudentDataModel.currentPB = 13;
+		ProfessorDataModel.currentPB = 13;
 		changeProblem();
 	}
 
 	public void btn_num15_Action() {
 		savePro();
-		StudentDataModel.currentPB = 14;
+		ProfessorDataModel.currentPB = 14;
 		changeProblem();
 	}
 
