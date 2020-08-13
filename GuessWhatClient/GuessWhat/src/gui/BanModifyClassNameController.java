@@ -162,5 +162,29 @@ public class BanModifyClassNameController implements Initializable {
 		}
 
 	}
+	public void btn_Logo_Action() {
+		try {
+			Stage primaryStage = (Stage) btn_Logo.getScene().getWindow();
+			Parent main = FXMLLoader.load(getClass().getResource("/gui/MainPage.fxml"));
+			Scene scene = new Scene(main);
+			primaryStage.setTitle("GuessWhat/MainPage");
+			primaryStage.setScene(scene);
+			primaryStage.show();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
+	public void btn_MyInfo_Action() {
+		try {
+			Stage primaryStage = (Stage) btn_MyInfo.getScene().getWindow();
+			Parent main = FXMLLoader.load(getClass().getResource("/gui/MyInfo.fxml"));
+			Scene scene = new Scene(main);
+			primaryStage.setTitle("GuessWhat/MyInfo");
+			primaryStage.setScene(scene);
+			primaryStage.show();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 }
