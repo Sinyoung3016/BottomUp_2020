@@ -17,6 +17,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextField;
@@ -87,7 +88,7 @@ public class HomeController implements Initializable{
 			String[] responseTokens = responseMessage.split(":");
 			if(responseTokens[0].equals("Join")){
 				if(!responseTokens[1].equals("Success"))
-					new Alert(Alert.AlertType.WARNING, responseTokens[1], ButtonType.CLOSE).show();
+					new Alert(AlertType.WARNING, responseTokens[1], ButtonType.CLOSE).show();
 				else {
 					//Success Join 
 					//Fortune's code start
@@ -107,7 +108,7 @@ public class HomeController implements Initializable{
 			}
 		}
 		else {//isEmpty(tf_RoomCode)
-			new Alert(Alert.AlertType.WARNING, "RoomCode를 입력해주세요.", ButtonType.CLOSE).show();
+			new Alert(AlertType.WARNING, "RoomCode를 입력해주세요.", ButtonType.CLOSE).show();
 		}
 		//MoonDD's code end
 		
