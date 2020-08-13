@@ -413,7 +413,6 @@ public class StuWorkBook_MultipleChoiceController extends BaseController impleme
 					new OutputStreamWriter(this.socket.getOutputStream(), StandardCharsets.UTF_8));
 			pw.println(requestTokens);
 			pw.flush();
-			System.out.println(requestTokens);
 
 		} catch (IOException e) {
 			e.printStackTrace();

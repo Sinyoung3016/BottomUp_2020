@@ -171,6 +171,7 @@ public class NewWorkBook_ShortAnswerController implements Initializable {
 			ProfessorDataModel.problem.setAnswer(S_answer);
 			ProfessorDataModel.problem.setQuestion(S_question);
 			ProfessorDataModel.problem.setType(ProblemType.ShortAnswer);
+			ProfessorDataModel.problem.setAnswerContent("0~0~0~0~0");
 
 			ProfessorDataModel.problemList[PB_num] = ProfessorDataModel.problem;
 			return true;
