@@ -164,21 +164,83 @@ public class Workbook {
 							//GetAllBan:Success:BNum:Name:BM_Size
 							
 							String name = responseTokens[2];
-							int bmSize = Integer.parseInt(responseTokens[3]);
+							int wbSize = Integer.parseInt(responseTokens[3]);
 							
-							Workbook wb = new Workbook(P_num, W_num, name, bmSize);
+							Workbook wb = new Workbook(P_num, W_num, name, wbSize);
 							ProfessorDataModel.workbook = wb;
+							
+							ProfessorDataModel.problemList = new Problem[wbSize];
+							String responseMessage2 = null;
+							try {
+								String requestMessage2 = "GetAllProblem:" + W_num;
+								BufferedReader reader2 = new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
+								PrintWriter writer2 = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8));
+								writer2.println(requestMessage2);
+								writer2.flush();
+								responseMessage2 = reader2.readLine();
+							} catch(IOException e1) {
+								e1.printStackTrace();
+							}
+							// GetAllProblem:Success:PPNum`WNum`Question`Answer`type`answercontent_...
+							String[] responseTokens2 = responseMessage2.split(":");
+							if(responseTokens2[0].equals("GetAllProblem")) {
+								if(! responseTokens2[1].equals("Success")) {
+									System.out.println("Fail : GetAllProblem");
+								}
+								else {
+									String[] pbList = responseTokens2[2].split("_");
+									for(int i = 0 ; i < pbList.length ; i++) {
+										String[] problemInfo = pbList[i].split("`");
+										
+										int pbNum = Integer.parseInt(problemInfo[0]);
+										String q = problemInfo[2];
+										String s = problemInfo[3];
+										String type = problemInfo[4];
+										String content = problemInfo[5];
+										
+										Problem newPB = new Problem(P_num, W_num, pbNum, type, q, s, content);
+ 										ProfessorDataModel.problemList[i] = newPB;
+									}
+									ProfessorDataModel.problem=ProfessorDataModel.problemList[0];
+									ProfessorDataModel.currentPB=0;
+								}
+							}
 						}
 					}
-					try {
-						Stage primaryStage = (Stage) name.getScene().getWindow();
-						Parent search = FXMLLoader.load(getClass().getResource("/gui/WorkBook_MultipleChoice.fxml"));
-						Scene scene = new Scene(search);
-						primaryStage.setTitle("GuessWhat/" + name.getText());
-						primaryStage.setScene(scene);
-						primaryStage.show();
-					} catch (Exception a) {
-						a.printStackTrace();
+					
+					if(ProfessorDataModel.problemList[0].getType() == ProblemType.MultipleChoice) {
+						try {
+							Stage primaryStage = (Stage) name.getScene().getWindow();
+							Parent search = FXMLLoader.load(getClass().getResource("/gui/WorkBook_MultipleChoice.fxml"));
+							Scene scene = new Scene(search);
+							primaryStage.setTitle("GuessWhat/" + name.getText());
+							primaryStage.setScene(scene);
+							primaryStage.show();
+						} catch (Exception a) {
+							a.printStackTrace();
+						}
+					}else if (ProfessorDataModel.problemList[0].getType() == ProblemType.ShortAnswer) {
+						try {
+							Stage primaryStage = (Stage) name.getScene().getWindow();
+							Parent search = FXMLLoader.load(getClass().getResource("/gui/WorkBook_ShortAnswer.fxml"));
+							Scene scene = new Scene(search);
+							primaryStage.setTitle("GuessWhat/" + name.getText());
+							primaryStage.setScene(scene);
+							primaryStage.show();
+						} catch (Exception a) {
+							a.printStackTrace();
+						}
+					}else {
+						try {
+							Stage primaryStage = (Stage) name.getScene().getWindow();
+							Parent search = FXMLLoader.load(getClass().getResource("/gui/WorkBook_Subjective.fxml"));
+							Scene scene = new Scene(search);
+							primaryStage.setTitle("GuessWhat/" + name.getText());
+							primaryStage.setScene(scene);
+							primaryStage.show();
+						} catch (Exception a) {
+							a.printStackTrace();
+						}
 					}
 				}
 			});

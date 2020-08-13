@@ -32,6 +32,7 @@ GET_WORKBOOK("GetWorkbook"),
 GET_ALLWORKBOOK("GetAllWorkbook"),
 GET_CURRENTWORKBOOK("GetCurrentWorkbook"),
 GET_PROBLEM("GetProblem"),
+GET_ALLPROBLEM("GetAllProblem"),
 GET_WORKBOOK_PROBLEM("GetWorkbookProblem"),
 GET_ANSWERLIST("GetAnswerList"),
 GET_TYPELIST("GetTypeList")

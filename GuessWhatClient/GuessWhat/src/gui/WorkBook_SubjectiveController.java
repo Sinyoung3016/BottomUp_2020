@@ -35,6 +35,8 @@ import model.StudentDataModel;
 public class WorkBook_SubjectiveController implements Initializable {
 
 	@FXML
+	private HBox stage;
+	@FXML
 	private Button btn_DeleteWorkBook, btn_Cancel, btn_SaveWorkBook, btn_num1, btn_num2, btn_num3, btn_num4, btn_num5,
 			btn_num6, btn_num7, btn_num8, btn_num9, btn_num10, btn_num11, btn_num12, btn_num13, btn_num14, btn_num15,
 			btn_Logo, btn_MyInfo;
@@ -183,6 +185,31 @@ public class WorkBook_SubjectiveController implements Initializable {
 		if (result.get() == ButtonType.YES) {
 
 			// ㄹㅇ삭제
+			String responseMessage = null;
+			try {
+				String requestMessage = "DeleteWorkbook:" + this.workBook.W_Num();
+				BufferedReader reader = new BufferedReader(
+						new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
+				PrintWriter writer = new PrintWriter(
+						new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8));
+				writer.println(requestMessage);
+				writer.flush();
+				responseMessage = reader.readLine();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+			String[] responseTokens = responseMessage.split(":");
+
+			if (responseTokens[0].equals("DeleteWorkbook")) {
+				if (!responseTokens[1].equals("Success")) {
+					System.out.println("Fail : DeleteWorkbook");
+				} else {
+					System.out.println("  [Delete] " + this.workBook.W_name());
+				}
+			}
+
+			ProfessorDataModel.workbook = null;
+			ProfessorDataModel.problem = null;
 
 			try {
 				Stage primaryStage = (Stage) btn_DeleteWorkBook.getScene().getWindow();
@@ -224,125 +251,125 @@ public class WorkBook_SubjectiveController implements Initializable {
 	}
 
 	private void changeProblem() {
-		String responseMessage = null;
-		try {
-			String requestTokens = "GetProblem:" + StudentDataModel.workbook.W_Num() + ":" + StudentDataModel.currentPB;
-			BufferedReader br = new BufferedReader(
-					new InputStreamReader(this.socket.getInputStream(), StandardCharsets.UTF_8));
-			PrintWriter pw = new PrintWriter(
-					new OutputStreamWriter(this.socket.getOutputStream(), StandardCharsets.UTF_8));
-			pw.println(requestTokens);
-			pw.flush();
-			responseMessage = br.readLine();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		String[] responseTokens = responseMessage.split(":");
-		if (responseTokens[0].equals("GetProblem")) {
-			if (!responseTokens[1].equals("Success")) {
-				System.out.println(responseTokens[1]);
-			} else {
-				// Success GetProblem
-				Problem problem = new Problem(responseTokens[2]);
-				StudentDataModel.setProblem(problem);
-				System.out.println(StudentDataModel.problem.toString());
-
+		int index = ProfessorDataModel.currentPB;
+		ProfessorDataModel.problem = problemList[index];
+		if (problem.getType().equals(ProblemType.MultipleChoice)) {
+			try {
+				Stage primaryStage = (Stage) stage.getScene().getWindow();
+				Parent main = FXMLLoader.load(getClass().getResource("/gui/NewWorkBook_MultipleChoice.fxml"));
+				Scene scene = new Scene(main);
+				primaryStage.setTitle("GuessWhat/WorkBook");
+				primaryStage.setScene(scene);
+				primaryStage.show();
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
+		} else if (problem.getType().equals(ProblemType.ShortAnswer)) {
+			try {
+				Stage primaryStage = (Stage) stage.getScene().getWindow();
+				Parent main = FXMLLoader.load(getClass().getResource("/gui/NewWorkBook_ShortAnswer.fxml"));
+				Scene scene = new Scene(main);
+				primaryStage.setTitle("GuessWhat/WorkBook");
+				primaryStage.setScene(scene);
+				primaryStage.show();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		} else {
+			initialize(null, null);
 		}
-
-		initialize(null, null);
 	}
 
 	public void btn_num1_Action() {
 		savePro();
-		StudentDataModel.currentPB = 0;
+		ProfessorDataModel.currentPB = 0;
 		changeProblem();
 	}
 
 	public void btn_num2_Action() {
 		savePro();
-		StudentDataModel.currentPB = 1;
+		ProfessorDataModel.currentPB = 1;
 		changeProblem();
 	}
 
 	public void btn_num3_Action() {
 		savePro();
-		StudentDataModel.currentPB = 2;
+		ProfessorDataModel.currentPB = 2;
 		changeProblem();
 	}
 
 	public void btn_num4_Action() {
 		savePro();
-		StudentDataModel.currentPB = 3;
+		ProfessorDataModel.currentPB = 3;
 		changeProblem();
 	}
 
 	public void btn_num5_Action() {
 		savePro();
-		StudentDataModel.currentPB = 4;
+		ProfessorDataModel.currentPB = 4;
 		changeProblem();
 	}
 
 	public void btn_num6_Action() {
 		savePro();
-		StudentDataModel.currentPB = 5;
+		ProfessorDataModel.currentPB = 5;
 		changeProblem();
 	}
 
 	public void btn_num7_Action() {
 		savePro();
-		StudentDataModel.currentPB = 6;
+		ProfessorDataModel.currentPB = 6;
 		changeProblem();
 	}
 
 	public void btn_num8_Action() {
 		savePro();
-		StudentDataModel.currentPB = 7;
+		ProfessorDataModel.currentPB = 7;
 		changeProblem();
 	}
 
 	public void btn_num9_Action() {
 		savePro();
-		StudentDataModel.currentPB = 8;
+		ProfessorDataModel.currentPB = 8;
 		changeProblem();
 	}
 
 	public void btn_num10_Action() {
 		savePro();
-		StudentDataModel.currentPB = 9;
+		ProfessorDataModel.currentPB = 9;
 		changeProblem();
 	}
 
 	public void btn_num11_Action() {
 		savePro();
-		StudentDataModel.currentPB = 10;
+		ProfessorDataModel.currentPB = 10;
 		changeProblem();
 	}
 
 	public void btn_num12_Action() {
 		savePro();
-		StudentDataModel.currentPB = 11;
+		ProfessorDataModel.currentPB = 11;
 		changeProblem();
 	}
 
 	public void btn_num13_Action() {
 		savePro();
-		StudentDataModel.currentPB = 12;
+		ProfessorDataModel.currentPB = 12;
 		changeProblem();
 	}
 
 	public void btn_num14_Action() {
 		savePro();
-		StudentDataModel.currentPB = 13;
+		ProfessorDataModel.currentPB = 13;
 		changeProblem();
 	}
 
 	public void btn_num15_Action() {
 		savePro();
-		StudentDataModel.currentPB = 14;
+		ProfessorDataModel.currentPB = 14;
 		changeProblem();
 	}
-	
+
 	public void btn_Logo_Action() {
 		Alert alert = new Alert(AlertType.WARNING, "MainPage로 이동하시겠습니까? 진행중이던 작업이 날아갈 수 있습니다.", ButtonType.YES,
 				ButtonType.NO);

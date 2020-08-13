@@ -80,7 +80,7 @@ public class ServerThread extends Thread{
 						else if(requestTokens[0].equals(Request.Join.getRequest())) { //Join:Code
 							clientRequest = "Join";
 							this.join(requestTokens[1]);
-						}else if (requestTokens[0].equals(Request.UPDATE_STUDENT.getRequest())) { //UpdateStudent:BMNum:Ip:Name:Index:answer;
+						}else if (requestTokens[0].equals(Request.UPDATE.getRequest())) { //UpdateStudent:BMNum:Ip:Index:answer;
 							clientRequest = "Update";
 							this.update(message);
 						}
@@ -167,6 +167,9 @@ public class ServerThread extends Thread{
 						else if(requestTokens[0].equals(Request.GET_PROBLEM.getRequest())) { //GetProblem:WNum:Index
 							clientRequest = "GetProblem";
 							this.getProblem(requestTokens[1],requestTokens[2]);
+						}else if(requestTokens[0].equals(Request.GET_ALLPROBLEM.getRequest())) { //GetAllProblem:WNum
+							clientRequest = "GetAllProblem";
+							this.getAllProblem(requestTokens[1]);
 						}else if(requestTokens[0].equals(Request.GET_WORKBOOK_PROBLEM.getRequest())) {
 							clientRequest = "GetWorkbookProblem";
 							this.getWorkbookProblem(requestTokens[1]);
@@ -232,20 +235,22 @@ public class ServerThread extends Thread{
 			pw.flush();
 		}
 	}
-	
+
 	private void update(String responseMessage) {
 		try {
-		Iterator<Socket> iterator = dataModel.getSocketList().iterator();
-		
-		while(iterator.hasNext()) {
-			Socket socket = iterator.next();
-			PrintWriter pw=new PrintWriter(new OutputStreamWriter(socket.getOutputStream(),StandardCharsets.UTF_8));
-			pw.println(responseMessage);
-			pw.flush();
-		}
+			Iterator<Socket> iterator = dataModel.getSocketList().iterator();
 
-	} catch(Exception e) {
-		System.out.println("Error : " +e.getMessage() + "FROM update");
+			while(iterator.hasNext()) {
+				Socket socket = iterator.next();
+				PrintWriter pw=new PrintWriter(new OutputStreamWriter(socket.getOutputStream(),StandardCharsets.UTF_8));
+				pw.println(responseMessage);
+				pw.flush();
+				socket.close();
+				iterator.remove();
+			}
+
+		} catch(Exception e) {
+			System.out.println("Error : " +e.getMessage() + "FROM update");
 		}
 	}
 	private void addBan(String PNum) {
@@ -267,7 +272,7 @@ public class ServerThread extends Thread{
 
 		pw.flush();
 	}
-	
+
 	private void addWorkbook(String PNum, String Name, String Size) {
 		if(DB_Workbook.insertWorkbook(PNum,Name,Size)) {
 			int WNum = DB_Workbook.getWNumOf(PNum, Name);
@@ -279,7 +284,7 @@ public class ServerThread extends Thread{
 				pw.println("AddWorkbook:Success:" + WNum);
 			}
 		}
-			
+
 		else pw.println("AddWorkbook:Fail");
 		pw.flush();
 	}
@@ -297,13 +302,13 @@ public class ServerThread extends Thread{
 		}
 		pw.println("AddProblem:Success");
 		pw.flush();
-	
+
 	}
-	
+
 	private void addStudent(String BNum, String BMNum, String Name,String Answer,String Result) {
 		if(DB_Student.insertStudent(BNum, BMNum, Name, Answer, Result)) 
 			pw.println("AddStudent:Success");
-		
+
 		else 
 			pw.println("AddStudent:Fail");
 		pw.flush();
@@ -331,8 +336,8 @@ public class ServerThread extends Thread{
 	}
 	private void deleteWorkbook(String WNum) {
 		if(DB_Workbook.deleteWorkbook(WNum))
-			pw.println(">>SUCCESS [DeleteWorkbook]<<");
-		else pw.println(">>FAIL [DeleteWorkbook[<<");
+			pw.println("DeleteWorkbook:Success");
+		else pw.println("DeleteWorkbook:Fail");
 
 		pw.flush();
 	}
@@ -344,7 +349,7 @@ public class ServerThread extends Thread{
 
 		pw.flush();
 	}
-	
+
 	private void modifyProfessor(String id, String newEmail, String newPassword) {
 		if(DB_USER.modifyProfessor(id, newEmail, newPassword)) 
 			pw.println("ModifyProfessor:Success");
@@ -355,7 +360,7 @@ public class ServerThread extends Thread{
 	private void modifyBan(String PNum, String BNum, String newName) {
 		int pNum = Integer.parseInt(PNum);
 		int bNum = Integer.parseInt(BNum);
-		
+
 		if(DB_Ban.modifyBanName(pNum, bNum, newName))
 			pw.println("ModifyBan:Success");
 		else pw.println(">>FAIL [ModifyBan]<<");
@@ -364,7 +369,7 @@ public class ServerThread extends Thread{
 	}
 	private void modifyState(String BMNum, String newState) {
 		int bmNum = Integer.parseInt(BMNum);
-		
+
 		if(DB_BanManager.modifyState(bmNum, newState))
 			pw.println("ModifyState:Success");
 		else pw.println("ModifyState:Fail");
@@ -410,7 +415,7 @@ public class ServerThread extends Thread{
 		else {
 			String result = "GetBan:Success";
 			result = result + ":" + ban.ban_num() + ":" + ban.ban_name() + ":" + ban.banManager_Size();
-			
+
 			pw.println(result);
 			pw.flush();
 		}
@@ -510,7 +515,7 @@ public class ServerThread extends Thread{
 	private void getAllWorkbook(String PNum) { //GetAllWorkbook:PNum
 
 		int pNum = Integer.parseInt(PNum);
-		
+
 		List<Workbook> listWorkbook = DB_Workbook.getWorkbookList(pNum);
 
 		if (listWorkbook == null) {
@@ -552,7 +557,23 @@ public class ServerThread extends Thread{
 		else pw.println("GetProblem:Success:" + problem.tokenString());
 		pw.flush();
 	}
-	
+	private void getAllProblem(String WNum) {
+		int wNum = Integer.parseInt(WNum);
+		List<Problem> pbList = DB_Problem.getProblemListOf(wNum);
+		if (pbList != null) {
+			StringBuilder sb = new StringBuilder("GetAllProblem:Success:");
+			Iterator<Problem> iterator = pbList.iterator();
+			while(iterator.hasNext()) {
+				sb.append(iterator.next().tokenString());
+				sb.append("_");
+			}
+			pw.println(new String(sb));
+			pw.flush();
+		}
+		else {
+			pw.println("GetAllProblem:Fail");
+		}
+	}
 	private void getWorkbookProblem(String WNum) {
 		int num = Integer.parseInt(WNum);
 		Workbook workbook = DB_Workbook.getWorkbookOf(num);
@@ -578,21 +599,21 @@ public class ServerThread extends Thread{
 			}
 		}
 	}
-	
+
 	private void getAnswerList(String WNum) {
 		int num = Integer.parseInt(WNum);
 		List<String> answerList = DB_Problem.getAnswerList(num);
-		
+
 		if(answerList != null) {
 			StringBuilder sb = new StringBuilder("GetAnswerList:Success:");
-			
+
 			Iterator<String> iterator = answerList.iterator();
 			while(iterator.hasNext()){
 				sb.append(iterator.next());
 				sb.append("`");
 			}
 			sb.deleteCharAt(sb.length()-1);
-			
+
 			pw.println(new String(sb));
 			pw.flush();
 		}
@@ -601,14 +622,14 @@ public class ServerThread extends Thread{
 			pw.flush();
 		}
 	}
-	
+
 	private void getTypeList(String WNum) {
 		int num = Integer.parseInt(WNum);
 		List<String> typeList = DB_Problem.getTypeList(num);
-		
+
 		if(typeList != null) {
 			StringBuilder sb = new StringBuilder("GetTypeList:Success:");
-			
+
 			Iterator<String> iterator = typeList.iterator();
 			while(iterator.hasNext()){
 				sb.append(iterator.next());

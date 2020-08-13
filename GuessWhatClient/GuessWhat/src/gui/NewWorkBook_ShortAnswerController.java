@@ -69,53 +69,43 @@ public class NewWorkBook_ShortAnswerController implements Initializable {
 		this.PB_num = ProfessorDataModel.currentPB;
 
 		// setting
-		if (problemList[PB_num] != null) {
-			if (problem.getType().equals(ProblemType.MultipleChoice)) {
-				try {
-					Stage primaryStage = (Stage) stage.getScene().getWindow();
-					Parent main = FXMLLoader.load(getClass().getResource("/gui/NewWorkBook_MultipleChoice.fxml"));
-					Scene scene = new Scene(main);
-					primaryStage.setTitle("GuessWhat/WorkBook");
-					primaryStage.setScene(scene);
-					primaryStage.show();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			} else if (problem.getType().equals(ProblemType.Subjective)) {
-				try {
-					Stage primaryStage = (Stage) stage.getScene().getWindow();
-					Parent main = FXMLLoader.load(getClass().getResource("/gui/NewWorkBook_Subjective.fxml"));
-					Scene scene = new Scene(main);
-					primaryStage.setTitle("GuessWhat/WorkBook");
-					primaryStage.setScene(scene);
-					primaryStage.show();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			} else {
-				ta_Question.setText(problem.question());
-				tf_Answer.setText(problem.answer());
-			}
+		if (ProfessorDataModel.problemList[PB_num] != null) {
+			ta_Question.setText(problem.question());
+			tf_Answer.setText(problem.answer());
 		} else {
 			ta_Question.setText("");
 			tf_Answer.setText("");
 		}
 
 		tf_ChangeName.setText(workBook.W_name());
-		
+
 		btn = new Button[] { btn_num1, btn_num2, btn_num3, btn_num4, btn_num5, btn_num6, btn_num7, btn_num8, btn_num9,
 				btn_num10, btn_num11, btn_num12, btn_num13, btn_num14, btn_num15 };
 
-		for (int i = 0; i < workBookSize; i++) {
-			btn[i].setStyle("-fx-background-color: #5ad18f;");
-			btn[i].setDisable(false);
+		if (PB_num == workBookSize) {
+			for (int i = 0; i < workBookSize; i++) {
+				btn[i].setStyle("-fx-background-color: #5ad18f;");
+				btn[i].setDisable(false);
+			}
+			for (int i = workBookSize; i < 15; i++) {
+				btn[i].setStyle("-fx-background-color: #f0fff0;");
+				btn[i].setDisable(true);
+			}
+			btn[PB_num].setStyle("-fx-background-color: #22941C;");
+			btn[PB_num].setDisable(false);
+		} else {
+			for (int i = 0; i < workBookSize + 1; i++) {
+				btn[i].setStyle("-fx-background-color: #5ad18f;");
+				btn[i].setDisable(false);
+			}
+			for (int i = workBookSize + 1; i < 15; i++) {
+				btn[i].setStyle("-fx-background-color: #f0fff0;");
+				btn[i].setDisable(true);
+			}
+			btn[PB_num].setStyle("-fx-background-color: #22941C;");
+			btn[PB_num].setDisable(false);
+		
 		}
-		for (int i = workBookSize; i < 15; i++) {
-			btn[i].setStyle("-fx-background-color: #dcdcdc;");
-			btn[i].setDisable(true);
-		}
-		btn[PB_num].setStyle("-fx-background-color: #22941C;");
-		btn[PB_num].setDisable(false);
 		// setting
 
 		// radiobtn
@@ -161,28 +151,30 @@ public class NewWorkBook_ShortAnswerController implements Initializable {
 			ProfessorDataModel.workbook.setName(name);
 	}
 
-	private void savePro() {
+	private boolean savePro() {
 
 		this.changeName();
 
 		String S_question = ta_Question.getText();
 		String S_answer = tf_Answer.getText();
-		if  ((S_question.equals(null) || S_question.equals("")) && (S_answer.equals(null) || S_answer.equals(""))) {
-			return;
+		if ((S_question.equals(null) || S_question.equals("")) && (S_answer.equals(null) || S_answer.equals(""))) {
+			return false;
 		} else if (S_question.equals(null) || S_question.equals("")) {
 			new Alert(AlertType.WARNING, "문제를 입력해주세요.", ButtonType.CLOSE).showAndWait();
+			return false;
 		} else if (S_answer.equals(null) || S_answer.equals("")) {
 			new Alert(AlertType.WARNING, "정답을 입력해주세요.", ButtonType.CLOSE).showAndWait();
+			return false;
 		} else {
-			problem.setPB_num(PB_num);
-			problem.setAnswer(S_answer);
-			problem.setQuestion(S_question);
-			problem.setType(ProblemType.ShortAnswer);
-			
-			problemList[PB_num] = problem;
+
+			ProfessorDataModel.problem.setPB_num(PB_num);
+			ProfessorDataModel.problem.setAnswer(S_answer);
+			ProfessorDataModel.problem.setQuestion(S_question);
+			ProfessorDataModel.problem.setType(ProblemType.ShortAnswer);
+
+			ProfessorDataModel.problemList[PB_num] = ProfessorDataModel.problem;
+			return true;
 		}
-
-
 	}
 
 	private String tokenProblemList(Problem[] problem, int wnum) {
@@ -207,6 +199,7 @@ public class NewWorkBook_ShortAnswerController implements Initializable {
 		if (result.get() == ButtonType.YES) {
 
 			ProfessorDataModel.workbook = null;
+			ProfessorDataModel.problemList = null;
 			ProfessorDataModel.problem = null;
 
 			try {
@@ -296,10 +289,9 @@ public class NewWorkBook_ShortAnswerController implements Initializable {
 	}
 
 	public void btn_CreateProblem_Action() {
+		boolean save = savePro();
 
-		this.savePro();
-
-		if (PB_num < workBookSize) { //문제 수정
+		if (save && (PB_num < workBookSize)) { // 문제 수정
 			new Alert(AlertType.CONFIRMATION, "Problem 수정.", ButtonType.CLOSE).showAndWait();
 
 			if (15 == PB_num + 1) {
@@ -309,13 +301,16 @@ public class NewWorkBook_ShortAnswerController implements Initializable {
 				changeProblem();
 			}
 
-		} else if (PB_num == workBookSize) { //새로운 문제 저장
+		} else if (!save && (PB_num < workBookSize)) {
+			new Alert(AlertType.WARNING, "해당 문제를 작성해주세요.", ButtonType.CLOSE).showAndWait();
+			return;
+		} else if (save && (PB_num == workBookSize)) { // 새로운 문제 저장
 			new Alert(AlertType.CONFIRMATION, "Problem 저장.", ButtonType.CLOSE).showAndWait();
-			
-			workBook.setSize(workBookSize + 1);
+
+			ProfessorDataModel.workbook.setSize(workBookSize + 1);
 			ProfessorDataModel.currentPB = PB_num + 1;
 			ProfessorDataModel.problem = new Problem(ProfessorDataModel.currentPB);
-			
+
 			try {
 				Stage primaryStage = (Stage) btn_CreateProblem.getScene().getWindow();
 				Parent main = FXMLLoader.load(getClass().getResource("/gui/NewWorkBook_MultipleChoice.fxml"));
@@ -331,99 +326,138 @@ public class NewWorkBook_ShortAnswerController implements Initializable {
 	}
 
 	private void changeProblem() {
-		int index = StudentDataModel.currentPB;
-		ProfessorDataModel.problem = problemList[index];
+		int index = ProfessorDataModel.currentPB;
+		if (index == workBookSize) {
+			ProfessorDataModel.problem = new Problem(index);
+			try {
+				Stage primaryStage = (Stage) stage.getScene().getWindow();
+				Parent main = FXMLLoader.load(getClass().getResource("/gui/NewWorkBook_MultipleChoice.fxml"));
+				Scene scene = new Scene(main);
+				primaryStage.setTitle("GuessWhat/WorkBook");
+				primaryStage.setScene(scene);
+				primaryStage.show();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		} else {
+			ProfessorDataModel.problem = problemList[index];
 
-		initialize(null, null);
+			if (ProfessorDataModel.problem.getType().equals(ProblemType.MultipleChoice)) {
+				try {
+					Stage primaryStage = (Stage) stage.getScene().getWindow();
+					Parent main = FXMLLoader.load(getClass().getResource("/gui/NewWorkBook_MultipleChoice.fxml"));
+					Scene scene = new Scene(main);
+					primaryStage.setTitle("GuessWhat/WorkBook");
+					primaryStage.setScene(scene);
+					primaryStage.show();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			} else if (ProfessorDataModel.problem.getType().equals(ProblemType.Subjective)) {
+				try {
+					Stage primaryStage = (Stage) stage.getScene().getWindow();
+					Parent main = FXMLLoader.load(getClass().getResource("/gui/NewWorkBook_Subjective.fxml"));
+					Scene scene = new Scene(main);
+					primaryStage.setTitle("GuessWhat/WorkBook");
+					primaryStage.setScene(scene);
+					primaryStage.show();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			} else {
+				initialize(null, null);
+			}
+
+		}
 	}
 
 	public void btn_num1_Action() {
 		savePro();
-		StudentDataModel.currentPB = 0;
+		ProfessorDataModel.currentPB = 0;
 		changeProblem();
 	}
 
 	public void btn_num2_Action() {
 		savePro();
-		StudentDataModel.currentPB = 1;
+		ProfessorDataModel.currentPB = 1;
 		changeProblem();
 	}
 
 	public void btn_num3_Action() {
 		savePro();
-		StudentDataModel.currentPB = 2;
+		ProfessorDataModel.currentPB = 2;
 		changeProblem();
 	}
 
 	public void btn_num4_Action() {
 		savePro();
-		StudentDataModel.currentPB = 3;
+		ProfessorDataModel.currentPB = 3;
 		changeProblem();
 	}
 
 	public void btn_num5_Action() {
 		savePro();
-		StudentDataModel.currentPB = 4;
+		ProfessorDataModel.currentPB = 4;
 		changeProblem();
 	}
 
 	public void btn_num6_Action() {
 		savePro();
-		StudentDataModel.currentPB = 5;
+		ProfessorDataModel.currentPB = 5;
 		changeProblem();
 	}
 
 	public void btn_num7_Action() {
 		savePro();
-		StudentDataModel.currentPB = 6;
+		ProfessorDataModel.currentPB = 6;
 		changeProblem();
 	}
 
 	public void btn_num8_Action() {
 		savePro();
-		StudentDataModel.currentPB = 7;
+		ProfessorDataModel.currentPB = 7;
 		changeProblem();
 	}
 
 	public void btn_num9_Action() {
 		savePro();
-		StudentDataModel.currentPB = 8;
+		ProfessorDataModel.currentPB = 8;
 		changeProblem();
 	}
 
 	public void btn_num10_Action() {
 		savePro();
-		StudentDataModel.currentPB = 9;
+		ProfessorDataModel.currentPB = 9;
 		changeProblem();
 	}
 
 	public void btn_num11_Action() {
 		savePro();
-		StudentDataModel.currentPB = 10;
+		ProfessorDataModel.currentPB = 10;
 		changeProblem();
 	}
 
 	public void btn_num12_Action() {
 		savePro();
-		StudentDataModel.currentPB = 11;
+		ProfessorDataModel.currentPB = 11;
 		changeProblem();
 	}
 
 	public void btn_num13_Action() {
 		savePro();
-		StudentDataModel.currentPB = 12;
+		ProfessorDataModel.currentPB = 12;
 		changeProblem();
 	}
 
 	public void btn_num14_Action() {
 		savePro();
-		StudentDataModel.currentPB = 13;
+		ProfessorDataModel.currentPB = 13;
 		changeProblem();
 	}
 
 	public void btn_num15_Action() {
 		savePro();
-		StudentDataModel.currentPB = 14;
+		ProfessorDataModel.currentPB = 14;
 		changeProblem();
 	}
 
@@ -435,6 +469,7 @@ public class NewWorkBook_ShortAnswerController implements Initializable {
 		if (result.get() == ButtonType.YES) {
 
 			ProfessorDataModel.workbook = null;
+			ProfessorDataModel.problemList = null;
 			ProfessorDataModel.problem = null;
 
 			try {
@@ -458,6 +493,7 @@ public class NewWorkBook_ShortAnswerController implements Initializable {
 		if (result.get() == ButtonType.YES) {
 
 			ProfessorDataModel.workbook = null;
+			ProfessorDataModel.problemList = null;
 			ProfessorDataModel.problem = null;
 
 			try {
