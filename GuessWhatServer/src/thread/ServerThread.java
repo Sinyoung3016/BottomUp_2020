@@ -129,9 +129,9 @@ public class ServerThread extends Thread{
 						else if(requestTokens[0].equals(Request.MODIFY_WORKBOOK.getRequest())) { //ModifyWorkbook:WNum:newName
 							clientRequest = "ModifyWorkbook";
 							this.modifyWorkbook(requestTokens[1], requestTokens[2]);
-						}else if(requestTokens[0].equals(Request.MODIFY_PROBLEM.getRequest())) { //ModifyProblem:PNum:newQuestion
+						}else if(requestTokens[0].equals(Request.MODIFY_PROBLEM.getRequest())) { //ModifyProblem:PNum:Question:Answer:AnswerContent
 							clientRequest = "ModifyProblem";
-							this.modifyProblem(requestTokens[1], requestTokens[2]);
+							this.modifyProblem(requestTokens[1], requestTokens[2], requestTokens[3], requestTokens[4]);
 						}else if(requestTokens[0].equals(Request.GET_PROFESSOR.getRequest())) { //GetProfessor:Id
 							clientRequest = "GetProfessor";
 							this.getProfessor(requestTokens[1]);
@@ -384,10 +384,11 @@ public class ServerThread extends Thread{
 		pw.flush();
 	}
 
-	private void modifyProblem(String PNum, String newQuestion){ 
-		if(DB_Problem.modifyProblemName(PNum, newQuestion))
-			pw.println(">>SUCCESS [ModifyProblem]<<");
-		else pw.println(">>FAIL [ModifyProblem]<<");
+	private void modifyProblem(String PNum, String newQuestion, String newAnswer, String newContent){ 
+		int pNum = Integer.parseInt(PNum);
+		if(DB_Problem.modifyProblem(pNum, newQuestion, newAnswer, newContent))
+			pw.println("ModifyProblem:Success");
+		else pw.println("ModifyProblem:Fail");
 
 		pw.flush();
 	}

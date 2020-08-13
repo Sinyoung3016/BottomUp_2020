@@ -172,6 +172,7 @@ public class NewWorkBook_SubjectiveController implements Initializable {
 			ProfessorDataModel.problem.setAnswer(S_answer);
 			ProfessorDataModel.problem.setQuestion(S_question);
 			ProfessorDataModel.problem.setType(ProblemType.Subjective);
+			ProfessorDataModel.problem.setAnswerContent("0~0~0~0~0");
 
 			ProfessorDataModel.problemList[PB_num] = ProfessorDataModel.problem;
 			return true;

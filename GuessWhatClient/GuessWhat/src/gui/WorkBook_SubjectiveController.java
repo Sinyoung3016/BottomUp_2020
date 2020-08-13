@@ -231,7 +231,6 @@ public class WorkBook_SubjectiveController implements Initializable {
 	}
 
 	public void btn_Cancel_Action() {
-
 		Alert alert = new Alert(AlertType.WARNING, "해당 문제를 수정하시겠습니까?", ButtonType.YES, ButtonType.NO);
 		Optional<ButtonType> result = alert.showAndWait();
 
@@ -240,7 +239,7 @@ public class WorkBook_SubjectiveController implements Initializable {
 
 		try {
 			Stage primaryStage = (Stage) btn_Cancel.getScene().getWindow();
-			Parent main = FXMLLoader.load(getClass().getResource("/gui/NewWorkBook_MultipleChoice.fxml"));
+			Parent main = FXMLLoader.load(getClass().getResource("/gui/WorkBookList.fxml"));
 			Scene scene = new Scene(main);
 			primaryStage.setTitle("GuessWhat/WorkBook");
 			primaryStage.setScene(scene);
@@ -253,10 +252,10 @@ public class WorkBook_SubjectiveController implements Initializable {
 	private void changeProblem() {
 		int index = ProfessorDataModel.currentPB;
 		ProfessorDataModel.problem = problemList[index];
-		if (problem.getType().equals(ProblemType.MultipleChoice)) {
+		if (ProfessorDataModel.problem.getType().equals(ProblemType.MultipleChoice)) {
 			try {
 				Stage primaryStage = (Stage) stage.getScene().getWindow();
-				Parent main = FXMLLoader.load(getClass().getResource("/gui/NewWorkBook_MultipleChoice.fxml"));
+				Parent main = FXMLLoader.load(getClass().getResource("/gui/WorkBook_MultipleChoice.fxml"));
 				Scene scene = new Scene(main);
 				primaryStage.setTitle("GuessWhat/WorkBook");
 				primaryStage.setScene(scene);
@@ -264,10 +263,10 @@ public class WorkBook_SubjectiveController implements Initializable {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-		} else if (problem.getType().equals(ProblemType.ShortAnswer)) {
+		} else if (ProfessorDataModel.problem.getType().equals(ProblemType.ShortAnswer)) {
 			try {
 				Stage primaryStage = (Stage) stage.getScene().getWindow();
-				Parent main = FXMLLoader.load(getClass().getResource("/gui/NewWorkBook_ShortAnswer.fxml"));
+				Parent main = FXMLLoader.load(getClass().getResource("/gui/WorkBook_ShortAnswer.fxml"));
 				Scene scene = new Scene(main);
 				primaryStage.setTitle("GuessWhat/WorkBook");
 				primaryStage.setScene(scene);

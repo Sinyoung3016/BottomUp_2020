@@ -175,11 +175,40 @@ public class WorkBook_ShortAnswerController implements Initializable {
 	public void btn_SaveWorkBook_Action() {
 
 		// Problem 수정해서 저장
-
+		String responseMessage = null;
+		try {
+			String requestTokens = "ModifyProblem:" + this.PB_num; // + newQuestion:newAnswer:newContent
+			BufferedReader br = new BufferedReader(
+					new InputStreamReader(this.socket.getInputStream(), StandardCharsets.UTF_8));
+			PrintWriter pw = new PrintWriter(
+					new OutputStreamWriter(this.socket.getOutputStream(), StandardCharsets.UTF_8));
+			pw.println(requestTokens);
+			pw.flush();
+			responseMessage = br.readLine();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		String[] responseTokens = responseMessage.split(":");
+		if (responseTokens[0].equals("ModifyProblem")) {
+			if (!responseTokens[1].equals("Success")) {
+				System.out.println("ModifyProblem:Fail");
+			} else {
+				System.out.println("  [Modify] Problem");
+			}
+			try {
+				Stage primaryStage = (Stage) btn_SaveWorkBook.getScene().getWindow();
+				Parent main = FXMLLoader.load(getClass().getResource("/gui/WorkBookList.fxml"));
+				Scene scene = new Scene(main);
+				primaryStage.setTitle("GuessWhat/WorkBookList");
+				primaryStage.setScene(scene);
+				primaryStage.show();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	public void btn_Cancel_Action() {
-
 		Alert alert = new Alert(AlertType.WARNING, "해당 문제를 수정하시겠습니까?", ButtonType.YES, ButtonType.NO);
 		Optional<ButtonType> result = alert.showAndWait();
 
@@ -188,7 +217,7 @@ public class WorkBook_ShortAnswerController implements Initializable {
 
 		try {
 			Stage primaryStage = (Stage) btn_Cancel.getScene().getWindow();
-			Parent main = FXMLLoader.load(getClass().getResource("/gui/NewWorkBook_MultipleChoice.fxml"));
+			Parent main = FXMLLoader.load(getClass().getResource("/gui/WorkBookList.fxml"));
 			Scene scene = new Scene(main);
 			primaryStage.setTitle("GuessWhat/WorkBook");
 			primaryStage.setScene(scene);
@@ -201,10 +230,10 @@ public class WorkBook_ShortAnswerController implements Initializable {
 	private void changeProblem() {
 		int index = ProfessorDataModel.currentPB;
 		ProfessorDataModel.problem = problemList[index];
-		if (problem.getType().equals(ProblemType.MultipleChoice)) {
+		if (ProfessorDataModel.problem.getType().equals(ProblemType.MultipleChoice)) {
 			try {
 				Stage primaryStage = (Stage) stage.getScene().getWindow();
-				Parent main = FXMLLoader.load(getClass().getResource("/gui/NewWorkBook_MultipleChoice.fxml"));
+				Parent main = FXMLLoader.load(getClass().getResource("/gui/WorkBook_MultipleChoice.fxml"));
 				Scene scene = new Scene(main);
 				primaryStage.setTitle("GuessWhat/WorkBook");
 				primaryStage.setScene(scene);
@@ -212,10 +241,10 @@ public class WorkBook_ShortAnswerController implements Initializable {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-		} else if (problem.getType().equals(ProblemType.Subjective)) {
+		} else if (ProfessorDataModel.problem.getType().equals(ProblemType.Subjective)) {
 			try {
 				Stage primaryStage = (Stage) stage.getScene().getWindow();
-				Parent main = FXMLLoader.load(getClass().getResource("/gui/NewWorkBook_Subjective.fxml"));
+				Parent main = FXMLLoader.load(getClass().getResource("/gui/WorkBook_Subjective.fxml"));
 				Scene scene = new Scene(main);
 				primaryStage.setTitle("GuessWhat/WorkBook");
 				primaryStage.setScene(scene);
