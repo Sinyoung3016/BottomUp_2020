@@ -221,7 +221,6 @@ public class WorkBook_MultipleChoiceController extends BaseController implements
 	public void btn_SaveWorkBook_Action() {
 		this.savePro();
 		String modifiedProblem = this.problem.PB_Num() + ":" + this.problem.question() + ":" + this.problem.answer() + ":" + this.problem.getAnswerContent();
-		System.out.println(modifiedProblem);
 		String responseMessage = null;
 		try {
 			String requestTokens = "ModifyProblem:" + modifiedProblem;
