@@ -138,8 +138,18 @@ public class StudentInfoController implements Initializable {
 			}
 
 		} else {
-			new Alert(Alert.AlertType.WARNING, "Class has not been opened yet. Please wait in a moment.",
-					ButtonType.CLOSE).show();
+			try {
+				Stage primaryStage = (Stage) btn_Close.getScene().getWindow();
+				Parent main = FXMLLoader.load(getClass().getResource("/gui/StuInfoToStuWB.fxml"));
+				Scene scene = new Scene(main);
+				primaryStage.setTitle("GuessWhat/Test");
+				primaryStage.setScene(scene);
+				primaryStage.show();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			/*new Alert(Alert.AlertType.WARNING, "Class has not been opened yet. Please wait in a moment.",
+					ButtonType.CLOSE).show();*/
 		}
 
 	}

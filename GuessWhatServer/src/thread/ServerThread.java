@@ -144,7 +144,11 @@ public class ServerThread extends Thread{
 						}else if(requestTokens[0].equals(Request.GET_ALLBANMANGER.getRequest())) { //GetAllBanManager:PNum:BNum
 							clientRequest = "GetAllBanManager";
 							this.getAllBanManager(requestTokens[1], requestTokens[2]);
-						}else if(requestTokens[0].equals(Request.GET_BAN.getRequest())) { //GetBan:PNum:BNum
+						}else if(requestTokens[0].equals(Request.GET_BANMANAGERSTATE.getRequest())) { //GetBanManagerState:BMNum
+							clientRequest = "GetBanManagerState";
+							this.getBanManagerState(requestTokens[1]);
+						}
+						else if(requestTokens[0].equals(Request.GET_BAN.getRequest())) { //GetBan:PNum:BNum
 							clientRequest = "GetBan";
 							this.getBan(requestTokens[1], requestTokens[2]);
 						}else if(requestTokens[0].equals(Request.GET_ALLBAN.getRequest())) { //GetAllBan:PNum
@@ -417,6 +421,18 @@ public class ServerThread extends Thread{
 				result = result + ":" + ban.ban_num() + ":" + ban.ban_name() + ":" + ban.banManager_Size();
 			}
 			pw.println(result);
+			pw.flush();
+		}
+	}
+	private void getBanManagerState(String BMNum) {
+		String state = DB_BanManager.getBanManagerState(Integer.parseInt(BMNum));
+		if (state == null) {
+			pw.println("GetBanManager:Fail ");
+			pw.flush();
+		}
+		else {
+			//GetBanMnagerState:Success:BMState
+			pw.println("GetBanManagerState:Success:" + state);
 			pw.flush();
 		}
 	}
