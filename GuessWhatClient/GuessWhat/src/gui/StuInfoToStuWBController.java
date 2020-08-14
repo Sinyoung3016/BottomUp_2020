@@ -3,7 +3,6 @@ package gui;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import application.SampleController.Data;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -13,7 +12,6 @@ import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import model.StudentDataModel;
-import thread.LoadingThread;
 
 public class StuInfoToStuWBController implements Initializable {
 
