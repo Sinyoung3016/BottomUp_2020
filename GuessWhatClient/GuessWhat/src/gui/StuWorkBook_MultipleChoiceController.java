@@ -8,7 +8,6 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.util.Optional;
 import java.util.ResourceBundle;
 
 import exam.Problem;
@@ -18,22 +17,19 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import model.StudentDataModel;
 import user.Student;
 
-public class StuWorkBook_MultipleChoiceController implements Initializable {
+public class StuWorkBook_MultipleChoiceController extends BaseController implements Initializable {
 
 	@FXML
 	private Button btn_Submit, btn_Previous, btn_Next, btn_num1, btn_num2, btn_num3, btn_num4, btn_num5, btn_num6,
@@ -44,7 +40,6 @@ public class StuWorkBook_MultipleChoiceController implements Initializable {
 	private CheckBox cb_1, cb_2, cb_3, cb_4, cb_5;
 
 	private Socket socket;
-	private Problem[] problemList;
 	private Problem problem;
 	private Student student;
 	private Button[] btn;
@@ -57,10 +52,7 @@ public class StuWorkBook_MultipleChoiceController implements Initializable {
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// TODO Auto-generated method stub
 		this.socket = StudentDataModel.socket;
-		this.workBookSize = StudentDataModel.workbook.WorkBooksize();
-		this.PB_num = StudentDataModel.currentPB;
-		this.problemList = StudentDataModel.problemList;
-		this.problem = problemList[PB_num];
+		this.problem = StudentDataModel.problem;
 		this.hasAnswer = StudentDataModel.hasAnswer;
 		this.student = StudentDataModel.student;
 
@@ -76,6 +68,9 @@ public class StuWorkBook_MultipleChoiceController implements Initializable {
 				e.printStackTrace();
 			}
 		}
+
+		this.workBookSize = StudentDataModel.workbook.WorkBooksize();
+		this.PB_num = StudentDataModel.currentPB;
 
 		// setting
 		btn = new Button[] { btn_num1, btn_num2, btn_num3, btn_num4, btn_num5, btn_num6, btn_num7, btn_num8, btn_num9,
@@ -114,33 +109,9 @@ public class StuWorkBook_MultipleChoiceController implements Initializable {
 	}
 
 	private void changeProblem() {
-		if (PB_num < workBookSize) {
-			PB_num = StudentDataModel.currentPB;
-			StudentDataModel.problem = problemList[PB_num];
-			if (problem.getType().equals(ProblemType.MultipleChoice)) {
-				try {
-					Stage primaryStage = (Stage) btn_Submit.getScene().getWindow();
-					Parent main = FXMLLoader.load(getClass().getResource("/gui/StuResultDetail_MutlipleChoice.fxml"));
-					Scene scene = new Scene(main);
-					primaryStage.setTitle("GuessWhat/Workbook");
-					primaryStage.setScene(scene);
-					primaryStage.show();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			} else if (!problem.getType().equals(ProblemType.MultipleChoice)) {
-				try {
-					Stage primaryStage = (Stage) btn_Submit.getScene().getWindow();
-					Parent main = FXMLLoader.load(getClass().getResource("/gui/StuResultDetail_MutlipleChoice.fxml"));
-					Scene scene = new Scene(main);
-					primaryStage.setTitle("GuessWhat/Workbook");
-					primaryStage.setScene(scene);
-					primaryStage.show();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		}
+		StudentDataModel.setProblem(StudentDataModel.problemList[StudentDataModel.currentPB]);
+
+		this.initialize(null, null);
 	}
 
 	private void savePro() {
@@ -153,34 +124,42 @@ public class StuWorkBook_MultipleChoiceController implements Initializable {
 		if (S_answer.equals(""))
 			StudentDataModel.hasAnswer[StudentDataModel.currentPB] = false;
 		else {
-			StudentDataModel.student.setAnswerNum(S_answer, PB_num);
+			this.student.answer()[StudentDataModel.currentPB] = S_answer;
 			StudentDataModel.hasAnswer[StudentDataModel.currentPB] = true;
 		}
 
 	}
 
 	public void btn_Next_Action() {
-		if (workBookSize == StudentDataModel.currentPB + 1) {
-			Alert alert = new Alert(AlertType.CONFIRMATION, "마지막 문제입니다. 제출하시겠습니까?", ButtonType.OK, ButtonType.NO);
-			Optional<ButtonType> result = alert.showAndWait();
-			if (result.get() == ButtonType.YES) {
-				btn_Submit_Action();
-			}
+		if (!this.isIng()) {
+			btn_Submit_Action();
 		} else {
 			savePro();
-			StudentDataModel.currentPB = StudentDataModel.currentPB + 1;
-			changeProblem();
+
+			if (workBookSize == StudentDataModel.currentPB + 1)
+				btn_Submit_Action();
+			else {
+				StudentDataModel.currentPB = StudentDataModel.currentPB + 1;
+				changeProblem();
+			}
 		}
+
 	}
 
 	public void btn_Previous_Action() {
-		if (0 == StudentDataModel.currentPB) {
-			new Alert(AlertType.CONFIRMATION, "첫번째 문제입니다.", ButtonType.CLOSE).showAndWait();
+		if (!this.isIng()) {
+			btn_Submit_Action();
 		} else {
 			savePro();
-			StudentDataModel.currentPB = StudentDataModel.currentPB - 1;
-			changeProblem();
+
+			if (0 == StudentDataModel.currentPB)
+				btn_num1_Action();
+			else {
+				StudentDataModel.currentPB = StudentDataModel.currentPB - 1;
+				changeProblem();
+			}
 		}
+
 	}
 
 	public void btn_Submit_Action() {
@@ -224,93 +203,63 @@ public class StuWorkBook_MultipleChoiceController implements Initializable {
 	}
 
 	public void btn_num1_Action() {
-		savePro();
-		StudentDataModel.currentPB = 0;
-		changeProblem();
+		this.pressButton(0);
 	}
 
 	public void btn_num2_Action() {
-		savePro();
-		StudentDataModel.currentPB = 1;
-		changeProblem();
+		this.pressButton(1);
 	}
 
 	public void btn_num3_Action() {
-		savePro();
-		StudentDataModel.currentPB = 2;
-		changeProblem();
+		this.pressButton(2);
 	}
 
 	public void btn_num4_Action() {
-		savePro();
-		StudentDataModel.currentPB = 3;
-		changeProblem();
+		this.pressButton(3);
 	}
 
 	public void btn_num5_Action() {
-		savePro();
-		StudentDataModel.currentPB = 4;
-		changeProblem();
+		this.pressButton(4);
 	}
 
 	public void btn_num6_Action() {
-		savePro();
-		StudentDataModel.currentPB = 5;
-		changeProblem();
+		this.pressButton(5);
 	}
 
 	public void btn_num7_Action() {
-		savePro();
-		StudentDataModel.currentPB = 6;
-		changeProblem();
+		this.pressButton(6);
 	}
 
 	public void btn_num8_Action() {
-		savePro();
-		StudentDataModel.currentPB = 7;
-		changeProblem();
+		this.pressButton(7);
 	}
 
 	public void btn_num9_Action() {
-		savePro();
-		StudentDataModel.currentPB = 8;
-		changeProblem();
+		this.pressButton(8);
 	}
 
 	public void btn_num10_Action() {
-		savePro();
-		StudentDataModel.currentPB = 9;
-		changeProblem();
+		this.pressButton(9);
 	}
 
 	public void btn_num11_Action() {
-		savePro();
-		StudentDataModel.currentPB = 10;
-		changeProblem();
+		this.pressButton(10);
 	}
 
 	public void btn_num12_Action() {
-		savePro();
-		StudentDataModel.currentPB = 11;
-		changeProblem();
+		this.pressButton(11);
 	}
 
 	public void btn_num13_Action() {
-		savePro();
-		StudentDataModel.currentPB = 12;
-		changeProblem();
+		this.pressButton(12);
 	}
 
 	public void btn_num14_Action() {
-		savePro();
-		StudentDataModel.currentPB = 13;
-		changeProblem();
+		this.pressButton(13);
 	}
 
 	public void btn_num15_Action() {
-		savePro();
-		StudentDataModel.currentPB = 14;
-		changeProblem();
+		this.pressButton(14);
 	}
 
 	private void markAnswer() {
@@ -394,6 +343,46 @@ public class StuWorkBook_MultipleChoiceController implements Initializable {
 			}
 		}
 		return typeList;
+	}
+
+	private boolean isIng() {
+		String responseMessage = null;
+		try {
+			BufferedReader br = new BufferedReader(
+					new InputStreamReader(this.socket.getInputStream(), StandardCharsets.UTF_8));
+			PrintWriter pw = new PrintWriter(
+					new OutputStreamWriter(this.socket.getOutputStream(), StandardCharsets.UTF_8));
+			String requestMessage = "GetBanManagerState:" + StudentDataModel.banManager.BM_num();
+			pw.println(requestMessage);
+			pw.flush();
+			responseMessage = br.readLine();
+			String[] responseTokens = responseMessage.split(":");
+			// GetBanMnagerState:Success:BMState
+			if (responseTokens[0].equals("GetBanManagerState")) {
+				if (!responseTokens[1].equals("Success")) {
+					System.out.println(responseMessage);
+				} else {
+					if (responseTokens[2].equals("ING")) {
+						return true;
+					}
+				}
+			}
+		} catch (Exception e) {
+			return false;
+		}
+		return false;
+
+	}
+
+	private void pressButton(int currentPB) {
+		if (!this.isIng()) {
+			// 복복쓰 알람 울려주세여,,
+			this.btn_Submit_Action();
+		} else {
+			savePro();
+			StudentDataModel.currentPB = currentPB;
+			changeProblem();
+		}
 	}
 
 }

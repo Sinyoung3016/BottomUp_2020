@@ -8,7 +8,6 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.util.Optional;
 import java.util.ResourceBundle;
 
 import exam.Problem;
@@ -18,22 +17,19 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 import model.ProfessorDataModel;
 import model.StudentDataModel;
 import user.Student;
 
-public class StuWorkBookController implements Initializable {
+public class StuWorkBookController extends BaseController implements Initializable {
 
 	@FXML
-	private Button btn_Submit, btn_Previous, btn_Next, btn_num1, btn_num2, btn_num3, btn_num4, btn_num5, btn_num6,
-			btn_num7, btn_num8, btn_num9, btn_num10, btn_num11, btn_num12, btn_num13, btn_num14, btn_num15;
+	private Button btn_Submit, btn_Previous, btn_Next, btn_num0, btn_num1, btn_num2, btn_num3, btn_num4, btn_num5,
+			btn_num6, btn_num7, btn_num8, btn_num9, btn_num10, btn_num11, btn_num12, btn_num13, btn_num14, btn_num15;
 	@FXML
 	private Label lb_Question;
 	@FXML
@@ -42,7 +38,6 @@ public class StuWorkBookController implements Initializable {
 	private Socket socket;
 	private Problem problem;
 	private Student student;
-	private Problem[] problemList;
 	private Button[] btn;
 	private int PB_num;
 	private int workBookSize;
@@ -52,10 +47,7 @@ public class StuWorkBookController implements Initializable {
 	public void initialize(URL arg0, ResourceBundle arg1) {
 
 		this.socket = StudentDataModel.socket;
-		this.workBookSize = StudentDataModel.workbook.WorkBooksize();
-		this.PB_num = StudentDataModel.currentPB;
-		this.problemList = StudentDataModel.problemList;
-		this.problem = problemList[PB_num];
+		this.problem = StudentDataModel.problem;
 		this.student = StudentDataModel.student;
 		this.hasAnswer = StudentDataModel.hasAnswer;
 
@@ -106,38 +98,45 @@ public class StuWorkBookController implements Initializable {
 	private void savePro() {
 
 		String S_answer = ta_Answer.getText();
-		if (S_answer.equals(""))
+		if (S_answer.equals(null))
 			StudentDataModel.hasAnswer[StudentDataModel.currentPB] = false;
 		else {
-			StudentDataModel.student.setAnswerNum(S_answer, PB_num);
+			this.student.answer()[StudentDataModel.currentPB] = S_answer;
 			StudentDataModel.hasAnswer[StudentDataModel.currentPB] = true;
 		}
 
 	}
 
 	public void btn_Next_Action() {
-		if (workBookSize == StudentDataModel.currentPB + 1) {
-			Alert alert = new Alert(AlertType.CONFIRMATION, "마지막 문제입니다. 제출하시겠습니까?", ButtonType.OK, ButtonType.NO);
-			Optional<ButtonType> result = alert.showAndWait();
-			if (result.get() == ButtonType.YES) {
+		if (!this.isIng()) {
+			btn_Submit_Action();
+		} else {
+			savePro();
+
+			if (workBookSize == StudentDataModel.currentPB + 1)
 				btn_Submit_Action();
+			else {
+				StudentDataModel.currentPB = StudentDataModel.currentPB + 1;
+				changeProblem();
 			}
 		}
-		else {
-			savePro();
-			StudentDataModel.currentPB = StudentDataModel.currentPB + 1;
-			changeProblem();
-		}
+
 	}
 
 	public void btn_Previous_Action() {
-		if (0 == StudentDataModel.currentPB)
-			new Alert(AlertType.CONFIRMATION, "첫번째 문제입니다.", ButtonType.CLOSE).showAndWait();
-		else {
+		if (!this.isIng()) {
+			btn_Submit_Action();
+		} else {
 			savePro();
-			StudentDataModel.currentPB = StudentDataModel.currentPB - 1;
-			changeProblem();
+
+			if (0 == StudentDataModel.currentPB)
+				btn_num1_Action();
+			else {
+				StudentDataModel.currentPB = StudentDataModel.currentPB - 1;
+				changeProblem();
+			}
 		}
+
 	}
 
 	public void btn_Submit_Action() {
@@ -179,123 +178,70 @@ public class StuWorkBookController implements Initializable {
 	}
 
 	public void btn_num1_Action() {
-		savePro();
-		StudentDataModel.currentPB = 0;
-		changeProblem();
+		this.pressButton(0);
 	}
 
 	public void btn_num2_Action() {
-		savePro();
-		StudentDataModel.currentPB = 1;
-		changeProblem();
+		this.pressButton(1);
 	}
 
 	public void btn_num3_Action() {
-		savePro();
-		StudentDataModel.currentPB = 2;
-		changeProblem();
+		this.pressButton(2);
 	}
 
 	public void btn_num4_Action() {
-		savePro();
-		StudentDataModel.currentPB = 3;
-		changeProblem();
+		this.pressButton(3);
 	}
 
 	public void btn_num5_Action() {
-		savePro();
-		StudentDataModel.currentPB = 4;
-		changeProblem();
+		this.pressButton(4);
 	}
 
 	public void btn_num6_Action() {
-		savePro();
-		StudentDataModel.currentPB = 5;
-		changeProblem();
+		this.pressButton(5);
 	}
 
 	public void btn_num7_Action() {
-		savePro();
-		StudentDataModel.currentPB = 6;
-		changeProblem();
+		this.pressButton(6);
 	}
 
 	public void btn_num8_Action() {
-		savePro();
-		StudentDataModel.currentPB = 7;
-		changeProblem();
+		this.pressButton(7);
 	}
 
 	public void btn_num9_Action() {
-		savePro();
-		StudentDataModel.currentPB = 8;
-		changeProblem();
+		this.pressButton(8);
 	}
 
 	public void btn_num10_Action() {
-		savePro();
-		StudentDataModel.currentPB = 9;
-		changeProblem();
+		this.pressButton(9);
 	}
 
 	public void btn_num11_Action() {
-		savePro();
-		StudentDataModel.currentPB = 10;
-		changeProblem();
+		this.pressButton(10);
 	}
 
 	public void btn_num12_Action() {
-		savePro();
-		StudentDataModel.currentPB = 11;
-		changeProblem();
+		this.pressButton(11);
 	}
 
 	public void btn_num13_Action() {
-		savePro();
-		StudentDataModel.currentPB = 12;
-		changeProblem();
+		this.pressButton(12);
 	}
 
 	public void btn_num14_Action() {
-		savePro();
-		StudentDataModel.currentPB = 13;
-		changeProblem();
+		this.pressButton(13);
 	}
 
 	public void btn_num15_Action() {
-		savePro();
-		StudentDataModel.currentPB = 14;
-		changeProblem();
+		this.pressButton(14);
 	}
 
 	private void changeProblem() {
-		if (PB_num < workBookSize) {
-			PB_num = StudentDataModel.currentPB;
-			 StudentDataModel.problem = problemList[PB_num];
-			if (problem.getType().equals(ProblemType.MultipleChoice)) {
-				try {
-					Stage primaryStage = (Stage) btn_Submit.getScene().getWindow();
-					Parent main = FXMLLoader.load(getClass().getResource("/gui/StuResultDetail_MutlipleChoice.fxml"));
-					Scene scene = new Scene(main);
-					primaryStage.setTitle("GuessWhat/Workbook");
-					primaryStage.setScene(scene);
-					primaryStage.show();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			} else if (!problem.getType().equals(ProblemType.MultipleChoice)) {
-				try {
-					Stage primaryStage = (Stage) btn_Submit.getScene().getWindow();
-					Parent main = FXMLLoader.load(getClass().getResource("/gui/StuResultDetail_MutlipleChoice.fxml"));
-					Scene scene = new Scene(main);
-					primaryStage.setTitle("GuessWhat/Workbook");
-					primaryStage.setScene(scene);
-					primaryStage.show();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		}
+
+		StudentDataModel.setProblem(StudentDataModel.problemList[StudentDataModel.currentPB]);
+
+		this.initialize(null, null);
 	}
 
 	private void markAnswer() {
@@ -349,6 +295,46 @@ public class StuWorkBookController implements Initializable {
 
 		return typeList;
 
+	}
+
+	private boolean isIng() {
+		String responseMessage = null;
+		try {
+			BufferedReader br = new BufferedReader(
+					new InputStreamReader(this.socket.getInputStream(), StandardCharsets.UTF_8));
+			PrintWriter pw = new PrintWriter(
+					new OutputStreamWriter(this.socket.getOutputStream(), StandardCharsets.UTF_8));
+			String requestMessage = "GetBanManagerState:" + StudentDataModel.banManager.BM_num();
+			pw.println(requestMessage);
+			pw.flush();
+			responseMessage = br.readLine();
+			String[] responseTokens = responseMessage.split(":");
+			// GetBanMnagerState:Success:BMState
+			if (responseTokens[0].equals("GetBanManagerState")) {
+				if (!responseTokens[1].equals("Success")) {
+					System.out.println(responseMessage);
+				} else {
+					if (responseTokens[2].equals("ING")) {
+						return true;
+					}
+				}
+			}
+		} catch (Exception e) {
+			return false;
+		}
+		return false;
+
+	}
+
+	private void pressButton(int currentPB) {
+		if (!this.isIng()) {
+			// 복복쓰 알람 울려주세여,,
+			this.btn_Submit_Action();
+		} else {
+			savePro();
+			StudentDataModel.currentPB = currentPB;
+			changeProblem();
+		}
 	}
 
 }

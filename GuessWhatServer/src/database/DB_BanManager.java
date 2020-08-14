@@ -7,7 +7,7 @@ import java.util.List;
 import room.BanManager;
 
 public class DB_BanManager extends DBManager {
-	
+
 	public synchronized static Boolean updateBan(int PNum, int BNum) {
 		Connection conn = null;
 		Statement stmt = null;
@@ -15,7 +15,7 @@ public class DB_BanManager extends DBManager {
 		ResultSet rs = null;
 
 		int bmSize = 0;
-		
+
 		try {
 			conn = getConn();
 			stmt = conn.createStatement();
@@ -23,14 +23,14 @@ public class DB_BanManager extends DBManager {
 			sql = "SELECT * FROM BanManager WHERE PNum = '" + PNum + "' AND BNum = '" + BNum + "'";
 			rs = stmt.executeQuery(sql);
 
-			while(rs.next()) {
+			while (rs.next()) {
 				bmSize++;
 			}
-			
+
 			String sql2;
 			sql2 = "Update Ban SET Size = ? WHERE PNum = ? AND BNum = ?";
 			pstmt = conn.prepareStatement(sql2);
-			
+
 			pstmt.setInt(1, bmSize);
 			pstmt.setInt(2, PNum);
 			pstmt.setInt(3, BNum);
@@ -38,22 +38,25 @@ public class DB_BanManager extends DBManager {
 			pstmt.executeUpdate();
 			pstmt.close();
 			conn.close();
-			
+
 			return true;
-		}catch(Exception e) {
+		} catch (Exception e) {
 			System.out.println("Error : " + e.getMessage() + "FROM update Ban");
 			return null;
 		} finally {
 			try {
-				if(stmt != null) stmt.close();
-				if(conn != null) conn.close();
-				if(rs != null) rs.close();
-			} catch(SQLException e) {
+				if (stmt != null)
+					stmt.close();
+				if (conn != null)
+					conn.close();
+				if (rs != null)
+					rs.close();
+			} catch (SQLException e) {
 				System.out.println("Error : " + e.getMessage() + "FROM update Ban (SQL)");
 			}
 		}
 	}
-	
+
 	public synchronized static boolean insertBanManager(int PNum, int BNum, String name, String code, int wNum) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -68,23 +71,22 @@ public class DB_BanManager extends DBManager {
 			pstmt.setInt(2, BNum);
 			pstmt.setString(3, name);
 			pstmt.setString(4, "OPEN");
-			
+
 			pstmt.setString(5, code);
 			pstmt.setInt(6, wNum);
 			pstmt.setInt(7, 0);
 
 			pstmt.executeUpdate();
-			
+
 			updateBan(PNum, BNum);
-			
+
 			pstmt.close();
 			conn.close();
 			return true;
-		} catch(SQLException e) {
+		} catch (SQLException e) {
 			System.out.println("Error : " + e.getMessage() + "FROM insertBanManager");
 			return false;
-		}
-		finally {
+		} finally {
 			try {
 				if (conn != null)
 					conn.close();
@@ -95,13 +97,14 @@ public class DB_BanManager extends DBManager {
 			}
 		}
 	}
+
 	public synchronized static List<BanManager> getAllBanManager(int PNum, int BNum) {
 		Connection conn = null;
 		Statement stmt = null;
 		ResultSet rs = null;
 
 		List<BanManager> banManagerList = new ArrayList<>();
-		//Name, State, Code, WorkBook
+		// Name, State, Code, WorkBook
 		int BMNum = -1;
 		String name = null;
 		String state = null;
@@ -116,37 +119,79 @@ public class DB_BanManager extends DBManager {
 			sql = "SELECT * FROM BanManager WHERE PNum = '" + PNum + "' AND BNum = '" + BNum + "'";
 			rs = stmt.executeQuery(sql);
 
-			while(rs.next()) {
+			while (rs.next()) {
 				BMNum = rs.getInt("BMNum");
 				name = rs.getString("Name");
 				state = rs.getString("State");
 				code = rs.getString("Code");
 				wNum = rs.getInt("WNum");
 				size = rs.getInt("StudentSize");
-				
+
 				banManagerList.add(new BanManager(PNum, BNum, BMNum, name, state, code, wNum, size));
 			}
 			return banManagerList;
-		}catch(Exception e) {
+		} catch (Exception e) {
 			System.out.println("Error : " + e.getMessage() + "FROM getAllBanManager");
 			return null;
 		} finally {
 			try {
-				if(stmt != null) stmt.close();
-				if(conn != null) conn.close();
-				if(rs != null) rs.close();
-			} catch(SQLException e) {
+				if (stmt != null)
+					stmt.close();
+				if (conn != null)
+					conn.close();
+				if (rs != null)
+					rs.close();
+			} catch (SQLException e) {
 				System.out.println("Error : " + e.getMessage() + "FROM getAllBan (SQL)");
 			}
 		}
 	}
+
+	public synchronized static String getBanManagerState(int BMNum) {
+		Connection conn = null;
+		Statement stmt = null;
+		ResultSet rs = null;
+
+		String state = null;
+
+		try {
+			conn = getConn();
+			stmt = conn.createStatement();
+
+			String sql;
+			sql = "SELECT * FROM BanManager WHERE BMNum = '" + BMNum + "'";
+			rs = stmt.executeQuery(sql);
+
+			if (rs.next()) {
+
+				state = rs.getString("State");
+
+			}
+			return state;
+		} catch (Exception e) {
+			System.out.println("Error : " + e.getMessage() + "FROM getBanMnagerState");
+			return null;
+		} finally {
+			try {
+				if (stmt != null)
+					stmt.close();
+				if (conn != null)
+					conn.close();
+				if (rs != null)
+					rs.close();
+			} catch (SQLException e) {
+				System.out.println("Error : " + e.getMessage() + "FROM getBanMnagerState");
+			}
+		}
+	}
+
 	public synchronized static BanManager getCurrentBanManager(int PNum, int BMNum) {
 		Connection conn = null;
 		Statement stmt = null;
 		ResultSet rs = null;
 
 		BanManager banManager = null;
-		//Name, State, Code, WorkBook
+		// Name, State, Code, WorkBook
 		int bNum = -1;
 		String name = null;
 		String state = null;
@@ -161,30 +206,34 @@ public class DB_BanManager extends DBManager {
 			sql = "SELECT * FROM BanManager WHERE PNum = '" + PNum + "' AND BMNum = '" + BMNum + "'";
 			rs = stmt.executeQuery(sql);
 
-			while(rs.next()) {
+			while (rs.next()) {
 				bNum = rs.getInt("BNum");
 				name = rs.getString("Name");
 				state = rs.getString("State");
 				code = rs.getString("Code");
 				wNum = rs.getInt("WNum");
 				size = rs.getInt("StudentSize");
-				
+
 				banManager = new BanManager(PNum, bNum, BMNum, name, state, code, wNum, size);
 			}
 			return banManager;
-		}catch(Exception e) {
+		} catch (Exception e) {
 			System.out.println("Error : " + e.getMessage() + "FROM getAllBanManager");
 			return null;
 		} finally {
 			try {
-				if(stmt != null) stmt.close();
-				if(conn != null) conn.close();
-				if(rs != null) rs.close();
-			} catch(SQLException e) {
+				if (stmt != null)
+					stmt.close();
+				if (conn != null)
+					conn.close();
+				if (rs != null)
+					rs.close();
+			} catch (SQLException e) {
 				System.out.println("Error : " + e.getMessage() + "FROM getAllBan (SQL)");
 			}
 		}
 	}
+
 	public synchronized static boolean deleteBanManager(int PNum, int BNum, int BMNum) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -201,24 +250,27 @@ public class DB_BanManager extends DBManager {
 			pstmt.setInt(3, BMNum);
 
 			pstmt.executeUpdate();
-			
+
 			updateBan(PNum, BNum);
 			pstmt.close();
 			conn.close();
 			return true;
-			
-		}catch(Exception e) {
+
+		} catch (Exception e) {
 			System.out.println("Error : " + e.getMessage() + "FROM deleteBanManager");
 			return false;
 		} finally {
 			try {
-				if(pstmt != null) pstmt.close();
-				if(conn != null) conn.close();
-			} catch(SQLException e) {
+				if (pstmt != null)
+					pstmt.close();
+				if (conn != null)
+					conn.close();
+			} catch (SQLException e) {
 				System.out.println("Error : " + e.getMessage() + "FROM deleteBanManager (SQL)");
 			}
 		}
 	}
+
 	public synchronized static boolean modifyState(int BMNum, String state) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -229,24 +281,26 @@ public class DB_BanManager extends DBManager {
 			String s;
 			s = "UPDATE BanManager SET State = ? WHERE BMNum = ? ";
 			pstmt = conn.prepareStatement(s);
-			
+
 			pstmt.setInt(2, BMNum);
 			pstmt.setString(1, state);
 
 			pstmt.executeUpdate();
-			
+
 			pstmt.close();
 			conn.close();
 			return true;
-			
-		}catch(Exception e) {
+
+		} catch (Exception e) {
 			System.out.println("Error : " + e.getMessage() + "FROM changeState");
 			return false;
 		} finally {
 			try {
-				if(pstmt != null) pstmt.close();
-				if(conn != null) conn.close();
-			} catch(SQLException e) {
+				if (pstmt != null)
+					pstmt.close();
+				if (conn != null)
+					conn.close();
+			} catch (SQLException e) {
 				System.out.println("Error : " + e.getMessage() + "FROM changeState (SQL)");
 			}
 		}
@@ -268,18 +322,18 @@ public class DB_BanManager extends DBManager {
 
 			rs = stmt.executeQuery(s);
 			if (rs.next()) {
-				
-			//	System.out.println(rs.getNString("Name") + "의 BanManager 목록: ");
-				
+
+				// System.out.println(rs.getNString("Name") + "의 BanManager 목록: ");
+
 				s = "SELECT * FROM BanManager WHERE BNum = '" + bNum + "'";
 				rs = stmt.executeQuery(s);
-				
-				while(rs.next())
+
+				while (rs.next())
 					// BNum 이 소유한 BanManager 의 이름을 얻는다
 					System.out.println(rs.getString("Name"));
 
 			}
-			
+
 		} catch (Exception e) {
 			System.out.println(e);
 		} finally {
@@ -293,15 +347,15 @@ public class DB_BanManager extends DBManager {
 			}
 		}
 	}
-	
-	//코드로 BanManager가져오는 함수
+
+	// 코드로 BanManager가져오는 함수
 	public synchronized static BanManager getBanManagerOfCode(String code) {
 		BanManager banManager = null;
 		Connection conn = null;
 		Statement stmt = null;
 		ResultSet rs = null;
 		String[] banManagerInfo = new String[7];
-		
+
 		try {
 
 			conn = getConn();
@@ -311,8 +365,8 @@ public class DB_BanManager extends DBManager {
 			s = "SELECT * FROM BanManager WHERE Code = '" + code + "'";
 
 			rs = stmt.executeQuery(s);
-			
-			if(rs.next()) {
+
+			if (rs.next()) {
 
 				banManagerInfo[0] = rs.getString("BMNum");
 				banManagerInfo[1] = rs.getString("Name");
@@ -322,15 +376,15 @@ public class DB_BanManager extends DBManager {
 				banManagerInfo[5] = rs.getString("StudentSize");
 				banManagerInfo[6] = rs.getString("WNum");
 				banManager = new BanManager(banManagerInfo);
-				
+
 			}
-			
+
 			return banManager;
-			
+
 		} catch (Exception e) {
-			System.out.println("Error : "  +e.getMessage()  + "getBanManagerOfCode");
+			System.out.println("Error : " + e.getMessage() + "getBanManagerOfCode");
 			return null;
-			
+
 		} finally {
 			try {
 				if (conn != null)
