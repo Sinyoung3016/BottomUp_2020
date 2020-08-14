@@ -8,6 +8,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 import exam.Problem;
@@ -28,17 +29,19 @@ import javafx.stage.Stage;
 import model.StudentDataModel;
 import user.Student;
 
-public class StuResultDetail_MultipleChoiceController extends BaseController implements Initializable {
+public class StuResultDetail_MultipleChoiceController implements Initializable {
 
 	@FXML
-	private Button btn_Close, btn_Previous, btn_Next, btn_num0, btn_num1, btn_num2, btn_num3, btn_num4, btn_num5,
-			btn_num6, btn_num7, btn_num8, btn_num9, btn_num10, btn_num11, btn_num12, btn_num13, btn_num14, btn_num15;
+	private Button btn_Close, btn_Previous, btn_Next, btn_num1, btn_num2, btn_num3, btn_num4,
+			btn_num5, btn_num6, btn_num7, btn_num8, btn_num9, btn_num10, btn_num11, btn_num12, btn_num13, btn_num14,
+			btn_num15;
 	@FXML
 	private Label lb_Question;
 	@FXML
 	private CheckBox cb_1, cb_2, cb_3, cb_4, cb_5;
 
 	private Socket socket;
+	private Problem[] problemList;
 	private Problem problem;
 	private Student student;
 	private Button[] btn;
@@ -49,10 +52,12 @@ public class StuResultDetail_MultipleChoiceController extends BaseController imp
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// TODO Auto-generated method stub
-
 		this.socket = StudentDataModel.socket;
+		this.PB_num = StudentDataModel.currentPB;
+		this.problemList = StudentDataModel.problemList;
 		this.student = StudentDataModel.student;
-		this.problem = StudentDataModel.problem;
+		this.problem = problemList[PB_num];
+		this.workBookSize = StudentDataModel.workbook.WorkBooksize();
 
 		if (!problem.getType().equals(ProblemType.MultipleChoice)) {
 			try {
@@ -67,11 +72,8 @@ public class StuResultDetail_MultipleChoiceController extends BaseController imp
 			}
 		}
 
-		this.workBookSize = StudentDataModel.workbook.WorkBooksize();
-		this.PB_num = StudentDataModel.currentPB;
-
 		// setting
-		btn = new Button[] { btn_num0, btn_num1, btn_num2, btn_num3, btn_num4, btn_num5, btn_num6, btn_num7, btn_num8,
+		btn = new Button[] {btn_num1, btn_num2, btn_num3, btn_num4, btn_num5, btn_num6, btn_num7, btn_num8,
 				btn_num9, btn_num10, btn_num11, btn_num12, btn_num13, btn_num14, btn_num15 };
 
 		String[] result = this.student.result();
@@ -102,7 +104,7 @@ public class StuResultDetail_MultipleChoiceController extends BaseController imp
 		cb = new CheckBox[] { cb_1, cb_2, cb_3, cb_4, cb_5 };
 		for (int i = 0; i < 5; i++)
 			cb[i].setText(problem.getAnswerContentList()[i]);
-		
+
 		for (int i = 0; i < S_answer.length(); i++) {
 			int a = S_answer.charAt(i) - '0';
 			cb[a].setSelected(true);
@@ -116,30 +118,33 @@ public class StuResultDetail_MultipleChoiceController extends BaseController imp
 	}
 
 	private void changeProblem() {
-		String responseMessage = null;
-		try {
-			String requestTokens = "GetProblem:" + StudentDataModel.workbook.W_Num() + ":" + StudentDataModel.currentPB;
-			BufferedReader br = new BufferedReader(
-					new InputStreamReader(this.socket.getInputStream(), StandardCharsets.UTF_8));
-			PrintWriter pw = new PrintWriter(
-					new OutputStreamWriter(this.socket.getOutputStream(), StandardCharsets.UTF_8));
-			pw.println(requestTokens);
-			pw.flush();
-			responseMessage = br.readLine();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		String[] responseTokens = responseMessage.split(":");
-		if (responseTokens[0].equals("GetProblem")) {
-			if (!responseTokens[1].equals("Success")) {
-				System.out.println(responseTokens[1]);
-			} else {
-				// Success GetProblem
-				Problem problem = new Problem(responseTokens[2]);
-				StudentDataModel.setProblem(problem);
-				System.out.println(StudentDataModel.problem.toString());
-
+		if (PB_num < workBookSize) {
+			PB_num = StudentDataModel.currentPB;
+			 StudentDataModel.problem = problemList[PB_num];
+			if (problem.getType().equals(ProblemType.MultipleChoice)) {
+				try {
+					Stage primaryStage = (Stage) btn_Close.getScene().getWindow();
+					Parent main = FXMLLoader.load(getClass().getResource("/gui/StuResultDetail_MutlipleChoice.fxml"));
+					Scene scene = new Scene(main);
+					primaryStage.setTitle("GuessWhat/Workbook");
+					primaryStage.setScene(scene);
+					primaryStage.show();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			} else if (!problem.getType().equals(ProblemType.MultipleChoice)) {
+				try {
+					Stage primaryStage = (Stage) btn_Close.getScene().getWindow();
+					Parent main = FXMLLoader.load(getClass().getResource("/gui/StuResultDetail_MutlipleChoice.fxml"));
+					Scene scene = new Scene(main);
+					primaryStage.setTitle("GuessWhat/Workbook");
+					primaryStage.setScene(scene);
+					primaryStage.show();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
+
 		}
 	}
 
@@ -157,8 +162,8 @@ public class StuResultDetail_MultipleChoiceController extends BaseController imp
 	}
 
 	public void btn_Next_Action() {
-		if (workBookSize == StudentDataModel.currentPB)
-			new Alert(AlertType.CONFIRMATION, "마지막 번호입니다.", ButtonType.CLOSE).show();
+		if (workBookSize == StudentDataModel.currentPB + 1)
+			new Alert(AlertType.CONFIRMATION, "마지막 문제입니다.", ButtonType.CLOSE).showAndWait();
 		else {
 			StudentDataModel.currentPB = StudentDataModel.currentPB + 1;
 			changeProblem();
@@ -166,8 +171,8 @@ public class StuResultDetail_MultipleChoiceController extends BaseController imp
 	}
 
 	public void btn_Previous_Action() {
-		if (1 == StudentDataModel.currentPB)
-			new Alert(AlertType.CONFIRMATION, "첫 번호입니다.", ButtonType.CLOSE).show();
+		if (0 == StudentDataModel.currentPB)
+			new Alert(AlertType.CONFIRMATION, "첫 문제입니다.", ButtonType.CLOSE).showAndWait();
 		else {
 			StudentDataModel.currentPB = StudentDataModel.currentPB - 1;
 			changeProblem();
@@ -248,5 +253,4 @@ public class StuResultDetail_MultipleChoiceController extends BaseController imp
 		StudentDataModel.currentPB = 14;
 		changeProblem();
 	}
-
 }

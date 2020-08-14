@@ -84,22 +84,20 @@ public class ServerController {
 		}
 	}
 
-	public void btn_Empty_Action() {// SizeUpBanManager:ID:BMNum:BMSize
-
-
-	try {
-		Iterator<Socket> iterator = dataModel.getSocketList().iterator();
-		while(iterator.hasNext()) { 
-			Socket socket = iterator.next(); 
-			PrintWriter pw=new PrintWriter(new OutputStreamWriter(socket.getOutputStream(),StandardCharsets.UTF_8));
-			pw.println("UpdateStudent:1:ip:name:"+ i +":answer");
-			//UpdateStudent:ip:studentName:StudentIndex:StudentAnswer 
-			pw.flush();
-			System.out.println("UpdateStudent:1:ip:name:"+ i +":answer"); }
-			i++;
+	public void btn_Empty_Action() {
+		try {
+			Iterator<Socket> iterator = dataModel.getSocketList().iterator();
+			while (iterator.hasNext()) {
+				Socket socket = iterator.next();
+				PrintWriter pw = new PrintWriter(
+						new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8));
+				pw.println("GetBanManagerState:Success:ING");
+				pw.flush();
+				System.out.println("GetBanManagerState:Success:ING");
+			}
+		} catch (IOException e) {
+			System.out.println("Error: " + e.getMessage() + "FROM btn_Empty_Action");
 		}
-	catch(IOException e) { 
-		System.out.println("Error: " +e.getMessage() +"FROM btn_Empty_Action"); }
 	}
 	// MoonDD's PlayGround end
 
