@@ -236,7 +236,7 @@ public class BanManager {
 
 						try {
 							Stage primaryStage = (Stage) name.getScene().getWindow();
-							Parent search = FXMLLoader.load(getClass().getResource("/gui/BanMAnagerProgress.fxml"));
+							Parent search = FXMLLoader.load(getClass().getResource("/gui/BanManagerProgress.fxml"));
 							Scene scene = new Scene(search);
 							primaryStage.setTitle("GuessWhat/" + ban_Name);
 							primaryStage.setScene(scene);
