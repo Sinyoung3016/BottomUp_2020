@@ -126,7 +126,6 @@ public class BanModifyClassNameController implements Initializable {
 	public void btn_CancelChangeName_Action() {
 
 		Alert alert = new Alert(AlertType.WARNING, "입력하신 반이름을 저장할까요?", ButtonType.YES, ButtonType.NO);
-		alert.show();
 		Optional<ButtonType> result = alert.showAndWait();
 
 		if (result.get() == ButtonType.YES)
