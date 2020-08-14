@@ -80,9 +80,6 @@ public class ServerThread extends Thread{
 						else if(requestTokens[0].equals(Request.Join.getRequest())) { //Join:Code
 							clientRequest = "Join";
 							this.join(requestTokens[1]);
-						}else if (requestTokens[0].equals(Request.UPDATE_STUDENT.getRequest())) { //UpdateStudent:BMNum:Ip:Index:answer;
-							clientRequest = "Update";
-							this.update(message);
 						}
 						else if(requestTokens[0].equals(Request.ADD_BAN.getRequest())) { //AddBan:(BNum):Name:PNum
 							clientRequest = "AddBan";
@@ -236,22 +233,6 @@ public class ServerThread extends Thread{
 		}
 	}
 
-	private void update(String responseMessage) {
-		try {
-			Iterator<Socket> iterator = dataModel.getSocketList().iterator();
-
-			while(iterator.hasNext()) {
-				Socket socket = iterator.next();
-				PrintWriter pw=new PrintWriter(new OutputStreamWriter(socket.getOutputStream(),StandardCharsets.UTF_8));
-				pw.println(responseMessage);
-				pw.flush();
-
-			}
-
-		} catch(Exception e) {
-			System.out.println("Error : " +e.getMessage() + "FROM update");
-		}
-	}
 	private void addBan(String PNum) {
 		int pNum = Integer.parseInt(PNum);
 		if(DB_Ban.insertBan(pNum, "new"))
@@ -574,29 +555,6 @@ public class ServerThread extends Thread{
 		}
 	}
 	private void getWorkbookProblem(String WNum) {
-		/*int num = Integer.parseInt(WNum);
-		Workbook workbook = DB_Workbook.getWorkbookOf(num);
-		StringBuilder sb = new StringBuilder("");
-		if(workbook == null) {
-			pw.println("GetWorkbook:Fail");
-			pw.flush();
-		}
-		else {
-			sb.append("GetWorkbook:Success:");
-			sb.append(workbook.tokenString()+ ":");
-			Problem problem = DB_Problem.getProblemOf(workbook.getWBNum(), 0);
-			if(problem == null) {
-				sb.append("GetProblem:Fail");
-				pw.println(new String(sb));
-				pw.flush();
-			}
-			else {
-				sb.append("GetProblem:Success:");
-				sb.append(problem.tokenString());
-				pw.println(new String(sb));
-				pw.flush();
-			}
-		}*/
 		int num = Integer.parseInt(WNum);
 		Workbook workbook = DB_Workbook.getWorkbookOf(num);
 		StringBuilder sb = new StringBuilder("");

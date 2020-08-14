@@ -218,105 +218,90 @@ public class StuWorkBook_MultipleChoiceController extends BaseController impleme
 
 	public void btn_num1_Action() {
 		savePro();
-		this.requestUpdateStudent();
 		StudentDataModel.currentPB = 0;
 		changeProblem();
 	}
 
 	public void btn_num2_Action() {
 		savePro();
-		this.requestUpdateStudent();
 		StudentDataModel.currentPB = 1;
 		changeProblem();
 	}
 
 	public void btn_num3_Action() {
 		savePro();
-		this.requestUpdateStudent();
 		StudentDataModel.currentPB = 2;
 		changeProblem();
 	}
 
 	public void btn_num4_Action() {
 		savePro();
-		this.requestUpdateStudent();
 		StudentDataModel.currentPB = 3;
 		changeProblem();
 	}
 
 	public void btn_num5_Action() {
 		savePro();
-		this.requestUpdateStudent();
 		StudentDataModel.currentPB = 4;
 		changeProblem();
 	}
 
 	public void btn_num6_Action() {
 		savePro();
-		this.requestUpdateStudent();
 		StudentDataModel.currentPB = 5;
 		changeProblem();
 	}
 
 	public void btn_num7_Action() {
 		savePro();
-		this.requestUpdateStudent();
 		StudentDataModel.currentPB = 6;
 		changeProblem();
 	}
 
 	public void btn_num8_Action() {
 		savePro();
-		this.requestUpdateStudent();
 		StudentDataModel.currentPB = 7;
 		changeProblem();
 	}
 
 	public void btn_num9_Action() {
 		savePro();
-		this.requestUpdateStudent();
 		StudentDataModel.currentPB = 8;
 		changeProblem();
 	}
 
 	public void btn_num10_Action() {
 		savePro();
-		this.requestUpdateStudent();
 		StudentDataModel.currentPB = 9;
 		changeProblem();
 	}
 
 	public void btn_num11_Action() {
 		savePro();
-		this.requestUpdateStudent();
 		StudentDataModel.currentPB = 10;
 		changeProblem();
 	}
 
 	public void btn_num12_Action() {
 		savePro();
-		this.requestUpdateStudent();
 		StudentDataModel.currentPB = 11;
 		changeProblem();
 	}
 
 	public void btn_num13_Action() {
 		savePro();
-		this.requestUpdateStudent();
 		StudentDataModel.currentPB = 12;
 		changeProblem();
 	}
 
 	public void btn_num14_Action() {
 		savePro();
-		this.requestUpdateStudent();
 		StudentDataModel.currentPB = 13;
 		changeProblem();
 	}
 
 	public void btn_num15_Action() {
 		savePro();
-		this.requestUpdateStudent();
 		StudentDataModel.currentPB = 14;
 		changeProblem();
 	}
@@ -403,21 +388,6 @@ public class StuWorkBook_MultipleChoiceController extends BaseController impleme
 		}
 		return typeList;
 	}
-	private void requestUpdateStudent() {
 
-		try {
-			//UpdateStudent:BMNum:Ip:Name:Index:answer;
-			String requestTokens = "UpdateStudent:" + StudentDataModel.banManager.BM_num() + ":" + StudentDataModel.studentIp + ":" + StudentDataModel.studentName + ":" +(StudentDataModel.currentPB +1) + ":" + this.student.answer()[StudentDataModel.currentPB];
-
-			PrintWriter pw = new PrintWriter(
-					new OutputStreamWriter(this.socket.getOutputStream(), StandardCharsets.UTF_8));
-			pw.println(requestTokens);
-			pw.flush();
-
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-	}
 
 }
