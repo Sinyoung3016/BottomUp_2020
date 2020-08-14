@@ -219,63 +219,6 @@ public class DB_BanManager extends DBManager {
 			}
 		}
 	}
-	
-	public synchronized static void addBanManager(int bNum, String name, String code) throws SQLException {
-
-		Connection con = null;
-		PreparedStatement pstmt = null;
-
-		try {
-
-			con = getConn();
-
-			String s;
-			s = "INSERT INTO BanManager (Name, Code, BNum) VALUES (?, ?, ?)";
-			pstmt = con.prepareStatement(s);
-
-			pstmt.setString(1, name);
-			pstmt.setString(2, code);
-			pstmt.setInt(3, bNum);
-			
-
-			pstmt.executeUpdate();
-			pstmt.close();
-			con.close();
-
-		} catch (SQLException e) {
-			System.out.println(e.getMessage());
-			System.exit(0);
-		}	
-
-	}
-	
-	public synchronized static void modifyName(int BNum, String name, String newName) throws SQLException {
-
-		Connection con = null;
-		PreparedStatement pstmt = null;
-
-		try {
-
-			con = getConn();
-
-			String s;
-			s = "UPDATE BanManager SET Name = ? WHERE BNum = ? AND Name = ?";
-			pstmt = con.prepareStatement(s);
-
-			pstmt.setString(1, newName);
-			pstmt.setInt(2, BNum);
-			pstmt.setString(3, name);
-
-			pstmt.executeUpdate();
-			pstmt.close();
-			con.close();
-
-		} catch (SQLException e) {
-			System.out.println(e.getMessage());
-			System.exit(0);
-		}	
-	}
-	
 	public synchronized static boolean modifyState(int BMNum, String state) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -399,32 +342,4 @@ public class DB_BanManager extends DBManager {
 			}
 		}
 	}
-	
-	public synchronized static void removeBanManager(int bNum, String name) throws SQLException {
-
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-
-		try {
-
-			conn = getConn();
-
-			String s;
-			s = "DELETE FROM BanManager WHERE BNum = ? AND Name = ?";
-			pstmt = conn.prepareStatement(s);
-
-			pstmt.setInt(1, bNum);
-			pstmt.setString(2, name);
-
-			pstmt.executeUpdate();
-			pstmt.close();
-			conn.close();
-
-		} catch (SQLException e) {
-			System.out.println(e.getMessage());
-			System.exit(0);
-		}
-
-	}
-	
 }
