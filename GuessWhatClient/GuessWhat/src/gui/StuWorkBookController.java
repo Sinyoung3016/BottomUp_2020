@@ -273,32 +273,9 @@ public class StuWorkBookController extends BaseController implements Initializab
 	}
 
 	private void changeProblem() {
-
-		String responseMessage = null;
-		try {
-			String requestTokens = "GetProblem:" + StudentDataModel.workbook.W_Num() + ":" + StudentDataModel.currentPB;
-			BufferedReader br = new BufferedReader(
-					new InputStreamReader(this.socket.getInputStream(), StandardCharsets.UTF_8));
-			PrintWriter pw = new PrintWriter(
-					new OutputStreamWriter(this.socket.getOutputStream(), StandardCharsets.UTF_8));
-			pw.println(requestTokens);
-			pw.flush();
-			responseMessage = br.readLine();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		String[] responseTokens = responseMessage.split(":");
-		if (responseTokens[0].equals("GetProblem")) {
-			if (!responseTokens[1].equals("Success")) {
-				System.out.println(responseTokens[1]);
-			} else {
-				// Success GetProblem
-				Problem problem = new Problem(responseTokens[2]);
-				StudentDataModel.setProblem(problem);
-
-			}
-		}
 		
+		StudentDataModel.setProblem(StudentDataModel.problemList[StudentDataModel.currentPB]);
+
 		this.initialize(null, null);
 	}
 
@@ -307,6 +284,7 @@ public class StuWorkBookController extends BaseController implements Initializab
 		String[] studentAnswer = this.student.answer;
 		String[] professorAnswer = this.getAnswerList();
 		String[] typeList = this.getTypeList();
+
 		StringBuilder sb = new StringBuilder("");
 		if (studentAnswer != null) {
 			for (int i = 0; i < studentAnswer.length; i++) {
@@ -332,59 +310,27 @@ public class StuWorkBookController extends BaseController implements Initializab
 	}
 
 	private String[] getAnswerList() {
-		String responseMessage = null;
-		try {
-			String requestTokens = "GetAnswerList:" + StudentDataModel.workbook.W_Num();
-			BufferedReader br = new BufferedReader(
-					new InputStreamReader(this.socket.getInputStream(), StandardCharsets.UTF_8));
-			PrintWriter pw = new PrintWriter(
-					new OutputStreamWriter(this.socket.getOutputStream(), StandardCharsets.UTF_8));
-			pw.println(requestTokens);
-			pw.flush();
-			responseMessage = br.readLine();
-		} catch (IOException e) {
-			e.printStackTrace();
+		Problem[] problemList = StudentDataModel.problemList;
+		String[] answerList = new String[problemList.length];
+
+		for(int i = 0; i < answerList.length; i++) {
+			answerList[i] = problemList[i].answer();
 		}
-		// GetAnswer:Success:Answer(A1`A2`A3 ...)
-		String[] answerList = null;
-		String[] responseTokens = responseMessage.split(":");
-		if (responseTokens[0].equals("GetAnswerList")) {
-			if (!responseTokens[1].equals("Success")) {
-				System.out.println(responseTokens[1]);
-			} else {
-				// Success GetAnswer
-				answerList = responseTokens[2].split("`");
-			}
-		}
+		
 		return answerList;
+
 	}
 
 	private String[] getTypeList() {
-		String responseMessage = null;
-		try {
-			String requestTokens = "GetTypeList:" + StudentDataModel.workbook.W_Num();
-			BufferedReader br = new BufferedReader(
-					new InputStreamReader(this.socket.getInputStream(), StandardCharsets.UTF_8));
-			PrintWriter pw = new PrintWriter(
-					new OutputStreamWriter(this.socket.getOutputStream(), StandardCharsets.UTF_8));
-			pw.println(requestTokens);
-			pw.flush();
-			responseMessage = br.readLine();
-		} catch (IOException e) {
-			e.printStackTrace();
+		Problem[] problemList = StudentDataModel.problemList;
+		String[] typeList = new String[problemList.length];
+
+		for(int i = 0; i < typeList.length; i++) {
+			typeList[i] = problemList[i].getType().toString();
 		}
-		// GetAnswer:Success:Type
-		String[] typeList = null;
-		String[] responseTokens = responseMessage.split(":");
-		if (responseTokens[0].equals("GetTypeList")) {
-			if (!responseTokens[1].equals("Success")) {
-				System.out.println(responseTokens[1]);
-			} else {
-				// Success GetTypeList
-				typeList = responseTokens[2].split("-");
-			}
-		}
+		
 		return typeList;
+
 	}
 	
 	private void requestUpdateStudent() {

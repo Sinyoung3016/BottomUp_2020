@@ -45,7 +45,7 @@ public class Problem {
 		this.question = question;
 		this.answer = answer;
 		this.answerContent = answerContent;
-		this.answerContentList = this.answerContent.split("_");
+		this.answerContentList = this.answerContent.split("~");
 	}	
 	public Problem(int P_num, int W_num, int PB_num, ProblemType type, String question, String answer ) {
 		this.P_Num = P_num;
@@ -66,7 +66,7 @@ public class Problem {
 		this.answer = tokens[3];
 		this.type = ProblemType.toProblemType(tokens[4]);
 		this.answerContent = tokens[5];
-		this.answerContentList = this.answerContent.split("_");
+		this.answerContentList = this.answerContent.split("~");
 	}
 	//Constructor end
 

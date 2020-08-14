@@ -30,24 +30,24 @@ import thread.ClientThread;
 import thread.LoadingThread;
 import user.Student;
 
-public class StudentInfoController implements Initializable{
+public class StudentInfoController implements Initializable {
 	@FXML
 	private Button btn_Join, btn_Close;
 	@FXML
 	private TextField tf_StudentName;
 	@FXML
 	private Label lb_ClassRoomName;
-	
+
 	private boolean IsTestStarted = false;
 	private boolean isMultipleChoice = false;
 	private Socket socket;
 	public BanManager banManager;
-	
+
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		this.socket = StudentDataModel.socket;
-		
-		new ClientThread(StudentDataModel.socket).start(); 
+
+		new ClientThread(StudentDataModel.socket).start();
 
 		String responseMessage = null;
 		try {
@@ -59,26 +59,25 @@ public class StudentInfoController implements Initializable{
 			pw.println(requestTokens);
 			pw.flush();
 			responseMessage = br.readLine();
-		} catch(IOException e) {
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		String[] responseTokens = responseMessage.split(":");
-		if(responseTokens[0].equals("GetBanManager")) {
-			if(!responseTokens[1].equals("Success")) {
+		if (responseTokens[0].equals("GetBanManager")) {
+			if (!responseTokens[1].equals("Success")) {
 				System.out.println(responseTokens[1]);
-			}
-			else {
-				//Success GetBanManager
+			} else {
+				// Success GetBanManager
 				this.banManager = new BanManager(responseTokens[2]);
 				StudentDataModel.banManager = this.banManager;
-				if(this.banManager.stringOfState() == "ING") {
+				if (this.banManager.stringOfState() == "ING") {
 					this.IsTestStarted = true;
 				}
 			}
 		}
 	}
-	
-	public void btn_Close_Action(){
+
+	public void btn_Close_Action() {
 		try {
 			Stage primaryStage = (Stage) btn_Close.getScene().getWindow();
 			Parent main = FXMLLoader.load(getClass().getResource("/gui/Home.fxml"));
@@ -91,90 +90,141 @@ public class StudentInfoController implements Initializable{
 		}
 	}
 
-	public void btn_Join_Action(){
-			System.out.println(StudentDataModel.banManager.BM_state().toString());
-			if(StudentDataModel.banManager.BM_state().toString() == "ING")
-				this.IsTestStarted = true;
-		
-			if(IsTestStarted) {
-				if(tf_StudentName.getLength() != 0) {
-					StudentDataModel.studentName = tf_StudentName.getText();
-					String responseMessage = null;
-					try {
-						String requestTokens = "GetWorkbookProblem:" + StudentDataModel.banManager.W_num();
-						BufferedReader br = new BufferedReader(
-								new InputStreamReader(this.socket.getInputStream(), StandardCharsets.UTF_8));
-						PrintWriter pw = new PrintWriter(
-								new OutputStreamWriter(this.socket.getOutputStream(), StandardCharsets.UTF_8));
-						pw.println(requestTokens);
-						pw.flush();
-						responseMessage = br.readLine();
-					} catch(IOException e) {
-						e.printStackTrace();
-					}//GetWorkbook:Success:WorkbookInfo:GetProblem:Success:FirstProblemInfo
-					String[] responseTokens = responseMessage.split(":");
-					if(responseTokens[0].equals("GetWorkbook")) {
-						if(!responseTokens[1].equals("Success")) {
-							System.out.println(responseTokens[1]);
-						}
-						else {
-							//Success GetWorkbook
-							Workbook workbook = new Workbook(responseTokens[2]);
-							StudentDataModel.setWorkbook(workbook);
-							if(responseTokens[3].equals("GetProblem")){
-								if(!responseTokens[4].equals("Success")) { 
-									System.out.println(responseTokens[4]);
-								}
-								else {
-									Problem problem = new Problem(responseTokens[5]);
-									if(problem.getType().equals(ProblemType.MultipleChoice)) {
-										this.isMultipleChoice = true;
-									}
-									StudentDataModel.setProblem(problem);
-									StudentDataModel.hasAnswer = new boolean[workbook.WorkBooksize()];
-									StudentDataModel.student = new Student();
-									StudentDataModel.student.setAnswer(new String[workbook.WorkBooksize()]);
-									StudentDataModel.student.setResultWithList(new String[workbook.WorkBooksize()]);
-								}
+	public void btn_Join_Action() {
+		System.out.println(StudentDataModel.banManager.BM_state().toString());
+		if (StudentDataModel.banManager.BM_state().toString() == "ING")
+			this.IsTestStarted = true;
+
+		if (IsTestStarted) {
+			if (tf_StudentName.getLength() != 0) {
+				StudentDataModel.studentName = tf_StudentName.getText();
+
+				if (this.getWorkbook()) {
+					if (this.getAllProblem()) {
+						if (this.isMultipleChoice) {
+							try {
+								Stage primaryStage = (Stage) btn_Close.getScene().getWindow();
+								Parent main = FXMLLoader
+										.load(getClass().getResource("/gui/StuWorkBook_MultipleChoice.fxml"));
+								Scene scene = new Scene(main);
+								primaryStage.setTitle("GuessWhat/Test");
+								primaryStage.setScene(scene);
+								primaryStage.show();
+							} catch (Exception e) {
+								e.printStackTrace();
+							}
+						} else {
+							try {
+								Stage primaryStage = (Stage) btn_Close.getScene().getWindow();
+								Parent main = FXMLLoader.load(getClass().getResource("/gui/StuWorkBook.fxml"));
+								Scene scene = new Scene(main);
+								primaryStage.setTitle("GuessWhat/Test");
+								primaryStage.setScene(scene);
+								primaryStage.show();
+							} catch (Exception e) {
+								e.printStackTrace();
 							}
 						}
 					}
-					if(this.isMultipleChoice) {
-						try {
-							Stage primaryStage = (Stage) btn_Close.getScene().getWindow();
-							Parent main = FXMLLoader.load(getClass().getResource("/gui/StuWorkBook_MultipleChoice.fxml"));
-							Scene scene = new Scene(main);
-							primaryStage.setTitle("GuessWhat/Test");
-							primaryStage.setScene(scene);
-							primaryStage.show();
-						} catch (Exception e) {
-							e.printStackTrace();
-						}
-					}
 					else {
-						try {
-							Stage primaryStage = (Stage) btn_Close.getScene().getWindow();
-							Parent main = FXMLLoader.load(getClass().getResource("/gui/StuWorkBook.fxml"));
-							Scene scene = new Scene(main);
-							primaryStage.setTitle("GuessWhat/Test");
-							primaryStage.setScene(scene);
-							primaryStage.show();
-						} catch (Exception e) {
-							e.printStackTrace();
-						}
+						System.out.println("Fail getAllProblem");
 					}
-					
+
 				}
 				else {
-					new Alert(Alert.AlertType.WARNING, "Invalid Name", ButtonType.CLOSE).show();
+					System.out.println("Fail getWorkbook");
 				}
-				
-			}
-			else {
-			
-				new Alert(Alert.AlertType.WARNING, "Class has not been opened yet. Please wait in a moment.", ButtonType.CLOSE).show();
-				
+			} else {
+				new Alert(Alert.AlertType.WARNING, "Invalid Name", ButtonType.CLOSE).show();
 			}
 
+		} else {
+			new Alert(Alert.AlertType.WARNING, "Class has not been opened yet. Please wait in a moment.",
+					ButtonType.CLOSE).show();
+		}
+
 	}
+
+	private boolean getWorkbook() {
+		String responseMessage = null;
+		try {
+			String requestTokens = "GetWorkbookProblem:" + StudentDataModel.banManager.W_num();
+			BufferedReader br = new BufferedReader(
+					new InputStreamReader(this.socket.getInputStream(), StandardCharsets.UTF_8));
+			PrintWriter pw = new PrintWriter(
+					new OutputStreamWriter(this.socket.getOutputStream(), StandardCharsets.UTF_8));
+			pw.println(requestTokens);
+			pw.flush();
+			responseMessage = br.readLine();
+			String[] responseTokens = responseMessage.split(":");
+			if (responseTokens[0].equals("GetWorkbook")) {
+				if (!responseTokens[1].equals("Success")) {
+					System.out.println(responseTokens[1]);
+					return false;
+				} else {
+					// GetWorkbook:Success:WorkbookInfo
+					
+					Workbook workbook = new Workbook(responseTokens[2]);
+					StudentDataModel.setWorkbook(workbook);
+					StudentDataModel.hasAnswer = new boolean[workbook.WorkBooksize()];
+					StudentDataModel.student = new Student();
+					StudentDataModel.student.setAnswer(new String[workbook.WorkBooksize()]);
+					StudentDataModel.student.setResultWithList(new String[workbook.WorkBooksize()]);
+					return true;
+				}
+			} else
+				return false;
+		} catch (IOException e) {
+			e.printStackTrace();
+			return false;
+		}
+
+
+	}
+
+	private boolean getAllProblem() {
+		String responseMessage = null;
+		try {
+			String requestMessage = "GetAllProblem:" + StudentDataModel.banManager.W_num();
+			BufferedReader br = new BufferedReader(
+					new InputStreamReader(this.socket.getInputStream(), StandardCharsets.UTF_8));
+			PrintWriter pw = new PrintWriter(
+					new OutputStreamWriter(this.socket.getOutputStream(), StandardCharsets.UTF_8));
+			pw.println(requestMessage);
+			pw.flush();
+			responseMessage = br.readLine();
+			String[] responseTokens = responseMessage.split(":");
+			if (responseTokens[0].equals("GetAllProblem")) {
+				if (!responseTokens[1].equals("Success")) {
+					System.out.println("GetAllProblem:Fail");
+					return false;
+				} else {
+					// Success GetAllProblem
+					//GetAllProblem:Success:Problem1_Problem2
+
+					String[] problemInfo = responseTokens[2].split("_");
+					Problem[] problemList = new Problem[problemInfo.length];
+
+					for (int i = 0; i < problemList.length; i++) {
+						Problem problem = new Problem(problemInfo[i]);
+						problemList[i] = problem;
+					}
+
+					StudentDataModel.problemList = problemList;
+
+					if (problemList[0].getType().equals(ProblemType.MultipleChoice)) {
+						this.isMultipleChoice = true;
+					}
+					StudentDataModel.setProblem(problemList[0]);
+
+				}
+			}
+			return true;
+		} catch (IOException e) {
+			e.printStackTrace();
+			return false;
+		}
+
+	}
+
 }

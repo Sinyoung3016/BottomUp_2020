@@ -1,6 +1,7 @@
 package model;
 
 import java.net.Socket;
+import java.util.List;
 
 import exam.Problem;
 import exam.Workbook;
@@ -18,6 +19,7 @@ public class StudentDataModel {
 	public static Student student = null;
 	public static boolean[] hasAnswer = null;
 	public static String studentIp = null;
+	public static Problem[] problemList = null;
 	
 	public static Workbook workbook;
 	
@@ -38,6 +40,8 @@ public class StudentDataModel {
 		sb.append(studentName);
 		return new String(sb);
 	}
+	
+
 
 	
 }

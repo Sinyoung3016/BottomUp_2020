@@ -245,8 +245,7 @@ public class ServerThread extends Thread{
 				PrintWriter pw=new PrintWriter(new OutputStreamWriter(socket.getOutputStream(),StandardCharsets.UTF_8));
 				pw.println(responseMessage);
 				pw.flush();
-				socket.close();
-				iterator.remove();
+
 			}
 
 		} catch(Exception e) {
@@ -574,7 +573,7 @@ public class ServerThread extends Thread{
 		}
 	}
 	private void getWorkbookProblem(String WNum) {
-		int num = Integer.parseInt(WNum);
+		/*int num = Integer.parseInt(WNum);
 		Workbook workbook = DB_Workbook.getWorkbookOf(num);
 		StringBuilder sb = new StringBuilder("");
 		if(workbook == null) {
@@ -596,6 +595,19 @@ public class ServerThread extends Thread{
 				pw.println(new String(sb));
 				pw.flush();
 			}
+		}*/
+		int num = Integer.parseInt(WNum);
+		Workbook workbook = DB_Workbook.getWorkbookOf(num);
+		StringBuilder sb = new StringBuilder("");
+		if(workbook == null) {
+			pw.println("GetWorkbook:Fail");
+			pw.flush();
+		}
+		else {
+			sb.append("GetWorkbook:Success:");
+			sb.append(workbook.tokenString());
+			pw.println(new String(sb));
+			pw.flush();
 		}
 	}
 
