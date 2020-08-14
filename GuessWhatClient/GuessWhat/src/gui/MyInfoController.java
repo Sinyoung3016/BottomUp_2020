@@ -140,6 +140,7 @@ public class MyInfoController implements Initializable {
 					new Alert(AlertType.WARNING, "MyInfo 수정을 실패했습니다. 잠시후 다시 시도해주세요.", ButtonType.CLOSE).show();
 				} else {
 					ProfessorDataModel.professor.setEmail(Email);
+					ProfessorDataModel.professor.setPassword(NewPassword);
 					initialize(null, null);
 				}
 			}
