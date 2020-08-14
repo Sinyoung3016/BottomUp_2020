@@ -97,6 +97,7 @@ public class StudentInfoController implements Initializable {
 		if (IsTestStarted) {
 			if (tf_StudentName.getLength() != 0) {
 				StudentDataModel.studentName = tf_StudentName.getText();
+				StudentDataModel.currentPB = 0;
 
 				if (this.getWorkbook()) {
 					if (this.getAllProblem()) {

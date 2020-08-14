@@ -62,6 +62,9 @@ public class Student {
 	public void setAnswer(String[] answer) {
 		this.answer = answer;
 	}
+	public void setAnswerNum(String answer, int n) {
+		this.answer[n] = answer;
+	}
 	public void setResult(String result) { 
 		for(int i = 0; i < result.length(); i++) {
 			this.result[i] = result.charAt(i) + "";

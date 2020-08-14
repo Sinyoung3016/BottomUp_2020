@@ -86,6 +86,9 @@ public class StuResultController implements Initializable {
 	}
 
 	public void btn_Detail_Action() {
+		
+		StudentDataModel.currentPB = 0;
+		
 		try {
 			Stage primaryStage = (Stage) btn_Detail.getScene().getWindow();
 			Parent main = FXMLLoader.load(getClass().getResource("/gui/StuResultDetail.fxml"));
