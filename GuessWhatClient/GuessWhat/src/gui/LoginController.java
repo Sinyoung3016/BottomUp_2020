@@ -105,8 +105,6 @@ public class LoginController implements Initializable {
 						ProfessorDataModel.professor = new Professor(responseTokens[2]);
 						ProfessorDataModel.ID = tf_Id.getText();
 
-						this.getAllWorkbook(ProfessorDataModel.professor.P_Num());
-
 						Stage primaryStage = (Stage) btn_Login.getScene().getWindow();
 						Platform.runLater(() -> {
 							Parent login;

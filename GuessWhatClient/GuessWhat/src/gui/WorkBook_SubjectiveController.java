@@ -70,40 +70,6 @@ public class WorkBook_SubjectiveController implements Initializable {
 		this.PB_num = ProfessorDataModel.currentPB;
 
 		// setting
-		if (hasQValue[PB_num] || hasAValue[PB_num]) {
-			if (problem.getType().equals(ProblemType.MultipleChoice)) {
-				try {
-					Stage primaryStage = (Stage) ta_Question.getScene().getWindow();
-					Parent main = FXMLLoader.load(getClass().getResource("/gui/NewWorkBook_MultipleChoice.fxml"));
-					Scene scene = new Scene(main);
-					primaryStage.setTitle("GuessWhat/WorkBook");
-					primaryStage.setScene(scene);
-					primaryStage.show();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			} else if (problem.getType().equals(ProblemType.MultipleChoice)) {
-				try {
-					Stage primaryStage = (Stage) ta_Question.getScene().getWindow();
-					Parent main = FXMLLoader.load(getClass().getResource("/gui/NewWorkBook_MultipleChoice.fxml"));
-					Scene scene = new Scene(main);
-					primaryStage.setTitle("GuessWhat/WorkBook");
-					primaryStage.setScene(scene);
-					primaryStage.show();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-
-			ta_Question.setText(problem.question());
-			ta_Answer.setText(problem.answer());
-			tf_ChangeName.setText(workBook.W_name());
-		} else {
-			ta_Question.setText("");
-			ta_Answer.setText("");
-			tf_ChangeName.setText("NewWorkBook");
-		}
-
 		btn = new Button[] { btn_num1, btn_num2, btn_num3, btn_num4, btn_num5, btn_num6, btn_num7, btn_num8, btn_num9,
 				btn_num10, btn_num11, btn_num12, btn_num13, btn_num14, btn_num15 };
 
@@ -140,17 +106,17 @@ public class WorkBook_SubjectiveController implements Initializable {
 	}
 
 	private void changeName() {
+		String temp = workBook.W_name();
 		String name = tf_ChangeName.getText();
-		if (!name.equals(null) || !name.equals(""))
+		if (! name.equals(""))
 			workBook.setName(name);
 		else
-			workBook.setName("NewWorkBook");
+			workBook.setName(temp);
 	}
 
 	private void savePro() {
 
 		this.changeName();
-
 		String S_question = ta_Question.getText();
 		String S_answer = ta_Answer.getText();
 
@@ -224,13 +190,56 @@ public class WorkBook_SubjectiveController implements Initializable {
 	}
 
 	public void btn_SaveWorkBook_Action() {
-
-		// Problem 수정해서 저장
-
+		this.savePro();
+		String modifiedProblem = this.problem.PB_Num() + ":" + this.problem.question() + ":" + this.problem.answer() + ":" + this.problem.getAnswerContent();
+		String responseMessage = null;
+		try {
+			String requestTokens = "ModifyProblem:" + modifiedProblem;
+			BufferedReader br = new BufferedReader(
+					new InputStreamReader(this.socket.getInputStream(), StandardCharsets.UTF_8));
+			PrintWriter pw = new PrintWriter(
+					new OutputStreamWriter(this.socket.getOutputStream(), StandardCharsets.UTF_8));
+			pw.println(requestTokens);
+			pw.flush();
+			responseMessage = br.readLine();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		String[] responseTokens = responseMessage.split(":");
+		if (responseTokens[0].equals("ModifyProblem")) {
+			if (!responseTokens[1].equals("Success")) {
+				System.out.println("ModifyProblem:Fail");
+			} else {
+				System.out.println("  [Modify] Problem");
+			}
+		}
+		
+		String responseMessage2 = null;
+		try {
+			String requestTokens2 = "ModifyWorkbook:" + this.workBook.W_Num() + ":" + this.workBook.W_name();
+			BufferedReader br = new BufferedReader(
+					new InputStreamReader(this.socket.getInputStream(), StandardCharsets.UTF_8));
+			PrintWriter pw = new PrintWriter(
+					new OutputStreamWriter(this.socket.getOutputStream(), StandardCharsets.UTF_8));
+			pw.println(requestTokens2);
+			pw.flush();
+			responseMessage2 = br.readLine();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		String[] responseTokens2 = responseMessage2.split(":");
+		if (responseTokens2[0].equals("ModifyWorkbook")) {
+			if (!responseTokens2[1].equals("Success")) {
+				System.out.println("ModifyWorkbook:Fail");
+			} else {
+				System.out.println("  [Modify] Workbook Name");
+			}
+		}
+		Alert alert = new Alert(AlertType.INFORMATION,"수정되었습니다");
+		alert.show();
 	}
 
 	public void btn_Cancel_Action() {
-
 		Alert alert = new Alert(AlertType.WARNING, "해당 문제를 수정하시겠습니까?", ButtonType.YES, ButtonType.NO);
 		Optional<ButtonType> result = alert.showAndWait();
 
@@ -239,7 +248,7 @@ public class WorkBook_SubjectiveController implements Initializable {
 
 		try {
 			Stage primaryStage = (Stage) btn_Cancel.getScene().getWindow();
-			Parent main = FXMLLoader.load(getClass().getResource("/gui/NewWorkBook_MultipleChoice.fxml"));
+			Parent main = FXMLLoader.load(getClass().getResource("/gui/WorkBookList.fxml"));
 			Scene scene = new Scene(main);
 			primaryStage.setTitle("GuessWhat/WorkBook");
 			primaryStage.setScene(scene);
@@ -252,10 +261,10 @@ public class WorkBook_SubjectiveController implements Initializable {
 	private void changeProblem() {
 		int index = ProfessorDataModel.currentPB;
 		ProfessorDataModel.problem = problemList[index];
-		if (problem.getType().equals(ProblemType.MultipleChoice)) {
+		if (ProfessorDataModel.problem.getType().equals(ProblemType.MultipleChoice)) {
 			try {
 				Stage primaryStage = (Stage) stage.getScene().getWindow();
-				Parent main = FXMLLoader.load(getClass().getResource("/gui/NewWorkBook_MultipleChoice.fxml"));
+				Parent main = FXMLLoader.load(getClass().getResource("/gui/WorkBook_MultipleChoice.fxml"));
 				Scene scene = new Scene(main);
 				primaryStage.setTitle("GuessWhat/WorkBook");
 				primaryStage.setScene(scene);
@@ -263,10 +272,10 @@ public class WorkBook_SubjectiveController implements Initializable {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-		} else if (problem.getType().equals(ProblemType.ShortAnswer)) {
+		} else if (ProfessorDataModel.problem.getType().equals(ProblemType.ShortAnswer)) {
 			try {
 				Stage primaryStage = (Stage) stage.getScene().getWindow();
-				Parent main = FXMLLoader.load(getClass().getResource("/gui/NewWorkBook_ShortAnswer.fxml"));
+				Parent main = FXMLLoader.load(getClass().getResource("/gui/WorkBook_ShortAnswer.fxml"));
 				Scene scene = new Scene(main);
 				primaryStage.setTitle("GuessWhat/WorkBook");
 				primaryStage.setScene(scene);

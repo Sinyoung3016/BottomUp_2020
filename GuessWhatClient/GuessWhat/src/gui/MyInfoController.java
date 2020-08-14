@@ -85,31 +85,29 @@ public class MyInfoController implements Initializable {
 				new Alert(Alert.AlertType.WARNING, responseTokens[1], ButtonType.CLOSE).show();
 			} else {
 				System.out.println(ProfessorDataModel.ID + "님이 로그아웃하셨습니다.");
+				try {
+					Stage primaryStage = (Stage) btn_Close.getScene().getWindow();
+					Parent main = FXMLLoader.load(getClass().getResource("/gui/Home.fxml"));
+					Scene scene = new Scene(main);
+					primaryStage.setTitle("GuessWhat/Home");
+					primaryStage.setScene(scene);
+					primaryStage.show();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
 		}
-
-		try {
-			Stage primaryStage = (Stage) btn_Close.getScene().getWindow();
-			Parent main = FXMLLoader.load(getClass().getResource("/gui/Home.fxml"));
-			Scene scene = new Scene(main);
-			primaryStage.setTitle("GuessWhat/Home");
-			primaryStage.setScene(scene);
-			primaryStage.show();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
 	}
 
 	public void btn_Update_Action() {
 
-		//ModifyProfessor:ID:NewEmail:NewPassWord
+		// ModifyProfessor:ID:NewEmail:NewPassWord
 		boolean canRequest = true; // 요청을 보낼 수 있는 상태인가
 
 		if (pf_PassWord.getLength() != 0) {// password 수정 O
 			if (!this.checkNewPassword(pf_PassWord.getText(), pf_CheckPW.getText())) {
 				canRequest = false;
-				new Alert(Alert.AlertType.WARNING, "비밀번호가 정확하지 않습니다.", ButtonType.CLOSE).show();
+				new Alert(AlertType.WARNING, "비밀번호를 확인해주세요.", ButtonType.CLOSE).show();
 				return;
 			} else {// 비번 맞으면
 				NewPassword = pf_PassWord.getText();
@@ -120,6 +118,7 @@ public class MyInfoController implements Initializable {
 			if (tf_Email.getLength() != 0) // email 수정
 				Email = tf_Email.getText();
 		}
+
 		if (canRequest) {
 			String responseMessage = null;
 			try {
@@ -132,21 +131,21 @@ public class MyInfoController implements Initializable {
 				pw.flush();
 				responseMessage = br.readLine();
 			} catch (Exception e) {
-				System.out.println("Error : " + e.getMessage() + " FROM btn_Updatea_Action");
+				System.out.println("Error : " + e.getMessage() + " FROM btn_Update_Action");
 			}
 			String[] responseTokens = responseMessage.split(":");
 			if (responseTokens[0].equals("ModifyProfessor")) {
 				if (!responseTokens[1].equals("Success")) {
 					System.out.println(responseTokens[1]);
-					new Alert(Alert.AlertType.WARNING, "MyInfo가 수정에 실패했습니다. 잠시후 다시 시도해주세요.", ButtonType.CLOSE)
-							.show();
+					new Alert(AlertType.WARNING, "MyInfo 수정을 실패했습니다. 잠시후 다시 시도해주세요.", ButtonType.CLOSE).show();
 				} else {
 					ProfessorDataModel.professor.setEmail(Email);
-					new Alert(Alert.AlertType.CONFIRMATION, "MyInfo가 수정되었습니다.", ButtonType.CLOSE).show();
+					ProfessorDataModel.professor.setPassword(NewPassword);
+					initialize(null, null);
 				}
 			}
 		} else
-			new Alert(AlertType.WARNING, "본인확인에 실패했습니다.").show();
+			System.out.println("CanRequest : false");
 	}
 
 	private boolean checkNewPassword(String password, String checkPW) {

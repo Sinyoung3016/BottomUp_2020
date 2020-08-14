@@ -115,6 +115,7 @@ public class DB_Workbook extends DBManager{
 		List<Workbook> workbookList = new ArrayList<>();
 		String[] workbookInfo = new String[2];
 		try {
+			System.out.print("Workbook List request: ");
 			conn = getConn();
 			state = conn.createStatement();
 			String sql;

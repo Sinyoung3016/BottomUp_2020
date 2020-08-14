@@ -93,8 +93,10 @@ public class WorkBookListController implements Initializable {
 	public void btn_CreateNewWorkBook_Action() {
 
 		ProfessorDataModel.workbook = new Workbook();
+		ProfessorDataModel.workbook.setName("NewWorkbook " + ProfessorDataModel.ItemList_MyWorkBook.size());
 		ProfessorDataModel.problem = new Problem(0);
 		ProfessorDataModel.problemList = new Problem[20];
+		ProfessorDataModel.currentPB = 0;
 
 		try {
 			Stage primaryStage = (Stage) btn_CreateNewWorkBook.getScene().getWindow();

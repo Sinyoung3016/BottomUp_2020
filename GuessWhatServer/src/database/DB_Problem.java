@@ -77,27 +77,28 @@ public class DB_Problem extends DBManager{
 		}
 	}
 	
-	public synchronized static boolean modifyProblemName(String PNum, String newQuestion) {
+	public synchronized static boolean modifyProblem(int PBNum, String newQuestion, String newAnswer, String newContent) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		
 		try {
 			conn = getConn();
 			
-			String sql = "UPDATE Problem SET Question = ? WHERE PNUM = ?";
+			String sql = "UPDATE Problem SET Question = ?, Answer = ?, AnswerContents = ? WHERE PBNUM = ?";
 			
 			try {
 				pstmt = conn.prepareStatement(sql);
 				pstmt.setString(1, newQuestion);
-				int pNum = Integer.parseInt(PNum);
-				pstmt.setInt(2, pNum);
+				pstmt.setString(2, newAnswer);
+				pstmt.setString(3, newContent);
+				pstmt.setInt(4, PBNum);
 				pstmt.executeUpdate();
 				
 				pstmt.close();
 				conn.close();
 				return true;
 			} catch(SQLException e) {
-				System.out.println("Error : " +e.getMessage() + "FROM modifyPrblemName.1");
+				System.out.println("Error : " +e.getMessage() + " FROM modifyPrblemName.1");
 				return false;
 			}
 		} finally {
@@ -105,7 +106,7 @@ public class DB_Problem extends DBManager{
 				if(pstmt != null) pstmt.close();
 				if(conn != null) conn.close();
 			} catch(SQLException e) {
-				System.out.println("Error : " + e.getMessage() + "FROM modifyPrblemName.2");
+				System.out.println("Error : " + e.getMessage() + " FROM modifyPrblemName.2");
 			}
 		}
 	
