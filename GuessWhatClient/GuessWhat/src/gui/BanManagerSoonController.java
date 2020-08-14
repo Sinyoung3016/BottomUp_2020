@@ -61,14 +61,13 @@ public class BanManagerSoonController implements Initializable {
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
-		System.out.println(responseMessage);
 		String[] responseTokens = responseMessage.split(":");
 
 		if (responseTokens[0].equals("ModifyState")) {
 			if (!responseTokens[1].equals("Success")) {
 				System.out.println("Fail : ModifyState");
 			} else {
-				System.out.println("Success: ModifyState");
+				System.out.println("            State: OPEN --> ING");
 			}
 		}
 	}

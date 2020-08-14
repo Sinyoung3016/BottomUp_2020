@@ -1,7 +1,10 @@
 package gui;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -104,7 +107,30 @@ public class BanManagerProgressController implements Initializable {
 		}
 		return returnTable;
 	}
+	private void changeBMState(int bmNum, String newState) {
+		String responseMessage = null;
+		try {
+			String requestMessage = "ModifyState:" + bmNum + ":" + newState;
+			BufferedReader reader = new BufferedReader(
+					new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
+			PrintWriter writer = new PrintWriter(
+					new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8));
+			writer.println(requestMessage);
+			writer.flush();
+			responseMessage = reader.readLine();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+		String[] responseTokens = responseMessage.split(":");
 
+		if (responseTokens[0].equals("ModifyState")) {
+			if (!responseTokens[1].equals("Success")) {
+				System.out.println("Fail : ModifyState");
+			} else {
+				System.out.println("            State: ING --> CLOSE");
+			}
+		}
+	}
 	public void btn_End_Action() {
 		Alert alert = new Alert(AlertType.WARNING, "Test를 종료하시겠습니까?", ButtonType.YES, ButtonType.NO);
 		Optional<ButtonType> result = alert.showAndWait();
@@ -112,6 +138,7 @@ public class BanManagerProgressController implements Initializable {
 		if (result.get() == ButtonType.YES) {
 			if (banManager.BM_state().equals(State.CLOSE))
 				banManager.setBM_state_CLOSE();
+				this.changeBMState(this.banManager.BM_num(), "CLOSE");
 
 			try {
 				Stage primaryStage = (Stage) btn_End.getScene().getWindow();
@@ -138,50 +165,5 @@ public class BanManagerProgressController implements Initializable {
 		new Alert(AlertType.WARNING, "Test 중에는 화면 전환이 불가합니다.").show();
 	}
 	
-	class UpdateStudentThread extends Thread {
-		
-		@Override
-		public void run() {
-			try {
-				BufferedReader br = new BufferedReader(
-						new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
-				while (true) {
-					BanManager banManager = ProfessorDataModel.banManager;
-					String studentIp = null;
-					Student student = null;
-					
-					String requestMessage = br.readLine();
-					String[] requestTokens = requestMessage.split(":");
-					if (requestTokens[0].equals("UpdateStudent")) {
-						if(requestTokens[1].equals(Integer.toString(banManager.BM_num()))) {
-							studentIp = requestTokens[2];
-							Map<String, Student> ip_student = ProfessorDataModel.ip_student;
-							
-							if (ProfessorDataModel.ip_student.containsKey(requestTokens[2])) {
-								student = ip_student.get(studentIp);
-								student.answer[Integer.parseInt(requestTokens[4])] = requestTokens[5];
-
-								ProfessorDataModel.ip_student.replace(studentIp, student);
-								
-							} else {// Student 존재x
-								int answerSize = ProfessorDataModel.workbook.WorkBooksize();
-								student = new Student(answerSize, requestTokens[3]);
-								student.answer[Integer.parseInt(requestTokens[4])] = requestTokens[5];
-								ProfessorDataModel.ip_student.put(studentIp, student);
-							}
-						}
-						
-					}
-					Platform.runLater(() -> {
-						makeTable();
-						
-					});
-					Thread.sleep(1000);
-				}
-			} catch (Exception e) {
-			}
-		}
-		
-	}
 	}
 
