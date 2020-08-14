@@ -221,6 +221,18 @@ public class newWorkBook_Base {
 	public boolean numberBtnSave() {
 		this.changeName();
 
+		if (PB_num == workBookSize) { // 새로운 문제 저장
+			if (IsNotEmpty()) {
+				Alert alert = new Alert(AlertType.WARNING, "해당 작업을 중단하시겠습니까?", ButtonType.YES, ButtonType.NO);
+				Optional<ButtonType> result = alert.showAndWait();
+				if (result.get() == ButtonType.YES)
+					return true;
+				else if (result.get() == ButtonType.NO)
+					return false;
+			} else
+				return true;
+		}
+
 		boolean save = savePro();
 		if (save && (PB_num < workBookSize)) { // 문제 수정 isValueChange == true
 			new Alert(AlertType.CONFIRMATION, "Problem 수정.", ButtonType.CLOSE).showAndWait();
@@ -230,24 +242,6 @@ public class newWorkBook_Base {
 				return false;
 			else // 수정안하고 번호 이동 isValueChange == false
 				return true;
-		} else if (save && (PB_num == workBookSize)) { // 새로운 문제 저장
-			new Alert(AlertType.CONFIRMATION, "Problem 저장.", ButtonType.CLOSE).showAndWait();
-
-			ProfessorDataModel.workbook.setSize(workBookSize + 1);
-			ProfessorDataModel.currentPB = PB_num + 1;
-			ProfessorDataModel.problem = new Problem(ProfessorDataModel.currentPB);
-
-			try {
-				Stage primaryStage = (Stage) btn_CreateProblem.getScene().getWindow();
-				Parent main = FXMLLoader.load(getClass().getResource("/gui/NewWorkBook_MultipleChoice.fxml"));
-				Scene scene = new Scene(main);
-				primaryStage.setTitle("GuessWhat/WorkBook");
-				primaryStage.setScene(scene);
-				primaryStage.show();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			return true;
 		}
 		return true;
 

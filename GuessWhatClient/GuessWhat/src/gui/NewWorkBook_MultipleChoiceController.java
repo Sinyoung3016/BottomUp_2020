@@ -46,23 +46,23 @@ public class NewWorkBook_MultipleChoiceController extends newWorkBook_Base imple
 			if (problem.getType().equals(ProblemType.MultipleChoice)) {
 
 				String[] answerContent = problem.getAnswerContent().split("~");//수정필요할듯 ㅇㅇ
-				if (answerContent[0].equals("0"))
+				if (answerContent[0].equals(" "))
 					tf_Answer1.setText("");
 				else
 					tf_Answer1.setText(answerContent[0]);
-				if (answerContent[1].equals("0"))
+				if (answerContent[1].equals(" "))
 					tf_Answer2.setText("");
 				else
 					tf_Answer2.setText(answerContent[1]);
-				if (answerContent[2].equals("0"))
+				if (answerContent[2].equals(" "))
 					tf_Answer3.setText("");
 				else
 					tf_Answer3.setText(answerContent[2]);
-				if (answerContent[3].equals("0"))
+				if (answerContent[3].equals(" "))
 					tf_Answer4.setText("");
 				else
 					tf_Answer4.setText(answerContent[3]);
-				if (answerContent[4].equals("0"))
+				if (answerContent[4].equals(" "))
 					tf_Answer5.setText("");
 				else
 					tf_Answer5.setText(answerContent[4]);
@@ -212,7 +212,7 @@ public class NewWorkBook_MultipleChoiceController extends newWorkBook_Base imple
 			if (!answerContent[i].equals(""))
 				S_answerContent += answerContent[i];
 			else
-				S_answerContent += "0";
+				S_answerContent += " ";
 
 			if (i != 4)
 				S_answerContent += "~";
@@ -230,10 +230,10 @@ public class NewWorkBook_MultipleChoiceController extends newWorkBook_Base imple
 		if (cb_5.isSelected())
 			S_answer = S_answer + "5";
 
-		if (S_question.equals("") && S_answer.equals("") && S_answerContent.equals("0~0~0~0~0")) {
+		if (S_question.equals("") && S_answer.equals("") && S_answerContent.equals(" ~ ~ ~ ~ ")) {
 			empty = false;
 			return false;
-		} else if (S_question.equals("") || S_answer.equals("") || S_answerContent.equals("0~0~0~0~0")) {
+		} else if (S_question.equals("") || S_answer.equals("") || S_answerContent.equals(" ~ ~ ~ ~ ")) {
 			empty = true;
 			new Alert(AlertType.WARNING, "문제를 입력해주세요.", ButtonType.CLOSE).showAndWait();
 			return false;
