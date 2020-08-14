@@ -113,11 +113,12 @@ public class WorkBook_MultipleChoiceController extends BaseController implements
 	}
 
 	private void changeName() {
+		String temp = workBook.W_name();
 		String name = tf_ChangeName.getText();
-		if (!name.equals(null) || !name.equals(""))
+		if (! name.equals(""))
 			workBook.setName(name);
 		else
-			workBook.setName("NewWorkBook");
+			workBook.setName(temp);
 	}
 
 	private void savePro() {
@@ -240,6 +241,27 @@ public class WorkBook_MultipleChoiceController extends BaseController implements
 				System.out.println("ModifyProblem:Fail");
 			} else {
 				System.out.println("  [Modify] Problem");
+			}
+		}
+		String responseMessage2 = null;
+		try {
+			String requestTokens2 = "ModifyWorkbook:" + this.workBook.W_Num() + ":" + this.workBook.W_name();
+			BufferedReader br = new BufferedReader(
+					new InputStreamReader(this.socket.getInputStream(), StandardCharsets.UTF_8));
+			PrintWriter pw = new PrintWriter(
+					new OutputStreamWriter(this.socket.getOutputStream(), StandardCharsets.UTF_8));
+			pw.println(requestTokens2);
+			pw.flush();
+			responseMessage2 = br.readLine();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		String[] responseTokens2 = responseMessage2.split(":");
+		if (responseTokens2[0].equals("ModifyWorkbook")) {
+			if (!responseTokens2[1].equals("Success")) {
+				System.out.println("ModifyWorkbook:Fail");
+			} else {
+				System.out.println("  [Modify] Workbook Name");
 			}
 		}
 		Alert alert = new Alert(AlertType.INFORMATION,"수정되었습니다");

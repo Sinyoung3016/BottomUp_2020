@@ -377,8 +377,8 @@ public class ServerThread extends Thread{
 	}
 	private void modifyWorkbook(String WNum, String newName) {
 		if(DB_Workbook.modifyWorkbookName(WNum, newName))
-			pw.println(">>SUCCESS [ModifyWorkbook]<<");
-		else pw.println(">>FAIL [DeleteWorkbook]<<");
+			pw.println("ModifyWorkbook:Success");
+		else pw.println("ModifyWorkbook:Fail");
 
 		pw.flush();
 	}
