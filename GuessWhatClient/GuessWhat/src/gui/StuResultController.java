@@ -48,19 +48,19 @@ public class StuResultController implements Initializable {
 		
 		String[] result = this.student.result();
 		int WorkBookSize = result.length;
-		int[] value = new int[3]; // value[0]="X", value[1]="O", value[2] = "N"
+		int[] value = new int[3]; 
 
 		for (int i = 0; i < WorkBookSize; i++) {
 			if (result.equals("O")) {
-				value[1]++;
-				btn[2].setStyle("-fx-background-color: #5ad18f;");
+				value[2]++;
+				btn[i].setStyle("-fx-background-color: #5ad18f;");
 			}
 			else if (result.equals("X")) {
-				value[1]++;
+				value[0]++;
 				btn[i].setStyle("-fx-background-color: #ff848f;");
 			}
 			else if (result.equals("N")) {
-				value[0]++;
+				value[1]++;
 				btn[i].setStyle("-fx-background-color: #5ad18f;");
 			}
 		}
