@@ -9,6 +9,8 @@ import java.net.Socket;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -17,6 +19,7 @@ import com.mysql.cj.x.protobuf.MysqlxCrud.DataModel;
 import exam.Problem;
 import exam.ProblemType;
 import exam.Workbook;
+import gui.BanManagerSecondDoneController.StuNum;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -53,7 +56,7 @@ public class BanManagerFirstDoneController implements Initializable {
 	private Label lb_BanManagerName, lb_WorkBook;
 	@FXML
 	private TableView<Student> tv_Answer;
-
+	private Map<String, Student> ip_student;
 	public Socket socket;
 
 	private Ban ban;
@@ -61,6 +64,7 @@ public class BanManagerFirstDoneController implements Initializable {
 	private Workbook workbook;
 	private Problem[] problemList;
 
+	private ArrayList<Student> list;
 	private String className;
 
 	private int WorkBookSize;
@@ -84,13 +88,23 @@ public class BanManagerFirstDoneController implements Initializable {
 
 		try {
 			tv_Answer.getColumns().setAll(this.getColumns());
-			tv_Answer.getItems().setAll(ProfessorDataModel.Students);
+			tv_Answer.getItems().setAll(this.list());
 		} catch (NullPointerException e) {
 			System.out.println("해당 시험을 본 학생이 없습니다.");
 		}
 
 	}
 
+	private ArrayList<Student> list(){
+		this.list = new ArrayList<>();
+		Iterator<Student> e = ip_student.values().iterator();
+		while(e.hasNext()) {
+			Student stu = e.next();
+			list.add(stu);
+		}
+		return list;
+	}
+	
 	private TableColumn<Student, String>[] getColumns() {
 		TableColumn<Student, String> nameColumn = new TableColumn<>("Name");
 		nameColumn.setCellValueFactory(item -> new ReadOnlyStringWrapper(item.getValue().name()));
@@ -206,15 +220,30 @@ public class BanManagerFirstDoneController implements Initializable {
 	}
 
 	public void btn_Next_Action() {
-		try {
-			Stage primaryStage = (Stage) btn_Next.getScene().getWindow();
-			Parent main = FXMLLoader.load(getClass().getResource("/gui/BanManagerSecondDone.fxml"));
-			Scene scene = new Scene(main);
-			primaryStage.setTitle("GuessWhat/" + className);
-			primaryStage.setScene(scene);
-			primaryStage.show();
-		} catch (Exception e) {
-			e.printStackTrace();
+		ProfessorDataModel.currentPB = 0;
+		
+		if (problemList[0].getType().equals(ProblemType.MultipleChoice)) {
+			try {
+				Stage primaryStage = (Stage) btn_Main.getScene().getWindow();
+				Parent main = FXMLLoader.load(getClass().getResource("/gui/BanManagerSecondDoneMultiChoice.fxml"));
+				Scene scene = new Scene(main);
+				primaryStage.setTitle("GuessWhat/Workbook");
+				primaryStage.setScene(scene);
+				primaryStage.show();
+			} catch (Exception a) {
+				a.printStackTrace();
+			}
+		} else if (!problemList[0].getType().equals(ProblemType.MultipleChoice)) {
+			try {
+				Stage primaryStage = (Stage) btn_Main.getScene().getWindow();
+				Parent main = FXMLLoader.load(getClass().getResource("/gui/BanManagerSecondDone.fxml"));
+				Scene scene = new Scene(main);
+				primaryStage.setTitle("GuessWhat/Workbook");
+				primaryStage.setScene(scene);
+				primaryStage.show();
+			} catch (Exception a) {
+				a.printStackTrace();
+			}
 		}
 	}
 
