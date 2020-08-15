@@ -62,7 +62,7 @@ public class StuResultDetail_MultipleChoiceController implements Initializable {
 		if (!problem.getType().equals(ProblemType.MultipleChoice)) {
 			try {
 				Stage primaryStage = (Stage) btn_Close.getScene().getWindow();
-				Parent main = FXMLLoader.load(getClass().getResource("/gui/StuResultDetail_MutlipleChoice.fxml"));
+				Parent main = FXMLLoader.load(getClass().getResource("/gui/StuResultDetail.fxml"));
 				Scene scene = new Scene(main);
 				primaryStage.setTitle("GuessWhat/Workbook");
 				primaryStage.setScene(scene);
@@ -77,7 +77,7 @@ public class StuResultDetail_MultipleChoiceController implements Initializable {
 				btn_num9, btn_num10, btn_num11, btn_num12, btn_num13, btn_num14, btn_num15 };
 
 		String[] result = this.student.result();
-		int[] value = new int[3]; // value[0]="X", value[1]="O", value[2] = "N"
+		int[] value = new int[3];
 
 		for (int i = 0; i < workBookSize; i++) {
 			if (result.equals("O"))
@@ -99,7 +99,7 @@ public class StuResultDetail_MultipleChoiceController implements Initializable {
 		btn[PB_num].setStyle("-fx-background-color: #22941C;");
 		lb_Question.setText(this.problem.question());
 		String T_answer = this.problem.answer();
-		String S_answer = this.student.answer()[problem.PB_Num()];
+		String S_answer = this.student.answer()[PB_num];
 
 		cb = new CheckBox[] { cb_1, cb_2, cb_3, cb_4, cb_5 };
 		for (int i = 0; i < 5; i++)
@@ -135,7 +135,7 @@ public class StuResultDetail_MultipleChoiceController implements Initializable {
 			} else if (!problem.getType().equals(ProblemType.MultipleChoice)) {
 				try {
 					Stage primaryStage = (Stage) btn_Close.getScene().getWindow();
-					Parent main = FXMLLoader.load(getClass().getResource("/gui/StuResultDetail_MutlipleChoice.fxml"));
+					Parent main = FXMLLoader.load(getClass().getResource("/gui/StuResultDetail.fxml"));
 					Scene scene = new Scene(main);
 					primaryStage.setTitle("GuessWhat/Workbook");
 					primaryStage.setScene(scene);

@@ -51,15 +51,15 @@ public class StuResultController implements Initializable {
 		int[] value = new int[3]; 
 
 		for (int i = 0; i < WorkBookSize; i++) {
-			if (result.equals("O")) {
+			if (result[i].equals("O")) {
 				value[2]++;
 				btn[i].setStyle("-fx-background-color: #5ad18f;");
 			}
-			else if (result.equals("X")) {
+			else if (result[i].equals("X")) {
 				value[0]++;
 				btn[i].setStyle("-fx-background-color: #ff848f;");
 			}
-			else if (result.equals("N")) {
+			else if (result[i].equals("N")) {
 				value[1]++;
 				btn[i].setStyle("-fx-background-color: #5ad18f;");
 			}

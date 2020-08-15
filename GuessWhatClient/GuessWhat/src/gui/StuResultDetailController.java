@@ -80,11 +80,11 @@ public class StuResultDetailController implements Initializable {
 		String[] result = this.student.result();
 
 		for (int i = 0; i < workBookSize; i++) {
-			if (result.equals("O"))
+			if (result[i].equals("O"))
 				btn[i].setStyle("-fx-background-color: #5ad18f;");
-			else if (result.equals("X"))
+			else if (result[i].equals("X"))
 				btn[i].setStyle("-fx-background-color: #ff848f;");
-			else if (result.equals("N"))
+			else if (result[i].equals("N"))
 				btn[i].setStyle("-fx-background-color: #5ad18f;");
 
 			btn[i].setDisable(false);
@@ -99,7 +99,7 @@ public class StuResultDetailController implements Initializable {
 		btn[PB_num].setStyle("-fx-background-color: #22941C;");
 		lb_Question.setText(this.problem.question());
 		String T_answer = this.problem.answer();
-		String S_answer = this.student.answer()[problem.PB_Num()];
+		String S_answer = this.student.answer()[PB_num];
 		lb_MyAnswer.setText(S_answer);
 		lb_TeacherAnswer.setText(T_answer);
 
@@ -123,7 +123,7 @@ public class StuResultDetailController implements Initializable {
 			} else if (!problem.getType().equals(ProblemType.MultipleChoice)) {
 				try {
 					Stage primaryStage = (Stage) btn_Close.getScene().getWindow();
-					Parent main = FXMLLoader.load(getClass().getResource("/gui/StuResultDetail_MutlipleChoice.fxml"));
+					Parent main = FXMLLoader.load(getClass().getResource("/gui/StuResultDetail.fxml"));
 					Scene scene = new Scene(main);
 					primaryStage.setTitle("GuessWhat/Workbook");
 					primaryStage.setScene(scene);
