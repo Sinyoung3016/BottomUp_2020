@@ -35,7 +35,8 @@ GET_PROBLEM("GetProblem"),
 GET_ALLPROBLEM("GetAllProblem"),
 GET_WORKBOOK_PROBLEM("GetWorkbookProblem"),
 GET_ANSWERLIST("GetAnswerList"),
-GET_TYPELIST("GetTypeList")
+GET_TYPELIST("GetTypeList"),
+GET_STUDENT("GetStudent")
 ;
 	
 	private String request;

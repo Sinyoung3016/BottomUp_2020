@@ -126,7 +126,6 @@ public class BanManagerProgressController implements Initializable {
 		Alert alert = new Alert(AlertType.WARNING, "Test를 종료하시겠습니까?", ButtonType.YES, ButtonType.NO);
 		Optional<ButtonType> result = alert.showAndWait();
 		
-		this.getAllProblem();
 		if (result.get() == ButtonType.YES) {
 			stop = true;
 			if (banManager.BM_state().equals(State.CLOSE))
@@ -185,44 +184,5 @@ public class BanManagerProgressController implements Initializable {
 		}
 	}
 
-	private boolean getAllProblem() {
-		String responseMessage = null;
-		try {
-			String requestMessage = "GetAllProblem:" + this.workbook.W_Num();
-			BufferedReader br = new BufferedReader(
-					new InputStreamReader(this.socket.getInputStream(), StandardCharsets.UTF_8));
-			PrintWriter pw = new PrintWriter(
-					new OutputStreamWriter(this.socket.getOutputStream(), StandardCharsets.UTF_8));
-			pw.println(requestMessage);
-			pw.flush();
-			responseMessage = br.readLine();
-			String[] responseTokens = responseMessage.split(":");
-			if (responseTokens[0].equals("GetAllProblem")) {
-				if (!responseTokens[1].equals("Success")) {
-					System.out.println("GetAllProblem:Fail");
-					return false;
-				} else {
-					// Success GetAllProblem
-					// GetAllProblem:Success:Problem1_Problem2
-
-					String[] problemInfo = responseTokens[2].split("_");
-					Problem[] problemList = new Problem[problemInfo.length];
-
-					for (int i = 0; i < problemList.length; i++) {
-						Problem problem = new Problem(problemInfo[i]);
-						problemList[i] = problem;
-					}
-
-					ProfessorDataModel.problemList = problemList;
-
-				}
-			}
-			return true;
-		} catch (IOException e) {
-			e.printStackTrace();
-			return false;
-		}
-
-	}
 
 }

@@ -87,7 +87,7 @@ public class StuResultController implements Initializable {
 	public void btn_Detail_Action() {
 
 		StudentDataModel.currentPB = 0;
-		ProblemType p = ProfessorDataModel.problemList[0].getType();
+		ProblemType p = StudentDataModel.problemList[0].getType();
 		
 		if (!p.equals(ProblemType.MultipleChoice)) {
 			try {

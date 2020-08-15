@@ -60,7 +60,7 @@ public class BanManagerSecondDoneMultiChoiceController implements Initializable 
 	private ArrayList<StuNum> list;
 
 	private ObservableList<Data> Pie;
-	private LinkedList<Student> ip_student;
+	private ArrayList<Student> ip_student;
 	private Socket socket;
 	private Ban ban;
 	private BanManager banManager;

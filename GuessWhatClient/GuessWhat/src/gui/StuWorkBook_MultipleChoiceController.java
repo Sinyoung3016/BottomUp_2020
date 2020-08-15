@@ -321,6 +321,7 @@ public class StuWorkBook_MultipleChoiceController extends BaseController impleme
 		}
 		// GetAnswer:Success:Answer(A1`A2`A3 ...)
 		String[] answerList = null;
+		System.out.println(responseMessage);
 		String[] responseTokens = responseMessage.split(":");
 		if (responseTokens[0].equals("GetAnswerList")) {
 			if (!responseTokens[1].equals("Success")) {

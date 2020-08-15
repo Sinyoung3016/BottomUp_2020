@@ -29,7 +29,7 @@ public class ProfessorDataModel {
 	public static Problem problem;
 	public static Workbook[] WorkbookList = null;
 	public static Problem [] problemList;
-	public static Map<String,Student> ip_student = new HashMap<>();
+	public static ArrayList<Student> ip_student = new ArrayList<>();
 	public static long startTime = 0;
 	public static int currentPB = 0;
 

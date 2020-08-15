@@ -52,7 +52,7 @@ public class BanManagerSecondDoneController implements Initializable {
 	@FXML
 	private Label lb_BanManagerName, lb_WorkBook;
 
-	private LinkedList <Student> ip_student;
+	private ArrayList <Student> ip_student;
 	private Socket socket;
 	private Ban ban;
 	private BanManager banManager;

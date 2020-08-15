@@ -180,6 +180,9 @@ public class ServerThread extends Thread{
 						}else if(requestTokens[0].equals(Request.GET_TYPELIST.getRequest())) { //GetTypeList:WNum
 							clientRequest = "GetTypeList";
 							this.getTypeList(requestTokens[1]);
+						}else if(requestTokens[0].equals(Request.GET_STUDENT.getRequest())) { //GetStudent:BMNum
+							clientRequest = "GetStudent";
+							this.getStudent(requestTokens[1]);
 						}
 					}
 				} catch(MyException e) {
@@ -630,6 +633,25 @@ public class ServerThread extends Thread{
 			pw.println("GetTypeList:Fail");
 			pw.flush();
 		}
+	}
+	
+	private void getStudent(String BMNum) {
+		int num = Integer.parseInt(BMNum);
+		String studentList = DB_Student.getStudent(num);
+		
+		StringBuilder sb = null;
+		
+		if(studentList != null) {
+			sb = new StringBuilder("GetStudent:Success:");
+			sb.append(studentList);
+			pw.println(new String(sb));
+			pw.flush();
+		}
+		else {
+			pw.println("GetStudent:Fail");
+			pw.flush();
+		}
+		
 	}
 }
 

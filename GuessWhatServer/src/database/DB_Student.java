@@ -2,7 +2,14 @@ package database;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+
+import user.Student;
+import exam.Workbook;
 
 public class DB_Student extends DBManager{
 	public synchronized static boolean insertStudent(String BNum, String BMNum, String Name,String Answer,String Result) {
@@ -55,6 +62,51 @@ public class DB_Student extends DBManager{
 				if(pstmt != null) conn.close();
 			} catch(SQLException e) {
 				System.out.println("Error : " + e.getMessage() + "FROM insertStudent.2 ");
+			}
+		}
+	}
+	public synchronized static String getStudent(int BMNum) {
+		Connection conn = null;
+		Statement state = null;
+		ResultSet rs = null;
+		
+		try {
+			conn = getConn();
+			state = conn.createStatement();
+			String sql;
+			sql = "SELECT * FROM Student WHERE BMNum = '" + BMNum + "'";
+			rs = state.executeQuery(sql);
+			
+			StringBuilder sb = new StringBuilder("");
+			while(rs.next()) {
+				sb.append(rs.getString("SNum") + "~");
+				sb.append(rs.getString("BMNum") + "~");
+				sb.append(rs.getString("BNum") + "~");
+				sb.append(rs.getString("Name") + "~");
+
+				for(int i = 1; i <= 15; i++) {
+					String answer = rs.getString("N" + i);
+					if(answer == null) {
+						answer = " ";
+					}
+					sb.append( answer + "~"); 
+				}
+				sb.append(rs.getString("Result"));
+				sb.append("_");
+			}
+			sb.deleteCharAt(sb.length()-1);
+			
+			return new String(sb);
+		}catch(Exception e) {
+			System.out.println("Error : " + e.getMessage() + "FROM getAllWorkbook.1");
+			return null;
+		} finally {
+			try {
+				if(state != null) state.close();
+				if(conn != null) conn.close();
+				if(rs != null) rs.close();
+			} catch(SQLException e) {
+				System.out.println("Error : " + e.getMessage() + "FROM getWorkbookOf.2");
 			}
 		}
 	}
