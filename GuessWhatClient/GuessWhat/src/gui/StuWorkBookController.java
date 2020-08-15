@@ -231,10 +231,11 @@ public class StuWorkBookController extends BaseController implements Initializab
 	private void changeProblem() {
 		PB_num = StudentDataModel.currentPB;
 		StudentDataModel.problem = problemList[PB_num];
-		if (problem.getType().equals(ProblemType.MultipleChoice)) {
+		ProblemType p = StudentDataModel.problem.getType();
+		if (p.equals(ProblemType.MultipleChoice)) {
 			try {
 				Stage primaryStage = (Stage) btn_Submit.getScene().getWindow();
-				Parent main = FXMLLoader.load(getClass().getResource("/gui/StuResultDetail_MutlipleChoice.fxml"));
+				Parent main = FXMLLoader.load(getClass().getResource("/gui/StuWorkBook_MultipleChoice.fxml"));
 				Scene scene = new Scene(main);
 				primaryStage.setTitle("GuessWhat/Workbook");
 				primaryStage.setScene(scene);
@@ -242,10 +243,10 @@ public class StuWorkBookController extends BaseController implements Initializab
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-		} else if (!problem.getType().equals(ProblemType.MultipleChoice)) {
+		} else if (!p.equals(ProblemType.MultipleChoice)) {
 			try {
 				Stage primaryStage = (Stage) btn_Submit.getScene().getWindow();
-				Parent main = FXMLLoader.load(getClass().getResource("/gui/StuResultDetail.fxml"));
+				Parent main = FXMLLoader.load(getClass().getResource("/gui/StuWorkBook.fxml"));
 				Scene scene = new Scene(main);
 				primaryStage.setTitle("GuessWhat/Workbook");
 				primaryStage.setScene(scene);

@@ -85,8 +85,10 @@ public class StuWorkBook_MultipleChoiceController extends BaseController impleme
 
 		if (hasAnswer[PB_num]) {
 			String S_answer = this.student.answer()[PB_num];
-			for (int j = 0; j < S_answer.length(); j++)
-				cb[S_answer.charAt(j)].setSelected(true);
+			for (int j = 0; j < S_answer.length(); j++) {
+				int num = S_answer.charAt(j) - '0';
+				cb[num-1].setSelected(true);
+			}
 		} else {
 			for (int j = 0; j < 5; j++)
 				cb[j].setSelected(false);
@@ -103,10 +105,11 @@ public class StuWorkBook_MultipleChoiceController extends BaseController impleme
 	private void changeProblem() {
 			PB_num = StudentDataModel.currentPB;
 			StudentDataModel.problem = problemList[PB_num];
-			if (problem.getType().equals(ProblemType.MultipleChoice)) {
+			ProblemType p = StudentDataModel.problem.getType();
+			if (p.equals(ProblemType.MultipleChoice)) {
 				try {
 					Stage primaryStage = (Stage) btn_Submit.getScene().getWindow();
-					Parent main = FXMLLoader.load(getClass().getResource("/gui/StuResultDetail_MutlipleChoice.fxml"));
+					Parent main = FXMLLoader.load(getClass().getResource("/gui/StuWorkBook_MultipleChoice.fxml"));
 					Scene scene = new Scene(main);
 					primaryStage.setTitle("GuessWhat/Workbook");
 					primaryStage.setScene(scene);
@@ -114,10 +117,10 @@ public class StuWorkBook_MultipleChoiceController extends BaseController impleme
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
-			} else if (!problem.getType().equals(ProblemType.MultipleChoice)) {
+			} else if (!p.equals(ProblemType.MultipleChoice)) {
 				try {
 					Stage primaryStage = (Stage) btn_Submit.getScene().getWindow();
-					Parent main = FXMLLoader.load(getClass().getResource("/gui/StuResultDetail.fxml"));
+					Parent main = FXMLLoader.load(getClass().getResource("/gui/StuWorkBook.fxml"));
 					Scene scene = new Scene(main);
 					primaryStage.setTitle("GuessWhat/Workbook");
 					primaryStage.setScene(scene);

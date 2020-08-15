@@ -106,10 +106,11 @@ public class StuResultDetail_MultipleChoiceController implements Initializable {
 	private void changeProblem() {
 		PB_num = StudentDataModel.currentPB;
 		StudentDataModel.problem = problemList[PB_num];
-		if (problem.getType().equals(ProblemType.MultipleChoice)) {
+		ProblemType p = StudentDataModel.problem.getType();
+		if (p.equals(ProblemType.MultipleChoice)) {
 			try {
 				Stage primaryStage = (Stage) btn_Close.getScene().getWindow();
-				Parent main = FXMLLoader.load(getClass().getResource("/gui/StuResultDetail_MutlipleChoice.fxml"));
+				Parent main = FXMLLoader.load(getClass().getResource("/gui/StuResultDetail_MultipleChoice.fxml"));
 				Scene scene = new Scene(main);
 				primaryStage.setTitle("GuessWhat/Workbook");
 				primaryStage.setScene(scene);
@@ -117,7 +118,7 @@ public class StuResultDetail_MultipleChoiceController implements Initializable {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-		} else if (!problem.getType().equals(ProblemType.MultipleChoice)) {
+		} else if (!p.equals(ProblemType.MultipleChoice)) {
 			try {
 				Stage primaryStage = (Stage) btn_Close.getScene().getWindow();
 				Parent main = FXMLLoader.load(getClass().getResource("/gui/StuResultDetail.fxml"));
