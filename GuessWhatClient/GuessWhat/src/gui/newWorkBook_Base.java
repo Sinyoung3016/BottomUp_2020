@@ -101,7 +101,7 @@ public class newWorkBook_Base {
 		if (workBookSize < 1) {
 			emptyWorkbook = true;
 		}
-		if (!canMakeWB || emptyWorkbook)
+		if (!canMakeWB || emptyWorkbook) {
 			System.out.println("workbook 저장 못함");
 			Alert alert = new Alert(AlertType.INFORMATION, "만들어진 문제가 없습니다.");
 			alert.setTitle("Check your problem");
@@ -117,6 +117,8 @@ public class newWorkBook_Base {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
+		}
+
 		else {
 
 			// problemList db에 저장
