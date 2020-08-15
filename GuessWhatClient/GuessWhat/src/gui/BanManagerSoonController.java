@@ -141,6 +141,9 @@ public class BanManagerSoonController implements Initializable {
 		Optional<ButtonType> result = alert.showAndWait();
 
 		if (result.get() == ButtonType.YES) {
+			
+			ProfessorDataModel.startTime = System.currentTimeMillis();
+			
 			if (banManager.BM_state().equals(State.OPEN))
 				this.banManager.setBM_state_ING();
 				this.changeBMState(this.banManager.BM_num(), "ING");

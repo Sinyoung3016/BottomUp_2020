@@ -31,7 +31,7 @@ public class ProfessorDataModel {
 	public static Workbook[] WorkbookList = null;
 	public static Problem [] problemList;
 	public static Map<String,Student> ip_student = new HashMap<>();
-	
+	public static long startTime = 0;
 	public static int currentPB = 0;
 
 	public static ObservableList<HBoxModel> ItemList_MyBanManager = FXCollections.observableArrayList();
