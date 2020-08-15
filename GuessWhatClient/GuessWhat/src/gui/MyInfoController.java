@@ -110,7 +110,7 @@ public class MyInfoController implements Initializable {
 			if (!this.checkNewPassword(pf_PassWord.getText(), pf_CheckPW.getText())) {
 				canRequest = false;
 				new Alert(AlertType.WARNING, "비밀번호를 확인해주세요.", ButtonType.CLOSE).showAndWait();
-				return;
+				initialize(null, null);
 			} else {// 비번 맞으면
 				NewPassword = pf_PassWord.getText();
 				if (tf_Email.getLength() != 0) // email 수정
