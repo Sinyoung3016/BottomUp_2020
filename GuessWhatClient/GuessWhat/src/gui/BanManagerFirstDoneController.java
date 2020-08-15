@@ -14,6 +14,8 @@ import java.util.ResourceBundle;
 
 import com.mysql.cj.x.protobuf.MysqlxCrud.DataModel;
 
+import exam.Problem;
+import exam.ProblemType;
 import exam.Workbook;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.ObservableList;
@@ -27,15 +29,18 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import model.ProfessorDataModel;
 import room.Ban;
 import room.BanManager;
+import room.BanManager.State;
 import user.Student;
 
 public class BanManagerFirstDoneController implements Initializable {
@@ -54,6 +59,7 @@ public class BanManagerFirstDoneController implements Initializable {
 	private Ban ban;
 	private BanManager banManager;
 	private Workbook workbook;
+	private Problem[] problemList;
 
 	private String className;
 
@@ -68,6 +74,7 @@ public class BanManagerFirstDoneController implements Initializable {
 		this.banManager = ProfessorDataModel.banManager;
 		this.workbook = ProfessorDataModel.workbook;
 		this.WorkBookSize = workbook.WorkBooksize();
+		this.problemList = ProfessorDataModel.problemList;
 
 		className = btn_Main.getText();
 
@@ -75,8 +82,12 @@ public class BanManagerFirstDoneController implements Initializable {
 		this.lb_BanManagerName.setText(banManager.BM_name());
 		this.lb_WorkBook.setText(workbook.W_name());
 
-		tv_Answer.getColumns().setAll(this.getColumns());
-		tv_Answer.getItems().setAll(ProfessorDataModel.Students);
+		try {
+			tv_Answer.getColumns().setAll(this.getColumns());
+			tv_Answer.getItems().setAll(ProfessorDataModel.Students);
+		} catch (NullPointerException e) {
+			System.out.println("해당 시험을 본 학생이 없습니다.");
+		}
 
 	}
 
@@ -89,7 +100,29 @@ public class BanManagerFirstDoneController implements Initializable {
 		for (int i = 0; i < WorkBookSize; i++) {
 			final int j = i;
 			scoreColumn[i] = new TableColumn<Student, String>("" + (i + 1));
+
 			scoreColumn[i].setCellValueFactory(item -> new ReadOnlyStringWrapper(item.getValue().answer()[j]));
+			scoreColumn[i].setCellFactory(col -> new TableCell<Student, String>() {
+				@Override
+				protected void updateItem(String item, boolean empty) {
+					super.updateItem(item, empty);
+					if (empty || item == null) {
+						setText(null);
+						setGraphic(null);
+					} else {
+						setText(item);
+						if (!problemList[j].getType().equals(ProblemType.Subjective)) {
+							if (item.equals(problemList[j].answer())) {
+								setStyle("-fx-background-color: #5ad18f;");// 맞음
+							} else if (item.equals("X")) {
+								setStyle("-fx-background-color: #ff848f;");// 틀림
+							}
+						} else
+							setStyle("-fx-background-color: #f0fff0;");// subjective
+					}
+				}
+			});
+
 		}
 
 		TableColumn<Student, String>[] returnTable = new TableColumn[WorkBookSize + 1];
