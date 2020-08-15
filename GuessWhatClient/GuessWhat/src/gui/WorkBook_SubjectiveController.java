@@ -113,7 +113,13 @@ public class WorkBook_SubjectiveController implements Initializable {
 		else
 			workBook.setName(temp);
 	}
-
+	private boolean isValueChange() {
+		if ( this.ta_Question.getText().equals(problem.question()) &&
+			 this.tf_Answer.getText().equals(problem.answer())) {
+			return false;
+		}
+		return true;
+	}
 	private void savePro() {
 
 		this.changeName();
@@ -240,12 +246,14 @@ public class WorkBook_SubjectiveController implements Initializable {
 	}
 
 	public void btn_Cancel_Action() {
-		Alert alert = new Alert(AlertType.WARNING, "해당 문제를 수정하시겠습니까?", ButtonType.YES, ButtonType.NO);
-		Optional<ButtonType> result = alert.showAndWait();
-
-		if (result.equals(ButtonType.YES))
-			btn_SaveWorkBook_Action();
-
+		if (this.isValueChange()) {
+			Alert alert = new Alert(AlertType.WARNING, "변경사항을 저장하시겠습니까?", ButtonType.YES, ButtonType.NO);
+			Optional<ButtonType> result = alert.showAndWait();
+			
+			if (result.get() == ButtonType.YES) {
+				this.btn_SaveWorkBook_Action();
+			}
+		}
 		try {
 			Stage primaryStage = (Stage) btn_Cancel.getScene().getWindow();
 			Parent main = FXMLLoader.load(getClass().getResource("/gui/WorkBookList.fxml"));
