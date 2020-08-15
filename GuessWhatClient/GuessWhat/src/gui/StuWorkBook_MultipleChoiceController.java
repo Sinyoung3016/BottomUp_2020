@@ -43,6 +43,7 @@ public class StuWorkBook_MultipleChoiceController extends BaseController impleme
 	private CheckBox cb_1, cb_2, cb_3, cb_4, cb_5;
 
 	private Socket socket;
+	private Problem [] problemList;
 	private Problem problem;
 	private Student student;
 	private Button[] btn;
@@ -58,20 +59,7 @@ public class StuWorkBook_MultipleChoiceController extends BaseController impleme
 		this.problem = StudentDataModel.problem;
 		this.hasAnswer = StudentDataModel.hasAnswer;
 		this.student = StudentDataModel.student;
-
-		if (!problem.getType().equals(ProblemType.MultipleChoice)) {
-			try {
-				Stage primaryStage = (Stage) lb_Question.getScene().getWindow();
-				Parent main = FXMLLoader.load(getClass().getResource("/gui/StuWorkBook.fxml"));
-				Scene scene = new Scene(main);
-				primaryStage.setTitle("GuessWhat/Workbook");
-				primaryStage.setScene(scene);
-				primaryStage.show();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-
+		this.problemList = StudentDataModel.problemList;
 		this.workBookSize = StudentDataModel.workbook.WorkBooksize();
 		this.PB_num = StudentDataModel.currentPB;
 
@@ -113,10 +101,33 @@ public class StuWorkBook_MultipleChoiceController extends BaseController impleme
 	}
 
 	private void changeProblem() {
-		StudentDataModel.setProblem(StudentDataModel.problemList[StudentDataModel.currentPB]);
-
-		this.initialize(null, null);
-	}
+			PB_num = StudentDataModel.currentPB;
+			StudentDataModel.problem = problemList[PB_num];
+			if (problem.getType().equals(ProblemType.MultipleChoice)) {
+				try {
+					Stage primaryStage = (Stage) btn_Submit.getScene().getWindow();
+					Parent main = FXMLLoader.load(getClass().getResource("/gui/StuResultDetail_MutlipleChoice.fxml"));
+					Scene scene = new Scene(main);
+					primaryStage.setTitle("GuessWhat/Workbook");
+					primaryStage.setScene(scene);
+					primaryStage.show();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			} else if (!problem.getType().equals(ProblemType.MultipleChoice)) {
+				try {
+					Stage primaryStage = (Stage) btn_Submit.getScene().getWindow();
+					Parent main = FXMLLoader.load(getClass().getResource("/gui/StuResultDetail.fxml"));
+					Scene scene = new Scene(main);
+					primaryStage.setTitle("GuessWhat/Workbook");
+					primaryStage.setScene(scene);
+					primaryStage.show();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		
 
 	private void savePro() {
 
