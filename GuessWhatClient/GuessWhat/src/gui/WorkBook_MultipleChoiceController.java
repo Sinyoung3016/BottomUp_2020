@@ -115,10 +115,14 @@ public class WorkBook_MultipleChoiceController extends BaseController implements
 	private void changeName() {
 		String temp = workBook.W_name();
 		String name = tf_ChangeName.getText();
-		if (! name.equals(""))
+		if (! name.equals("")) {
 			workBook.setName(name);
-		else
+		}
+		else {
+			Alert alert = new Alert(AlertType.WARNING, "Workbook 이름이 비어있습니다. 이전 이름으로 저장됩니다.",ButtonType.YES);
+			alert.showAndWait();
 			workBook.setName(temp);
+		}	
 	}
 
 	private void savePro() {
