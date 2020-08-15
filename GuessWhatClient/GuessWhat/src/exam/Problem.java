@@ -84,7 +84,7 @@ public class Problem {
 	}
 	public void setAnswerContent(String answerContent) {
 		this.answerContent = answerContent;
-		this.answerContentList = answerContent.split("`");
+		this.answerContentList = answerContent.split("~");
 	}
 	
 	//Getter start

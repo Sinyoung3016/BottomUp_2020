@@ -88,8 +88,9 @@ public class StuWorkBook_MultipleChoiceController extends BaseController impleme
 		btn[PB_num].setStyle("-fx-background-color: #22941C;");
 		lb_Question.setText(problem.question());
 		cb = new CheckBox[] { cb_1, cb_2, cb_3, cb_4, cb_5 };
-		for (int i = 0; i < 5; i++)
-			cb[i].setText(problem.getAnswerContentList()[i]);
+		for (int i = 0; i < 5; i++) {
+			System.out.println(problem.getAnswerContentList()[i]);
+			cb[i].setText(problem.getAnswerContentList()[i]);}
 
 		if (hasAnswer[PB_num]) {
 			String S_answer = this.student.answer()[PB_num];
@@ -171,7 +172,6 @@ public class StuWorkBook_MultipleChoiceController extends BaseController impleme
 		try {
 			String requestTokens = "AddStudent:" + StudentDataModel.tokenStudentData() + ":"
 					+ this.student.tokenAnswer() + ":" + this.student.tokenResult();
-			System.out.println("requestTokens : " + requestTokens);
 			BufferedReader br = new BufferedReader(
 					new InputStreamReader(this.socket.getInputStream(), StandardCharsets.UTF_8));
 			PrintWriter pw = new PrintWriter(
@@ -179,7 +179,6 @@ public class StuWorkBook_MultipleChoiceController extends BaseController impleme
 			pw.println(requestTokens);
 			pw.flush();
 			responseMessage = br.readLine();
-			System.out.println("reponseMessage : " + responseMessage);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
