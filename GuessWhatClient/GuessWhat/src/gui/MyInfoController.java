@@ -48,6 +48,8 @@ public class MyInfoController implements Initializable {
 		this.ID = ProfessorDataModel.professor.Id();
 
 		lb_ID.setText(ID);
+		pf_PassWord.setText("");
+		pf_CheckPW.setText("");
 		tf_Email.setPromptText(Email);
 	}
 
@@ -82,7 +84,7 @@ public class MyInfoController implements Initializable {
 		String[] responseTokens = responseMessage.split(":");
 		if (responseTokens[0].equals("LogOut")) {
 			if (!responseTokens[1].equals("Success")) {
-				new Alert(Alert.AlertType.WARNING, responseTokens[1], ButtonType.CLOSE).show();
+				new Alert(Alert.AlertType.WARNING, responseTokens[1], ButtonType.CLOSE).showAndWait();
 			} else {
 				System.out.println(ProfessorDataModel.ID + "님이 로그아웃하셨습니다.");
 				try {
@@ -107,7 +109,7 @@ public class MyInfoController implements Initializable {
 		if (pf_PassWord.getLength() != 0) {// password 수정 O
 			if (!this.checkNewPassword(pf_PassWord.getText(), pf_CheckPW.getText())) {
 				canRequest = false;
-				new Alert(AlertType.WARNING, "비밀번호를 확인해주세요.", ButtonType.CLOSE).show();
+				new Alert(AlertType.WARNING, "비밀번호를 확인해주세요.", ButtonType.CLOSE).showAndWait();
 				return;
 			} else {// 비번 맞으면
 				NewPassword = pf_PassWord.getText();
@@ -137,8 +139,9 @@ public class MyInfoController implements Initializable {
 			if (responseTokens[0].equals("ModifyProfessor")) {
 				if (!responseTokens[1].equals("Success")) {
 					System.out.println(responseTokens[1]);
-					new Alert(AlertType.WARNING, "MyInfo 수정을 실패했습니다. 잠시후 다시 시도해주세요.", ButtonType.CLOSE).show();
+					new Alert(AlertType.WARNING, "MyInfo 수정을 실패했습니다. 잠시후 다시 시도해주세요.", ButtonType.CLOSE).showAndWait();
 				} else {
+					new Alert(AlertType.WARNING, "MyInfo를 수정했습니다.", ButtonType.CLOSE).showAndWait();
 					ProfessorDataModel.professor.setEmail(Email);
 					ProfessorDataModel.professor.setPassword(NewPassword);
 					initialize(null, null);
