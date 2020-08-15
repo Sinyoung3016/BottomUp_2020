@@ -71,7 +71,7 @@ public class StuResultDetailController implements Initializable {
 			else if (result[i].equals("X"))
 				btn[i].setStyle("-fx-background-color: #ff848f;");
 			else if (result[i].equals("N"))
-				btn[i].setStyle("-fx-background-color: #5ad18f;");
+				btn[i].setStyle("-fx-background-color: #f0fff0;");
 
 			btn[i].setDisable(false);
 		}
@@ -89,6 +89,12 @@ public class StuResultDetailController implements Initializable {
 		lb_MyAnswer.setText(S_answer);
 		lb_TeacherAnswer.setText(T_answer);
 
+		if (problem.getType() == ProblemType.ShortAnswer) {
+			if (S_answer.equals(T_answer))
+				lb_MyAnswer.setStyle("-fx-background-color: #5ad18f;");
+			else
+				lb_MyAnswer.setStyle("-fx-background-color: #ff848f;");
+		}
 	}
 
 	private void changeProblem() {
