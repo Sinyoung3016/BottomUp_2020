@@ -10,12 +10,14 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.Map;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+import exam.Problem;
 import exam.ProblemType;
-import exam.StuNumResult;
 import exam.Workbook;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.ObservableList;
@@ -50,7 +52,7 @@ public class BanManagerSecondDoneController implements Initializable {
 	@FXML
 	private Label lb_BanManagerName, lb_WorkBook;
 
-	private StuNumResult tableDataList;
+	private Map<String, Student> ip_student;
 	private Socket socket;
 	private Ban ban;
 	private BanManager banManager;
@@ -58,9 +60,9 @@ public class BanManagerSecondDoneController implements Initializable {
 	private String className;
 	private int PB_num;
 	private Button[] btn;
+	private Problem[] problemList;
 	private int WorkBookSize;
-	private int StudentSize;
-	
+
 	private ArrayList<StuNum> list;
 
 	@Override
@@ -70,15 +72,13 @@ public class BanManagerSecondDoneController implements Initializable {
 		this.ban = ProfessorDataModel.ban;
 		this.banManager = ProfessorDataModel.banManager;
 		this.workbook = ProfessorDataModel.workbook;
-
-		this.changeNum();
+		this.ip_student = ProfessorDataModel.ip_student;
+		this.problemList = ProfessorDataModel.problemList;
 
 		this.btn_Main.setText(ban.ban_name());
 		this.lb_BanManagerName.setText(banManager.BM_name());
 		this.lb_WorkBook.setText(workbook.W_name());
 
-		settingColumn();
-		
 		btn = new Button[] { btn_num1, btn_num2, btn_num3, btn_num4, btn_num5, btn_num6, btn_num7, btn_num8, btn_num9,
 				btn_num10, btn_num11, btn_num12, btn_num13, btn_num14, btn_num15 };
 
@@ -93,19 +93,22 @@ public class BanManagerSecondDoneController implements Initializable {
 			btn[i].setStyle("-fx-background-color: #cdcdcd;");
 			btn[i].setDisable(true);
 		}
-
+		
+		changeNum();
+		settingColumn();
 	}
 
 	private void changeNum() {
 		this.PB_num = ProfessorDataModel.currentPB;
-		this.tableDataList = ProfessorDataModel.NumStudents.get(PB_num);
-		this.StudentSize = tableDataList.S_name().length;
-		
-		list = new ArrayList<>();
-		for(int i = 0;  i < StudentSize; i++)
-			list.add(new StuNum(tableDataList.S_name()[PB_num],tableDataList.S_answer()[PB_num],tableDataList.S_result()[PB_num]));
 
-		if ((tableDataList.problemType()).equals(ProblemType.MultipleChoice)) {
+		list = new ArrayList<>();
+		Iterator<Student> e = ip_student.values().iterator();
+		while (e.hasNext()) {
+			Student stu = e.next();
+			list.add(new StuNum(stu.name(), stu.answer()[PB_num], stu.result()[PB_num]));
+		}
+
+		if (problemList[PB_num].getType().equals(ProblemType.MultipleChoice)) {
 			try {
 				Stage primaryStage = (Stage) btn_Main.getScene().getWindow();
 				Parent main = FXMLLoader.load(getClass().getResource("/gui/BanManagerSecondDoneMultiChoice.fxml"));
@@ -113,8 +116,8 @@ public class BanManagerSecondDoneController implements Initializable {
 				primaryStage.setTitle("GuessWhat/Workbook");
 				primaryStage.setScene(scene);
 				primaryStage.show();
-			} catch (Exception e) {
-				e.printStackTrace();
+			} catch (Exception a) {
+				a.printStackTrace();
 			}
 		}
 	}
@@ -136,7 +139,7 @@ public class BanManagerSecondDoneController implements Initializable {
 		TableColumn<StuNum, String> resultColumn = new TableColumn<>("Result");
 		resultColumn.setCellValueFactory(item -> new ReadOnlyStringWrapper(item.getValue().result()));
 
-		TableColumn<StuNum, String>[] returnTable = new TableColumn [] {nameColumn, answerColumn, resultColumn};
+		TableColumn<StuNum, String>[] returnTable = new TableColumn[] { nameColumn, answerColumn, resultColumn };
 		return returnTable;
 	}
 
@@ -329,14 +332,24 @@ public class BanManagerSecondDoneController implements Initializable {
 		private String name;
 		private String answer;
 		private String result;
-		private StuNum(String name, String answer, String result){
+
+		private StuNum(String name, String answer, String result) {
 			this.name = name;
 			this.answer = answer;
 			this.result = result;
 		}
-		public String name() { return this.name; }
-		public String answer() { return this.answer; }
-		public String result() { return this.result; }
+
+		public String name() {
+			return this.name;
+		}
+
+		public String answer() {
+			return this.answer;
+		}
+
+		public String result() {
+			return this.result;
+		}
 	}
 
 }

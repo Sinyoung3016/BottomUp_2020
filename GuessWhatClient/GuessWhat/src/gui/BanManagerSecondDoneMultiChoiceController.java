@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.Map;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -19,7 +20,6 @@ import com.mysql.cj.x.protobuf.MysqlxDatatypes.Array;
 
 import exam.Problem;
 import exam.ProblemType;
-import exam.StuNumResult;
 import exam.Workbook;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -42,6 +42,7 @@ import model.ProfessorDataModel;
 import model.StudentDataModel;
 import room.Ban;
 import room.BanManager;
+import user.Student;
 
 public class BanManagerSecondDoneMultiChoiceController implements Initializable {
 
@@ -55,17 +56,18 @@ public class BanManagerSecondDoneMultiChoiceController implements Initializable 
 	private PieChart pc_Result;
 	@FXML
 	private Label lb_BanManagerName, lb_WorkBook, lb_answerNum;
-	@FXML
-	private StuNumResult PieDataList;
+
+	private ArrayList<StuNum> list;
 
 	private ObservableList<Data> Pie;
-
+	private Map<String, Student> ip_student;
 	private Socket socket;
 	private Ban ban;
 	private BanManager banManager;
 	private Workbook workbook;
 	private String className;
 	private int PB_num;
+	private Problem[] problemList;
 	private Button[] btn;
 	private int WorkBookSize;
 	private int StudentSize;
@@ -75,11 +77,11 @@ public class BanManagerSecondDoneMultiChoiceController implements Initializable 
 		// TODO Auto-generated method stub
 
 		this.socket = ProfessorDataModel.socket;
+		this.problemList = ProfessorDataModel.problemList;
 		this.ban = ProfessorDataModel.ban;
 		this.banManager = ProfessorDataModel.banManager;
 		this.workbook = ProfessorDataModel.workbook;
-
-		this.changeNum();
+		this.ip_student = ProfessorDataModel.ip_student;
 
 		this.btn_Main.setText(ban.ban_name());
 		this.lb_BanManagerName.setText(banManager.BM_name());
@@ -99,14 +101,22 @@ public class BanManagerSecondDoneMultiChoiceController implements Initializable 
 			btn[i].setStyle("-fx-background-color: #cdcdcd;");
 			btn[i].setDisable(true);
 		}
+
+		changeNum();
+		settingPie(pieValue());
 	}
 
 	private void changeNum() {
 		this.PB_num = ProfessorDataModel.currentPB;
-		this.PieDataList = ProfessorDataModel.NumStudents.get(PB_num);
-		this.StudentSize = PieDataList.S_name().length;
 
-		if (!(PieDataList.problemType()).equals(ProblemType.MultipleChoice)) {
+		list = new ArrayList<>();
+		Iterator<Student> e = ip_student.values().iterator();
+		while (e.hasNext()) {
+			Student stu = e.next();
+			list.add(new StuNum(stu.name(), stu.answer()[PB_num], stu.result()[PB_num]));
+		}
+
+		if (!problemList[PB_num].getType().equals(ProblemType.MultipleChoice)) {
 			try {
 				Stage primaryStage = (Stage) btn_Main.getScene().getWindow();
 				Parent main = FXMLLoader.load(getClass().getResource("/gui/BanManagerSecondDone.fxml"));
@@ -114,8 +124,8 @@ public class BanManagerSecondDoneMultiChoiceController implements Initializable 
 				primaryStage.setTitle("GuessWhat/Workbook");
 				primaryStage.setScene(scene);
 				primaryStage.show();
-			} catch (Exception e) {
-				e.printStackTrace();
+			} catch (Exception a) {
+				a.printStackTrace();
 			}
 		}
 	}
@@ -132,20 +142,23 @@ public class BanManagerSecondDoneMultiChoiceController implements Initializable 
 		int[] value = new int[5];
 		int correct = 0;
 		String answer = "";
-		String[] v = PieDataList.S_answer();
-		String[] c = PieDataList.S_result();
-		for (int i = 0; i < StudentSize; i++) {
-			value[Integer.parseInt(v[i])]++;
-			if(c[i].equals("O")) {
+		Iterator<StuNum> e = list.iterator();
+		while (e.hasNext()) {
+			StuNum stu = e.next();
+			for (int i = 0; i < stu.answer().length(); i++) {
+				int a = stu.answer().charAt(i) - '0';
+				value[a]++;
+			}
+			if (stu.result().equals("O")) {
 				correct++;
-				answer = v[i];
+				answer = stu.answer();
 			}
 		}
-		
 		for (int i = 0; i < 5; i++)
 			value[i] = value[i] * 100 / StudentSize;
-		
-		lb_answerNum.setText( answer + (correct/StudentSize));
+
+		lb_answerNum.setText(answer + (correct / StudentSize));
+
 		return value;
 	}
 
@@ -332,6 +345,30 @@ public class BanManagerSecondDoneMultiChoiceController implements Initializable 
 			primaryStage.show();
 		} catch (Exception e) {
 			e.printStackTrace();
+		}
+	}
+
+	private class StuNum {
+		private String name;
+		private String answer;
+		private String result;
+
+		private StuNum(String name, String answer, String result) {
+			this.name = name;
+			this.answer = answer;
+			this.result = result;
+		}
+
+		public String name() {
+			return this.name;
+		}
+
+		public String answer() {
+			return this.answer;
+		}
+
+		public String result() {
+			return this.result;
 		}
 	}
 
