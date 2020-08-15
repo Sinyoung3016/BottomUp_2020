@@ -7,7 +7,6 @@ import java.util.ResourceBundle;
 
 import exam.Problem;
 import exam.ProblemType;
-import exam.StuNumResult;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;

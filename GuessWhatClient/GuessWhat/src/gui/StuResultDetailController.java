@@ -14,7 +14,6 @@ import java.util.ResourceBundle;
 import javafx.scene.control.Alert;
 import exam.Problem;
 import exam.ProblemType;
-import exam.StuNumResult;
 import exam.Workbook;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;

@@ -8,7 +8,6 @@ import java.util.LinkedList;
 import java.util.Map;
 
 import exam.Problem;
-import exam.StuNumResult;
 import exam.Workbook;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
