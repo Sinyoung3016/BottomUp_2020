@@ -171,7 +171,30 @@ public class WorkBook_MultipleChoiceController extends BaseController implements
 		return new String(sb);
 
 	}
-
+	private boolean isValueChange() {
+		String newAnswer = new String();
+		if (cb_1.isSelected())
+			newAnswer = newAnswer + "1";
+		if (cb_2.isSelected())
+			newAnswer = newAnswer + "2";
+		if (cb_3.isSelected())
+			newAnswer = newAnswer + "3";
+		if (cb_4.isSelected())
+			newAnswer = newAnswer + "4";
+		if (cb_5.isSelected())
+			newAnswer = newAnswer + "5";
+		
+		if ( this.ta_Question.getText().equals(problem.question()) &&
+			 this.tf_Answer1.getText().equals(problem.getAnswerContentList()[0]) &&
+			 this.tf_Answer2.getText().equals(problem.getAnswerContentList()[1]) &&
+			 this.tf_Answer3.getText().equals(problem.getAnswerContentList()[2]) &&
+			 this.tf_Answer4.getText().equals(problem.getAnswerContentList()[3]) &&
+			 this.tf_Answer5.getText().equals(problem.getAnswerContentList()[4]) &&
+			 newAnswer.equals(problem.answer())) {
+			return false;
+		}
+		return true;
+	}
 	public void btn_DeleteWorkBook_Action() {
 		Alert alert = new Alert(AlertType.WARNING, "(Workbook) " + workBook.W_name() + "을(를) 정말로 삭제하시겠습니까?",
 				ButtonType.YES, ButtonType.NO);
@@ -266,14 +289,15 @@ public class WorkBook_MultipleChoiceController extends BaseController implements
 		Alert alert = new Alert(AlertType.INFORMATION,"수정되었습니다");
 		alert.show();
 	}
-
 	public void btn_Cancel_Action() {
-		Alert alert = new Alert(AlertType.WARNING, "해당 문제를 수정하시겠습니까?", ButtonType.YES, ButtonType.NO);
-		Optional<ButtonType> result = alert.showAndWait();
-
-		if (result.equals(ButtonType.YES))
-			btn_SaveWorkBook_Action();
-
+		if (this.isValueChange()) {
+			Alert alert = new Alert(AlertType.WARNING, "변경사항을 저장하시겠습니까?", ButtonType.YES, ButtonType.NO);
+			Optional<ButtonType> result = alert.showAndWait();
+			
+			if (result.get() == ButtonType.YES) {
+				this.btn_SaveWorkBook_Action();
+			}
+		}
 		try {
 			Stage primaryStage = (Stage) btn_Cancel.getScene().getWindow();
 			Parent main = FXMLLoader.load(getClass().getResource("/gui/WorkBookList.fxml"));
