@@ -51,7 +51,7 @@ public class Student {
 		this.name = studentInfo[3];
 		this.answer = new String[size];
 
-		int index = 3;
+		int index = 4;
 		for (int i = 0; i < size; i++) {
 			answer[i] = studentInfo[index];
 			index++;

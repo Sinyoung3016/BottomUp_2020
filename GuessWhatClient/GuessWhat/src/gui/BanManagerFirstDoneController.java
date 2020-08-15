@@ -80,6 +80,7 @@ public class BanManagerFirstDoneController implements Initializable {
 		this.getStudent();
 		this.problemList = ProfessorDataModel.problemList;
 
+
 		className = btn_Main.getText();
 
 		this.btn_Main.setText(ban.ban_name());
@@ -282,7 +283,6 @@ public class BanManagerFirstDoneController implements Initializable {
 		         
 		         //GetStudent:Success:Student1_Student2(SNum~BNum~BMNum~Name~N1~N2~...~N15~Result)
 		         String[] responseTokens = responseMessage.split(":");
-		         System.out.println("responseMessage : " + responseMessage);
 		         if (responseTokens[0].equals("GetStudent")) {
 		            if (!responseTokens[1].equals("Success")) {
 		               System.out.println("GetStudent:Fail");
