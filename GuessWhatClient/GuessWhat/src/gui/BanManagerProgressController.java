@@ -79,9 +79,9 @@ public class BanManagerProgressController implements Initializable {
 
 			@Override
 			public void run() {
-				SimpleDateFormat sdf = new SimpleDateFormat("hh:mm:ss");
+				SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
 				while (!stop) {
-					long end = System.currentTimeMillis();
+					long end = System.currentTimeMillis()-32400000;
 					String strTime = sdf.format(end - start);
 					Platform.runLater(() -> {
 						lb_Timer.setText(strTime);
