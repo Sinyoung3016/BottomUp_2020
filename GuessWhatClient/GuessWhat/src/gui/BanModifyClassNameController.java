@@ -118,7 +118,7 @@ public class BanModifyClassNameController implements Initializable {
 				System.out.println("Fail : ModifyBan");
 			} else {
 				System.out.println("  [Modify] " + this.ban.ban_name() + " -> " + newName);
-				new Alert(AlertType.CONFIRMATION, "반이름이 성공적으로 변경되였습니다.", ButtonType.OK).show();
+				new Alert(AlertType.CONFIRMATION, "반이름이 성공적으로 변경되였습니다.", ButtonType.OK).showAndWait();
 			}
 		}
 	}
@@ -147,19 +147,23 @@ public class BanModifyClassNameController implements Initializable {
 
 	public void btn_SaveClassName_Action() {
 		this.className = this.tf_ChangeClassName.getText();
-		this.modifyClassName(professor.P_Num(), ban.ban_num(), this.className);
-		ProfessorDataModel.ban.setName(this.className);
-		try {
-			Stage primaryStage = (Stage) btn_SaveClassName.getScene().getWindow();
-			Parent main = FXMLLoader.load(getClass().getResource("/gui/Ban.fxml"));
-			Scene scene = new Scene(main);
-			primaryStage.setTitle("GuessWhat/" + className);
-			primaryStage.setScene(scene);
-			primaryStage.show();
-		} catch (Exception e) {
-			e.printStackTrace();
+		if (className.equals("")) {
+			Alert alert = new Alert(AlertType.WARNING, "반 이름을 채워주세요!", ButtonType.YES);
+			alert.showAndWait();
+		} else {
+			this.modifyClassName(professor.P_Num(), ban.ban_num(), this.className);
+			ProfessorDataModel.ban.setName(this.className);
+			try {
+				Stage primaryStage = (Stage) btn_SaveClassName.getScene().getWindow();
+				Parent main = FXMLLoader.load(getClass().getResource("/gui/Ban.fxml"));
+				Scene scene = new Scene(main);
+				primaryStage.setTitle("GuessWhat/" + className);
+				primaryStage.setScene(scene);
+				primaryStage.show();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
-
 	}
 	public void btn_Logo_Action() {
 		try {

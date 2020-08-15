@@ -101,7 +101,7 @@ public class CreateNewBanManagerController implements Initializable {
 	private void makeRoomCode() { // 값 만들기
 		StringBuffer temp = new StringBuffer();
 		Random random = new Random();
-		for (int i = 0; i < 10; i++) {
+		for (int i = 0; i < 5; i++) {
 			int index = random.nextInt(3);
 			switch (index) {
 			case 0:
@@ -154,23 +154,47 @@ public class CreateNewBanManagerController implements Initializable {
 			}
 		}
 	}
-
+	private boolean validName() {
+		String bmName = this.tf_NewBanManagerName.getText();
+		if (bmName.equals("")) {
+			return false;
+		}
+		return true;
+	}
+	private boolean validWorkbook() {
+		Workbook wb = this.cb_NewBanManagerWorkBook.getSelectionModel().getSelectedItem();
+		if(wb == null) {
+			return false;
+		}
+		return true;
+	}
 	public void btn_CreateNewBanManager_Action() {
-		try {
-			int pNum = this.professor.P_Num();
-			int bNum = this.ban.ban_num();
-			int wNum = this.cb_NewBanManagerWorkBook.getSelectionModel().getSelectedItem().W_Num();
-			
-			this.createNewBanManager(pNum, bNum, this.tf_NewBanManagerName.getText(), this.lv_roomcode.getText(), wNum);
-
-			Stage primaryStage = (Stage) btn_CreateNewBanManager.getScene().getWindow();
-			Parent main = FXMLLoader.load(getClass().getResource("/gui/Ban.fxml"));
-			Scene scene = new Scene(main);
-			primaryStage.setTitle("GuessWhat/" + className);
-			primaryStage.setScene(scene);
-			primaryStage.show();
-		} catch (Exception e) {
-			e.printStackTrace();
+		int pNum = this.professor.P_Num();
+		int bNum = this.ban.ban_num();
+		if (! this.validName() && ! this.validWorkbook()) {
+			Alert alert = new Alert(AlertType.WARNING, "이름과 Workbook을 선택해주세요.", ButtonType.YES);
+			alert.showAndWait();
+		} else if ( ! this.validName()) {
+			Alert alert = new Alert(AlertType.WARNING, "이름을 채워주세요", ButtonType.YES);
+			alert.showAndWait();
+		} else if ( ! this.validWorkbook()) {
+			Alert alert = new Alert(AlertType.WARNING, "Workbook을 선택해주세요.", ButtonType.YES);
+			alert.showAndWait();
+		} else {
+			try {
+				String bmName = this.tf_NewBanManagerName.getText();
+				int wNum = this.cb_NewBanManagerWorkBook.getSelectionModel().getSelectedItem().W_Num();
+				this.createNewBanManager(pNum, bNum, bmName, this.lv_roomcode.getText(), wNum);
+				
+				Stage primaryStage = (Stage) btn_CreateNewBanManager.getScene().getWindow();
+				Parent main = FXMLLoader.load(getClass().getResource("/gui/Ban.fxml"));
+				Scene scene = new Scene(main);
+				primaryStage.setTitle("GuessWhat/" + className);
+				primaryStage.setScene(scene);
+				primaryStage.show();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
