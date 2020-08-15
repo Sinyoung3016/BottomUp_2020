@@ -349,91 +349,76 @@ public class WorkBook_MultipleChoiceController extends BaseController implements
 	}
 
 	public void btn_num1_Action() {
-		savePro();
 		ProfessorDataModel.currentPB = 0;
 		changeProblem();
 	}
 
 	public void btn_num2_Action() {
-		savePro();
 		ProfessorDataModel.currentPB = 1;
 		changeProblem();
 	}
 
 	public void btn_num3_Action() {
-		savePro();
 		ProfessorDataModel.currentPB = 2;
 		changeProblem();
 	}
 
 	public void btn_num4_Action() {
-		savePro();
 		ProfessorDataModel.currentPB = 3;
 		changeProblem();
 	}
 
 	public void btn_num5_Action() {
-		savePro();
 		ProfessorDataModel.currentPB = 4;
 		changeProblem();
 	}
 
 	public void btn_num6_Action() {
-		savePro();
 		ProfessorDataModel.currentPB = 5;
 		changeProblem();
 	}
 
 	public void btn_num7_Action() {
-		savePro();
 		ProfessorDataModel.currentPB = 6;
 		changeProblem();
 	}
 
 	public void btn_num8_Action() {
-		savePro();
 		ProfessorDataModel.currentPB = 7;
 		changeProblem();
 	}
 
 	public void btn_num9_Action() {
-		savePro();
 		ProfessorDataModel.currentPB = 8;
 		changeProblem();
 	}
 
 	public void btn_num10_Action() {
-		savePro();
 		ProfessorDataModel.currentPB = 9;
 		changeProblem();
 	}
 
 	public void btn_num11_Action() {
-		savePro();
 		ProfessorDataModel.currentPB = 10;
 		changeProblem();
 	}
 
 	public void btn_num12_Action() {
-		savePro();
 		ProfessorDataModel.currentPB = 11;
 		changeProblem();
 	}
 
 	public void btn_num13_Action() {
-		savePro();
 		ProfessorDataModel.currentPB = 12;
 		changeProblem();
 	}
 
 	public void btn_num14_Action() {
-		savePro();
 		ProfessorDataModel.currentPB = 13;
 		changeProblem();
 	}
 
 	public void btn_num15_Action() {
-		savePro();
 		ProfessorDataModel.currentPB = 14;
 		changeProblem();
 	}

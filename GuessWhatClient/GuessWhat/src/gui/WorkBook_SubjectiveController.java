@@ -115,7 +115,7 @@ public class WorkBook_SubjectiveController implements Initializable {
 	}
 	private boolean isValueChange() {
 		if ( this.ta_Question.getText().equals(problem.question()) &&
-			 this.tf_Answer.getText().equals(problem.answer())) {
+			 this.ta_Answer.getText().equals(problem.answer())) {
 			return false;
 		}
 		return true;
