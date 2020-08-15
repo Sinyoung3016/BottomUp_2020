@@ -266,6 +266,7 @@ public class BanManagerFirstDoneController implements Initializable {
 		}
 	}
 
+	
 	private boolean getStudent() {
 		String responseMessage = null;
 		try {
