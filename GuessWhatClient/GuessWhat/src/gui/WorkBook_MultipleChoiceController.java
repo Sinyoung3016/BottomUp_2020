@@ -287,7 +287,7 @@ public class WorkBook_MultipleChoiceController extends BaseController implements
 			}
 		}
 		Alert alert = new Alert(AlertType.INFORMATION,"수정되었습니다");
-		alert.show();
+		alert.showAndWait();
 	}
 	public void btn_Cancel_Action() {
 		if (this.isValueChange()) {
