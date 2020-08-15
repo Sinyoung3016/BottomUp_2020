@@ -17,9 +17,12 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 import model.ProfessorDataModel;
 import model.StudentDataModel;
@@ -328,7 +331,7 @@ public class StuWorkBookController extends BaseController implements Initializab
 
 	private void pressButton(int currentPB) {
 		if (!this.isIng()) {
-			// 복복쓰 알람 울려주세여,,
+			new Alert(AlertType.CONFIRMATION, "제출되었습니다.", ButtonType.CLOSE).showAndWait();
 			this.btn_Submit_Action();
 		} else {
 			savePro();

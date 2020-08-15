@@ -17,13 +17,16 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import model.StudentDataModel;
@@ -376,7 +379,7 @@ public class StuWorkBook_MultipleChoiceController extends BaseController impleme
 
 	private void pressButton(int currentPB) {
 		if (!this.isIng()) {
-			// 복복쓰 알람 울려주세여,,
+			new Alert(AlertType.CONFIRMATION, "제출되었습니다.", ButtonType.CLOSE).showAndWait();
 			this.btn_Submit_Action();
 		} else {
 			savePro();
