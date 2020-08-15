@@ -8,15 +8,13 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
 import exam.Workbook;
 import javafx.application.Platform;
-import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -26,8 +24,6 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
@@ -35,7 +31,6 @@ import model.ProfessorDataModel;
 import room.Ban;
 import room.BanManager;
 import room.BanManager.State;
-import user.Student;
 
 public class BanManagerProgressController implements Initializable {
 
@@ -44,9 +39,7 @@ public class BanManagerProgressController implements Initializable {
 	@FXML
 	private TextField tf_NewBanManagerName, tf_NewBanManagerCode;
 	@FXML
-	private Label lb_BanManagerName, lb_WorkBook;
-	@FXML
-	private TableView<Student> tv_Answer;
+	private Label lb_BanManagerName, lb_WorkBook, lb_Timer, timer;
 
 	private Ban ban;
 	private BanManager banManager;
@@ -54,19 +47,18 @@ public class BanManagerProgressController implements Initializable {
 
 	private String className;
 	private Socket socket;
-	private int WorkBookSize;
+	private long start;
+	private boolean stop;
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// TODO Auto-generated method stub
 
-		ProfessorDataModel.Students = new LinkedList();
-
 		this.socket = ProfessorDataModel.socket;
 		this.ban = ProfessorDataModel.ban;
 		this.banManager = ProfessorDataModel.banManager;
 		this.workbook = ProfessorDataModel.workbook;
-		this.WorkBookSize = workbook.WorkBooksize();
+		this.start = ProfessorDataModel.startTime;
 
 		className = btn_Main.getText();
 
@@ -74,39 +66,34 @@ public class BanManagerProgressController implements Initializable {
 		this.lb_BanManagerName.setText(banManager.BM_name());
 		this.lb_WorkBook.setText(workbook.W_name());
 		
-		new UpdateStudentThread().start();
+		setTimer();
+
 	}
 
-	private void makeTable() {
-		ProfessorDataModel.Students = new LinkedList<>();
-		Iterator<Student> e = ProfessorDataModel.ip_student.values().iterator();
-		while(e.hasNext())
-			(ProfessorDataModel.Students).add(e.next());
-		
-		tv_Answer.getColumns().setAll(this.getColumns());
-		tv_Answer.getItems().setAll(ProfessorDataModel.Students);
+	private void setTimer() {
+		boolean stop = false;
+		Thread thread = new Thread() {
+
+			@Override
+			public void run() {
+				SimpleDateFormat sdf = new SimpleDateFormat("hh:mm:ss");
+				while (!stop) {
+					long end = System.currentTimeMillis();
+					String strTime = sdf.format(end - start);
+					Platform.runLater(() -> {
+						lb_Timer.setText(strTime);
+					});
+					try {
+						Thread.sleep(100);
+					} catch (InterruptedException e) {
+					}
+				}
+			};
+		};
+		thread.setDaemon(true);
+		thread.start();
 	}
 
-	private TableColumn<Student, String>[] getColumns() {
-
-		TableColumn<Student, String> nameColumn = new TableColumn<>("Name");
-		nameColumn.setCellValueFactory(item -> new ReadOnlyStringWrapper(item.getValue().name()));
-		nameColumn.setPrefWidth(50);
-
-		TableColumn<Student, String> scoreColumn[] = new TableColumn[WorkBookSize];
-		for (int i = 0; i < WorkBookSize; i++) {
-			final int j = i;
-			scoreColumn[i] = new TableColumn<Student, String>("" + (i + 1));
-			scoreColumn[i].setCellValueFactory(item -> new ReadOnlyStringWrapper(item.getValue().answer()[j]));
-		}
-
-		TableColumn<Student, String>[] returnTable = new TableColumn[WorkBookSize + 1];
-		returnTable[0] = nameColumn;
-		for (int i = 1; i < WorkBookSize + 1; i++) {
-			returnTable[i] = scoreColumn[i - 1];
-		}
-		return returnTable;
-	}
 	private void changeBMState(int bmNum, String newState) {
 		String responseMessage = null;
 		try {
@@ -131,14 +118,16 @@ public class BanManagerProgressController implements Initializable {
 			}
 		}
 	}
+
 	public void btn_End_Action() {
 		Alert alert = new Alert(AlertType.WARNING, "Test를 종료하시겠습니까?", ButtonType.YES, ButtonType.NO);
 		Optional<ButtonType> result = alert.showAndWait();
 
 		if (result.get() == ButtonType.YES) {
+			stop = true;
 			if (banManager.BM_state().equals(State.CLOSE))
 				banManager.setBM_state_CLOSE();
-				this.changeBMState(this.banManager.BM_num(), "CLOSE");
+			this.changeBMState(this.banManager.BM_num(), "CLOSE");
 
 			try {
 				Stage primaryStage = (Stage) btn_End.getScene().getWindow();
@@ -154,16 +143,41 @@ public class BanManagerProgressController implements Initializable {
 	}
 
 	public void btn_Main_Action() {
-		new Alert(AlertType.WARNING, "Test 중에는 화면 전환이 불가합니다.").show();
+		try {
+			Stage primaryStage = (Stage) btn_Main.getScene().getWindow();
+			Parent main = FXMLLoader.load(getClass().getResource("/gui/MainPage.fxml"));
+			Scene scene = new Scene(main);
+			primaryStage.setTitle("GuessWhat/MainPage");
+			primaryStage.setScene(scene);
+			primaryStage.show();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void btn_Logo_Action() {
-		new Alert(AlertType.WARNING, "Test 중에는 화면 전환이 불가합니다.").show();
+		try {
+			Stage primaryStage = (Stage) btn_Logo.getScene().getWindow();
+			Parent main = FXMLLoader.load(getClass().getResource("/gui/MainPage.fxml"));
+			Scene scene = new Scene(main);
+			primaryStage.setTitle("GuessWhat/MainPage");
+			primaryStage.setScene(scene);
+			primaryStage.show();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void btn_MyInfo_Action() {
-		new Alert(AlertType.WARNING, "Test 중에는 화면 전환이 불가합니다.").show();
+		try {
+			Stage primaryStage = (Stage) btn_MyInfo.getScene().getWindow();
+			Parent main = FXMLLoader.load(getClass().getResource("/gui/MyInfo.fxml"));
+			Scene scene = new Scene(main);
+			primaryStage.setTitle("GuessWhat/MyInfo");
+			primaryStage.setScene(scene);
+			primaryStage.show();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
-	
-	}
-
+}
