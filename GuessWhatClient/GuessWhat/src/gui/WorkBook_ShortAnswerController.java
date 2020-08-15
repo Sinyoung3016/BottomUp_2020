@@ -243,6 +243,14 @@ public class WorkBook_ShortAnswerController implements Initializable {
 	}
 
 	private void changeProblem() {
+		
+		Alert alert = new Alert(AlertType.CONFIRMATION, "해당 문제를 수정하시겠습니까?", ButtonType.YES, ButtonType.NO);
+		Optional<ButtonType> result = alert.showAndWait();
+		
+		if (result.get() == ButtonType.YES) {
+			this.btn_SaveWorkBook_Action();
+		}
+		
 		int index = ProfessorDataModel.currentPB;
 		ProfessorDataModel.problem = problemList[index];
 		if (ProfessorDataModel.problem.getType().equals(ProblemType.MultipleChoice)) {

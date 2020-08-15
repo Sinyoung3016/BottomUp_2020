@@ -97,9 +97,26 @@ public class newWorkBook_Base {
 			if (problemList[i] == null)
 				canMakeWB = false;
 		}
-
-		if (!canMakeWB)
+		boolean emptyWorkbook = false;
+		if (workBookSize < 1) {
+			emptyWorkbook = true;
+		}
+		if (!canMakeWB || emptyWorkbook)
 			System.out.println("workbook 저장 못함");
+			Alert alert = new Alert(AlertType.INFORMATION, "만들어진 문제가 없습니다.");
+			alert.setTitle("Check your problem");
+			alert.setHeaderText("Empty Workbook!");
+			alert.showAndWait();
+			try {
+				Stage primaryStage = (Stage) btn_SaveWorkBook.getScene().getWindow();
+				Parent main = FXMLLoader.load(getClass().getResource("/gui/WorkBookList.fxml"));
+				Scene scene = new Scene(main);
+				primaryStage.setTitle("GuessWhat/WorkBookList");
+				primaryStage.setScene(scene);
+				primaryStage.show();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		else {
 
 			// problemList db에 저장
