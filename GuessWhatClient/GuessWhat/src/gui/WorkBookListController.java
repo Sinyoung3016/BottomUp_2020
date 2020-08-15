@@ -102,7 +102,7 @@ public class WorkBookListController implements Initializable {
 			Stage primaryStage = (Stage) btn_CreateNewWorkBook.getScene().getWindow();
 			Parent main = FXMLLoader.load(getClass().getResource("/gui/NewWorkBook_MultipleChoice.fxml"));
 			Scene scene = new Scene(main);
-			primaryStage.setTitle("GuessWhat/wWorkBook");
+			primaryStage.setTitle("GuessWhat/WorkBook");
 			primaryStage.setScene(scene);
 			primaryStage.show();
 		} catch (Exception e) {
