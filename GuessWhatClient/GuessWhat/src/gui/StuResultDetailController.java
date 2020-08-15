@@ -60,19 +60,6 @@ public class StuResultDetailController implements Initializable {
 		this.student = StudentDataModel.student;
 		this.workBookSize = StudentDataModel.workbook.WorkBooksize();
 
-		if (problem.getType().equals(ProblemType.MultipleChoice)) {
-			try {
-				Stage primaryStage = (Stage) btn_Close.getScene().getWindow();
-				Parent main = FXMLLoader.load(getClass().getResource("/gui/StuResultDetail_MutlipleChoice.fxml"));
-				Scene scene = new Scene(main);
-				primaryStage.setTitle("GuessWhat/Workbook");
-				primaryStage.setScene(scene);
-				primaryStage.show();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-
 		// setting
 		btn = new Button[] { btn_num1, btn_num2, btn_num3, btn_num4, btn_num5, btn_num6, btn_num7, btn_num8, btn_num9,
 				btn_num10, btn_num11, btn_num12, btn_num13, btn_num14, btn_num15 };
@@ -106,31 +93,30 @@ public class StuResultDetailController implements Initializable {
 	}
 
 	private void changeProblem() {
-		if (PB_num < workBookSize) {
-			PB_num = StudentDataModel.currentPB;
-			StudentDataModel.problem = problemList[PB_num];
-			if (problem.getType().equals(ProblemType.MultipleChoice)) {
-				try {
-					Stage primaryStage = (Stage) btn_Close.getScene().getWindow();
-					Parent main = FXMLLoader.load(getClass().getResource("/gui/StuResultDetail_MutlipleChoice.fxml"));
-					Scene scene = new Scene(main);
-					primaryStage.setTitle("GuessWhat/Workbook");
-					primaryStage.setScene(scene);
-					primaryStage.show();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			} else if (!problem.getType().equals(ProblemType.MultipleChoice)) {
-				try {
-					Stage primaryStage = (Stage) btn_Close.getScene().getWindow();
-					Parent main = FXMLLoader.load(getClass().getResource("/gui/StuResultDetail.fxml"));
-					Scene scene = new Scene(main);
-					primaryStage.setTitle("GuessWhat/Workbook");
-					primaryStage.setScene(scene);
-					primaryStage.show();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
+
+		PB_num = StudentDataModel.currentPB;
+		StudentDataModel.problem = problemList[PB_num];
+		if (problem.getType().equals(ProblemType.MultipleChoice)) {
+			try {
+				Stage primaryStage = (Stage) btn_Close.getScene().getWindow();
+				Parent main = FXMLLoader.load(getClass().getResource("/gui/StuResultDetail_MutlipleChoice.fxml"));
+				Scene scene = new Scene(main);
+				primaryStage.setTitle("GuessWhat/Workbook");
+				primaryStage.setScene(scene);
+				primaryStage.show();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		} else if (!problem.getType().equals(ProblemType.MultipleChoice)) {
+			try {
+				Stage primaryStage = (Stage) btn_Close.getScene().getWindow();
+				Parent main = FXMLLoader.load(getClass().getResource("/gui/StuResultDetail.fxml"));
+				Scene scene = new Scene(main);
+				primaryStage.setTitle("GuessWhat/Workbook");
+				primaryStage.setScene(scene);
+				primaryStage.show();
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
 		}
 	}
