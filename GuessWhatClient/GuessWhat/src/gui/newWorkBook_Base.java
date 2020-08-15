@@ -102,7 +102,7 @@ public class newWorkBook_Base {
 			emptyWorkbook = true;
 		}
 		if (!canMakeWB || emptyWorkbook) {
-			System.out.println("workbook 저장 못함");
+			System.out.println("  [Fail] Empty Workbook");
 			Alert alert = new Alert(AlertType.INFORMATION, "만들어진 문제가 없습니다.");
 			alert.setTitle("Check your problem");
 			alert.setHeaderText("Empty Workbook!");
