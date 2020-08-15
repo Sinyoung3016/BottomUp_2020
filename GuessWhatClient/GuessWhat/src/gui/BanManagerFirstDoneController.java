@@ -19,7 +19,6 @@ import com.mysql.cj.x.protobuf.MysqlxCrud.DataModel;
 import exam.Problem;
 import exam.ProblemType;
 import exam.Workbook;
-import gui.BanManagerSecondDoneController.StuNum;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -56,7 +55,6 @@ public class BanManagerFirstDoneController implements Initializable {
 	private Label lb_BanManagerName, lb_WorkBook;
 	@FXML
 	private TableView<Student> tv_Answer;
-	private Map<String, Student> ip_student;
 	public Socket socket;
 
 	private Ban ban;
@@ -64,7 +62,6 @@ public class BanManagerFirstDoneController implements Initializable {
 	private Workbook workbook;
 	private Problem[] problemList;
 
-	private ArrayList<Student> list;
 	private String className;
 
 	private int WorkBookSize;
@@ -88,21 +85,11 @@ public class BanManagerFirstDoneController implements Initializable {
 
 		try {
 			tv_Answer.getColumns().setAll(this.getColumns());
-			tv_Answer.getItems().setAll(this.list());
+			tv_Answer.getItems().setAll(ProfessorDataModel.ip_student);
 		} catch (NullPointerException e) {
 			System.out.println("해당 시험을 본 학생이 없습니다.");
 		}
 
-	}
-
-	private ArrayList<Student> list(){
-		this.list = new ArrayList<>();
-		Iterator<Student> e = ip_student.values().iterator();
-		while(e.hasNext()) {
-			Student stu = e.next();
-			list.add(stu);
-		}
-		return list;
 	}
 	
 	private TableColumn<Student, String>[] getColumns() {

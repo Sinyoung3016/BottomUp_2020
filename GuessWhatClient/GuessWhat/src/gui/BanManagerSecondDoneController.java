@@ -52,7 +52,7 @@ public class BanManagerSecondDoneController implements Initializable {
 	@FXML
 	private Label lb_BanManagerName, lb_WorkBook;
 
-	private Map<String, Student> ip_student;
+	private LinkedList <Student> ip_student;
 	private Socket socket;
 	private Ban ban;
 	private BanManager banManager;
@@ -102,7 +102,7 @@ public class BanManagerSecondDoneController implements Initializable {
 		this.PB_num = ProfessorDataModel.currentPB;
 
 		list = new ArrayList<>();
-		Iterator<Student> e = ip_student.values().iterator();
+		Iterator<Student> e = ip_student.iterator();
 		while (e.hasNext()) {
 			Student stu = e.next();
 			list.add(new StuNum(stu.name(), stu.answer()[PB_num], stu.result()[PB_num]));
