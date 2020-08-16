@@ -152,7 +152,7 @@ public class BanManagerFirstDoneController implements Initializable {
 
 	public void btn_Close_Action() {
 
-		ProfessorDataModel.ip_student = null;
+		ProfessorDataModel.ip_student.clear();
 
 		try {
 			Stage primaryStage = (Stage) btn_Close.getScene().getWindow();
