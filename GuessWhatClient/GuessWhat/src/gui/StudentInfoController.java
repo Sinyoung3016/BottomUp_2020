@@ -34,8 +34,6 @@ public class StudentInfoController implements Initializable {
 	private Button btn_Join, btn_Close;
 	@FXML
 	private TextField tf_StudentName;
-	@FXML
-	private Label lb_ClassRoomName;
 
 	private boolean IsTestStarted = false;
 	private boolean isMultipleChoice = false;
