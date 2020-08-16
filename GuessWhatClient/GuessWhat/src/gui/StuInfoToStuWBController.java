@@ -54,7 +54,7 @@ public class StuInfoToStuWBController implements Initializable {
 						new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
 				PrintWriter pw = new PrintWriter(
 						new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8));
-				while (true) {
+				while (!threadClose) {
 					//GetBanManagerState:BMNum
 					String requestMessage = "GetBanManagerState:" + StudentDataModel.banManager.BM_num();
 					pw.println(requestMessage);
