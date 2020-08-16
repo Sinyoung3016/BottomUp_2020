@@ -90,7 +90,17 @@ public class BanManagerFirstDoneController implements Initializable {
 			tv_Answer.getColumns().setAll(this.getColumns());
 			tv_Answer.getItems().setAll(ProfessorDataModel.ip_student);
 		} catch (NullPointerException e) {
-			System.out.println("해당 시험을 본 학생이 없습니다.");
+			new Alert(AlertType.WARNING, "해당 시험을 본 학생이 없습니다.", ButtonType.CLOSE).showAndWait();
+			try {
+				Stage primaryStage = (Stage) btn_Main.getScene().getWindow();
+				Parent main = FXMLLoader.load(getClass().getResource("/gui/Ban.fxml"));
+				Scene scene = new Scene(main);
+				primaryStage.setTitle("GuessWhat/" + className);
+				primaryStage.setScene(scene);
+				primaryStage.show();
+			} catch (Exception a) {
+				a.printStackTrace();
+			}
 		}
 
 	}
@@ -122,7 +132,7 @@ public class BanManagerFirstDoneController implements Initializable {
 								setStyle("-fx-background-color: #ff848f;");// 틀림
 							}
 						} else
-							setStyle("-fx-background-color: #f0fff0;");// subjective
+							setStyle("-fx-background-color: #ffcd28;");// subjective
 					}
 				}
 			});
@@ -151,9 +161,6 @@ public class BanManagerFirstDoneController implements Initializable {
 	}
 
 	public void btn_Close_Action() {
-
-		ProfessorDataModel.ip_student.clear();
-
 		try {
 			Stage primaryStage = (Stage) btn_Close.getScene().getWindow();
 			Parent main = FXMLLoader.load(getClass().getResource("/gui/Ban.fxml"));
@@ -268,7 +275,9 @@ public class BanManagerFirstDoneController implements Initializable {
 
 	
 	private boolean getStudent() {
+		
 		ProfessorDataModel.ip_student.clear();
+		
 		String responseMessage = null;
 		try {
 			String requestMessage = "GetStudent:" + this.banManager.BM_num();

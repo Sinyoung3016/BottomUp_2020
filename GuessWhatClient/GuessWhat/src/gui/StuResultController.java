@@ -60,7 +60,7 @@ public class StuResultController implements Initializable {
 				btn[i].setStyle("-fx-background-color: #ff848f;");
 			} else if (result[i].equals("N")) {
 				value[1]++;
-				btn[i].setStyle("-fx-background-color: #5ad18f;");
+				btn[i].setStyle("-fx-background-color: #ffcd28;");
 			}
 		}
 		for (int i = WorkBookSize; i < 15; i++) {

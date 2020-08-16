@@ -81,6 +81,7 @@ public class BanManagerSecondDoneMultiChoiceController implements Initializable 
 		this.ban = ProfessorDataModel.ban;
 		this.banManager = ProfessorDataModel.banManager;
 		this.workbook = ProfessorDataModel.workbook;
+		this.WorkBookSize = workbook.WorkBooksize();
 		this.ip_student = ProfessorDataModel.ip_student;
 
 		this.btn_Main.setText(ban.ban_name());
@@ -92,6 +93,7 @@ public class BanManagerSecondDoneMultiChoiceController implements Initializable 
 
 		className = btn_Main.getText();
 
+		
 		for (int i = 0; i < WorkBookSize; i++) {
 			btn[i].setStyle("-fx-background-color: #5ad18f;");
 			btn[i].setDisable(false);
@@ -116,6 +118,20 @@ public class BanManagerSecondDoneMultiChoiceController implements Initializable 
 			list.add(new StuNum(stu.name(), stu.answer()[PB_num], stu.result()[PB_num]));
 		}
 		this.StudentSize = list.size();
+
+		if (StudentSize == 0) {
+			new Alert(AlertType.WARNING, "해당 시험을 본 학생이 없습니다.", ButtonType.CLOSE).showAndWait();
+			try {
+				Stage primaryStage = (Stage) btn_Main.getScene().getWindow();
+				Parent main = FXMLLoader.load(getClass().getResource("/gui/Ban.fxml"));
+				Scene scene = new Scene(main);
+				primaryStage.setTitle("GuessWhat/" + className);
+				primaryStage.setScene(scene);
+				primaryStage.show();
+			} catch (Exception a) {
+				a.printStackTrace();
+			}
+		}
 
 		if (!problemList[PB_num].getType().equals(ProblemType.MultipleChoice)) {
 			try {
@@ -142,23 +158,29 @@ public class BanManagerSecondDoneMultiChoiceController implements Initializable 
 	private int[] pieValue() {
 		int[] value = new int[5];
 		int correct = 0;
-		String answer = "";
 		Iterator<StuNum> e = list.iterator();
 		while (e.hasNext()) {
 			StuNum stu = e.next();
 			for (int i = 0; i < stu.answer().length(); i++) {
 				int a = stu.answer().charAt(i) - '0';
-				value[a]++;
+				value[a-1]++;
 			}
-			if (stu.result().equals("O")) {
+			if (stu.result().equals("O"))
 				correct++;
-				answer = stu.answer();
-			}
 		}
-		for (int i = 0; i < 5; i++)
-			value[i] = value[i] * 100 / StudentSize; 
 
-		lb_answerNum.setText(answer + (correct / StudentSize));
+		for (int i = 0; i < 5; i++)
+			value[i] = value[i] * 100 / StudentSize;
+		
+		
+		String s = problemList[PB_num].answer();
+		String answer = "";
+		for(int i = 0; i < s.length(); i++)
+			answer += (s.charAt(i) + ", ");
+			
+		answer = answer.substring(0, answer.length() - 2);
+
+		lb_answerNum.setText( answer + "  ( " + (correct / StudentSize) + "/ " + StudentSize + ")");
 
 		return value;
 	}
@@ -235,6 +257,7 @@ public class BanManagerSecondDoneMultiChoiceController implements Initializable 
 	}
 
 	public void btn_Previous_Action() {
+		
 		try {
 			Stage primaryStage = (Stage) btn_Previous.getScene().getWindow();
 			Parent main = FXMLLoader.load(getClass().getResource("/gui/BanManagerFirstDone.fxml"));

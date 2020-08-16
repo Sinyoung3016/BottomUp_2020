@@ -74,7 +74,7 @@ public class BanManagerSecondDoneController implements Initializable {
 		this.workbook = ProfessorDataModel.workbook;
 		this.ip_student = ProfessorDataModel.ip_student;
 		this.problemList = ProfessorDataModel.problemList;
-
+		this.WorkBookSize = workbook.WorkBooksize();
 		this.btn_Main.setText(ban.ban_name());
 		this.lb_BanManagerName.setText(banManager.BM_name());
 		this.lb_WorkBook.setText(workbook.W_name());
