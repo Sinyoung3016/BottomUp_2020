@@ -34,7 +34,7 @@ import javafx.stage.Stage;
 import model.ProfessorDataModel;
 import model.StudentDataModel;
 
-public class WorkBook_MultipleChoiceController extends BaseController implements Initializable {
+public class WorkBook_MultipleChoiceController implements Initializable {
 	@FXML
 	private HBox stage;
 	@FXML
