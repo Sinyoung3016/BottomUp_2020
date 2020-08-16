@@ -28,7 +28,7 @@ import model.ProfessorDataModel;
 import model.StudentDataModel;
 import user.Student;
 
-public class StuWorkBookController extends BaseController implements Initializable {
+public class StuWorkBookController implements Initializable {
 
 	@FXML
 	private Button btn_Submit, btn_Previous, btn_Next, btn_num0, btn_num1, btn_num2, btn_num3, btn_num4, btn_num5,
