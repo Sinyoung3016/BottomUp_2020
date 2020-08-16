@@ -268,6 +268,7 @@ public class BanManagerFirstDoneController implements Initializable {
 
 	
 	private boolean getStudent() {
+		ProfessorDataModel.ip_student.clear();
 		String responseMessage = null;
 		try {
 			String requestMessage = "GetStudent:" + this.banManager.BM_num();
