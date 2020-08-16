@@ -21,25 +21,8 @@
       </Label>
    </top>
    <center>
-      <VBox prefHeight="80.0" BorderPane.alignment="CENTER">
+      <VBox alignment="CENTER" prefHeight="80.0" BorderPane.alignment="CENTER">
          <children>
-            <HBox alignment="CENTER_RIGHT" prefHeight="40.0" prefWidth="200.0" spacing="15.0">
-               <children>
-                  <Label style="-fx-text-fill: #5ad18f;" text="ClassRoom">
-                     <font>
-                        <Font name="Dubai Medium" size="20.0" />
-                     </font>
-                  </Label>
-                  <Label fx:id="lb_ClassRoomName" prefWidth="200.0" style="-fx-text-fill: #22741C;">
-                     <font>
-                        <Font name="Dubai Medium" size="20.0" />
-                     </font>
-                  </Label>
-               </children>
-               <VBox.margin>
-                  <Insets left="140.0" right="170.0" />
-               </VBox.margin>
-            </HBox>
             <HBox alignment="CENTER_RIGHT" prefHeight="40.0" prefWidth="200.0" spacing="15.0">
                <children>
                   <Label style="-fx-text-fill: #5ad18f;" text="MyName">
@@ -58,6 +41,9 @@
                </VBox.margin>
             </HBox>
          </children>
+         <BorderPane.margin>
+            <Insets bottom="10.0" />
+         </BorderPane.margin>
       </VBox>
    </center>
    <bottom>
