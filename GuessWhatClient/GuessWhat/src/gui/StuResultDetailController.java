@@ -71,7 +71,7 @@ public class StuResultDetailController implements Initializable {
 			else if (result[i].equals("X"))
 				btn[i].setStyle("-fx-background-color: #ff848f;");
 			else if (result[i].equals("N"))
-				btn[i].setStyle("-fx-background-color: #f0fff0;");
+				btn[i].setStyle("-fx-background-color: #ffcd28;");
 
 			btn[i].setDisable(false);
 		}
