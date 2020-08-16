@@ -303,7 +303,13 @@ public class BanManagerFirstDoneController implements Initializable {
 					for (int i = 0; i < studentList.length; i++) {
 						ProfessorDataModel.ip_student.add(new Student(this.workbook.WorkBooksize(), studentList[i]));
 					}
-
+					if (studentList.length > 0) {
+						String requestMessage2= "ModifyStudentSize:" + this.banManager.BM_num() + ":"+ studentList.length;
+						PrintWriter pw2 = new PrintWriter(
+								new OutputStreamWriter(this.socket.getOutputStream(), StandardCharsets.UTF_8));
+						pw2.println(requestMessage2);
+						pw2.flush();
+					}
 				}
 			}
 			return true;
