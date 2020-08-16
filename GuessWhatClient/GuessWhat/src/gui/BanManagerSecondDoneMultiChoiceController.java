@@ -101,7 +101,7 @@ public class BanManagerSecondDoneMultiChoiceController implements Initializable 
 			list.add(new StuNum(stu.name(), stu.answer()[PB_num], stu.result()[PB_num]));
 		}
 		this.StudentSize = list.size();
-		
+
 		if (list.size() == 0) {
 			new Alert(AlertType.WARNING, "해당 시험을 본 학생이 없습니다.", ButtonType.CLOSE).showAndWait();
 			try {
@@ -115,9 +115,9 @@ public class BanManagerSecondDoneMultiChoiceController implements Initializable 
 				a.printStackTrace();
 			}
 		}
-		
+
 		settingPie(pieValue());
-		
+
 		for (int i = 0; i < WorkBookSize; i++) {
 			btn[i].setStyle("-fx-background-color: #5ad18f;");
 			btn[i].setDisable(false);
@@ -132,7 +132,7 @@ public class BanManagerSecondDoneMultiChoiceController implements Initializable 
 
 	private void changeNum() {
 		PB_num = ProfessorDataModel.currentPB;
-		
+
 		ProblemType p = problemList[PB_num].getType();
 		if (!p.equals(ProblemType.MultipleChoice)) {
 			try {
@@ -157,43 +157,49 @@ public class BanManagerSecondDoneMultiChoiceController implements Initializable 
 				a.printStackTrace();
 			}
 		}
-		
+
 	}
 
 	private void settingPie(int[] value) {
 		this.Pie = FXCollections.observableArrayList();
 		for (int i = 0; i < 5; i++)
 			Pie.add(new PieChart.Data((i + 1) + "번", value[i]));
+		
+		Pie.add(new PieChart.Data("무응답", value[5]));
 
 		pc_Result.setData(Pie);
 	}
 
 	private int[] pieValue() {
-		int[] value = new int[5];
+		int[] value = new int[6];
 		int correct = 0;
 		Iterator<StuNum> e = list.iterator();
 		while (e.hasNext()) {
 			StuNum stu = e.next();
-			for (int i = 0; i < stu.answer().length(); i++) {
-				int a = stu.answer().charAt(i) - '0';
-				value[a-1]++;
+			System.out.println(stu.answer());
+			if (stu.answer().equals(" ")) {
+				value[5]++;
+			} else {
+				for (int i = 0; i < stu.answer().length(); i++) {
+					int a = stu.answer().charAt(i) - '0';
+					value[a - 1]++;
+				}
+				if (stu.result().equals("O"))
+					correct++;
 			}
-			if (stu.result().equals("O"))
-				correct++;
 		}
 
 		for (int i = 0; i < 5; i++)
 			value[i] = value[i] * 100 / StudentSize;
-		
-		
+
 		String s = problemList[PB_num].answer();
 		String answer = "";
-		for(int i = 0; i < s.length(); i++)
+		for (int i = 0; i < s.length(); i++)
 			answer += (s.charAt(i) + ", ");
-			
+
 		answer = answer.substring(0, answer.length() - 2);
 
-		lb_answerNum.setText( answer + "  ( " + (correct) + "/ " + StudentSize + ")");
+		lb_answerNum.setText(answer + "  ( " + (correct) + "/ " + StudentSize + ")");
 
 		return value;
 	}
@@ -270,7 +276,7 @@ public class BanManagerSecondDoneMultiChoiceController implements Initializable 
 	}
 
 	public void btn_Previous_Action() {
-		
+
 		try {
 			Stage primaryStage = (Stage) btn_Previous.getScene().getWindow();
 			Parent main = FXMLLoader.load(getClass().getResource("/gui/BanManagerFirstDone.fxml"));
