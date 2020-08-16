@@ -167,7 +167,8 @@ public class DB_Workbook extends DBManager{
 			
 			return workbookList;
 		}catch(Exception e) {
-			System.out.println("Error : " + e.getMessage() + "FROM getAllWorkbook.1");
+			System.out.println("Error : " + e.getMessage() + "FROM getWorkbookList.1");
+			e.printStackTrace();
 			return null;
 		} finally {
 			try {
@@ -175,7 +176,7 @@ public class DB_Workbook extends DBManager{
 				if(conn != null) conn.close();
 				if(rs != null) rs.close();
 			} catch(SQLException e) {
-				System.out.println("Error : " + e.getMessage() + "FROM getWorkbookOf.2");
+				System.out.println("Error : " + e.getMessage() + "FROM getWorkbookList.2");
 			}
 		}
 	}
