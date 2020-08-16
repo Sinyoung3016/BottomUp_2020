@@ -91,15 +91,22 @@ public class StuResultDetail_MultipleChoiceController implements Initializable {
 		for (int i = 0; i < 5; i++)//text setting
 			cb[i].setText(problem.getAnswerContentList()[i]);
 
-		for (int i = 0; i < S_answer.length(); i++) {//학생답
-			int a = S_answer.charAt(i) - '0';
-			cb[a-1].setSelected(true);
-			cb[a-1].setStyle("-fx-background-color: #ff848f;");
-		}
+		if( S_answer == null) {
+			for (int i = 0; i < T_answer.length(); i++) {//선생답
+				int a = T_answer.charAt(i) - '0';
+				cb[a-1].setStyle("-fx-background-color: #5ad18f;");
+			}
+		} else {
+			for (int i = 0; i < S_answer.length(); i++) {//학생답
+				int a = S_answer.charAt(i) - '0';
+				cb[a-1].setSelected(true);
+				cb[a-1].setStyle("-fx-background-color: #ff848f;");
+			}
 
-		for (int i = 0; i < T_answer.length(); i++) {//선생답
-			int a = T_answer.charAt(i) - '0';
-			cb[a-1].setStyle("-fx-background-color: #5ad18f;");
+			for (int i = 0; i < T_answer.length(); i++) {//선생답
+				int a = T_answer.charAt(i) - '0';
+				cb[a-1].setStyle("-fx-background-color: #5ad18f;");
+			}
 		}
 	}
 
