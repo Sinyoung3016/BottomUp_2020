@@ -98,7 +98,7 @@ public class DB_Student extends DBManager{
 			
 			return new String(sb);
 		}catch(Exception e) {
-			System.out.println("Error : " + e.getMessage() + "FROM getAllWorkbook.1");
+			System.out.println("Error : " + e.getMessage() + "FROM getStudent.1");
 			return null;
 		} finally {
 			try {
@@ -106,7 +106,7 @@ public class DB_Student extends DBManager{
 				if(conn != null) conn.close();
 				if(rs != null) rs.close();
 			} catch(SQLException e) {
-				System.out.println("Error : " + e.getMessage() + "FROM getWorkbookOf.2");
+				System.out.println("Error : " + e.getMessage() + "FROM getStudent.2");
 			}
 		}
 	}

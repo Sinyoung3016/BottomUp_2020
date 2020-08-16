@@ -125,6 +125,7 @@ public class newWorkBook_Base {
 			// workbook db에 저장
 
 			this.workBook.setP_Num(ProfessorDataModel.professor.P_Num());
+			this.workBook.setName(ProfessorDataModel.workbook.W_name());
 			String responseMessage = null;
 			try {
 				// AddWorkbook:PNum:Name:Size
