@@ -305,7 +305,40 @@ public class DB_BanManager extends DBManager {
 			}
 		}
 	}
+	public synchronized static boolean modifyStudentSize(int BMNum, String size) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
 
+		try {
+			conn = getConn();
+
+			String s;
+			s = "UPDATE BanManager SET StudentSize = ? WHERE BMNum = ? ";
+			pstmt = conn.prepareStatement(s);
+
+			pstmt.setInt(2, BMNum);
+			pstmt.setString(1, size);
+
+			pstmt.executeUpdate();
+
+			pstmt.close();
+			conn.close();
+			return true;
+
+		} catch (Exception e) {
+			System.out.println("Error : " + e.getMessage() + "FROM changeState");
+			return false;
+		} finally {
+			try {
+				if (pstmt != null)
+					pstmt.close();
+				if (conn != null)
+					conn.close();
+			} catch (SQLException e) {
+				System.out.println("Error : " + e.getMessage() + "FROM changeState (SQL)");
+			}
+		}
+	}
 	public synchronized static void searchAllBanManager(int bNum) {
 
 		Connection conn = null;

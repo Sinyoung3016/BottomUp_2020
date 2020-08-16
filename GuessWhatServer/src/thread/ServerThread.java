@@ -122,6 +122,9 @@ public class ServerThread extends Thread{
 						}else if(requestTokens[0].equals(Request.MODIFY_STATE.getRequest())) { //ModifyState:BMNum:State
 							clientRequest = "ModifyState";
 							this.modifyState(requestTokens[1], requestTokens[2]);
+						}else if(requestTokens[0].equals(Request.MODIFY_STUDENTSIZE.getRequest())) { //ModifyStudentSize:BMNum:Size
+							clientRequest = "ModifyStudentSize";
+							this.modifyStudentSize(requestTokens[1], requestTokens[2]);
 						}
 						else if(requestTokens[0].equals(Request.MODIFY_WORKBOOK.getRequest())) { //ModifyWorkbook:WNum:newName
 							clientRequest = "ModifyWorkbook";
@@ -361,6 +364,14 @@ public class ServerThread extends Thread{
 		else pw.println("ModifyState:Fail");
 
 		pw.flush();
+	}
+	private void modifyStudentSize (String BMNum, String size) {
+		int bmNum = Integer.parseInt(BMNum);
+		if(DB_BanManager.modifyStudentSize(bmNum, size)) {
+			
+		}else {
+			System.out.println("  [Fail] Modify StudentSize");
+		}
 	}
 	private void modifyWorkbook(String WNum, String newName) {
 		if(DB_Workbook.modifyWorkbookName(WNum, newName))
