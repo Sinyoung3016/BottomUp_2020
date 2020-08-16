@@ -102,7 +102,7 @@ public class BanManagerSecondDoneMultiChoiceController implements Initializable 
 		}
 		this.StudentSize = list.size();
 
-		if (list.size() == 0) {
+		if (StudentSize == 0) {
 			new Alert(AlertType.WARNING, "해당 시험을 본 학생이 없습니다.", ButtonType.CLOSE).showAndWait();
 			try {
 				Stage primaryStage = (Stage) btn_Main.getScene().getWindow();
