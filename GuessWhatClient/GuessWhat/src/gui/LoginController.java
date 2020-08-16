@@ -46,21 +46,15 @@ public class LoginController implements Initializable {
 	}
 
 	public void btn_GuessWhat_Action() {// Home으로 이동
-		Alert alert = new Alert(AlertType.WARNING, "Home창으로 이동하시겠습니까? 진행중이던 작업이 날아갈 수 있습니다.", ButtonType.YES,
-				ButtonType.NO);
-		alert.show();
-		Optional<ButtonType> result = alert.showAndWait();
-		if (result.get() == ButtonType.YES) {
-			try {
-				Stage primaryStage = (Stage) btn_GuessWhat.getScene().getWindow();
-				Parent main = FXMLLoader.load(getClass().getResource("/gui/Home.fxml"));
-				Scene scene = new Scene(main);
-				primaryStage.setTitle("GuessWhat/Home");
-				primaryStage.setScene(scene);
-				primaryStage.show();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+		try {
+			Stage primaryStage = (Stage) btn_GuessWhat.getScene().getWindow();
+			Parent main = FXMLLoader.load(getClass().getResource("/gui/Home.fxml"));
+			Scene scene = new Scene(main);
+			primaryStage.setTitle("GuessWhat/Home");
+			primaryStage.setScene(scene);
+			primaryStage.show();
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 
