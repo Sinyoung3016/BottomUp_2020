@@ -117,10 +117,20 @@ public class Student {
 	public String tokenAnswer() {
 		StringBuilder sb = new StringBuilder("");
 		for (int i = 0; i < this.answer.length - 1; i++) {
-			sb.append(this.answer()[i]);
+			if (this.answer()[i] == null) {
+				sb.append(" ");
+			} else {
+				sb.append(" ");
+			}
+			System.out.println(i + " : " + this.answer()[i]);
 			sb.append("`");
 		}
-		sb.append(this.answer()[this.answer().length - 1]);
+		int last = this.answer().length - 1;
+		if (this.answer()[last] == null) {
+			sb.append(" ");
+		} else {
+			sb.append(this.answer()[last]);
+		}
 		return new String(sb);
 	}
 
