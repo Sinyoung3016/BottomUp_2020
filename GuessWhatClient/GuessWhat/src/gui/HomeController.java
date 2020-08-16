@@ -11,6 +11,7 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ResourceBundle;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -36,7 +37,7 @@ public class HomeController implements Initializable{
 	
 	public Socket socket;
 		
-	private static final String SERVER_IP ="192.168.25.10";
+	private static final String SERVER_IP ="192.168.35.133";
 	private static final int SERVER_PORT =8000;
 	
 	
@@ -48,9 +49,14 @@ public class HomeController implements Initializable{
 			ProfessorDataModel.socket = this.socket;
 			StudentDataModel.socket = this.socket;
 			StudentDataModel.studentIp = InetAddress.getLocalHost().getHostAddress();
+			btn_CreateProblem.setDisable(false);
+			btn_Enter.setDisable(false);
+			tf_RoomCode.setDisable(false);
 
 		} catch(Exception e) {
 			System.out.println("Error :" +e.getMessage() + " FROM initialize in HomeController");
+			new Alert(AlertType.WARNING, "서버가 닫혀 있습니다.", ButtonType.CLOSE).showAndWait();
+			Platform.exit();
 		}
 	}
 		
