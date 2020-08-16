@@ -88,24 +88,24 @@ public class StuResultDetail_MultipleChoiceController implements Initializable {
 		String S_answer = this.student.answer()[PB_num];
 
 		cb = new CheckBox[] { cb_1, cb_2, cb_3, cb_4, cb_5 };
-		for (int i = 0; i < 5; i++)//text setting
+		for (int i = 0; i < 5; i++)// text setting
 			cb[i].setText(problem.getAnswerContentList()[i]);
 
-		if( S_answer == null) {
-			for (int i = 0; i < T_answer.length(); i++) {//선생답
+		if (S_answer == null) {
+			for (int i = 0; i < T_answer.length(); i++) {// 선생답
 				int a = T_answer.charAt(i) - '0';
-				cb[a-1].setStyle("-fx-background-color: #5ad18f;");
+				cb[a - 1].setStyle("-fx-background-color: #5ad18f;");
 			}
 		} else {
-			for (int i = 0; i < S_answer.length(); i++) {//학생답
+			for (int i = 0; i < S_answer.length(); i++) {// 학생답
 				int a = S_answer.charAt(i) - '0';
-				cb[a-1].setSelected(true);
-				cb[a-1].setStyle("-fx-background-color: #ff848f;");
+				cb[a - 1].setSelected(true);
+				cb[a - 1].setStyle("-fx-background-color: #ff848f;");
 			}
 
-			for (int i = 0; i < T_answer.length(); i++) {//선생답
+			for (int i = 0; i < T_answer.length(); i++) {// 선생답
 				int a = T_answer.charAt(i) - '0';
-				cb[a-1].setStyle("-fx-background-color: #5ad18f;");
+				cb[a - 1].setStyle("-fx-background-color: #5ad18f;");
 			}
 		}
 	}

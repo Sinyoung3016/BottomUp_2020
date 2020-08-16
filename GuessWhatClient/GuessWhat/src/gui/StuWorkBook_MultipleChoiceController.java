@@ -43,7 +43,7 @@ public class StuWorkBook_MultipleChoiceController implements Initializable {
 	private CheckBox cb_1, cb_2, cb_3, cb_4, cb_5;
 
 	private Socket socket;
-	private Problem [] problemList;
+	private Problem[] problemList;
 	private Problem problem;
 	private Student student;
 	private Button[] btn;
@@ -81,13 +81,14 @@ public class StuWorkBook_MultipleChoiceController implements Initializable {
 		cb = new CheckBox[] { cb_1, cb_2, cb_3, cb_4, cb_5 };
 		for (int i = 0; i < 5; i++) {
 			System.out.println(problem.getAnswerContentList()[i]);
-			cb[i].setText(problem.getAnswerContentList()[i]);}
+			cb[i].setText(problem.getAnswerContentList()[i]);
+		}
 
 		if (hasAnswer[PB_num]) {
 			String S_answer = this.student.answer()[PB_num];
 			for (int j = 0; j < S_answer.length(); j++) {
 				int num = S_answer.charAt(j) - '0';
-				cb[num-1].setSelected(true);
+				cb[num - 1].setSelected(true);
 			}
 		} else {
 			for (int j = 0; j < 5; j++)
@@ -103,34 +104,33 @@ public class StuWorkBook_MultipleChoiceController implements Initializable {
 	}
 
 	private void changeProblem() {
-			PB_num = StudentDataModel.currentPB;
-			StudentDataModel.problem = problemList[PB_num];
-			ProblemType p = StudentDataModel.problem.getType();
-			if (p.equals(ProblemType.MultipleChoice)) {
-				try {
-					Stage primaryStage = (Stage) btn_Submit.getScene().getWindow();
-					Parent main = FXMLLoader.load(getClass().getResource("/gui/StuWorkBook_MultipleChoice.fxml"));
-					Scene scene = new Scene(main);
-					primaryStage.setTitle("GuessWhat/Workbook");
-					primaryStage.setScene(scene);
-					primaryStage.show();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			} else if (!p.equals(ProblemType.MultipleChoice)) {
-				try {
-					Stage primaryStage = (Stage) btn_Submit.getScene().getWindow();
-					Parent main = FXMLLoader.load(getClass().getResource("/gui/StuWorkBook.fxml"));
-					Scene scene = new Scene(main);
-					primaryStage.setTitle("GuessWhat/Workbook");
-					primaryStage.setScene(scene);
-					primaryStage.show();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
+		PB_num = StudentDataModel.currentPB;
+		StudentDataModel.problem = problemList[PB_num];
+		ProblemType p = StudentDataModel.problem.getType();
+		if (p.equals(ProblemType.MultipleChoice)) {
+			try {
+				Stage primaryStage = (Stage) btn_Submit.getScene().getWindow();
+				Parent main = FXMLLoader.load(getClass().getResource("/gui/StuWorkBook_MultipleChoice.fxml"));
+				Scene scene = new Scene(main);
+				primaryStage.setTitle("GuessWhat/Workbook");
+				primaryStage.setScene(scene);
+				primaryStage.show();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		} else if (!p.equals(ProblemType.MultipleChoice)) {
+			try {
+				Stage primaryStage = (Stage) btn_Submit.getScene().getWindow();
+				Parent main = FXMLLoader.load(getClass().getResource("/gui/StuWorkBook.fxml"));
+				Scene scene = new Scene(main);
+				primaryStage.setTitle("GuessWhat/Workbook");
+				primaryStage.setScene(scene);
+				primaryStage.show();
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
 		}
-		
+	}
 
 	private void savePro() {
 
@@ -138,9 +138,11 @@ public class StuWorkBook_MultipleChoiceController implements Initializable {
 		for (int i = 0; i < 5; i++)
 			if (cb[i].isSelected())
 				S_answer = S_answer + (i + 1);
-
-		if (S_answer.equals(""))
+		
+		
+		if (S_answer.equals("") || S_answer.equals(" ") || S_answer.equals(null) || S_answer == null) {
 			StudentDataModel.hasAnswer[StudentDataModel.currentPB] = false;
+		}
 		else {
 			this.student.answer()[StudentDataModel.currentPB] = S_answer;
 			StudentDataModel.hasAnswer[StudentDataModel.currentPB] = true;
@@ -181,7 +183,7 @@ public class StuWorkBook_MultipleChoiceController implements Initializable {
 	}
 
 	public void btn_Submit_Action() {
-
+		
 		this.savePro();
 		this.markAnswer(); // 체점하기
 
@@ -297,7 +299,10 @@ public class StuWorkBook_MultipleChoiceController implements Initializable {
 						}
 					}
 				} else {
-					sb.append("X");
+					if (typeList[i].equals("Subjective"))
+						sb.append("N");
+					else
+						sb.append("X");
 				}
 			}
 			this.student.setResult(new String(sb));

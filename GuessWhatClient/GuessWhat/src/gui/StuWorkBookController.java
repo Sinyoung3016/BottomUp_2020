@@ -89,8 +89,9 @@ public class StuWorkBookController implements Initializable {
 	private void savePro() {
 
 		String S_answer = ta_Answer.getText();
-		if (S_answer.equals(null))
+		if (S_answer.equals("") || S_answer.equals(" ") || S_answer.equals(null) || S_answer == null) {
 			StudentDataModel.hasAnswer[StudentDataModel.currentPB] = false;
+		}
 		else {
 			this.student.answer()[StudentDataModel.currentPB] = S_answer;
 			StudentDataModel.hasAnswer[StudentDataModel.currentPB] = true;
@@ -275,7 +276,10 @@ public class StuWorkBookController implements Initializable {
 						}
 					}
 				} else {
-					sb.append("X");
+					if (typeList[i].equals("Subjective"))
+						sb.append("N");
+					else
+						sb.append("X");
 				}
 
 			}

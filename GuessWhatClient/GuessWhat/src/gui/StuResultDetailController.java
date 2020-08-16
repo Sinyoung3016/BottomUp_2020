@@ -90,11 +90,21 @@ public class StuResultDetailController implements Initializable {
 		lb_TeacherAnswer.setText(T_answer);
 
 		if (problem.getType() == ProblemType.ShortAnswer) {
-			if (S_answer.equals(T_answer))
-				lb_MyAnswer.setStyle("-fx-background-color: #5ad18f;");
-			else
+			if (S_answer == null)
 				lb_MyAnswer.setStyle("-fx-background-color: #ff848f;");
+			else {
+
+				if (S_answer.equals(T_answer))
+					lb_MyAnswer.setStyle("-fx-background-color: #5ad18f;");
+				else
+					lb_MyAnswer.setStyle("-fx-background-color: #ff848f;");
+			}
 		}
+		
+		if (problem.getType() == ProblemType.Subjective)
+			if (S_answer == null)
+				lb_MyAnswer.setStyle("-fx-background-color: #ff848f;");
+			
 	}
 
 	private void changeProblem() {
