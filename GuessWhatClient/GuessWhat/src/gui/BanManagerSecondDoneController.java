@@ -52,7 +52,7 @@ public class BanManagerSecondDoneController implements Initializable {
 	@FXML
 	private Label lb_BanManagerName, lb_WorkBook;
 
-	private ArrayList <Student> ip_student;
+	private ArrayList<Student> ip_student;
 	private Socket socket;
 	private Ban ban;
 	private BanManager banManager;
@@ -78,12 +78,36 @@ public class BanManagerSecondDoneController implements Initializable {
 		this.btn_Main.setText(ban.ban_name());
 		this.lb_BanManagerName.setText(banManager.BM_name());
 		this.lb_WorkBook.setText(workbook.W_name());
+		PB_num = ProfessorDataModel.currentPB;
 
 		btn = new Button[] { btn_num1, btn_num2, btn_num3, btn_num4, btn_num5, btn_num6, btn_num7, btn_num8, btn_num9,
 				btn_num10, btn_num11, btn_num12, btn_num13, btn_num14, btn_num15 };
 
 		className = btn_Main.getText();
 
+		list = new ArrayList<>();
+		Iterator<Student> e = ip_student.iterator();
+		while (e.hasNext()) {
+			Student stu = e.next();
+			list.add(new StuNum(stu.name(), stu.answer()[PB_num], stu.result()[PB_num]));
+		}
+		
+		if (list.size() == 0) {
+			new Alert(AlertType.WARNING, "해당 시험을 본 학생이 없습니다.", ButtonType.CLOSE).showAndWait();
+			try {
+				Stage primaryStage = (Stage) btn_Main.getScene().getWindow();
+				Parent main = FXMLLoader.load(getClass().getResource("/gui/Ban.fxml"));
+				Scene scene = new Scene(main);
+				primaryStage.setTitle("GuessWhat/" + className);
+				primaryStage.setScene(scene);
+				primaryStage.show();
+			} catch (Exception a) {
+				a.printStackTrace();
+			}
+		}
+		
+		settingColumn();
+		
 		for (int i = 0; i < WorkBookSize; i++) {
 			btn[i].setStyle("-fx-background-color: #5ad18f;");
 			btn[i].setDisable(false);
@@ -93,22 +117,24 @@ public class BanManagerSecondDoneController implements Initializable {
 			btn[i].setStyle("-fx-background-color: #cdcdcd;");
 			btn[i].setDisable(true);
 		}
-		
-		changeNum();
-		settingColumn();
 	}
 
 	private void changeNum() {
-		this.PB_num = ProfessorDataModel.currentPB;
-
-		list = new ArrayList<>();
-		Iterator<Student> e = ip_student.iterator();
-		while (e.hasNext()) {
-			Student stu = e.next();
-			list.add(new StuNum(stu.name(), stu.answer()[PB_num], stu.result()[PB_num]));
-		}
-
-		if (problemList[PB_num].getType().equals(ProblemType.MultipleChoice)) {
+		PB_num = ProfessorDataModel.currentPB;
+		
+		ProblemType p = problemList[PB_num].getType();
+		if (!p.equals(ProblemType.MultipleChoice)) {
+			try {
+				Stage primaryStage = (Stage) btn_Main.getScene().getWindow();
+				Parent main = FXMLLoader.load(getClass().getResource("/gui/BanManagerSecondDone.fxml"));
+				Scene scene = new Scene(main);
+				primaryStage.setTitle("GuessWhat/Workbook");
+				primaryStage.setScene(scene);
+				primaryStage.show();
+			} catch (Exception a) {
+				a.printStackTrace();
+			}
+		} else if (p.equals(ProblemType.MultipleChoice)) {
 			try {
 				Stage primaryStage = (Stage) btn_Main.getScene().getWindow();
 				Parent main = FXMLLoader.load(getClass().getResource("/gui/BanManagerSecondDoneMultiChoice.fxml"));
@@ -120,6 +146,7 @@ public class BanManagerSecondDoneController implements Initializable {
 				a.printStackTrace();
 			}
 		}
+		
 	}
 
 	private void settingColumn() {
@@ -228,77 +255,77 @@ public class BanManagerSecondDoneController implements Initializable {
 	}
 
 	public void btn_num1_Action() {
-		StudentDataModel.currentPB = 0;
+		ProfessorDataModel.currentPB = 0;
 		changeNum();
 	}
 
 	public void btn_num2_Action() {
-		StudentDataModel.currentPB = 1;
+		ProfessorDataModel.currentPB = 1;
 		changeNum();
 	}
 
 	public void btn_num3_Action() {
-		StudentDataModel.currentPB = 2;
+		ProfessorDataModel.currentPB = 2;
 		changeNum();
 	}
 
 	public void btn_num4_Action() {
-		StudentDataModel.currentPB = 3;
+		ProfessorDataModel.currentPB = 3;
 		changeNum();
 	}
 
 	public void btn_num5_Action() {
-		StudentDataModel.currentPB = 4;
+		ProfessorDataModel.currentPB = 4;
 		changeNum();
 	}
 
 	public void btn_num6_Action() {
-		StudentDataModel.currentPB = 5;
+		ProfessorDataModel.currentPB = 5;
 		changeNum();
 	}
 
 	public void btn_num7_Action() {
-		StudentDataModel.currentPB = 6;
+		ProfessorDataModel.currentPB = 6;
 		changeNum();
 	}
 
 	public void btn_num8_Action() {
-		StudentDataModel.currentPB = 7;
+		ProfessorDataModel.currentPB = 7;
 		changeNum();
 	}
 
 	public void btn_num9_Action() {
-		StudentDataModel.currentPB = 8;
+		ProfessorDataModel.currentPB = 8;
 		changeNum();
 	}
 
 	public void btn_num10_Action() {
-		StudentDataModel.currentPB = 9;
+		ProfessorDataModel.currentPB = 9;
 		changeNum();
 	}
 
 	public void btn_num11_Action() {
-		StudentDataModel.currentPB = 10;
+		ProfessorDataModel.currentPB = 10;
 		changeNum();
 	}
 
 	public void btn_num12_Action() {
-		StudentDataModel.currentPB = 11;
+		ProfessorDataModel.currentPB = 11;
 		changeNum();
 	}
 
 	public void btn_num13_Action() {
-		StudentDataModel.currentPB = 12;
+		ProfessorDataModel.currentPB = 12;
 		changeNum();
 	}
 
 	public void btn_num14_Action() {
-		StudentDataModel.currentPB = 13;
+		ProfessorDataModel.currentPB = 13;
 		changeNum();
 	}
 
 	public void btn_num15_Action() {
-		StudentDataModel.currentPB = 14;
+		ProfessorDataModel.currentPB = 14;
 		changeNum();
 	}
 

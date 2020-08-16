@@ -125,13 +125,26 @@ public class BanManagerFirstDoneController implements Initializable {
 						setGraphic(null);
 					} else {
 						setText(item);
-						if (!problemList[j].getType().equals(ProblemType.Subjective)) {
+						if (problemList[j].getType().equals(ProblemType.ShortAnswer)) {
 							if (item.equals(problemList[j].answer())) {
 								setStyle("-fx-background-color: #5ad18f;");// 맞음
 							} else if (!item.equals(problemList[j].answer())) {
 								setStyle("-fx-background-color: #ff848f;");// 틀림
 							}
-						} else
+						}else if (problemList[j].getType().equals(ProblemType.MultipleChoice)) {
+							if (item.equals(problemList[j].answer())) {
+								setStyle("-fx-background-color: #5ad18f;");// 맞음
+							} else if (!item.equals(problemList[j].answer())) {
+								setStyle("-fx-background-color: #ff848f;");// 틀림
+							}
+							
+							String answer = ""; 
+							for(int i = 0;  i < item.length(); i++)
+								answer += (item.charAt(i) + "/");
+							
+							setText(answer.substring(0, answer.length() - 1));
+							
+						} else if (problemList[j].getType().equals(ProblemType.Subjective))
 							setStyle("-fx-background-color: #ffcd28;");// subjective
 					}
 				}
@@ -222,10 +235,11 @@ public class BanManagerFirstDoneController implements Initializable {
 	public void btn_Next_Action() {
 		ProfessorDataModel.currentPB = 0;
 
-		if (problemList[0].getType().equals(ProblemType.MultipleChoice)) {
+		ProblemType p = problemList[ProfessorDataModel.currentPB].getType();
+		if (!p.equals(ProblemType.MultipleChoice)) {
 			try {
 				Stage primaryStage = (Stage) btn_Main.getScene().getWindow();
-				Parent main = FXMLLoader.load(getClass().getResource("/gui/BanManagerSecondDoneMultiChoice.fxml"));
+				Parent main = FXMLLoader.load(getClass().getResource("/gui/BanManagerSecondDone.fxml"));
 				Scene scene = new Scene(main);
 				primaryStage.setTitle("GuessWhat/Workbook");
 				primaryStage.setScene(scene);
@@ -233,10 +247,10 @@ public class BanManagerFirstDoneController implements Initializable {
 			} catch (Exception a) {
 				a.printStackTrace();
 			}
-		} else if (!problemList[0].getType().equals(ProblemType.MultipleChoice)) {
+		} else if (p.equals(ProblemType.MultipleChoice)) {
 			try {
 				Stage primaryStage = (Stage) btn_Main.getScene().getWindow();
-				Parent main = FXMLLoader.load(getClass().getResource("/gui/BanManagerSecondDone.fxml"));
+				Parent main = FXMLLoader.load(getClass().getResource("/gui/BanManagerSecondDoneMultiChoice.fxml"));
 				Scene scene = new Scene(main);
 				primaryStage.setTitle("GuessWhat/Workbook");
 				primaryStage.setScene(scene);
