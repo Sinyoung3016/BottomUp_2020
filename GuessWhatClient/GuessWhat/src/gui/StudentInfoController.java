@@ -125,13 +125,11 @@ public class StudentInfoController implements Initializable {
 								e.printStackTrace();
 							}
 						}
-					}
-					else {
+					} else {
 						System.out.println("Fail getAllProblem");
 					}
 
-				}
-				else {
+				} else {
 					System.out.println("Fail getWorkbook");
 				}
 			} else {
@@ -139,18 +137,23 @@ public class StudentInfoController implements Initializable {
 			}
 
 		} else {
-			try {
-				Stage primaryStage = (Stage) btn_Close.getScene().getWindow();
-				Parent main = FXMLLoader.load(getClass().getResource("/gui/StuInfoToStuWB.fxml"));
-				Scene scene = new Scene(main);
-				primaryStage.setTitle("GuessWhat/Test");
-				primaryStage.setScene(scene);
-				primaryStage.show();
-			} catch (Exception e) {
-				e.printStackTrace();
+			if (tf_StudentName.getLength() != 0) {
+				StudentDataModel.studentName = tf_StudentName.getText();
+				StudentDataModel.currentPB = 0;
+				try {
+					Stage primaryStage = (Stage) btn_Close.getScene().getWindow();
+					Parent main = FXMLLoader.load(getClass().getResource("/gui/StuInfoToStuWB.fxml"));
+					Scene scene = new Scene(main);
+					primaryStage.setTitle("GuessWhat/Test");
+					primaryStage.setScene(scene);
+					primaryStage.show();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			} else {
+				new Alert(Alert.AlertType.WARNING, "Invalid Name", ButtonType.CLOSE).show();
 			}
-			/*new Alert(Alert.AlertType.WARNING, "Class has not been opened yet. Please wait in a moment.",
-					ButtonType.CLOSE).show();*/
+
 		}
 
 	}
@@ -173,7 +176,7 @@ public class StudentInfoController implements Initializable {
 					return false;
 				} else {
 					// GetWorkbook:Success:WorkbookInfo
-					
+
 					Workbook workbook = new Workbook(responseTokens[2]);
 					StudentDataModel.setWorkbook(workbook);
 					StudentDataModel.hasAnswer = new boolean[workbook.WorkBooksize()];
@@ -188,7 +191,6 @@ public class StudentInfoController implements Initializable {
 			e.printStackTrace();
 			return false;
 		}
-
 
 	}
 
@@ -210,7 +212,7 @@ public class StudentInfoController implements Initializable {
 					return false;
 				} else {
 					// Success GetAllProblem
-					//GetAllProblem:Success:Problem1_Problem2
+					// GetAllProblem:Success:Problem1_Problem2
 
 					String[] problemInfo = responseTokens[2].split("_");
 					Problem[] problemList = new Problem[problemInfo.length];

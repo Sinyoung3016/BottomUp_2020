@@ -38,6 +38,7 @@ public class StudentDataModel {
 		sb.append(banManager.ban_num() + ":");
 		sb.append(banManager.BM_num() + ":");
 		sb.append(studentName);
+		System.out.println("학생" + studentName +"님이 문제를 제출하였습니다." );
 		return new String(sb);
 	}
 	
