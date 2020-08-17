@@ -86,6 +86,7 @@ public class MyInfoController implements Initializable {
 			if (!responseTokens[1].equals("Success")) {
 				new Alert(Alert.AlertType.WARNING, responseTokens[1], ButtonType.CLOSE).showAndWait();
 			} else {
+				ProfessorDataModel.isUser = false;
 				System.out.println(ProfessorDataModel.ID + "님이 로그아웃하셨습니다.");
 				try {
 					Stage primaryStage = (Stage) btn_Close.getScene().getWindow();
