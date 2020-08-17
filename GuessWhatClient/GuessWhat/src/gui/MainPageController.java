@@ -146,6 +146,7 @@ public class MainPageController implements Initializable {
 		this.professor = ProfessorDataModel.professor;
 		this.showBanList(professor.P_Num());
 		this.getAllWorkbook(professor.P_Num());
+		ProfessorDataModel.isUser = true;
 
 	}
 

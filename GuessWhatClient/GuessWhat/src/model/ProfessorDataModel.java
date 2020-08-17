@@ -32,6 +32,7 @@ public class ProfessorDataModel {
 	public static ArrayList<Student> ip_student = new ArrayList<>();
 	public static long startTime = 0;
 	public static int currentPB = 0;
+	public static boolean isUser = false;
 
 	public static ObservableList<HBoxModel> ItemList_MyBanManager = FXCollections.observableArrayList();
 	public static ObservableList<HBoxModel> ItemList_MyClass = FXCollections.observableArrayList();
