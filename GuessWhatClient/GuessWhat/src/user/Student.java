@@ -120,7 +120,7 @@ public class Student {
 			if (this.answer()[i] == null) {
 				sb.append(" ");
 			} else {
-				sb.append(" ");
+				sb.append(this.answer()[i]);
 			}
 			System.out.println(i + " : " + this.answer()[i]);
 			sb.append("`");
