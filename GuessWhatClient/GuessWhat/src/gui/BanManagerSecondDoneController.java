@@ -91,23 +91,9 @@ public class BanManagerSecondDoneController implements Initializable {
 			Student stu = e.next();
 			list.add(new StuNum(stu.name(), stu.answer()[PB_num], stu.result()[PB_num]));
 		}
-		
-		if (list.size() == 0) {
-			new Alert(AlertType.WARNING, "해당 시험을 본 학생이 없습니다.", ButtonType.CLOSE).showAndWait();
-			try {
-				Stage primaryStage = (Stage) btn_Main.getScene().getWindow();
-				Parent main = FXMLLoader.load(getClass().getResource("/gui/Ban.fxml"));
-				Scene scene = new Scene(main);
-				primaryStage.setTitle("GuessWhat/" + className);
-				primaryStage.setScene(scene);
-				primaryStage.show();
-			} catch (Exception a) {
-				a.printStackTrace();
-			}
-		}
-		
+
 		settingColumn();
-		
+
 		for (int i = 0; i < WorkBookSize; i++) {
 			btn[i].setStyle("-fx-background-color: #5ad18f;");
 			btn[i].setDisable(false);
@@ -117,11 +103,12 @@ public class BanManagerSecondDoneController implements Initializable {
 			btn[i].setStyle("-fx-background-color: #cdcdcd;");
 			btn[i].setDisable(true);
 		}
+
 	}
 
 	private void changeNum() {
 		PB_num = ProfessorDataModel.currentPB;
-		
+
 		ProblemType p = problemList[PB_num].getType();
 		if (!p.equals(ProblemType.MultipleChoice)) {
 			try {
@@ -146,7 +133,7 @@ public class BanManagerSecondDoneController implements Initializable {
 				a.printStackTrace();
 			}
 		}
-		
+
 	}
 
 	private void settingColumn() {

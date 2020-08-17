@@ -63,7 +63,7 @@ public class BanManagerFirstDoneController implements Initializable {
 	private Problem[] problemList;
 
 	private String className;
-
+	private boolean no;
 	private int WorkBookSize;
 
 	@Override
@@ -77,7 +77,7 @@ public class BanManagerFirstDoneController implements Initializable {
 		this.WorkBookSize = workbook.WorkBooksize();
 
 		this.getAllProblem();
-		this.getStudent();
+		no = this.getStudent();
 		this.problemList = ProfessorDataModel.problemList;
 
 		className = btn_Main.getText();
@@ -89,7 +89,8 @@ public class BanManagerFirstDoneController implements Initializable {
 		try {
 			tv_Answer.getColumns().setAll(this.getColumns());
 			tv_Answer.getItems().setAll(ProfessorDataModel.ip_student);
-		} catch (NullPointerException e) {
+
+		} catch (Exception e) {
 			new Alert(AlertType.WARNING, "해당 시험을 본 학생이 없습니다.", ButtonType.CLOSE).showAndWait();
 			try {
 				Stage primaryStage = (Stage) btn_Main.getScene().getWindow();
@@ -131,19 +132,19 @@ public class BanManagerFirstDoneController implements Initializable {
 							} else if (!item.equals(problemList[j].answer())) {
 								setStyle("-fx-background-color: #ff848f;");// 틀림
 							}
-						}else if (problemList[j].getType().equals(ProblemType.MultipleChoice)) {
+						} else if (problemList[j].getType().equals(ProblemType.MultipleChoice)) {
 							if (item.equals(problemList[j].answer())) {
 								setStyle("-fx-background-color: #5ad18f;");// 맞음
 							} else if (!item.equals(problemList[j].answer())) {
 								setStyle("-fx-background-color: #ff848f;");// 틀림
 							}
-							
-							String answer = ""; 
-							for(int i = 0;  i < item.length(); i++)
+
+							String answer = "";
+							for (int i = 0; i < item.length(); i++)
 								answer += (item.charAt(i) + "/");
-							
+
 							setText(answer.substring(0, answer.length() - 1));
-							
+
 						} else if (problemList[j].getType().equals(ProblemType.Subjective))
 							setStyle("-fx-background-color: #ffcd28;");// subjective
 					}
@@ -233,30 +234,45 @@ public class BanManagerFirstDoneController implements Initializable {
 	}
 
 	public void btn_Next_Action() {
-		ProfessorDataModel.currentPB = 0;
 
-		ProblemType p = problemList[ProfessorDataModel.currentPB].getType();
-		if (!p.equals(ProblemType.MultipleChoice)) {
-			try {
-				Stage primaryStage = (Stage) btn_Main.getScene().getWindow();
-				Parent main = FXMLLoader.load(getClass().getResource("/gui/BanManagerSecondDone.fxml"));
-				Scene scene = new Scene(main);
-				primaryStage.setTitle("GuessWhat/Workbook");
-				primaryStage.setScene(scene);
-				primaryStage.show();
-			} catch (Exception a) {
-				a.printStackTrace();
+		if (no) {
+			ProfessorDataModel.currentPB = 0;
+
+			ProblemType p = problemList[ProfessorDataModel.currentPB].getType();
+			if (!p.equals(ProblemType.MultipleChoice)) {
+				try {
+					Stage primaryStage = (Stage) btn_Main.getScene().getWindow();
+					Parent main = FXMLLoader.load(getClass().getResource("/gui/BanManagerSecondDone.fxml"));
+					Scene scene = new Scene(main);
+					primaryStage.setTitle("GuessWhat/Workbook");
+					primaryStage.setScene(scene);
+					primaryStage.show();
+				} catch (Exception a) {
+					a.printStackTrace();
+				}
+			} else if (p.equals(ProblemType.MultipleChoice)) {
+				try {
+					Stage primaryStage = (Stage) btn_Main.getScene().getWindow();
+					Parent main = FXMLLoader.load(getClass().getResource("/gui/BanManagerSecondDoneMultiChoice.fxml"));
+					Scene scene = new Scene(main);
+					primaryStage.setTitle("GuessWhat/Workbook");
+					primaryStage.setScene(scene);
+					primaryStage.show();
+				} catch (Exception a) {
+					a.printStackTrace();
+				}
 			}
-		} else if (p.equals(ProblemType.MultipleChoice)) {
+		} else {
+			new Alert(AlertType.WARNING, "시험에 참가한 학생이 없습니다.", ButtonType.CLOSE).showAndWait();
 			try {
 				Stage primaryStage = (Stage) btn_Main.getScene().getWindow();
-				Parent main = FXMLLoader.load(getClass().getResource("/gui/BanManagerSecondDoneMultiChoice.fxml"));
+				Parent main = FXMLLoader.load(getClass().getResource("/gui/Ban.fxml"));
 				Scene scene = new Scene(main);
 				primaryStage.setTitle("GuessWhat/Workbook");
 				primaryStage.setScene(scene);
 				primaryStage.show();
-			} catch (Exception a) {
-				a.printStackTrace();
+			} catch (Exception t) {
+				t.printStackTrace();
 			}
 		}
 	}
@@ -287,11 +303,10 @@ public class BanManagerFirstDoneController implements Initializable {
 		}
 	}
 
-	
 	private boolean getStudent() {
-		
+
 		ProfessorDataModel.ip_student.clear();
-		
+
 		String responseMessage = null;
 		try {
 			String requestMessage = "GetStudent:" + this.banManager.BM_num();
@@ -318,7 +333,8 @@ public class BanManagerFirstDoneController implements Initializable {
 						ProfessorDataModel.ip_student.add(new Student(this.workbook.WorkBooksize(), studentList[i]));
 					}
 					if (studentList.length > 0) {
-						String requestMessage2= "ModifyStudentSize:" + this.banManager.BM_num() + ":"+ studentList.length;
+						String requestMessage2 = "ModifyStudentSize:" + this.banManager.BM_num() + ":"
+								+ studentList.length;
 						PrintWriter pw2 = new PrintWriter(
 								new OutputStreamWriter(this.socket.getOutputStream(), StandardCharsets.UTF_8));
 						pw2.println(requestMessage2);

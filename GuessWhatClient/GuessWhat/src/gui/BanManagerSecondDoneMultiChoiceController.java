@@ -102,20 +102,6 @@ public class BanManagerSecondDoneMultiChoiceController implements Initializable 
 		}
 		this.StudentSize = list.size();
 
-		if (StudentSize == 0) {
-			new Alert(AlertType.WARNING, "해당 시험을 본 학생이 없습니다.", ButtonType.CLOSE).showAndWait();
-			try {
-				Stage primaryStage = (Stage) btn_Main.getScene().getWindow();
-				Parent main = FXMLLoader.load(getClass().getResource("/gui/Ban.fxml"));
-				Scene scene = new Scene(main);
-				primaryStage.setTitle("GuessWhat/" + className);
-				primaryStage.setScene(scene);
-				primaryStage.show();
-			} catch (Exception a) {
-				a.printStackTrace();
-			}
-		}
-
 		settingPie(pieValue());
 
 		for (int i = 0; i < WorkBookSize; i++) {
@@ -127,7 +113,6 @@ public class BanManagerSecondDoneMultiChoiceController implements Initializable 
 			btn[i].setStyle("-fx-background-color: #cdcdcd;");
 			btn[i].setDisable(true);
 		}
-
 	}
 
 	private void changeNum() {
@@ -164,7 +149,7 @@ public class BanManagerSecondDoneMultiChoiceController implements Initializable 
 		this.Pie = FXCollections.observableArrayList();
 		for (int i = 0; i < 5; i++)
 			Pie.add(new PieChart.Data((i + 1) + "번", value[i]));
-		
+
 		Pie.add(new PieChart.Data("무응답", value[5]));
 
 		pc_Result.setData(Pie);
@@ -176,7 +161,6 @@ public class BanManagerSecondDoneMultiChoiceController implements Initializable 
 		Iterator<StuNum> e = list.iterator();
 		while (e.hasNext()) {
 			StuNum stu = e.next();
-			System.out.println(stu.answer());
 			if (stu.answer().equals(" ")) {
 				value[5]++;
 			} else {
@@ -189,7 +173,7 @@ public class BanManagerSecondDoneMultiChoiceController implements Initializable 
 			}
 		}
 
-		for (int i = 0; i < 5; i++)
+		for (int i = 0; i < 6; i++)
 			value[i] = value[i] * 100 / StudentSize;
 
 		String s = problemList[PB_num].answer();
