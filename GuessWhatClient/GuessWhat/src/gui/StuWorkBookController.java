@@ -8,6 +8,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 import exam.Problem;
@@ -57,7 +58,7 @@ public class StuWorkBookController implements Initializable {
 		this.problemList = StudentDataModel.problemList;
 		this.workBookSize = StudentDataModel.workbook.WorkBooksize();
 		this.PB_num = StudentDataModel.currentPB;
-		
+
 		// setting
 		btn = new Button[] { btn_num1, btn_num2, btn_num3, btn_num4, btn_num5, btn_num6, btn_num7, btn_num8, btn_num9,
 				btn_num10, btn_num11, btn_num12, btn_num13, btn_num14, btn_num15 };
@@ -91,8 +92,7 @@ public class StuWorkBookController implements Initializable {
 		String S_answer = ta_Answer.getText();
 		if (S_answer.equals("") || S_answer.equals(" ") || S_answer.equals(null) || S_answer == null) {
 			StudentDataModel.hasAnswer[StudentDataModel.currentPB] = false;
-		}
-		else {
+		} else {
 			this.student.answer()[StudentDataModel.currentPB] = S_answer;
 			StudentDataModel.hasAnswer[StudentDataModel.currentPB] = true;
 		}
@@ -132,36 +132,42 @@ public class StuWorkBookController implements Initializable {
 	}
 
 	public void btn_Submit_Action() {
-		this.savePro();
-		this.markAnswer(); // 체점하기
-		String responseMessage = null;
-		try {
-			String requestTokens = "AddStudent:" + StudentDataModel.tokenStudentData() + ":"
-					+ this.student.tokenAnswer() + ":" + this.student.tokenResult();
-			BufferedReader br = new BufferedReader(
-					new InputStreamReader(this.socket.getInputStream(), StandardCharsets.UTF_8));
-			PrintWriter pw = new PrintWriter(
-					new OutputStreamWriter(this.socket.getOutputStream(), StandardCharsets.UTF_8));
-			pw.println(requestTokens);
-			pw.flush();
-			responseMessage = br.readLine();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		String[] responseTokens = responseMessage.split(":");
-		if (responseTokens[0].equals("AddStudent")) {
-			if (!responseTokens[1].equals("Success")) {
-				System.out.println(responseTokens[1]);
-			} else {
-				try {
-					Stage primaryStage = (Stage) btn_Submit.getScene().getWindow();
-					Parent main = FXMLLoader.load(getClass().getResource("/gui/StuResult.fxml"));
-					Scene scene = new Scene(main);
-					primaryStage.setTitle("GuessWhat/Result");
-					primaryStage.setScene(scene);
-					primaryStage.show();
-				} catch (Exception e) {
-					e.printStackTrace();
+
+		Alert alert = new Alert(AlertType.CONFIRMATION, "제출하시겠습니까?", ButtonType.YES, ButtonType.NO);
+		Optional<ButtonType> result = alert.showAndWait();
+		if (result.get() == (ButtonType.YES)) {
+
+			this.savePro();
+			this.markAnswer(); // 체점하기
+			String responseMessage = null;
+			try {
+				String requestTokens = "AddStudent:" + StudentDataModel.tokenStudentData() + ":"
+						+ this.student.tokenAnswer() + ":" + this.student.tokenResult();
+				BufferedReader br = new BufferedReader(
+						new InputStreamReader(this.socket.getInputStream(), StandardCharsets.UTF_8));
+				PrintWriter pw = new PrintWriter(
+						new OutputStreamWriter(this.socket.getOutputStream(), StandardCharsets.UTF_8));
+				pw.println(requestTokens);
+				pw.flush();
+				responseMessage = br.readLine();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			String[] responseTokens = responseMessage.split(":");
+			if (responseTokens[0].equals("AddStudent")) {
+				if (!responseTokens[1].equals("Success")) {
+					System.out.println(responseTokens[1]);
+				} else {
+					try {
+						Stage primaryStage = (Stage) btn_Submit.getScene().getWindow();
+						Parent main = FXMLLoader.load(getClass().getResource("/gui/StuResult.fxml"));
+						Scene scene = new Scene(main);
+						primaryStage.setTitle("GuessWhat/Result");
+						primaryStage.setScene(scene);
+						primaryStage.show();
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
 				}
 			}
 		}
