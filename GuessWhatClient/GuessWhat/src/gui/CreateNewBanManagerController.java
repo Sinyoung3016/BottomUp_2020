@@ -9,17 +9,12 @@ import java.net.Socket;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.Optional;
 import java.util.Random;
 import java.util.ResourceBundle;
 
 import exam.Workbook;
-import exception.MyException;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -56,20 +51,16 @@ public class CreateNewBanManagerController implements Initializable {
 	private String className;
 
 	private void createNewBanManager(int PNum, int BNum, String name, String code, int wNum)
-			throws MyException, SQLException {
+			throws SQLException, Exception {
 		String responseMessage = null;
-		try {
-			String requestMessage = "AddBanManager:" + PNum + ":" + BNum + ":" + name + ":" + code + ":" + wNum;
-			BufferedReader reader = new BufferedReader(
-					new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
-			PrintWriter writer = new PrintWriter(
-					new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8));
-			writer.println(requestMessage);
-			writer.flush();
-			responseMessage = reader.readLine();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		String requestMessage = "AddBanManager:" + PNum + ":" + BNum + ":" + name + ":" + code + ":" + wNum;
+		BufferedReader reader = new BufferedReader(
+				new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
+		PrintWriter writer = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8));
+		writer.println(requestMessage);
+		writer.flush();
+		responseMessage = reader.readLine();
+
 		String[] responseTokens = responseMessage.split(":");
 		if (responseTokens[0].equals("AddBanManager")) {
 			if (!responseTokens[1].equals("Success")) {
@@ -83,22 +74,27 @@ public class CreateNewBanManagerController implements Initializable {
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// TODO Auto-generated method stub
+		try {
+			this.makeRoomCode();
 
-		this.makeRoomCode();
+			this.socket = ProfessorDataModel.socket;
+			this.professor = ProfessorDataModel.professor;
+			this.ban = ProfessorDataModel.ban;
+			this.workbookList = ProfessorDataModel.WorkbookList;
 
-		this.socket = ProfessorDataModel.socket;
-		this.professor = ProfessorDataModel.professor;
-		this.ban = ProfessorDataModel.ban;
-		this.workbookList = ProfessorDataModel.WorkbookList;
-		
-		this.cb_NewBanManagerWorkBook.setItems(ProfessorDataModel.ChoiceList_MyWorkBook);
+			this.cb_NewBanManagerWorkBook.setItems(ProfessorDataModel.ChoiceList_MyWorkBook);
 
-		className = ban.ban_name();
-		this.btn_Main.setText(className);
+			className = ban.ban_name();
+			this.btn_Main.setText(className);
 
+		} catch (Exception e) {
+			System.out.println("CreateNewBanManager : " + e.getMessage());
+			new Alert(AlertType.WARNING, "서버와 연결이 끊겼습니다.", ButtonType.CLOSE).showAndWait();
+			Platform.exit();
+		}
 	}
 
-	private void makeRoomCode() { // 값 만들기
+	private void makeRoomCode() throws Exception { // 값 만들기
 		StringBuffer temp = new StringBuffer();
 		Random random = new Random();
 		for (int i = 0; i < 5; i++) {
@@ -124,17 +120,19 @@ public class CreateNewBanManagerController implements Initializable {
 				ButtonType.YES, ButtonType.NO);
 		Optional<ButtonType> result = alert.showAndWait();
 
-		if (result.get() == ButtonType.YES) {
-			try {
+		try {
+			if (result.get() == ButtonType.YES) {
 				Stage primaryStage = (Stage) btn_Main.getScene().getWindow();
 				Parent main = FXMLLoader.load(getClass().getResource("/gui/Ban.fxml"));
 				Scene scene = new Scene(main);
 				primaryStage.setTitle("GuessWhat/" + className);
 				primaryStage.setScene(scene);
 				primaryStage.show();
-			} catch (Exception e) {
-				e.printStackTrace();
 			}
+		} catch (Exception e) {
+			System.out.println("CreateNewBanManager : " + e.getMessage());
+			new Alert(AlertType.WARNING, "서버와 연결이 끊겼습니다.", ButtonType.CLOSE).showAndWait();
+			Platform.exit();
 		}
 	}
 
@@ -150,51 +148,51 @@ public class CreateNewBanManagerController implements Initializable {
 				primaryStage.setScene(scene);
 				primaryStage.show();
 			} catch (Exception e) {
-				e.printStackTrace();
+				System.out.println("CreateNewBanManager : " + e.getMessage());
+				new Alert(AlertType.WARNING, "서버와 연결이 끊겼습니다.", ButtonType.CLOSE).showAndWait();
+				Platform.exit();
 			}
 		}
 	}
-	private boolean validName() {
+
+	private boolean validName() throws Exception {
 		String bmName = this.tf_NewBanManagerName.getText();
-		if (bmName.equals("")) {
-			return false;
-		}
+		if (bmName.equals("")) return false;
 		return true;
 	}
-	private boolean validWorkbook() {
+
+	private boolean validWorkbook() throws Exception {
 		Workbook wb = this.cb_NewBanManagerWorkBook.getSelectionModel().getSelectedItem();
-		if(wb == null) {
-			return false;
-		}
+		if (wb == null)	return false;
 		return true;
 	}
+
 	public void btn_CreateNewBanManager_Action() {
-		int pNum = this.professor.P_Num();
-		int bNum = this.ban.ban_num();
-		if (! this.validName() && ! this.validWorkbook()) {
-			Alert alert = new Alert(AlertType.WARNING, "이름과 Workbook을 선택해주세요.", ButtonType.YES);
-			alert.showAndWait();
-		} else if ( ! this.validName()) {
-			Alert alert = new Alert(AlertType.WARNING, "이름을 채워주세요", ButtonType.YES);
-			alert.showAndWait();
-		} else if ( ! this.validWorkbook()) {
-			Alert alert = new Alert(AlertType.WARNING, "Workbook을 선택해주세요.", ButtonType.YES);
-			alert.showAndWait();
-		} else {
-			try {
+		try {
+			int pNum = this.professor.P_Num();
+			int bNum = this.ban.ban_num();
+			if (!this.validName() && !this.validWorkbook()) {
+				new Alert(AlertType.WARNING, "이름과 Workbook을 선택해주세요.", ButtonType.YES).showAndWait();
+			} else if (!this.validName()) {
+				new Alert(AlertType.WARNING, "이름을 채워주세요", ButtonType.YES).showAndWait();
+			} else if (!this.validWorkbook()) {
+				new Alert(AlertType.WARNING, "Workbook을 선택해주세요.", ButtonType.YES).showAndWait();
+			} else {
 				String bmName = this.tf_NewBanManagerName.getText();
 				int wNum = this.cb_NewBanManagerWorkBook.getSelectionModel().getSelectedItem().W_Num();
 				this.createNewBanManager(pNum, bNum, bmName, this.lv_roomcode.getText(), wNum);
-				
+
 				Stage primaryStage = (Stage) btn_CreateNewBanManager.getScene().getWindow();
 				Parent main = FXMLLoader.load(getClass().getResource("/gui/Ban.fxml"));
 				Scene scene = new Scene(main);
 				primaryStage.setTitle("GuessWhat/" + className);
 				primaryStage.setScene(scene);
 				primaryStage.show();
-			} catch (Exception e) {
-				e.printStackTrace();
 			}
+		} catch (Exception e) {
+			System.out.println("CreateNewBanManager : " + e.getMessage());
+			new Alert(AlertType.WARNING, "서버와 연결이 끊겼습니다.", ButtonType.CLOSE).showAndWait();
+			Platform.exit();
 		}
 	}
 
@@ -211,7 +209,9 @@ public class CreateNewBanManagerController implements Initializable {
 				primaryStage.setScene(scene);
 				primaryStage.show();
 			} catch (Exception e) {
-				e.printStackTrace();
+				System.out.println("CreateNewBanManager : " + e.getMessage());
+				new Alert(AlertType.WARNING, "서버와 연결이 끊겼습니다.", ButtonType.CLOSE).showAndWait();
+				Platform.exit();
 			}
 		}
 	}
@@ -229,7 +229,9 @@ public class CreateNewBanManagerController implements Initializable {
 				primaryStage.setScene(scene);
 				primaryStage.show();
 			} catch (Exception e) {
-				e.printStackTrace();
+				System.out.println("CreateNewBanManager : " + e.getMessage());
+				new Alert(AlertType.WARNING, "서버와 연결이 끊겼습니다.", ButtonType.CLOSE).showAndWait();
+				Platform.exit();
 			}
 		}
 	}

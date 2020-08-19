@@ -9,12 +9,9 @@ import java.net.Socket;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-import exam.Problem;
-import exam.ProblemType;
 import exam.Workbook;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -30,7 +27,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 import model.ProfessorDataModel;
-import model.StudentDataModel;
 import room.Ban;
 import room.BanManager;
 import room.BanManager.State;
@@ -57,23 +53,31 @@ public class BanManagerProgressController implements Initializable {
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// TODO Auto-generated method stub
 
-		this.socket = ProfessorDataModel.socket;
-		this.ban = ProfessorDataModel.ban;
-		this.banManager = ProfessorDataModel.banManager;
-		this.workbook = ProfessorDataModel.workbook;
-		this.start = ProfessorDataModel.startTime;
+		try {
 
-		className = btn_Main.getText();
+			this.socket = ProfessorDataModel.socket;
+			this.ban = ProfessorDataModel.ban;
+			this.banManager = ProfessorDataModel.banManager;
+			this.workbook = ProfessorDataModel.workbook;
+			this.start = ProfessorDataModel.startTime;
 
-		this.btn_Main.setText(ban.ban_name());
-		this.lb_BanManagerName.setText(banManager.BM_name());
-		this.lb_WorkBook.setText(workbook.W_name());
+			className = btn_Main.getText();
 
-		setTimer();
+			this.btn_Main.setText(ban.ban_name());
+			this.lb_BanManagerName.setText(banManager.BM_name());
+			this.lb_WorkBook.setText(workbook.W_name());
+
+			setTimer();
+
+		} catch (Exception e) {
+			System.out.println("BanManagerProgress : " + e.getMessage());
+			new Alert(AlertType.WARNING, "서버와 연결이 끊겼습니다.", ButtonType.CLOSE).showAndWait();
+			Platform.exit();
+		}
 
 	}
 
-	private void setTimer() {
+	private void setTimer() throws Exception {
 		boolean stop = false;
 		Thread thread = new Thread() {
 
@@ -81,7 +85,7 @@ public class BanManagerProgressController implements Initializable {
 			public void run() {
 				SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
 				while (!stop) {
-					long end = System.currentTimeMillis()-32400000;
+					long end = System.currentTimeMillis() - 32400000;
 					String strTime = sdf.format(end - start);
 					Platform.runLater(() -> {
 						lb_Timer.setText(strTime);
@@ -97,20 +101,17 @@ public class BanManagerProgressController implements Initializable {
 		thread.start();
 	}
 
-	private void changeBMState(int bmNum, String newState) {
+	private void changeBMState(int bmNum, String newState) throws Exception {
+		
 		String responseMessage = null;
-		try {
-			String requestMessage = "ModifyState:" + bmNum + ":" + newState;
-			BufferedReader reader = new BufferedReader(
-					new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
-			PrintWriter writer = new PrintWriter(
-					new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8));
-			writer.println(requestMessage);
-			writer.flush();
-			responseMessage = reader.readLine();
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
+		String requestMessage = "ModifyState:" + bmNum + ":" + newState;
+		BufferedReader reader = new BufferedReader(
+				new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
+		PrintWriter writer = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8));
+		writer.println(requestMessage);
+		writer.flush();
+		responseMessage = reader.readLine();
+
 		String[] responseTokens = responseMessage.split(":");
 
 		if (responseTokens[0].equals("ModifyState")) {
@@ -123,25 +124,30 @@ public class BanManagerProgressController implements Initializable {
 	}
 
 	public void btn_End_Action() {
-		Alert alert = new Alert(AlertType.WARNING, "Test를 종료하시겠습니까?", ButtonType.YES, ButtonType.NO);
-		Optional<ButtonType> result = alert.showAndWait();
-		
-		if (result.get() == ButtonType.YES) {
-			stop = true;
-			if (banManager.BM_state().equals(State.CLOSE))
-				banManager.setBM_state_CLOSE();
-			this.changeBMState(this.banManager.BM_num(), "CLOSE");
+		try {
+			Alert alert = new Alert(AlertType.WARNING, "Test를 종료하시겠습니까?", ButtonType.YES, ButtonType.NO);
+			Optional<ButtonType> result = alert.showAndWait();
 
-			try {
-				Stage primaryStage = (Stage) btn_End.getScene().getWindow();
-				Parent main = FXMLLoader.load(getClass().getResource("/gui/BanManagerFirstDone.fxml"));
-				Scene scene = new Scene(main);
-				primaryStage.setTitle("GuessWhat/" + className);
-				primaryStage.setScene(scene);
-				primaryStage.show();
-			} catch (Exception e) {
-				e.printStackTrace();
+			if (result.get() == ButtonType.YES) {
+				stop = true;
+				if (banManager.BM_state().equals(State.CLOSE))
+					banManager.setBM_state_CLOSE();
+				this.changeBMState(this.banManager.BM_num(), "CLOSE");
+				try {
+					Stage primaryStage = (Stage) btn_End.getScene().getWindow();
+					Parent main = FXMLLoader.load(getClass().getResource("/gui/BanManagerFirstDone.fxml"));
+					Scene scene = new Scene(main);
+					primaryStage.setTitle("GuessWhat/" + className);
+					primaryStage.setScene(scene);
+					primaryStage.show();
+				} catch (IOException i) {
+					System.out.println("BanManagerProgress : " + i.getMessage());
+				}
 			}
+		} catch (Exception e) {
+			System.out.println("BanManagerProgress : " + e.getMessage());
+			new Alert(AlertType.WARNING, "서버와 연결이 끊겼습니다.", ButtonType.CLOSE).showAndWait();
+			Platform.exit();
 		}
 	}
 
@@ -154,7 +160,9 @@ public class BanManagerProgressController implements Initializable {
 			primaryStage.setScene(scene);
 			primaryStage.show();
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println("BanManagerProgress : " + e.getMessage());
+			new Alert(AlertType.WARNING, "서버와 연결이 끊겼습니다.", ButtonType.CLOSE).showAndWait();
+			Platform.exit();
 		}
 	}
 
@@ -167,7 +175,9 @@ public class BanManagerProgressController implements Initializable {
 			primaryStage.setScene(scene);
 			primaryStage.show();
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println("BanManagerProgress : " + e.getMessage());
+			new Alert(AlertType.WARNING, "서버와 연결이 끊겼습니다.", ButtonType.CLOSE).showAndWait();
+			Platform.exit();
 		}
 	}
 
@@ -180,9 +190,10 @@ public class BanManagerProgressController implements Initializable {
 			primaryStage.setScene(scene);
 			primaryStage.show();
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println("BanManagerProgress : " + e.getMessage());
+			new Alert(AlertType.WARNING, "서버와 연결이 끊겼습니다.", ButtonType.CLOSE).showAndWait();
+			Platform.exit();
 		}
 	}
-
 
 }

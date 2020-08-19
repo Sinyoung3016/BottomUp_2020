@@ -11,6 +11,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -47,33 +48,37 @@ public class BanModifyClassNameController implements Initializable {
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// TODO Auto-generated method stub
+		try {
+			this.socket = ProfessorDataModel.socket;
+			this.professor = ProfessorDataModel.professor;
+			this.ban = ProfessorDataModel.ban;
 
-		this.socket = ProfessorDataModel.socket;
-		this.professor = ProfessorDataModel.professor;
-		this.ban = ProfessorDataModel.ban;
+			this.showBanManagerList(professor.P_Num(), ban.ban_num());
 
-		this.showBanManagerList(professor.P_Num(), ban.ban_num());
+			lv_BanManagerList.setItems(ProfessorDataModel.ItemList_MyBanManager);
+			this.className = ban.ban_name();
 
-		lv_BanManagerList.setItems(ProfessorDataModel.ItemList_MyBanManager);
-		this.className = ban.ban_name();
+		} catch (Exception e) {
+			System.out.println("BanModify : " + e.getMessage());
+			new Alert(AlertType.WARNING, "서버와 연결이 끊겼습니다.", ButtonType.CLOSE).showAndWait();
+			Platform.exit();
+		}
 
 	}
 
-	private void showBanManagerList(int PNum, int BNum) {
+	private void showBanManagerList(int PNum, int BNum) throws Exception {
+
 		ProfessorDataModel.ItemList_MyBanManager.clear();
 		String responseMessage = null;
-		try {
-			String requestMessage = "GetAllBanManager:" + PNum + ":" + BNum;
-			BufferedReader reader = new BufferedReader(
-					new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
-			PrintWriter writer = new PrintWriter(
-					new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8));
-			writer.println(requestMessage);
-			writer.flush();
-			responseMessage = reader.readLine();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+
+		String requestMessage = "GetAllBanManager:" + PNum + ":" + BNum;
+		BufferedReader reader = new BufferedReader(
+				new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
+		PrintWriter writer = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8));
+		writer.println(requestMessage);
+		writer.flush();
+		responseMessage = reader.readLine();
+
 		String[] responseTokens = responseMessage.split(":");
 		if (responseTokens[0].equals("GetAllBanManager")) {
 			if (!responseTokens[1].equals("Success")) {
@@ -97,20 +102,18 @@ public class BanModifyClassNameController implements Initializable {
 		}
 	}
 
-	private void modifyClassName(int PNum, int BNum, String newName) {
+	private void modifyClassName(int PNum, int BNum, String newName) throws Exception {
+
 		String responseMessage = null;
-		try {
-			String requestMessage = "ModifyBan:" + this.professor.P_Num() + ":" + this.ban.ban_num() + ":" + newName;
-			BufferedReader reader = new BufferedReader(
-					new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
-			PrintWriter writer = new PrintWriter(
-					new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8));
-			writer.println(requestMessage);
-			writer.flush();
-			responseMessage = reader.readLine();
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
+
+		String requestMessage = "ModifyBan:" + this.professor.P_Num() + ":" + this.ban.ban_num() + ":" + newName;
+		BufferedReader reader = new BufferedReader(
+				new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
+		PrintWriter writer = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8));
+		writer.println(requestMessage);
+		writer.flush();
+		responseMessage = reader.readLine();
+
 		String[] responseTokens = responseMessage.split(":");
 
 		if (responseTokens[0].equals("ModifyBan")) {
@@ -124,8 +127,7 @@ public class BanModifyClassNameController implements Initializable {
 	}
 
 	public void btn_CancelChangeName_Action() {
-
-		Alert alert = new Alert(AlertType.WARNING, "입력하신 반이름을 저장할까요?", ButtonType.YES, ButtonType.NO);
+		Alert alert = new Alert(AlertType.WARNING, "입력하신 이름을 저장할까요?", ButtonType.YES, ButtonType.NO);
 		Optional<ButtonType> result = alert.showAndWait();
 
 		if (result.get() == ButtonType.YES)
@@ -139,32 +141,35 @@ public class BanModifyClassNameController implements Initializable {
 				primaryStage.setScene(scene);
 				primaryStage.show();
 			} catch (Exception e) {
-				e.printStackTrace();
+				System.out.println("BanModify : " + e.getMessage());
+				new Alert(AlertType.WARNING, "서버와 연결이 끊겼습니다.", ButtonType.CLOSE).showAndWait();
 			}
 		}
-
 	}
 
 	public void btn_SaveClassName_Action() {
-		this.className = this.tf_ChangeClassName.getText();
-		if (className.equals("")) {
-			Alert alert = new Alert(AlertType.WARNING, "반 이름을 채워주세요!", ButtonType.YES);
-			alert.showAndWait();
-		} else {
-			this.modifyClassName(professor.P_Num(), ban.ban_num(), this.className);
-			ProfessorDataModel.ban.setName(this.className);
-			try {
+		try {
+			this.className = this.tf_ChangeClassName.getText();
+			if (className.equals("")) {
+				Alert alert = new Alert(AlertType.WARNING, "반 이름을 채워주세요!", ButtonType.YES);
+				alert.showAndWait();
+			} else {
+				this.modifyClassName(professor.P_Num(), ban.ban_num(), this.className);
+				ProfessorDataModel.ban.setName(this.className);
+
 				Stage primaryStage = (Stage) btn_SaveClassName.getScene().getWindow();
 				Parent main = FXMLLoader.load(getClass().getResource("/gui/Ban.fxml"));
 				Scene scene = new Scene(main);
 				primaryStage.setTitle("GuessWhat/" + className);
 				primaryStage.setScene(scene);
 				primaryStage.show();
-			} catch (Exception e) {
-				e.printStackTrace();
 			}
+		} catch (Exception e) {
+			System.out.println("BanModify : " + e.getMessage());
+			new Alert(AlertType.WARNING, "서버와 연결이 끊겼습니다.", ButtonType.CLOSE).showAndWait();
 		}
 	}
+
 	public void btn_Logo_Action() {
 		try {
 			Stage primaryStage = (Stage) btn_Logo.getScene().getWindow();
@@ -174,7 +179,8 @@ public class BanModifyClassNameController implements Initializable {
 			primaryStage.setScene(scene);
 			primaryStage.show();
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println("BanModify : " + e.getMessage());
+			new Alert(AlertType.WARNING, "서버와 연결이 끊겼습니다.", ButtonType.CLOSE).showAndWait();
 		}
 	}
 
@@ -187,7 +193,8 @@ public class BanModifyClassNameController implements Initializable {
 			primaryStage.setScene(scene);
 			primaryStage.show();
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println("BanModify : " + e.getMessage());
+			new Alert(AlertType.WARNING, "서버와 연결이 끊겼습니다.", ButtonType.CLOSE).showAndWait();
 		}
 	}
 }

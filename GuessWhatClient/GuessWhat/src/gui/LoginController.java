@@ -17,14 +17,12 @@ import model.ProfessorDataModel;
 import user.Professor;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.util.Optional;
 import java.util.ResourceBundle;
 
 import exam.Workbook;
@@ -54,7 +52,9 @@ public class LoginController implements Initializable {
 			primaryStage.setScene(scene);
 			primaryStage.show();
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println("Login : " + e.getMessage());
+			new Alert(AlertType.WARNING, "서버와 연결이 끊겼습니다.", ButtonType.CLOSE).showAndWait();
+			Platform.exit();
 		}
 	}
 
@@ -67,7 +67,9 @@ public class LoginController implements Initializable {
 			primaryStage.setScene(scene);
 			primaryStage.show();
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println("Login : " + e.getMessage());
+			new Alert(AlertType.WARNING, "서버와 연결이 끊겼습니다.", ButtonType.CLOSE).showAndWait();
+			Platform.exit();
 		}
 	}
 
@@ -87,73 +89,33 @@ public class LoginController implements Initializable {
 				responseMessage = br.readLine();
 			} catch (Exception e) {
 				System.out.println("login 실패" + e.getMessage());
-				new Alert(Alert.AlertType.WARNING, "해당하는 ID가 없습니다. 회원가입을 해주세요.", ButtonType.OK).show();
+				new Alert(Alert.AlertType.WARNING, "해당하는 ID가 없습니다. 회원가입을 해주세요.", ButtonType.OK).showAndWait();
 			}
-			String[] responseTokens = responseMessage.split(":");
-			System.out.println(responseMessage);
-			if (responseTokens[0].equals("LogIn")) {
-				if (!responseTokens[1].equals("Success")) {
-					new Alert(Alert.AlertType.WARNING, "로그인에 실패하였습니다. 다시 입력해주세요.", ButtonType.OK).show();
-				} else {
-					try {
+
+			try {
+				String[] responseTokens = responseMessage.split(":");
+				System.out.println(responseMessage);
+				if (responseTokens[0].equals("LogIn")) {
+					if (!responseTokens[1].equals("Success")) {
+						new Alert(Alert.AlertType.WARNING, "로그인에 실패하였습니다. 다시 입력해주세요.", ButtonType.OK).showAndWait();
+					} else {
 						ProfessorDataModel.professor = new Professor(responseTokens[2]);
 						ProfessorDataModel.ID = tf_Id.getText();
 
 						Stage primaryStage = (Stage) btn_Login.getScene().getWindow();
-						Platform.runLater(() -> {
-							Parent login;
-							try {
-								login = FXMLLoader.load(getClass().getResource("/gui/MainPage.fxml"));
-								Scene scene = new Scene(login);
-								primaryStage.setTitle("GuessWhat/Main");
-								primaryStage.setScene(scene);
-								primaryStage.show();
-
-							} catch (Exception e) {
-								e.printStackTrace();
-							}
-						});
-					} catch (Exception e) {
-						e.printStackTrace();
+						Parent login = FXMLLoader.load(getClass().getResource("/gui/MainPage.fxml"));
+						Scene scene = new Scene(login);
+						primaryStage.setTitle("GuessWhat/Main");
+						primaryStage.setScene(scene);
+						primaryStage.show();
 					}
-				}
-			}
-
-		} else
-			new Alert(Alert.AlertType.WARNING, "빈칸을 전부 채워주세요.", ButtonType.OK).show();
-	}
-
-	// Private Method
-	private void getAllWorkbook(int pNum) {
-		ProfessorDataModel.ChoiceList_MyWorkBook.clear();
-		String responseMessage = null;
-		try {
-			// GetAllWorkbook:PNum
-			String requestTokens = "GetAllWorkbook:" + pNum;
-			BufferedReader br = new BufferedReader(
-					new InputStreamReader(this.socket.getInputStream(), StandardCharsets.UTF_8));
-			PrintWriter pw = new PrintWriter(
-					new OutputStreamWriter(this.socket.getOutputStream(), StandardCharsets.UTF_8));
-			pw.println(requestTokens);
-			pw.flush();
-			responseMessage = br.readLine();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		String[] responseTokens = responseMessage.split(":");
-		if (responseTokens[0].equals("GetAllWorkbook")) {
-			if (!responseTokens[1].equals("Success")) {
-				System.out.println("GetAllWorkbook:Fail");
-			} else {
-				for (int i = 2; i < responseTokens.length; i++) { // <- GetAllWorkbook:Success:WNum:Name:Size
-					int WBNum = Integer.parseInt(responseTokens[i]);
-					String name = responseTokens[i + 1];
-					int size = Integer.parseInt(responseTokens[i + 2]);
-
-					Workbook newWorkbook = new Workbook(pNum, WBNum, name, size);
-					ProfessorDataModel.addWBList(newWorkbook);
-					i = i + 2;
-				}
+				} else
+					new Alert(Alert.AlertType.WARNING, "빈칸을 전부 채워주세요.", ButtonType.OK).showAndWait();
+			
+			} catch (Exception e) {
+				System.out.println("Login : " + e.getMessage());
+				new Alert(AlertType.WARNING, "서버와 연결이 끊겼습니다.", ButtonType.CLOSE).showAndWait();
+				Platform.exit();
 			}
 		}
 	}

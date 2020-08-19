@@ -1,7 +1,6 @@
 package gui;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
@@ -10,6 +9,8 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 import java.util.ResourceBundle;
+
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -43,33 +44,36 @@ public class BanController implements Initializable {
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// TODO Auto-generated method stub
+		try {
+			this.socket = ProfessorDataModel.socket;
+			this.professor = ProfessorDataModel.professor;
+			this.ban = ProfessorDataModel.ban;
 
-		this.socket = ProfessorDataModel.socket;
-		this.professor = ProfessorDataModel.professor;
-		this.ban = ProfessorDataModel.ban;
+			this.showBanManagerList(professor.P_Num(), ban.ban_num());
 
-		this.showBanManagerList(professor.P_Num(), ban.ban_num());
+			className = this.ban.ban_name();
+			this.btn_Main.setText(className);
 
-		className = this.ban.ban_name();
-		this.btn_Main.setText(className);
-
+		} catch (Exception e) {
+			System.out.println("Ban : " + e.getMessage());
+			new Alert(AlertType.WARNING, "서버와 연결이 끊겼습니다.", ButtonType.CLOSE).showAndWait();
+			Platform.exit();
+		}
 	}
 
-	private void showBanManagerList(int PNum, int BNum) {
+	private void showBanManagerList(int PNum, int BNum) throws Exception {
+
 		ProfessorDataModel.ItemList_MyBanManager.clear();
 		String responseMessage = null;
-		try {
-			String requestMessage = "GetAllBanManager:" + PNum + ":" + BNum;
-			BufferedReader reader = new BufferedReader(
-					new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
-			PrintWriter writer = new PrintWriter(
-					new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8));
-			writer.println(requestMessage);
-			writer.flush();
-			responseMessage = reader.readLine();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+
+		String requestMessage = "GetAllBanManager:" + PNum + ":" + BNum;
+		BufferedReader reader = new BufferedReader(
+				new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
+		PrintWriter writer = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8));
+		writer.println(requestMessage);
+		writer.flush();
+		responseMessage = reader.readLine();
+
 		String[] responseTokens = responseMessage.split(":");
 		if (responseTokens[0].equals("GetAllBanManager")) {
 			if (!responseTokens[1].equals("Success")) {
@@ -94,15 +98,15 @@ public class BanController implements Initializable {
 	}
 
 	public void btn_DeleteBan_Action() {
+		try {
+			Alert alert = new Alert(AlertType.WARNING, "(Class) " + className + "을(를) 정말로 삭제하시겠습니까?", ButtonType.YES,
+					ButtonType.NO);
+			Optional<ButtonType> result = alert.showAndWait();
 
-		Alert alert = new Alert(AlertType.WARNING, "(Class) " + className + "을(를) 정말로 삭제하시겠습니까?", ButtonType.YES,
-				ButtonType.NO);
-		Optional<ButtonType> result = alert.showAndWait();
+			if (result.get() == ButtonType.YES) {
+				// delete
+				String responseMessage = null;
 
-		if (result.get() == ButtonType.YES) {
-			// delete
-			String responseMessage = null;
-			try {
 				String requestMessage = "DeleteBan:" + this.professor.P_Num() + ":" + this.ban.ban_num();
 				BufferedReader reader = new BufferedReader(
 						new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
@@ -111,49 +115,49 @@ public class BanController implements Initializable {
 				writer.println(requestMessage);
 				writer.flush();
 				responseMessage = reader.readLine();
-			} catch (IOException e1) {
-				e1.printStackTrace();
-			}
-			String[] responseTokens = responseMessage.split(":");
 
-			if (responseTokens[0].equals("DeleteBan")) {
-				if (!responseTokens[1].equals("Success")) {
-					System.out.println("Fail : DeleteBan");
-				} else {
-					System.out.println("Success: DeleteBan");
+				String[] responseTokens = responseMessage.split(":");
+
+				if (responseTokens[0].equals("DeleteBan")) {
+					if (!responseTokens[1].equals("Success")) {
+						System.out.println("Fail : DeleteBan");
+					} else {
+						System.out.println("Success: DeleteBan");
+					}
 				}
-			}
 
-			try {
+				// MainPage로 이동
 				Stage primaryStage = (Stage) btn_CreateNewBanManager.getScene().getWindow();
 				Parent main = FXMLLoader.load(getClass().getResource("/gui/MainPage.fxml"));
 				Scene scene = new Scene(main);
 				primaryStage.setTitle("GuessWhat/MainPage");
 				primaryStage.setScene(scene);
 				primaryStage.show();
-			} catch (Exception e) {
-				e.printStackTrace();
 			}
+		} catch (Exception e) {
+			System.out.println("Ban : " + e.getMessage());
+			new Alert(AlertType.WARNING, "서버와 연결이 끊겼습니다.", ButtonType.CLOSE).showAndWait();
+			Platform.exit();
 		}
 	}
 
 	public void btn_CreateNewBanManager_Action() {
 
-		if (ProfessorDataModel.ChoiceList_MyWorkBook.isEmpty()) {
-			new Alert(AlertType.CONFIRMATION, "생성된 WorkBook이 없습니다. MainPage의 WorkBookList를 눌러 WorkBook을 먼저 만드세요.",
-					ButtonType.CLOSE).show();
-			
-		} else {
-			try {
+		try {
+			if (ProfessorDataModel.ChoiceList_MyWorkBook.isEmpty()) {
+				new Alert(AlertType.CONFIRMATION, "생성된 WorkBook이 없습니다.", ButtonType.CLOSE).showAndWait();
+			} else {
 				Stage primaryStage = (Stage) btn_CreateNewBanManager.getScene().getWindow();
 				Parent main = FXMLLoader.load(getClass().getResource("/gui/CreateNewBanManager.fxml"));
 				Scene scene = new Scene(main);
 				primaryStage.setTitle("GuessWhat/" + className);
 				primaryStage.setScene(scene);
 				primaryStage.show();
-			} catch (Exception e) {
-				e.printStackTrace();
 			}
+		} catch (Exception e) {
+			System.out.println("Ban : " + e.getMessage());
+			new Alert(AlertType.WARNING, "서버와 연결이 끊겼습니다.", ButtonType.CLOSE).showAndWait();
+			Platform.exit();
 		}
 	}
 
@@ -166,7 +170,9 @@ public class BanController implements Initializable {
 			primaryStage.setScene(scene);
 			primaryStage.show();
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println("Ban : " + e.getMessage());
+			new Alert(AlertType.WARNING, "서버와 연결이 끊겼습니다.", ButtonType.CLOSE).showAndWait();
+			Platform.exit();
 		}
 	}
 
@@ -179,7 +185,9 @@ public class BanController implements Initializable {
 			primaryStage.setScene(scene);
 			primaryStage.show();
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println("Ban : " + e.getMessage());
+			new Alert(AlertType.WARNING, "서버와 연결이 끊겼습니다.", ButtonType.CLOSE).showAndWait();
+			Platform.exit();
 		}
 	}
 
@@ -192,7 +200,9 @@ public class BanController implements Initializable {
 			primaryStage.setScene(scene);
 			primaryStage.show();
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println("Ban : " + e.getMessage());
+			new Alert(AlertType.WARNING, "서버와 연결이 끊겼습니다.", ButtonType.CLOSE).showAndWait();
+			Platform.exit();
 		}
 	}
 
@@ -205,7 +215,9 @@ public class BanController implements Initializable {
 			primaryStage.setScene(scene);
 			primaryStage.show();
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println("Ban : " + e.getMessage());
+			new Alert(AlertType.WARNING, "서버와 연결이 끊겼습니다.", ButtonType.CLOSE).showAndWait();
+			Platform.exit();
 		}
 	}
 

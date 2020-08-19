@@ -1,20 +1,13 @@
 package gui;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
-import java.util.Optional;
 import java.util.ResourceBundle;
 
 import javafx.scene.control.Alert;
 import exam.Problem;
 import exam.ProblemType;
-import exam.Workbook;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -24,10 +17,6 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import model.StudentDataModel;
 import user.Student;
@@ -52,88 +41,94 @@ public class StuResultDetailController implements Initializable {
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// TODO Auto-generated method stub
-		this.socket = StudentDataModel.socket;
-		this.PB_num = StudentDataModel.currentPB;
-		this.problemList = StudentDataModel.problemList;
-		this.problem = problemList[PB_num];
-		this.student = StudentDataModel.student;
-		this.workBookSize = StudentDataModel.workbook.WorkBooksize();
+		try {
+			this.socket = StudentDataModel.socket;
+			this.PB_num = StudentDataModel.currentPB;
+			this.problemList = StudentDataModel.problemList;
+			this.problem = problemList[PB_num];
+			this.student = StudentDataModel.student;
+			this.workBookSize = StudentDataModel.workbook.WorkBooksize();
 
-		// setting
-		btn = new Button[] { btn_num1, btn_num2, btn_num3, btn_num4, btn_num5, btn_num6, btn_num7, btn_num8, btn_num9,
-				btn_num10, btn_num11, btn_num12, btn_num13, btn_num14, btn_num15 };
+			// setting
+			btn = new Button[] { btn_num1, btn_num2, btn_num3, btn_num4, btn_num5, btn_num6, btn_num7, btn_num8,
+					btn_num9, btn_num10, btn_num11, btn_num12, btn_num13, btn_num14, btn_num15 };
 
-		String[] result = this.student.result();
+			String[] result = this.student.result();
 
-		for (int i = 0; i < workBookSize; i++) {
-			if (result[i].equals("O"))
-				btn[i].setStyle("-fx-background-color: #5ad18f;");
-			else if (result[i].equals("X"))
-				btn[i].setStyle("-fx-background-color: #ff848f;");
-			else if (result[i].equals("N"))
-				btn[i].setStyle("-fx-background-color: #ffcd28;");
+			for (int i = 0; i < workBookSize; i++) {
+				if (result[i].equals("O"))
+					btn[i].setStyle("-fx-background-color: #5ad18f;");
+				else if (result[i].equals("X"))
+					btn[i].setStyle("-fx-background-color: #ff848f;");
+				else if (result[i].equals("N"))
+					btn[i].setStyle("-fx-background-color: #ffcd28;");
 
-			btn[i].setDisable(false);
-		}
-		for (int i = workBookSize; i < 15; i++) {
-			btn[i].setStyle("-fx-background-color: #dcdcdc;");
-			btn[i].setDisable(true);
-		}
-
-		// setting
-
-		btn[PB_num].setStyle("-fx-background-color: #22941C;");
-		lb_Question.setText(this.problem.question());
-		String T_answer = this.problem.answer();
-		String S_answer = this.student.answer()[PB_num];
-		lb_MyAnswer.setText(S_answer);
-		lb_TeacherAnswer.setText(T_answer);
-
-		if (problem.getType() == ProblemType.ShortAnswer) {
-			if (S_answer == null)
-				lb_MyAnswer.setStyle("-fx-background-color: #ff848f;");
-			else {
-
-				if (S_answer.equals(T_answer))
-					lb_MyAnswer.setStyle("-fx-background-color: #5ad18f;");
-				else
-					lb_MyAnswer.setStyle("-fx-background-color: #ff848f;");
+				btn[i].setDisable(false);
 			}
+			for (int i = workBookSize; i < 15; i++) {
+				btn[i].setStyle("-fx-background-color: #dcdcdc;");
+				btn[i].setDisable(true);
+			}
+
+			// setting
+
+			btn[PB_num].setStyle("-fx-background-color: #22941C;");
+			lb_Question.setText(this.problem.question());
+			String T_answer = this.problem.answer();
+			String S_answer = this.student.answer()[PB_num];
+			lb_MyAnswer.setText(S_answer);
+			lb_TeacherAnswer.setText(T_answer);
+
+			if (problem.getType() == ProblemType.ShortAnswer) {
+				if (S_answer == null)
+					lb_MyAnswer.setStyle("-fx-background-color: #ff848f;");
+				else {
+
+					if (S_answer.equals(T_answer))
+						lb_MyAnswer.setStyle("-fx-background-color: #5ad18f;");
+					else
+						lb_MyAnswer.setStyle("-fx-background-color: #ff848f;");
+				}
+			}
+
+			if (problem.getType() == ProblemType.Subjective)
+				if (S_answer == null)
+					lb_MyAnswer.setStyle("-fx-background-color: #ff848f;");
+
+		} catch (Exception e) {
+			System.out.println("StuResultDetail : " + e.getMessage());
+			new Alert(AlertType.WARNING, "서버와 연결이 끊겼습니다.", ButtonType.CLOSE).showAndWait();
+			Platform.exit();
 		}
-		
-		if (problem.getType() == ProblemType.Subjective)
-			if (S_answer == null)
-				lb_MyAnswer.setStyle("-fx-background-color: #ff848f;");
-			
+
 	}
 
 	private void changeProblem() {
-
-		PB_num = StudentDataModel.currentPB;
-		StudentDataModel.problem = problemList[PB_num];
-		ProblemType p = StudentDataModel.problem.getType();
-		if (p.equals(ProblemType.MultipleChoice)) {
-			try {
+		try {
+			PB_num = StudentDataModel.currentPB;
+			StudentDataModel.problem = problemList[PB_num];
+			ProblemType p = StudentDataModel.problem.getType();
+			if (p.equals(ProblemType.MultipleChoice)) {
 				Stage primaryStage = (Stage) btn_Close.getScene().getWindow();
 				Parent main = FXMLLoader.load(getClass().getResource("/gui/StuResultDetail_MultipleChoice.fxml"));
 				Scene scene = new Scene(main);
 				primaryStage.setTitle("GuessWhat/Workbook");
 				primaryStage.setScene(scene);
 				primaryStage.show();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		} else if (!p.equals(ProblemType.MultipleChoice)) {
-			try {
+
+			} else if (!p.equals(ProblemType.MultipleChoice)) {
 				Stage primaryStage = (Stage) btn_Close.getScene().getWindow();
 				Parent main = FXMLLoader.load(getClass().getResource("/gui/StuResultDetail.fxml"));
 				Scene scene = new Scene(main);
 				primaryStage.setTitle("GuessWhat/Workbook");
 				primaryStage.setScene(scene);
 				primaryStage.show();
-			} catch (Exception e) {
-				e.printStackTrace();
 			}
+
+		} catch (Exception e) {
+			System.out.println("StuResultDetail : " + e.getMessage());
+			new Alert(AlertType.WARNING, "서버와 연결이 끊겼습니다.", ButtonType.CLOSE).showAndWait();
+			Platform.exit();
 		}
 	}
 
@@ -146,7 +141,9 @@ public class StuResultDetailController implements Initializable {
 			primaryStage.setScene(scene);
 			primaryStage.show();
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println("StuResultDetail : " + e.getMessage());
+			new Alert(AlertType.WARNING, "서버와 연결이 끊겼습니다.", ButtonType.CLOSE).showAndWait();
+			Platform.exit();
 		}
 	}
 

@@ -5,6 +5,7 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 import exam.ProblemType;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -31,57 +32,74 @@ public class NewWorkBook_MultipleChoiceController extends newWorkBook_Base imple
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// TODO Auto-generated method stub
 
-		this.socket = ProfessorDataModel.socket;
-		this.workBook = ProfessorDataModel.workbook;
-		this.problemList = ProfessorDataModel.problemList;
-		this.problem = ProfessorDataModel.problem;
-		this.workBookSize = this.workBook.WorkBooksize();
-		this.PB_num = ProfessorDataModel.currentPB;
+		try {
+			this.socket = ProfessorDataModel.socket;
+			this.workBook = ProfessorDataModel.workbook;
+			this.problemList = ProfessorDataModel.problemList;
+			this.problem = ProfessorDataModel.problem;
+			this.workBookSize = this.workBook.WorkBooksize();
+			this.PB_num = ProfessorDataModel.currentPB;
 
-		// setting
-		if (ProfessorDataModel.problemList[PB_num] != null) {
+			// setting
+			if (ProfessorDataModel.problemList[PB_num] != null) {
 
-			ta_Question.setText(problem.question());
+				ta_Question.setText(problem.question());
 
-			if (problem.getType().equals(ProblemType.MultipleChoice)) {
+				if (problem.getType().equals(ProblemType.MultipleChoice)) {
 
-				String[] answerContent = problem.getAnswerContent().split("~");//수정필요할듯 ㅇㅇ
-				if (answerContent[0].equals(" "))
+					String[] answerContent = problem.getAnswerContent().split("~");// 수정필요할듯 ㅇㅇ
+					if (answerContent[0].equals(" "))
+						tf_Answer1.setText("");
+					else
+						tf_Answer1.setText(answerContent[0]);
+					if (answerContent[1].equals(" "))
+						tf_Answer2.setText("");
+					else
+						tf_Answer2.setText(answerContent[1]);
+					if (answerContent[2].equals(" "))
+						tf_Answer3.setText("");
+					else
+						tf_Answer3.setText(answerContent[2]);
+					if (answerContent[3].equals(" "))
+						tf_Answer4.setText("");
+					else
+						tf_Answer4.setText(answerContent[3]);
+					if (answerContent[4].equals(" "))
+						tf_Answer5.setText("");
+					else
+						tf_Answer5.setText(answerContent[4]);
+
+					String answer = problem.answer();
+					for (int i = 0; i < answer.length(); i++) {
+						char num = answer.charAt(i);
+						if (num == '1')
+							cb_1.setSelected(true);
+						if (num == '2')
+							cb_2.setSelected(true);
+						if (num == '3')
+							cb_3.setSelected(true);
+						if (num == '4')
+							cb_4.setSelected(true);
+						if (num == '5')
+							cb_5.setSelected(true);
+					}
+				} else {
 					tf_Answer1.setText("");
-				else
-					tf_Answer1.setText(answerContent[0]);
-				if (answerContent[1].equals(" "))
 					tf_Answer2.setText("");
-				else
-					tf_Answer2.setText(answerContent[1]);
-				if (answerContent[2].equals(" "))
 					tf_Answer3.setText("");
-				else
-					tf_Answer3.setText(answerContent[2]);
-				if (answerContent[3].equals(" "))
 					tf_Answer4.setText("");
-				else
-					tf_Answer4.setText(answerContent[3]);
-				if (answerContent[4].equals(" "))
 					tf_Answer5.setText("");
-				else
-					tf_Answer5.setText(answerContent[4]);
-			
-				String answer = problem.answer();
-				for (int i = 0; i < answer.length(); i++) {
-					char num = answer.charAt(i);
-					if (num == '1')
-						cb_1.setSelected(true);
-					if (num == '2')
-						cb_2.setSelected(true);
-					if (num == '3')
-						cb_3.setSelected(true);
-					if (num == '4')
-						cb_4.setSelected(true);
-					if (num == '5')
-						cb_5.setSelected(true);
+
+					cb_1.setSelected(false);
+					cb_2.setSelected(false);
+					cb_3.setSelected(false);
+					cb_4.setSelected(false);
+					cb_5.setSelected(false);
 				}
+
 			} else {
+				ta_Question.setText("");
+
 				tf_Answer1.setText("");
 				tf_Answer2.setText("");
 				tf_Answer3.setText("");
@@ -95,89 +113,82 @@ public class NewWorkBook_MultipleChoiceController extends newWorkBook_Base imple
 				cb_5.setSelected(false);
 			}
 
-		} else {
-			ta_Question.setText("");
+			tf_ChangeName.setText(workBook.W_name());
 
-			tf_Answer1.setText("");
-			tf_Answer2.setText("");
-			tf_Answer3.setText("");
-			tf_Answer4.setText("");
-			tf_Answer5.setText("");
+			btn = new Button[] { btn_num1, btn_num2, btn_num3, btn_num4, btn_num5, btn_num6, btn_num7, btn_num8,
+					btn_num9, btn_num10, btn_num11, btn_num12, btn_num13, btn_num14, btn_num15 };
 
-			cb_1.setSelected(false);
-			cb_2.setSelected(false);
-			cb_3.setSelected(false);
-			cb_4.setSelected(false);
-			cb_5.setSelected(false);
+			if (PB_num == workBookSize) {
+				for (int i = 0; i < workBookSize; i++) {
+					btn[i].setStyle("-fx-background-color: #5ad18f;");
+					btn[i].setDisable(false);
+				}
+				for (int i = workBookSize; i < 15; i++) {
+					btn[i].setStyle("-fx-background-color: #f0fff0;");
+					btn[i].setDisable(true);
+				}
+				btn[PB_num].setStyle("-fx-background-color: #22941C;");
+				btn[PB_num].setDisable(false);
+			} else {
+				for (int i = 0; i < workBookSize + 1; i++) {
+					btn[i].setStyle("-fx-background-color: #5ad18f;");
+					btn[i].setDisable(false);
+				}
+				for (int i = workBookSize + 1; i < 15; i++) {
+					btn[i].setStyle("-fx-background-color: #f0fff0;");
+					btn[i].setDisable(true);
+				}
+				btn[PB_num].setStyle("-fx-background-color: #22941C;");
+				btn[PB_num].setDisable(false);
+
+			}
+			// setting
+
+			// radiobtn
+			ToggleGroup group = new ToggleGroup();
+			rbtn_MultipleChoice.setToggleGroup(group);
+			rbtn_ShortAnswer.setToggleGroup(group);
+			rbtn_Subjective.setToggleGroup(group);
+
+			rbtn_MultipleChoice.setSelected(true);
+			rbtn_ShortAnswer.setSelected(false);
+			rbtn_Subjective.setSelected(false);
+
+			rbtn_ShortAnswer.setOnAction((ActionEvent) -> {
+				try {
+					Stage primaryStage = (Stage) rbtn_ShortAnswer.getScene().getWindow();
+					Parent main = FXMLLoader.load(getClass().getResource("/gui/NewWorkBook_ShortAnswer.fxml"));
+					Scene scene = new Scene(main);
+					primaryStage.setTitle("GuessWhat/WorkBook");
+					primaryStage.setScene(scene);
+					primaryStage.show();
+				} catch (Exception e) {
+					System.out.println("NewWorkBook : " + e.getMessage());
+					new Alert(AlertType.WARNING, "서버와 연결이 끊겼습니다.", ButtonType.CLOSE).showAndWait();
+					Platform.exit();
+				}
+			});
+			rbtn_Subjective.setOnAction((ActionEvent) -> {
+				try {
+					Stage primaryStage = (Stage) rbtn_Subjective.getScene().getWindow();
+					Parent main = FXMLLoader.load(getClass().getResource("/gui/NewWorkBook_Subjective.fxml"));
+					Scene scene = new Scene(main);
+					primaryStage.setTitle("GuessWhat/WorkBookList");
+					primaryStage.setScene(scene);
+					primaryStage.show();
+				} catch (Exception e) {
+					System.out.println("NewWorkBook : " + e.getMessage());
+					new Alert(AlertType.WARNING, "서버와 연결이 끊겼습니다.", ButtonType.CLOSE).showAndWait();
+					Platform.exit();
+				}
+			});
+			// radiobtn
+
+		} catch (Exception e) {
+			System.out.println("NewWorkBook : " + e.getMessage());
+			new Alert(AlertType.WARNING, "서버와 연결이 끊겼습니다.", ButtonType.CLOSE).showAndWait();
+			Platform.exit();
 		}
-
-		tf_ChangeName.setText(workBook.W_name());
-
-		btn = new Button[] { btn_num1, btn_num2, btn_num3, btn_num4, btn_num5, btn_num6, btn_num7, btn_num8, btn_num9,
-				btn_num10, btn_num11, btn_num12, btn_num13, btn_num14, btn_num15 };
-
-		if (PB_num == workBookSize) {
-			for (int i = 0; i < workBookSize; i++) {
-				btn[i].setStyle("-fx-background-color: #5ad18f;");
-				btn[i].setDisable(false);
-			}
-			for (int i = workBookSize; i < 15; i++) {
-				btn[i].setStyle("-fx-background-color: #f0fff0;");
-				btn[i].setDisable(true);
-			}
-			btn[PB_num].setStyle("-fx-background-color: #22941C;");
-			btn[PB_num].setDisable(false);
-		} else {
-			for (int i = 0; i < workBookSize + 1; i++) {
-				btn[i].setStyle("-fx-background-color: #5ad18f;");
-				btn[i].setDisable(false);
-			}
-			for (int i = workBookSize + 1; i < 15; i++) {
-				btn[i].setStyle("-fx-background-color: #f0fff0;");
-				btn[i].setDisable(true);
-			}
-			btn[PB_num].setStyle("-fx-background-color: #22941C;");
-			btn[PB_num].setDisable(false);
-
-		}
-		// setting
-
-		// radiobtn
-		ToggleGroup group = new ToggleGroup();
-		rbtn_MultipleChoice.setToggleGroup(group);
-		rbtn_ShortAnswer.setToggleGroup(group);
-		rbtn_Subjective.setToggleGroup(group);
-
-		rbtn_MultipleChoice.setSelected(true);
-		rbtn_ShortAnswer.setSelected(false);
-		rbtn_Subjective.setSelected(false);
-
-		rbtn_ShortAnswer.setOnAction((ActionEvent) -> {
-			try {
-				Stage primaryStage = (Stage) rbtn_ShortAnswer.getScene().getWindow();
-				Parent main = FXMLLoader.load(getClass().getResource("/gui/NewWorkBook_ShortAnswer.fxml"));
-				Scene scene = new Scene(main);
-				primaryStage.setTitle("GuessWhat/WorkBook");
-				primaryStage.setScene(scene);
-				primaryStage.show();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		});
-		rbtn_Subjective.setOnAction((ActionEvent) -> {
-			try {
-				Stage primaryStage = (Stage) rbtn_Subjective.getScene().getWindow();
-				Parent main = FXMLLoader.load(getClass().getResource("/gui/NewWorkBook_Subjective.fxml"));
-				Scene scene = new Scene(main);
-				primaryStage.setTitle("GuessWhat/WorkBookList");
-				primaryStage.setScene(scene);
-				primaryStage.show();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		});
-		// radiobtn
-
 	}
 
 	private String S_answerContent;
@@ -186,7 +197,7 @@ public class NewWorkBook_MultipleChoiceController extends newWorkBook_Base imple
 	private String S_answer;
 
 	@Override
-	public boolean isValueChange() {
+	public boolean isValueChange() throws Exception {
 		if (problem.getType().equals(ProblemType.MultipleChoice) && problem.question().equals(ta_Question.getText())
 				&& problem.answer().equals(S_answer) && problem.getAnswerContent().equals(S_answerContent)) {
 			return false;
@@ -202,7 +213,7 @@ public class NewWorkBook_MultipleChoiceController extends newWorkBook_Base imple
 	}
 
 	@Override
-	public boolean IsNotEmpty() {
+	public boolean IsNotEmpty() throws Exception{
 
 		S_question = ta_Question.getText();
 		S_answerContent = "";
@@ -243,22 +254,18 @@ public class NewWorkBook_MultipleChoiceController extends newWorkBook_Base imple
 		}
 	}
 
-	public boolean savePro() {
+	public boolean savePro() throws Exception{
 
 		if (IsNotEmpty()) {
-
 			if (PB_num < workBookSize) { // 수정
 				if (!isValueChange())
 					return false;
 				else { // 변화가 있음
-
 					ProfessorDataModel.problem.setType(ProblemType.MultipleChoice);
 					ProfessorDataModel.problem.setAnswer(S_answer);
 					ProfessorDataModel.problem.setQuestion(S_question);
 					ProfessorDataModel.problem.setAnswerContent(S_answerContent);
-
 					ProfessorDataModel.problemList[PB_num] = ProfessorDataModel.problem;
-
 					return true;
 				}
 			}
@@ -268,9 +275,7 @@ public class NewWorkBook_MultipleChoiceController extends newWorkBook_Base imple
 			ProfessorDataModel.problem.setAnswer(S_answer);
 			ProfessorDataModel.problem.setQuestion(S_question);
 			ProfessorDataModel.problem.setAnswerContent(S_answerContent);
-
 			ProfessorDataModel.problemList[PB_num] = ProfessorDataModel.problem;
-
 			return true;
 		}
 		return false;

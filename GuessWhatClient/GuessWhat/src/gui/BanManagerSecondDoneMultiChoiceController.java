@@ -9,18 +9,14 @@ import java.net.Socket;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.Map;
 import java.util.Optional;
 import java.util.ResourceBundle;
-
-import com.mysql.cj.x.protobuf.MysqlxDatatypes.Array;
 
 import exam.Problem;
 import exam.ProblemType;
 import exam.Workbook;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -35,11 +31,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
-import model.HBoxModel;
 import model.ProfessorDataModel;
-import model.StudentDataModel;
 import room.Ban;
 import room.BanManager;
 import user.Student;
@@ -75,77 +68,81 @@ public class BanManagerSecondDoneMultiChoiceController implements Initializable 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// TODO Auto-generated method stub
+		try {
 
-		this.socket = ProfessorDataModel.socket;
-		this.problemList = ProfessorDataModel.problemList;
-		this.ban = ProfessorDataModel.ban;
-		this.banManager = ProfessorDataModel.banManager;
-		this.workbook = ProfessorDataModel.workbook;
-		this.WorkBookSize = workbook.WorkBooksize();
-		this.ip_student = ProfessorDataModel.ip_student;
+			this.socket = ProfessorDataModel.socket;
+			this.problemList = ProfessorDataModel.problemList;
+			this.ban = ProfessorDataModel.ban;
+			this.banManager = ProfessorDataModel.banManager;
+			this.workbook = ProfessorDataModel.workbook;
+			this.WorkBookSize = workbook.WorkBooksize();
+			this.ip_student = ProfessorDataModel.ip_student;
 
-		this.btn_Main.setText(ban.ban_name());
-		this.lb_BanManagerName.setText(banManager.BM_name());
-		this.lb_WorkBook.setText(workbook.W_name());
-		PB_num = ProfessorDataModel.currentPB;
+			this.btn_Main.setText(ban.ban_name());
+			this.lb_BanManagerName.setText(banManager.BM_name());
+			this.lb_WorkBook.setText(workbook.W_name());
+			PB_num = ProfessorDataModel.currentPB;
 
-		btn = new Button[] { btn_num1, btn_num2, btn_num3, btn_num4, btn_num5, btn_num6, btn_num7, btn_num8, btn_num9,
-				btn_num10, btn_num11, btn_num12, btn_num13, btn_num14, btn_num15 };
+			btn = new Button[] { btn_num1, btn_num2, btn_num3, btn_num4, btn_num5, btn_num6, btn_num7, btn_num8,
+					btn_num9, btn_num10, btn_num11, btn_num12, btn_num13, btn_num14, btn_num15 };
 
-		className = btn_Main.getText();
+			className = btn_Main.getText();
 
-		list = new ArrayList<>();
-		Iterator<Student> e = ip_student.iterator();
-		while (e.hasNext()) {
-			Student stu = e.next();
-			list.add(new StuNum(stu.name(), stu.answer()[PB_num], stu.result()[PB_num]));
-		}
-		this.StudentSize = list.size();
+			list = new ArrayList<>();
+			Iterator<Student> e = ip_student.iterator();
+			while (e.hasNext()) {
+				Student stu = e.next();
+				list.add(new StuNum(stu.name(), stu.answer()[PB_num], stu.result()[PB_num]));
+			}
+			this.StudentSize = list.size();
 
-		settingPie(pieValue());
+			settingPie(pieValue());
 
-		for (int i = 0; i < WorkBookSize; i++) {
-			btn[i].setStyle("-fx-background-color: #5ad18f;");
-			btn[i].setDisable(false);
-		}
-		btn[PB_num].setStyle("-fx-background-color: #22941C;");
-		for (int i = WorkBookSize; i < 15; i++) {
-			btn[i].setStyle("-fx-background-color: #cdcdcd;");
-			btn[i].setDisable(true);
+			for (int i = 0; i < WorkBookSize; i++) {
+				btn[i].setStyle("-fx-background-color: #5ad18f;");
+				btn[i].setDisable(false);
+			}
+			btn[PB_num].setStyle("-fx-background-color: #22941C;");
+			for (int i = WorkBookSize; i < 15; i++) {
+				btn[i].setStyle("-fx-background-color: #cdcdcd;");
+				btn[i].setDisable(true);
+			}
+
+		} catch (Exception e) {
+			System.out.println("BanManagerSecondDone : " + e.getMessage());
+			new Alert(AlertType.WARNING, "서버와 연결이 끊겼습니다.", ButtonType.CLOSE).showAndWait();
+			Platform.exit();
 		}
 	}
 
 	private void changeNum() {
-		PB_num = ProfessorDataModel.currentPB;
-
-		ProblemType p = problemList[PB_num].getType();
-		if (!p.equals(ProblemType.MultipleChoice)) {
-			try {
+		try {
+			PB_num = ProfessorDataModel.currentPB;
+			ProblemType p = problemList[PB_num].getType();
+			if (!p.equals(ProblemType.MultipleChoice)) {
 				Stage primaryStage = (Stage) btn_Main.getScene().getWindow();
 				Parent main = FXMLLoader.load(getClass().getResource("/gui/BanManagerSecondDone.fxml"));
 				Scene scene = new Scene(main);
 				primaryStage.setTitle("GuessWhat/Workbook");
 				primaryStage.setScene(scene);
 				primaryStage.show();
-			} catch (Exception a) {
-				a.printStackTrace();
-			}
-		} else if (p.equals(ProblemType.MultipleChoice)) {
-			try {
+
+			} else if (p.equals(ProblemType.MultipleChoice)) {
 				Stage primaryStage = (Stage) btn_Main.getScene().getWindow();
 				Parent main = FXMLLoader.load(getClass().getResource("/gui/BanManagerSecondDoneMultiChoice.fxml"));
 				Scene scene = new Scene(main);
 				primaryStage.setTitle("GuessWhat/Workbook");
 				primaryStage.setScene(scene);
 				primaryStage.show();
-			} catch (Exception a) {
-				a.printStackTrace();
 			}
+		} catch (Exception e) {
+			System.out.println("BanManagerSecondDone : " + e.getMessage());
+			new Alert(AlertType.WARNING, "서버와 연결이 끊겼습니다.", ButtonType.CLOSE).showAndWait();
+			Platform.exit();
 		}
-
 	}
 
-	private void settingPie(int[] value) {
+	private void settingPie(int[] value) throws Exception {
 		this.Pie = FXCollections.observableArrayList();
 		for (int i = 0; i < 5; i++)
 			Pie.add(new PieChart.Data((i + 1) + "번", value[i]));
@@ -155,7 +152,7 @@ public class BanManagerSecondDoneMultiChoiceController implements Initializable 
 		pc_Result.setData(Pie);
 	}
 
-	private int[] pieValue() {
+	private int[] pieValue() throws Exception {
 		int[] value = new int[6];
 		int correct = 0;
 		Iterator<StuNum> e = list.iterator();
@@ -197,7 +194,9 @@ public class BanManagerSecondDoneMultiChoiceController implements Initializable 
 			primaryStage.setScene(scene);
 			primaryStage.show();
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println("BanManagerSecondDone : " + e.getMessage());
+			new Alert(AlertType.WARNING, "서버와 연결이 끊겼습니다.", ButtonType.CLOSE).showAndWait();
+			Platform.exit();
 		}
 	}
 
@@ -210,19 +209,20 @@ public class BanManagerSecondDoneMultiChoiceController implements Initializable 
 			primaryStage.setScene(scene);
 			primaryStage.show();
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println("BanManagerSecondDone : " + e.getMessage());
+			new Alert(AlertType.WARNING, "서버와 연결이 끊겼습니다.", ButtonType.CLOSE).showAndWait();
+			Platform.exit();
 		}
 	}
 
 	public void btn_Delete_Action() {
-		Alert alert = new Alert(AlertType.WARNING, "(TestRoom) " + banManager.BM_name() + "을(를) 정말로 삭제하시겠습니까?",
-				ButtonType.YES, ButtonType.NO);
-		Optional<ButtonType> result = alert.showAndWait();
+		try {
+			Alert alert = new Alert(AlertType.WARNING, "(TestRoom) " + banManager.BM_name() + "을(를) 정말로 삭제하시겠습니까?",
+					ButtonType.YES, ButtonType.NO);
+			Optional<ButtonType> result = alert.showAndWait();
 
-		if (result.get() == ButtonType.YES) {
-
-			String responseMessage = null;
-			try {
+			if (result.get() == ButtonType.YES) {
+				String responseMessage = null;
 				String requestMessage = "DeleteBanManager:" + this.banManager.P_num() + ":" + this.banManager.ban_num()
 						+ ":" + this.banManager.BM_num();
 				BufferedReader reader = new BufferedReader(
@@ -232,35 +232,30 @@ public class BanManagerSecondDoneMultiChoiceController implements Initializable 
 				writer.println(requestMessage);
 				writer.flush();
 				responseMessage = reader.readLine();
-			} catch (IOException e1) {
-				e1.printStackTrace();
-			}
-			String[] responseTokens = responseMessage.split(":");
+				String[] responseTokens = responseMessage.split(":");
 
-			if (responseTokens[0].equals("DeleteBanManager")) {
-				if (!responseTokens[1].equals("Success")) {
-					System.out.println("Fail : DeleteBanManager");
-				} else {
-					System.out.println("[Delete] BM: " + this.banManager.BM_name());
-
-					try {
+				if (responseTokens[0].equals("DeleteBanManager")) {
+					if (!responseTokens[1].equals("Success")) {
+						System.out.println("Fail : DeleteBanManager");
+					} else {
+						System.out.println("[Delete] BM: " + this.banManager.BM_name());
 						Stage primaryStage = (Stage) btn_Close.getScene().getWindow();
 						Parent main = FXMLLoader.load(getClass().getResource("/gui/Ban.fxml"));
 						Scene scene = new Scene(main);
 						primaryStage.setTitle("GuessWhat/" + className);
 						primaryStage.setScene(scene);
 						primaryStage.show();
-					} catch (Exception e) {
-						e.printStackTrace();
 					}
 				}
 			}
-
+		} catch (Exception e) {
+			System.out.println("BanManagerSecondDone : " + e.getMessage());
+			new Alert(AlertType.WARNING, "서버와 연결이 끊겼습니다.", ButtonType.CLOSE).showAndWait();
+			Platform.exit();
 		}
 	}
 
 	public void btn_Previous_Action() {
-
 		try {
 			Stage primaryStage = (Stage) btn_Previous.getScene().getWindow();
 			Parent main = FXMLLoader.load(getClass().getResource("/gui/BanManagerFirstDone.fxml"));
@@ -269,7 +264,9 @@ public class BanManagerSecondDoneMultiChoiceController implements Initializable 
 			primaryStage.setScene(scene);
 			primaryStage.show();
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println("BanManagerSecondDone : " + e.getMessage());
+			new Alert(AlertType.WARNING, "서버와 연결이 끊겼습니다.", ButtonType.CLOSE).showAndWait();
+			Platform.exit();
 		}
 	}
 
@@ -357,9 +354,10 @@ public class BanManagerSecondDoneMultiChoiceController implements Initializable 
 			primaryStage.setScene(scene);
 			primaryStage.show();
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println("BanManagerSecondDone : " + e.getMessage());
+			new Alert(AlertType.WARNING, "서버와 연결이 끊겼습니다.", ButtonType.CLOSE).showAndWait();
+			Platform.exit();
 		}
-
 	}
 
 	public void btn_MyInfo_Action() {
@@ -371,7 +369,9 @@ public class BanManagerSecondDoneMultiChoiceController implements Initializable 
 			primaryStage.setScene(scene);
 			primaryStage.show();
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println("BanManagerSecondDone : " + e.getMessage());
+			new Alert(AlertType.WARNING, "서버와 연결이 끊겼습니다.", ButtonType.CLOSE).showAndWait();
+			Platform.exit();
 		}
 	}
 

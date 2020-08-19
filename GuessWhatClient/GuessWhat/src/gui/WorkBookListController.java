@@ -15,6 +15,7 @@ import java.util.ResourceBundle;
 import exam.Problem;
 import exam.Workbook;
 import exam.Workbook.HBoxCell;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -46,18 +47,27 @@ public class WorkBookListController implements Initializable {
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// TODO Auto-generated method stub
-		this.socket = ProfessorDataModel.socket;
-		this.professor = ProfessorDataModel.professor;
 
-		this.showWorkbookList(this.professor.P_Num());
+		try {
+			this.socket = ProfessorDataModel.socket;
+			this.professor = ProfessorDataModel.professor;
 
-		lv_WorkBookList.setItems(ProfessorDataModel.ItemList_MyWorkBook);
+			this.showWorkbookList(this.professor.P_Num());
+
+			lv_WorkBookList.setItems(ProfessorDataModel.ItemList_MyWorkBook);
+
+		} catch (Exception e) {
+			System.out.println("WorkBookList : " + e.getMessage());
+			new Alert(AlertType.WARNING, "서버와 연결이 끊겼습니다.", ButtonType.CLOSE).showAndWait();
+			Platform.exit();
+		}
 	}
 
-	private void showWorkbookList(int PNum) {
-		ProfessorDataModel.ItemList_MyWorkBook.clear();
-		String responseMessage = null;
-		try {
+	private void showWorkbookList(int PNum) throws Exception {
+		
+			ProfessorDataModel.ItemList_MyWorkBook.clear();
+			String responseMessage = null;
+
 			String requestMessage = "GetAllWorkbook:" + PNum; // -> GetAllWorkbook:PNum
 			BufferedReader reader = new BufferedReader(
 					new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
@@ -66,47 +76,48 @@ public class WorkBookListController implements Initializable {
 			writer.println(requestMessage);
 			writer.flush();
 			responseMessage = reader.readLine();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		String[] responseTokens = responseMessage.split(":");
-		if (responseTokens[0].equals("GetAllWorkbook")) {
-			if (!responseTokens[1].equals("Success")) {
-				System.out.println("Fail : GetAllWorkbook");
-			} else {
-				int n = 1;
-				for (int i = 2; i < responseTokens.length; i++) { // <- GetAllWorkbook:Success:WNum:Name:Size
-					int WBNum = Integer.parseInt(responseTokens[i]);
-					String name = responseTokens[i + 1];
-					int size = Integer.parseInt(responseTokens[i + 2]);
 
-					Workbook newWorkbook = new Workbook(PNum, WBNum, name, size);
-					ProfessorDataModel.addWorkBook(n, newWorkbook);
-					i = i + 2;
-					n++;
+			String[] responseTokens = responseMessage.split(":");
+			if (responseTokens[0].equals("GetAllWorkbook")) {
+				if (!responseTokens[1].equals("Success")) {
+					System.out.println("Fail : GetAllWorkbook");
+				} else {
+					int n = 1;
+					for (int i = 2; i < responseTokens.length; i++) { // <- GetAllWorkbook:Success:WNum:Name:Size
+						int WBNum = Integer.parseInt(responseTokens[i]);
+						String name = responseTokens[i + 1];
+						int size = Integer.parseInt(responseTokens[i + 2]);
+
+						Workbook newWorkbook = new Workbook(PNum, WBNum, name, size);
+						ProfessorDataModel.addWorkBook(n, newWorkbook);
+						i = i + 2;
+						n++;
+					}
+					lv_WorkBookList.setItems(ProfessorDataModel.ItemList_MyWorkBook);
 				}
-				lv_WorkBookList.setItems(ProfessorDataModel.ItemList_MyWorkBook);
 			}
-		}
 	}
 
 	public void btn_CreateNewWorkBook_Action() {
 
-		ProfessorDataModel.workbook = new Workbook();
-		ProfessorDataModel.workbook.setName("NewWorkbook " + ProfessorDataModel.ItemList_MyWorkBook.size());
-		ProfessorDataModel.problem = new Problem(0);
-		ProfessorDataModel.problemList = new Problem[20];
-		ProfessorDataModel.currentPB = 0;
-
 		try {
+			ProfessorDataModel.workbook = new Workbook();
+			ProfessorDataModel.workbook.setName("NewWorkbook " + ProfessorDataModel.ItemList_MyWorkBook.size());
+			ProfessorDataModel.problem = new Problem(0);
+			ProfessorDataModel.problemList = new Problem[20];
+			ProfessorDataModel.currentPB = 0;
+
 			Stage primaryStage = (Stage) btn_CreateNewWorkBook.getScene().getWindow();
 			Parent main = FXMLLoader.load(getClass().getResource("/gui/NewWorkBook_MultipleChoice.fxml"));
 			Scene scene = new Scene(main);
 			primaryStage.setTitle("GuessWhat/WorkBook");
 			primaryStage.setScene(scene);
 			primaryStage.show();
+
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println("WorkBookList : " + e.getMessage());
+			new Alert(AlertType.WARNING, "서버와 연결이 끊겼습니다.", ButtonType.CLOSE).showAndWait();
+			Platform.exit();
 		}
 	}
 
@@ -119,7 +130,9 @@ public class WorkBookListController implements Initializable {
 			primaryStage.setScene(scene);
 			primaryStage.show();
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println("WorkBookList : " + e.getMessage());
+			new Alert(AlertType.WARNING, "서버와 연결이 끊겼습니다.", ButtonType.CLOSE).showAndWait();
+			Platform.exit();
 		}
 	}
 
@@ -132,7 +145,9 @@ public class WorkBookListController implements Initializable {
 			primaryStage.setScene(scene);
 			primaryStage.show();
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println("WorkBookList : " + e.getMessage());
+			new Alert(AlertType.WARNING, "서버와 연결이 끊겼습니다.", ButtonType.CLOSE).showAndWait();
+			Platform.exit();
 		}
 	}
 
@@ -145,7 +160,9 @@ public class WorkBookListController implements Initializable {
 			primaryStage.setScene(scene);
 			primaryStage.show();
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println("WorkBookList : " + e.getMessage());
+			new Alert(AlertType.WARNING, "서버와 연결이 끊겼습니다.", ButtonType.CLOSE);
+			Platform.exit();
 		}
 	}
 

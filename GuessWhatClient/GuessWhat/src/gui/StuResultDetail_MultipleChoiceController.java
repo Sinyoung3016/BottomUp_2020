@@ -1,19 +1,12 @@
 package gui;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
-import java.util.Optional;
 import java.util.ResourceBundle;
 
 import exam.Problem;
 import exam.ProblemType;
-import exam.Workbook;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -51,91 +44,98 @@ public class StuResultDetail_MultipleChoiceController implements Initializable {
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// TODO Auto-generated method stub
-		this.socket = StudentDataModel.socket;
-		this.PB_num = StudentDataModel.currentPB;
-		this.problemList = StudentDataModel.problemList;
-		this.student = StudentDataModel.student;
-		this.problem = problemList[PB_num];
-		this.workBookSize = StudentDataModel.workbook.WorkBooksize();
+		try {
+			this.socket = StudentDataModel.socket;
+			this.PB_num = StudentDataModel.currentPB;
+			this.problemList = StudentDataModel.problemList;
+			this.student = StudentDataModel.student;
+			this.problem = problemList[PB_num];
+			this.workBookSize = StudentDataModel.workbook.WorkBooksize();
 
-		// setting
-		btn = new Button[] { btn_num1, btn_num2, btn_num3, btn_num4, btn_num5, btn_num6, btn_num7, btn_num8, btn_num9,
-				btn_num10, btn_num11, btn_num12, btn_num13, btn_num14, btn_num15 };
+			// setting
+			btn = new Button[] { btn_num1, btn_num2, btn_num3, btn_num4, btn_num5, btn_num6, btn_num7, btn_num8,
+					btn_num9, btn_num10, btn_num11, btn_num12, btn_num13, btn_num14, btn_num15 };
 
-		String[] result = this.student.result();
-		int[] value = new int[3];
+			String[] result = this.student.result();
+			int[] value = new int[3];
 
-		for (int i = 0; i < workBookSize; i++) {
-			if (result[i].equals("O"))
-				btn[i].setStyle("-fx-background-color: #5ad18f;");
-			else if (result[i].equals("X"))
-				btn[i].setStyle("-fx-background-color: #ff848f;");
-			else if (result[i].equals("N"))
-				btn[i].setStyle("-fx-background-color: #ffcd28;");
+			for (int i = 0; i < workBookSize; i++) {
+				if (result[i].equals("O"))
+					btn[i].setStyle("-fx-background-color: #5ad18f;");
+				else if (result[i].equals("X"))
+					btn[i].setStyle("-fx-background-color: #ff848f;");
+				else if (result[i].equals("N"))
+					btn[i].setStyle("-fx-background-color: #ffcd28;");
 
-			btn[i].setDisable(false);
-		}
-		for (int i = workBookSize; i < 15; i++) {
-			btn[i].setStyle("-fx-background-color: #dcdcdc;");
-			btn[i].setDisable(true);
-		}
-
-		// setting
-
-		btn[PB_num].setStyle("-fx-background-color: #22941C;");
-		lb_Question.setText(this.problem.question());
-		String T_answer = this.problem.answer();
-		String S_answer = this.student.answer()[PB_num];
-
-		cb = new CheckBox[] { cb_1, cb_2, cb_3, cb_4, cb_5 };
-		for (int i = 0; i < 5; i++)// text setting
-			cb[i].setText(problem.getAnswerContentList()[i]);
-
-		if (S_answer == null) {
-			for (int i = 0; i < T_answer.length(); i++) {// 선생답
-				int a = T_answer.charAt(i) - '0';
-				cb[a - 1].setStyle("-fx-background-color: #5ad18f;");
+				btn[i].setDisable(false);
 			}
-		} else {
-			for (int i = 0; i < S_answer.length(); i++) {// 학생답
-				int a = S_answer.charAt(i) - '0';
-				cb[a - 1].setSelected(true);
-				cb[a - 1].setStyle("-fx-background-color: #ff848f;");
+			for (int i = workBookSize; i < 15; i++) {
+				btn[i].setStyle("-fx-background-color: #dcdcdc;");
+				btn[i].setDisable(true);
 			}
 
-			for (int i = 0; i < T_answer.length(); i++) {// 선생답
-				int a = T_answer.charAt(i) - '0';
-				cb[a - 1].setStyle("-fx-background-color: #5ad18f;");
+			// setting
+
+			btn[PB_num].setStyle("-fx-background-color: #22941C;");
+			lb_Question.setText(this.problem.question());
+			String T_answer = this.problem.answer();
+			String S_answer = this.student.answer()[PB_num];
+
+			cb = new CheckBox[] { cb_1, cb_2, cb_3, cb_4, cb_5 };
+			for (int i = 0; i < 5; i++)// text setting
+				cb[i].setText(problem.getAnswerContentList()[i]);
+
+			if (S_answer == null) {
+				for (int i = 0; i < T_answer.length(); i++) {// 선생답
+					int a = T_answer.charAt(i) - '0';
+					cb[a - 1].setStyle("-fx-background-color: #5ad18f;");
+				}
+			} else {
+				for (int i = 0; i < S_answer.length(); i++) {// 학생답
+					int a = S_answer.charAt(i) - '0';
+					cb[a - 1].setSelected(true);
+					cb[a - 1].setStyle("-fx-background-color: #ff848f;");
+				}
+
+				for (int i = 0; i < T_answer.length(); i++) {// 선생답
+					int a = T_answer.charAt(i) - '0';
+					cb[a - 1].setStyle("-fx-background-color: #5ad18f;");
+				}
 			}
+		} catch (Exception e) {
+			System.out.println("StuResultDetail : " + e.getMessage());
+			new Alert(AlertType.WARNING, "서버와 연결이 끊겼습니다.", ButtonType.CLOSE).showAndWait();
+			Platform.exit();
 		}
 	}
 
 	private void changeProblem() {
-		PB_num = StudentDataModel.currentPB;
-		StudentDataModel.problem = problemList[PB_num];
-		ProblemType p = StudentDataModel.problem.getType();
-		if (p.equals(ProblemType.MultipleChoice)) {
-			try {
+		try {
+			PB_num = StudentDataModel.currentPB;
+			StudentDataModel.problem = problemList[PB_num];
+			ProblemType p = StudentDataModel.problem.getType();
+			if (p.equals(ProblemType.MultipleChoice)) {
+
 				Stage primaryStage = (Stage) btn_Close.getScene().getWindow();
 				Parent main = FXMLLoader.load(getClass().getResource("/gui/StuResultDetail_MultipleChoice.fxml"));
 				Scene scene = new Scene(main);
 				primaryStage.setTitle("GuessWhat/Workbook");
 				primaryStage.setScene(scene);
 				primaryStage.show();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		} else if (!p.equals(ProblemType.MultipleChoice)) {
-			try {
+
+			} else if (!p.equals(ProblemType.MultipleChoice)) {
+
 				Stage primaryStage = (Stage) btn_Close.getScene().getWindow();
 				Parent main = FXMLLoader.load(getClass().getResource("/gui/StuResultDetail.fxml"));
 				Scene scene = new Scene(main);
 				primaryStage.setTitle("GuessWhat/Workbook");
 				primaryStage.setScene(scene);
 				primaryStage.show();
-			} catch (Exception e) {
-				e.printStackTrace();
 			}
+		} catch (Exception e) {
+			System.out.println("StuResultDetail : " + e.getMessage());
+			new Alert(AlertType.WARNING, "서버와 연결이 끊겼습니다.", ButtonType.CLOSE).showAndWait();
+			Platform.exit();
 		}
 	}
 
@@ -148,7 +148,9 @@ public class StuResultDetail_MultipleChoiceController implements Initializable {
 			primaryStage.setScene(scene);
 			primaryStage.show();
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println("StuResultDetail : " + e.getMessage());
+			new Alert(AlertType.WARNING, "서버와 연결이 끊겼습니다.", ButtonType.CLOSE).showAndWait();
+			Platform.exit();
 		}
 	}
 

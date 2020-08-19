@@ -13,6 +13,7 @@ import java.util.ResourceBundle;
 
 import exam.Problem;
 import exam.ProblemType;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -51,43 +52,49 @@ public class StuWorkBookController implements Initializable {
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 
-		this.socket = StudentDataModel.socket;
-		this.problem = StudentDataModel.problem;
-		this.student = StudentDataModel.student;
-		this.hasAnswer = StudentDataModel.hasAnswer;
-		this.problemList = StudentDataModel.problemList;
-		this.workBookSize = StudentDataModel.workbook.WorkBooksize();
-		this.PB_num = StudentDataModel.currentPB;
+		try {
+			this.socket = StudentDataModel.socket;
+			this.problem = StudentDataModel.problem;
+			this.student = StudentDataModel.student;
+			this.hasAnswer = StudentDataModel.hasAnswer;
+			this.problemList = StudentDataModel.problemList;
+			this.workBookSize = StudentDataModel.workbook.WorkBooksize();
+			this.PB_num = StudentDataModel.currentPB;
 
-		// setting
-		btn = new Button[] { btn_num1, btn_num2, btn_num3, btn_num4, btn_num5, btn_num6, btn_num7, btn_num8, btn_num9,
-				btn_num10, btn_num11, btn_num12, btn_num13, btn_num14, btn_num15 };
+			// setting
+			btn = new Button[] { btn_num1, btn_num2, btn_num3, btn_num4, btn_num5, btn_num6, btn_num7, btn_num8,
+					btn_num9, btn_num10, btn_num11, btn_num12, btn_num13, btn_num14, btn_num15 };
 
-		for (int i = 0; i < workBookSize; i++) {
-			if (hasAnswer[i])
-				btn[i].setStyle("-fx-background-color: #54bd54;");
+			for (int i = 0; i < workBookSize; i++) {
+				if (hasAnswer[i])
+					btn[i].setStyle("-fx-background-color: #54bd54;");
+				else
+					btn[i].setStyle("-fx-background-color: #5ad18f;");
+
+				btn[i].setDisable(false);
+			}
+
+			btn[PB_num].setStyle("-fx-background-color: #22941C ;");
+			lb_Question.setText(problem.question());
+			if (hasAnswer[PB_num])
+				ta_Answer.setText(student.answer()[PB_num]);
 			else
-				btn[i].setStyle("-fx-background-color: #5ad18f;");
+				ta_Answer.setText("");
 
-			btn[i].setDisable(false);
+			for (int i = workBookSize; i < 15; i++) {
+				btn[i].setStyle("-fx-background-color: #dcdcdc;");
+				btn[i].setDisable(true);
+			}
+			// setting
+		} catch (Exception e) {
+			System.out.println("StuWorkBook : " + e.getMessage());
+			new Alert(AlertType.WARNING, "서버와 연결이 끊겼습니다.", ButtonType.CLOSE).showAndWait();
+			Platform.exit();
 		}
-
-		btn[PB_num].setStyle("-fx-background-color: #22941C ;");
-		lb_Question.setText(problem.question());
-		if (hasAnswer[PB_num])
-			ta_Answer.setText(student.answer()[PB_num]);
-		else
-			ta_Answer.setText("");
-
-		for (int i = workBookSize; i < 15; i++) {
-			btn[i].setStyle("-fx-background-color: #dcdcdc;");
-			btn[i].setDisable(true);
-		}
-		// setting
 
 	}
 
-	private void savePro() {
+	private void savePro() throws Exception {
 
 		String S_answer = ta_Answer.getText();
 		if (S_answer.equals("") || S_answer.equals(" ") || S_answer.equals(null) || S_answer == null) {
@@ -100,47 +107,59 @@ public class StuWorkBookController implements Initializable {
 	}
 
 	public void btn_Next_Action() {
-		if (!this.isIng()) {
-			btn_Submit_Action();
-		} else {
-			savePro();
-
-			if (workBookSize == StudentDataModel.currentPB + 1)
+		try {
+			if (!this.isIng()) {
 				btn_Submit_Action();
-			else {
-				StudentDataModel.currentPB = StudentDataModel.currentPB + 1;
-				changeProblem();
+			} else {
+				savePro();
+
+				if (workBookSize == StudentDataModel.currentPB + 1)
+					btn_Submit_Action();
+				else {
+					StudentDataModel.currentPB = StudentDataModel.currentPB + 1;
+					changeProblem();
+				}
 			}
+		} catch (Exception e) {
+			System.out.println("StuWorkBook : " + e.getMessage());
+			new Alert(AlertType.WARNING, "서버와 연결이 끊겼습니다.", ButtonType.CLOSE).showAndWait();
+			Platform.exit();
 		}
 
 	}
 
 	public void btn_Previous_Action() {
-		if (!this.isIng()) {
-			btn_Submit_Action();
-		} else {
-			savePro();
+		try {
+			if (!this.isIng()) {
+				btn_Submit_Action();
+			} else {
+				savePro();
 
-			if (0 == StudentDataModel.currentPB)
-				btn_num1_Action();
-			else {
-				StudentDataModel.currentPB = StudentDataModel.currentPB - 1;
-				changeProblem();
+				if (0 == StudentDataModel.currentPB)
+					btn_num1_Action();
+				else {
+					StudentDataModel.currentPB = StudentDataModel.currentPB - 1;
+					changeProblem();
+				}
 			}
+		} catch (Exception e) {
+			System.out.println("StuWorkBook : " + e.getMessage());
+			new Alert(AlertType.WARNING, "서버와 연결이 끊겼습니다.", ButtonType.CLOSE).showAndWait();
+			Platform.exit();
 		}
 
 	}
 
 	public void btn_Submit_Action() {
+		try {
+			Alert alert = new Alert(AlertType.CONFIRMATION, "제출하시겠습니까?", ButtonType.YES, ButtonType.NO);
+			Optional<ButtonType> result = alert.showAndWait();
+			if (result.get() == (ButtonType.YES)) {
 
-		Alert alert = new Alert(AlertType.CONFIRMATION, "제출하시겠습니까?", ButtonType.YES, ButtonType.NO);
-		Optional<ButtonType> result = alert.showAndWait();
-		if (result.get() == (ButtonType.YES)) {
+				this.savePro();
+				this.markAnswer(); // 체점하기
+				String responseMessage = null;
 
-			this.savePro();
-			this.markAnswer(); // 체점하기
-			String responseMessage = null;
-			try {
 				String requestTokens = "AddStudent:" + StudentDataModel.tokenStudentData() + ":"
 						+ this.student.tokenAnswer() + ":" + this.student.tokenResult();
 				BufferedReader br = new BufferedReader(
@@ -150,26 +169,26 @@ public class StuWorkBookController implements Initializable {
 				pw.println(requestTokens);
 				pw.flush();
 				responseMessage = br.readLine();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			String[] responseTokens = responseMessage.split(":");
-			if (responseTokens[0].equals("AddStudent")) {
-				if (!responseTokens[1].equals("Success")) {
-					System.out.println(responseTokens[1]);
-				} else {
-					try {
+
+				String[] responseTokens = responseMessage.split(":");
+				if (responseTokens[0].equals("AddStudent")) {
+					if (!responseTokens[1].equals("Success")) {
+						System.out.println(responseTokens[1]);
+					} else {
+
 						Stage primaryStage = (Stage) btn_Submit.getScene().getWindow();
 						Parent main = FXMLLoader.load(getClass().getResource("/gui/StuResult.fxml"));
 						Scene scene = new Scene(main);
 						primaryStage.setTitle("GuessWhat/Result");
 						primaryStage.setScene(scene);
 						primaryStage.show();
-					} catch (Exception e) {
-						e.printStackTrace();
 					}
 				}
 			}
+		} catch (Exception e) {
+			System.out.println("StuWorkBook : " + e.getMessage());
+			new Alert(AlertType.WARNING, "서버와 연결이 끊겼습니다.", ButtonType.CLOSE).showAndWait();
+			Platform.exit();
 		}
 	}
 
@@ -234,35 +253,36 @@ public class StuWorkBookController implements Initializable {
 	}
 
 	private void changeProblem() {
-		PB_num = StudentDataModel.currentPB;
-		StudentDataModel.problem = problemList[PB_num];
-		ProblemType p = StudentDataModel.problem.getType();
-		if (p.equals(ProblemType.MultipleChoice)) {
-			try {
+		try {
+			PB_num = StudentDataModel.currentPB;
+			StudentDataModel.problem = problemList[PB_num];
+			ProblemType p = StudentDataModel.problem.getType();
+			if (p.equals(ProblemType.MultipleChoice)) {
+
 				Stage primaryStage = (Stage) btn_Submit.getScene().getWindow();
 				Parent main = FXMLLoader.load(getClass().getResource("/gui/StuWorkBook_MultipleChoice.fxml"));
 				Scene scene = new Scene(main);
 				primaryStage.setTitle("GuessWhat/Workbook");
 				primaryStage.setScene(scene);
 				primaryStage.show();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		} else if (!p.equals(ProblemType.MultipleChoice)) {
-			try {
+
+			} else if (!p.equals(ProblemType.MultipleChoice)) {
+
 				Stage primaryStage = (Stage) btn_Submit.getScene().getWindow();
 				Parent main = FXMLLoader.load(getClass().getResource("/gui/StuWorkBook.fxml"));
 				Scene scene = new Scene(main);
 				primaryStage.setTitle("GuessWhat/Workbook");
 				primaryStage.setScene(scene);
 				primaryStage.show();
-			} catch (Exception e) {
-				e.printStackTrace();
 			}
+		} catch (Exception e) {
+			System.out.println("StuResultDetail : " + e.getMessage());
+			new Alert(AlertType.WARNING, "서버와 연결이 끊겼습니다.", ButtonType.CLOSE).showAndWait();
+			Platform.exit();
 		}
 	}
 
-	private void markAnswer() {
+	private void markAnswer() throws Exception {
 
 		String[] studentAnswer = this.student.answer;
 		String[] professorAnswer = this.getAnswerList();
@@ -294,67 +314,64 @@ public class StuWorkBookController implements Initializable {
 
 	}
 
-	private String[] getAnswerList() {
+	private String[] getAnswerList() throws Exception {
 		Problem[] problemList = StudentDataModel.problemList;
 		String[] answerList = new String[problemList.length];
 
 		for (int i = 0; i < answerList.length; i++) {
 			answerList[i] = problemList[i].answer();
 		}
-
 		return answerList;
-
 	}
 
-	private String[] getTypeList() {
+	private String[] getTypeList() throws Exception {
 		Problem[] problemList = StudentDataModel.problemList;
 		String[] typeList = new String[problemList.length];
 
 		for (int i = 0; i < typeList.length; i++) {
 			typeList[i] = problemList[i].getType().toString();
 		}
-
 		return typeList;
-
 	}
 
-	private boolean isIng() {
+	private boolean isIng() throws Exception {
 		String responseMessage = null;
-		try {
-			BufferedReader br = new BufferedReader(
-					new InputStreamReader(this.socket.getInputStream(), StandardCharsets.UTF_8));
-			PrintWriter pw = new PrintWriter(
-					new OutputStreamWriter(this.socket.getOutputStream(), StandardCharsets.UTF_8));
-			String requestMessage = "GetBanManagerState:" + StudentDataModel.banManager.BM_num();
-			pw.println(requestMessage);
-			pw.flush();
-			responseMessage = br.readLine();
-			String[] responseTokens = responseMessage.split(":");
-			// GetBanMnagerState:Success:BMState
-			if (responseTokens[0].equals("GetBanManagerState")) {
-				if (!responseTokens[1].equals("Success")) {
-					System.out.println(responseMessage);
-				} else {
-					if (responseTokens[2].equals("ING")) {
-						return true;
-					}
+
+		BufferedReader br = new BufferedReader(
+				new InputStreamReader(this.socket.getInputStream(), StandardCharsets.UTF_8));
+		PrintWriter pw = new PrintWriter(new OutputStreamWriter(this.socket.getOutputStream(), StandardCharsets.UTF_8));
+		String requestMessage = "GetBanManagerState:" + StudentDataModel.banManager.BM_num();
+		pw.println(requestMessage);
+		pw.flush();
+		responseMessage = br.readLine();
+		String[] responseTokens = responseMessage.split(":");
+		// GetBanMnagerState:Success:BMState
+		if (responseTokens[0].equals("GetBanManagerState")) {
+			if (!responseTokens[1].equals("Success")) {
+				System.out.println(responseMessage);
+			} else {
+				if (responseTokens[2].equals("ING")) {
+					return true;
 				}
 			}
-		} catch (Exception e) {
-			return false;
 		}
 		return false;
-
 	}
 
 	private void pressButton(int currentPB) {
-		if (!this.isIng()) {
-			new Alert(AlertType.CONFIRMATION, "제출되었습니다.", ButtonType.CLOSE).showAndWait();
-			this.btn_Submit_Action();
-		} else {
-			savePro();
-			StudentDataModel.currentPB = currentPB;
-			changeProblem();
+		try {
+			if (!this.isIng()) {
+				new Alert(AlertType.CONFIRMATION, "제출되었습니다.", ButtonType.CLOSE).showAndWait();
+				this.btn_Submit_Action();
+			} else {
+				savePro();
+				StudentDataModel.currentPB = currentPB;
+				changeProblem();
+			}
+		} catch (Exception e) {
+			System.out.println("StuWorkBook : " + e.getMessage());
+			new Alert(AlertType.WARNING, "서버와 연결이 끊겼습니다.", ButtonType.CLOSE).showAndWait();
+			Platform.exit();
 		}
 	}
 

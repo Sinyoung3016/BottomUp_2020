@@ -14,6 +14,7 @@ import java.util.ResourceBundle;
 import exam.Problem;
 import exam.ProblemType;
 import exam.Workbook;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -52,7 +53,7 @@ public class newWorkBook_Base {
 	public int workBookSize;
 	public boolean empty;
 
-	public String tokenProblemList(Problem[] problem, int wnum) {
+	public String tokenProblemList(Problem[] problem, int wnum) throws Exception {
 		StringBuilder sb = new StringBuilder("");
 		int n = 0;
 		while (problem[n] != null) {
@@ -67,67 +68,61 @@ public class newWorkBook_Base {
 	}
 
 	public void btn_DeleteWorkBook_Action() {
-		Alert alert = new Alert(AlertType.WARNING, "(Workbook) " + workBook.W_name() + "을(를) 정말로 삭제하시겠습니까?",
-				ButtonType.YES, ButtonType.NO);
-		Optional<ButtonType> result = alert.showAndWait();
+		try {
+			Alert alert = new Alert(AlertType.WARNING, "(Workbook) " + workBook.W_name() + "을(를) 정말로 삭제하시겠습니까?",
+					ButtonType.YES, ButtonType.NO);
+			Optional<ButtonType> result = alert.showAndWait();
 
-		if (result.get() == ButtonType.YES) {
+			if (result.get() == ButtonType.YES) {
+				ProfessorDataModel.workbook = null;
+				ProfessorDataModel.problemList = null;
+				ProfessorDataModel.problem = null;
 
-			ProfessorDataModel.workbook = null;
-			ProfessorDataModel.problemList = null;
-			ProfessorDataModel.problem = null;
-
-			try {
 				Stage primaryStage = (Stage) btn_DeleteWorkBook.getScene().getWindow();
 				Parent main = FXMLLoader.load(getClass().getResource("/gui/WorkBookList.fxml"));
 				Scene scene = new Scene(main);
 				primaryStage.setTitle("GuessWhat/WorkBookList");
 				primaryStage.setScene(scene);
 				primaryStage.show();
-			} catch (Exception e) {
-				e.printStackTrace();
 			}
+		} catch (Exception e) {
+			System.out.println("NewWorkBook : " + e.getMessage());
+			new Alert(AlertType.WARNING, "서버와 연결이 끊겼습니다.", ButtonType.CLOSE).showAndWait();
+			Platform.exit();
 		}
 	}
 
 	public void btn_SaveWorkBook_Action() {
+		try {
+			boolean canMakeWB = true;
+			for (int i = 0; i < workBookSize; i++) {
+				if (problemList[i] == null)
+					canMakeWB = false;
+			}
+			boolean emptyWorkbook = false;
+			if (workBookSize < 1) {
+				emptyWorkbook = true;
+			}
+			if (!canMakeWB || emptyWorkbook) {
+				System.out.println("  [Fail] Empty Workbook");
+				Alert alert = new Alert(AlertType.INFORMATION, "만들어진 문제가 없습니다.");
+				alert.setTitle("Check your problem");
+				alert.setHeaderText("Empty Workbook!");
+				alert.showAndWait();
 
-		boolean canMakeWB = true;
-		for (int i = 0; i < workBookSize; i++) {
-			if (problemList[i] == null)
-				canMakeWB = false;
-		}
-		boolean emptyWorkbook = false;
-		if (workBookSize < 1) {
-			emptyWorkbook = true;
-		}
-		if (!canMakeWB || emptyWorkbook) {
-			System.out.println("  [Fail] Empty Workbook");
-			Alert alert = new Alert(AlertType.INFORMATION, "만들어진 문제가 없습니다.");
-			alert.setTitle("Check your problem");
-			alert.setHeaderText("Empty Workbook!");
-			alert.showAndWait();
-			try {
 				Stage primaryStage = (Stage) btn_SaveWorkBook.getScene().getWindow();
 				Parent main = FXMLLoader.load(getClass().getResource("/gui/WorkBookList.fxml"));
 				Scene scene = new Scene(main);
 				primaryStage.setTitle("GuessWhat/WorkBookList");
 				primaryStage.setScene(scene);
 				primaryStage.show();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
+			} else {
+				// problemList db에 저장
+				// workbook db에 저장
+				this.workBook.setP_Num(ProfessorDataModel.professor.P_Num());
+				this.workBook.setName(ProfessorDataModel.workbook.W_name());
+				String responseMessage = null;
 
-		else {
-
-			// problemList db에 저장
-			// workbook db에 저장
-
-			this.workBook.setP_Num(ProfessorDataModel.professor.P_Num());
-			this.workBook.setName(ProfessorDataModel.workbook.W_name());
-			String responseMessage = null;
-			try {
 				// AddWorkbook:PNum:Name:Size
 				String requestTokens = "AddWorkbook:" + this.workBook.tokenString() + ":" + this.workBookSize;
 				BufferedReader br = new BufferedReader(
@@ -137,63 +132,57 @@ public class newWorkBook_Base {
 				pw.println(requestTokens);
 				pw.flush();
 				responseMessage = br.readLine();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			String[] responseTokens = responseMessage.split(":");
-			if (responseTokens[0].equals("AddWorkbook")) {
-				if (!responseTokens[1].equals("Success")) {
-					System.out.println("AddWorkbook:Fail");
-				} else {
-					this.workBook.setW_Num(Integer.parseInt(responseTokens[2]));
-					try {
+
+				String[] responseTokens = responseMessage.split(":");
+				if (responseTokens[0].equals("AddWorkbook")) {
+					if (!responseTokens[1].equals("Success")) {
+						System.out.println("AddWorkbook:Fail");
+					} else {
+						this.workBook.setW_Num(Integer.parseInt(responseTokens[2]));
+
 						// AddProblem:problem1_problem2(WNum`question`answer`type`answerContents)...
 						String requestMessage = "AddProblem:"
 								+ this.tokenProblemList(this.problemList, this.workBook.W_Num());
-						BufferedReader br = new BufferedReader(
+						br = new BufferedReader(
 								new InputStreamReader(this.socket.getInputStream(), StandardCharsets.UTF_8));
-						PrintWriter pw = new PrintWriter(
+						pw = new PrintWriter(
 								new OutputStreamWriter(this.socket.getOutputStream(), StandardCharsets.UTF_8));
 						pw.println(requestMessage);
 						pw.flush();
 						responseMessage = br.readLine();
-					} catch (IOException e) {
-						e.printStackTrace();
+						responseTokens = responseMessage.split(":");
+						if (responseTokens[0].equals("AddProblem")) {
+							if (!responseTokens[1].equals("Success"))
+								System.out.println("AddProblem:Fail");
+						}
+						ProfessorDataModel.currentPB = 0;
 					}
-					responseTokens = responseMessage.split(":");
-					if (responseTokens[0].equals("AddProblem")) {
-						if (!responseTokens[1].equals("Success"))
-							System.out.println("AddProblem:Fail");
-					}
-					ProfessorDataModel.currentPB = 0;
-				}
-				try {
 					Stage primaryStage = (Stage) btn_DeleteWorkBook.getScene().getWindow();
 					Parent main = FXMLLoader.load(getClass().getResource("/gui/WorkBookList.fxml"));
 					Scene scene = new Scene(main);
 					primaryStage.setTitle("GuessWhat/WorkBookList");
 					primaryStage.setScene(scene);
 					primaryStage.show();
-				} catch (Exception e) {
-					e.printStackTrace();
 				}
-
 			}
-
+		} catch (Exception e) {
+			System.out.println("NewWorkBook : " + e.getMessage());
+			new Alert(AlertType.WARNING, "서버와 연결이 끊겼습니다.", ButtonType.CLOSE).showAndWait();
+			Platform.exit();
 		}
 	}
 
-	public boolean IsNotEmpty() {
+	public boolean IsNotEmpty() throws Exception {
 		// 문제가 비어있는 지 확인
 		return false;
 	}
 
-	public boolean savePro() {
+	public boolean savePro() throws Exception {
 		// 저장
 		return false;
 	}
 
-	public boolean isValueChange() {
+	public boolean isValueChange() throws Exception {
 		// 원래 문제와 차이가 있는 문제인지 확인
 		return false;
 	}
@@ -202,125 +191,129 @@ public class newWorkBook_Base {
 	};
 
 	public boolean btn_CreateProblem_Action() {
+		try {
+			this.changeName();
 
-		this.changeName();
-
-		boolean save = savePro();
-		if (save && (PB_num < workBookSize)) { // 문제 수정 isValueChange == true
-			new Alert(AlertType.CONFIRMATION, "Problem 수정.", ButtonType.CLOSE).showAndWait();
-			return false;
-		} else if (!save && (PB_num < workBookSize)) {
-			if (empty) // 제대로 수정 안함 isValueChange == true
+			boolean save = savePro();
+			if (save && (PB_num < workBookSize)) { // 문제 수정 isValueChange == true
+				new Alert(AlertType.CONFIRMATION, "Problem 수정.", ButtonType.CLOSE).showAndWait();
 				return false;
-			else {
-				new Alert(AlertType.CONFIRMATION, "수정사항이 없습니다.", ButtonType.CLOSE).showAndWait();
-				return true;
-			}
-		} else if (save && (PB_num == workBookSize)) { // 새로운 문제 저장
-			new Alert(AlertType.CONFIRMATION, "Problem 저장.", ButtonType.CLOSE).showAndWait();
+			} else if (!save && (PB_num < workBookSize)) {
+				if (empty) // 제대로 수정 안함 isValueChange == true
+					return false;
+				else {
+					new Alert(AlertType.CONFIRMATION, "수정사항이 없습니다.", ButtonType.CLOSE).showAndWait();
+					return true;
+				}
+			} else if (save && (PB_num == workBookSize)) { // 새로운 문제 저장
+				new Alert(AlertType.CONFIRMATION, "Problem 저장.", ButtonType.CLOSE).showAndWait();
 
-			ProfessorDataModel.workbook.setSize(workBookSize + 1);
-			ProfessorDataModel.currentPB = PB_num + 1;
-			ProfessorDataModel.problem = new Problem(ProfessorDataModel.currentPB);
+				ProfessorDataModel.workbook.setSize(workBookSize + 1);
+				ProfessorDataModel.currentPB = PB_num + 1;
+				ProfessorDataModel.problem = new Problem(ProfessorDataModel.currentPB);
 
-			try {
 				Stage primaryStage = (Stage) btn_CreateProblem.getScene().getWindow();
 				Parent main = FXMLLoader.load(getClass().getResource("/gui/NewWorkBook_MultipleChoice.fxml"));
 				Scene scene = new Scene(main);
 				primaryStage.setTitle("GuessWhat/WorkBook");
 				primaryStage.setScene(scene);
 				primaryStage.show();
-			} catch (Exception e) {
-				e.printStackTrace();
+
+				return true;
 			}
-			return true;
+		} catch (Exception e) {
+			System.out.println("NewWorkBook : " + e.getMessage());
+			new Alert(AlertType.WARNING, "서버와 연결이 끊겼습니다.", ButtonType.CLOSE).showAndWait();
+			Platform.exit();
 		}
 		return true;
 	}
 
 	public boolean numberBtnSave() {
-		this.changeName();
+		try {
+			this.changeName();
 
-		if (PB_num == workBookSize) { // 새로운 문제 저장
-			if (IsNotEmpty()) {
-				Alert alert = new Alert(AlertType.WARNING, "해당 작업을 중단하시겠습니까?", ButtonType.YES, ButtonType.NO);
-				Optional<ButtonType> result = alert.showAndWait();
-				if (result.get() == ButtonType.YES)
+			if (PB_num == workBookSize) { // 새로운 문제 저장
+				if (IsNotEmpty()) {
+					Alert alert = new Alert(AlertType.WARNING, "해당 작업을 중단하시겠습니까?", ButtonType.YES, ButtonType.NO);
+					Optional<ButtonType> result = alert.showAndWait();
+					if (result.get() == ButtonType.YES)
+						return true;
+					else if (result.get() == ButtonType.NO)
+						return false;
+				} else
 					return true;
-				else if (result.get() == ButtonType.NO)
-					return false;
-			} else
-				return true;
-		}
-
-		boolean save = savePro();
-		if (save && (PB_num < workBookSize)) { // 문제 수정 isValueChange == true
-			new Alert(AlertType.CONFIRMATION, "Problem 수정.", ButtonType.CLOSE).showAndWait();
-			return false;
-		} else if (!save && (PB_num < workBookSize)) {
-			if (empty) // 제대로 수정 안함 isValueChange == true
+			}
+			boolean save = savePro();
+			if (save && (PB_num < workBookSize)) { // 문제 수정 isValueChange == true
+				new Alert(AlertType.CONFIRMATION, "Problem 수정.", ButtonType.CLOSE).showAndWait();
 				return false;
-			else // 수정안하고 번호 이동 isValueChange == false
-				return true;
+			} else if (!save && (PB_num < workBookSize)) {
+				if (empty) // 제대로 수정 안함 isValueChange == true
+					return false;
+				else // 수정안하고 번호 이동 isValueChange == false
+					return true;
+			}
+
+		} catch (Exception e) {
+			System.out.println("NewWorkBook : " + e.getMessage());
+			new Alert(AlertType.WARNING, "서버와 연결이 끊겼습니다.", ButtonType.CLOSE).showAndWait();
+			Platform.exit();
 		}
 		return true;
-
 	}
 
 	public void changeProblem() {
-		int index = ProfessorDataModel.currentPB;
-		if (index == workBookSize) {
-			ProfessorDataModel.problem = new Problem(index);
-			try {
+		try {
+			int index = ProfessorDataModel.currentPB;
+			if (index == workBookSize) {
+				ProfessorDataModel.problem = new Problem(index);
+
 				Stage primaryStage = (Stage) stage.getScene().getWindow();
 				Parent main = FXMLLoader.load(getClass().getResource("/gui/NewWorkBook_MultipleChoice.fxml"));
 				Scene scene = new Scene(main);
 				primaryStage.setTitle("GuessWhat/WorkBook");
 				primaryStage.setScene(scene);
 				primaryStage.show();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		} else {
-			ProfessorDataModel.problem = problemList[index];
-			if (ProfessorDataModel.problem.getType().equals(ProblemType.ShortAnswer)) {
-				try {
+
+			} else {
+				ProfessorDataModel.problem = problemList[index];
+				if (ProfessorDataModel.problem.getType().equals(ProblemType.ShortAnswer)) {
+
 					Stage primaryStage = (Stage) stage.getScene().getWindow();
 					Parent main = FXMLLoader.load(getClass().getResource("/gui/NewWorkBook_ShortAnswer.fxml"));
 					Scene scene = new Scene(main);
 					primaryStage.setTitle("GuessWhat/WorkBook");
 					primaryStage.setScene(scene);
 					primaryStage.show();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			} else if (ProfessorDataModel.problem.getType().equals(ProblemType.Subjective)) {
-				try {
+
+				} else if (ProfessorDataModel.problem.getType().equals(ProblemType.Subjective)) {
+
 					Stage primaryStage = (Stage) stage.getScene().getWindow();
 					Parent main = FXMLLoader.load(getClass().getResource("/gui/NewWorkBook_Subjective.fxml"));
 					Scene scene = new Scene(main);
 					primaryStage.setTitle("GuessWhat/WorkBook");
 					primaryStage.setScene(scene);
 					primaryStage.show();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			} else if (ProfessorDataModel.problem.getType().equals(ProblemType.MultipleChoice)) {
-				try {
+
+				} else if (ProfessorDataModel.problem.getType().equals(ProblemType.MultipleChoice)) {
+
 					Stage primaryStage = (Stage) stage.getScene().getWindow();
 					Parent main = FXMLLoader.load(getClass().getResource("/gui/NewWorkBook_MultipleChoice.fxml"));
 					Scene scene = new Scene(main);
 					primaryStage.setTitle("GuessWhat/WorkBook");
 					primaryStage.setScene(scene);
 					primaryStage.show();
-				} catch (Exception e) {
-					e.printStackTrace();
 				}
 			}
+		} catch (Exception e) {
+			System.out.println("NewWorkBook : " + e.getMessage());
+			new Alert(AlertType.WARNING, "서버와 연결이 끊겼습니다.", ButtonType.CLOSE).showAndWait();
+			Platform.exit();
 		}
 	}
 
-	public void changeName() {
+	public void changeName() throws Exception {
 		String name = tf_ChangeName.getText();
 		if (!name.equals("") || !name.equals(ProfessorDataModel.workbook.W_name()))
 			ProfessorDataModel.workbook.setName(name);
@@ -450,7 +443,9 @@ public class newWorkBook_Base {
 				primaryStage.setScene(scene);
 				primaryStage.show();
 			} catch (Exception e) {
-				e.printStackTrace();
+				System.out.println("NewWorkBook : " + e.getMessage());
+				new Alert(AlertType.WARNING, "서버와 연결이 끊겼습니다.", ButtonType.CLOSE).showAndWait();
+				Platform.exit();
 			}
 		}
 	}
@@ -473,7 +468,9 @@ public class newWorkBook_Base {
 				primaryStage.setScene(scene);
 				primaryStage.show();
 			} catch (Exception e) {
-				e.printStackTrace();
+				System.out.println("NewWorkBook : " + e.getMessage());
+				new Alert(AlertType.WARNING, "서버와 연결이 끊겼습니다.", ButtonType.CLOSE).showAndWait();
+				Platform.exit();
 			}
 		}
 	}

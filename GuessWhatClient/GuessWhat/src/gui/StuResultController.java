@@ -7,6 +7,7 @@ import java.util.ResourceBundle;
 
 import exam.Problem;
 import exam.ProblemType;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -16,7 +17,10 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.chart.PieChart;
 import javafx.scene.chart.PieChart.Data;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 import model.ProfessorDataModel;
 import model.StudentDataModel;
@@ -41,76 +45,82 @@ public class StuResultController implements Initializable {
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// TODO Auto-generated method stub
 
-		this.socket = StudentDataModel.socket;
-		this.student = StudentDataModel.student;
+		try {
+			this.socket = StudentDataModel.socket;
+			this.student = StudentDataModel.student;
 
-		btn = new Button[] { btn_num1, btn_num2, btn_num3, btn_num4, btn_num5, btn_num6, btn_num7, btn_num8, btn_num9,
-				btn_num10, btn_num11, btn_num12, btn_num13, btn_num14, btn_num15 };
+			btn = new Button[] { btn_num1, btn_num2, btn_num3, btn_num4, btn_num5, btn_num6, btn_num7, btn_num8,
+					btn_num9, btn_num10, btn_num11, btn_num12, btn_num13, btn_num14, btn_num15 };
 
-		String[] result = this.student.result();
-		int WorkBookSize = result.length;
-		int[] value = new int[3];
+			String[] result = this.student.result();
+			int WorkBookSize = result.length;
+			int[] value = new int[3];
 
-		for (int i = 0; i < WorkBookSize; i++) {
-			if (result[i].equals("O")) {
-				value[2]++;
-				btn[i].setStyle("-fx-background-color: #5ad18f;");
-			} else if (result[i].equals("X")) {
-				value[0]++;
-				btn[i].setStyle("-fx-background-color: #ff848f;");
-			} else if (result[i].equals("N")) {
-				value[1]++;
-				btn[i].setStyle("-fx-background-color: #ffcd28;");
+			for (int i = 0; i < WorkBookSize; i++) {
+				if (result[i].equals("O")) {
+					value[2]++;
+					btn[i].setStyle("-fx-background-color: #5ad18f;");
+				} else if (result[i].equals("X")) {
+					value[0]++;
+					btn[i].setStyle("-fx-background-color: #ff848f;");
+				} else if (result[i].equals("N")) {
+					value[1]++;
+					btn[i].setStyle("-fx-background-color: #ffcd28;");
+				}
 			}
+			for (int i = WorkBookSize; i < 15; i++) {
+				btn[i].setStyle("-fx-background-color: #dcdcdc;");
+				btn[i].setDisable(true);
+			}
+
+			// pie
+			for (int i = 0; i < 3; i++) {
+				value[i] = value[i] * 100 / WorkBookSize;
+			}
+
+			this.Pie = FXCollections.observableArrayList();
+
+			Pie.add(new PieChart.Data("Wrong", value[0]));
+			Pie.add(new PieChart.Data("Non", value[1]));
+			Pie.add(new PieChart.Data("Correct", value[2]));
+
+			pc_result.setData(Pie);
+			// pie
+		} catch (Exception e) {
+			System.out.println("StuResult : " + e.getMessage());
+			new Alert(AlertType.WARNING, "서버와 연결이 끊겼습니다.", ButtonType.CLOSE).showAndWait();
+			Platform.exit();
 		}
-		for (int i = WorkBookSize; i < 15; i++) {
-			btn[i].setStyle("-fx-background-color: #dcdcdc;");
-			btn[i].setDisable(true);
-		}
-
-		// pie
-		for (int i = 0; i < 3; i++) {
-			value[i] = value[i] * 100 / WorkBookSize;
-		}
-
-		this.Pie = FXCollections.observableArrayList();
-
-		Pie.add(new PieChart.Data("Wrong", value[0]));
-		Pie.add(new PieChart.Data("Non", value[1]));
-		Pie.add(new PieChart.Data("Correct", value[2]));
-
-		pc_result.setData(Pie);
-		// pie
-
 	}
 
 	public void btn_Detail_Action() {
+		try {
+			StudentDataModel.currentPB = 0;
+			ProblemType p = StudentDataModel.problemList[0].getType();
 
-		StudentDataModel.currentPB = 0;
-		ProblemType p = StudentDataModel.problemList[0].getType();
-		
-		if (!p.equals(ProblemType.MultipleChoice)) {
-			try {
+			if (!p.equals(ProblemType.MultipleChoice)) {
+
 				Stage primaryStage = (Stage) btn_Detail.getScene().getWindow();
 				Parent main = FXMLLoader.load(getClass().getResource("/gui/StuResultDetail.fxml"));
 				Scene scene = new Scene(main);
 				primaryStage.setTitle("GuessWhat/WorkBook");
 				primaryStage.setScene(scene);
 				primaryStage.show();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		} else if (p.equals(ProblemType.MultipleChoice)) {
-			try {
+
+			} else if (p.equals(ProblemType.MultipleChoice)) {
+
 				Stage primaryStage = (Stage) btn_Detail.getScene().getWindow();
 				Parent main = FXMLLoader.load(getClass().getResource("/gui/StuResultDetail_MultipleChoice.fxml"));
 				Scene scene = new Scene(main);
 				primaryStage.setTitle("GuessWhat/WorkBook");
 				primaryStage.setScene(scene);
 				primaryStage.show();
-			} catch (Exception e) {
-				e.printStackTrace();
+
 			}
+		} catch (Exception e) {
+			System.out.println("StuResult : " + e.getMessage());
+			new Alert(AlertType.WARNING, "서버와 연결이 끊겼습니다.", ButtonType.CLOSE).showAndWait();
+			Platform.exit();
 		}
 	}
 

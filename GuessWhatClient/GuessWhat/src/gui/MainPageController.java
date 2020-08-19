@@ -6,14 +6,14 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.net.SocketException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
-import java.util.Optional;
 import java.util.ResourceBundle;
 
 import exam.Workbook;
-import exception.MyException;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -39,115 +39,20 @@ public class MainPageController implements Initializable {
 	public Socket socket;
 	public Professor professor;
 
-	private void showBanList(int PNum) {
-
-		ProfessorDataModel.ItemList_MyClass.clear();
-
-		String responseMessage = null;
-		try {
-			String requestMessage = "GetAllBan:" + PNum;
-			BufferedReader reader = new BufferedReader(
-					new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
-			PrintWriter writer = new PrintWriter(
-					new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8));
-			writer.println(requestMessage);
-			writer.flush();
-			responseMessage = reader.readLine();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		String[] responseTokens = responseMessage.split(":");
-
-		if (responseTokens[0].equals("GetAllBan")) {
-			if (!responseTokens[1].equals("Success")) {
-				System.out.println("Fail : GetAllBan");
-			} else {
-				int n = 1;
-				for (int i = 2; i < responseTokens.length; i++) { // [0]GetBan:[1]Success:[2]BNum:[3]Name:[4]BM_Size
-
-					int pNum = PNum;
-					int BNum = Integer.parseInt(responseTokens[i]);
-					String name = responseTokens[i + 1];
-					int bmSize = Integer.parseInt(responseTokens[i + 2]);
-
-					Ban newBan = new Ban(pNum, BNum, name, bmSize);
-					ProfessorDataModel.addClass(n, newBan);
-					i = i + 2;
-					n++;
-				}
-				lv_ClassList.setItems(ProfessorDataModel.ItemList_MyClass);
-
-			}
-		}
-	}
-	private void getAllWorkbook(int pNum) {
-		ProfessorDataModel.ChoiceList_MyWorkBook.clear();
-		String responseMessage = null;
-		try {
-			//GetAllWorkbook:PNum
-			String requestTokens = "GetAllWorkbook:" + pNum;
-			BufferedReader br = new BufferedReader(
-					new InputStreamReader(this.socket.getInputStream(), StandardCharsets.UTF_8));
-			PrintWriter pw = new PrintWriter(
-					new OutputStreamWriter(this.socket.getOutputStream(), StandardCharsets.UTF_8));
-			pw.println(requestTokens);
-			pw.flush();
-			responseMessage = br.readLine();
-		} catch(IOException e) {
-			e.printStackTrace();
-		}
-		String[] responseTokens = responseMessage.split(":");
-		if(responseTokens[0].equals("GetAllWorkbook")) {
-			if(!responseTokens[1].equals("Success")) {
-				System.out.println("GetAllWorkbook:Fail");
-			}
-			else {
-				for(int i = 2 ; i < responseTokens.length ; i++) {		// <- GetAllWorkbook:Success:WNum:Name:Size
-					int WBNum = Integer.parseInt(responseTokens[i]);
-					String name = responseTokens[i+1];
-					int size = Integer.parseInt(responseTokens[i+2]);
-
-					Workbook newWorkbook = new Workbook(pNum, WBNum, name, size);
-					ProfessorDataModel.addWBList(newWorkbook);			
-					i = i+2;
-				}
-			}
-		}
-	}
-	private void createNewClass(int PNum) throws MyException, SQLException {
-		String responseMessage = null;
-		try {
-			String requestMessage = "AddBan:" + PNum;
-			BufferedReader reader = new BufferedReader(
-					new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
-			PrintWriter writer = new PrintWriter(
-					new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8));
-			writer.println(requestMessage);
-			writer.flush();
-			responseMessage = reader.readLine();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		String[] responseTokens = responseMessage.split(":");
-		if (responseTokens[0].equals("AddBan")) {
-			if (!responseTokens[1].equals("Success")) {
-				System.out.println("Fail : AddBan");
-			} else {
-				this.showBanList(PNum);
-			}
-		}
-	}
-
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		// TODO Auto-generated method stub
-
-		this.socket = ProfessorDataModel.socket;
-		this.professor = ProfessorDataModel.professor;
-		this.showBanList(professor.P_Num());
-		this.getAllWorkbook(professor.P_Num());
-		ProfessorDataModel.isUser = true;
-
+		try {
+			this.socket = ProfessorDataModel.socket;
+			this.professor = ProfessorDataModel.professor;
+			this.showBanList(professor.P_Num());
+			this.getAllWorkbook(professor.P_Num());
+			ProfessorDataModel.isUser = true;
+		} catch (Exception e) {
+			System.out.println("MainPage : " + e.getMessage());
+			new Alert(AlertType.WARNING, "서버와 연결이 끊겼습니다.", ButtonType.CLOSE).showAndWait();
+			Platform.exit();
+		}
 	}
 
 	public void btn_WorkBookList_Action() {
@@ -159,7 +64,9 @@ public class MainPageController implements Initializable {
 			primaryStage.setScene(scene);
 			primaryStage.show();
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println("MainPage : " + e.getMessage());
+			new Alert(AlertType.WARNING, "서버와 연결이 끊겼습니다.", ButtonType.CLOSE).showAndWait();
+			Platform.exit();
 		}
 	}
 
@@ -168,8 +75,9 @@ public class MainPageController implements Initializable {
 		try {
 			this.createNewClass(P_num);
 		} catch (Exception e) {
-			System.out.println("Failed : Create New Class");
-			e.printStackTrace();
+			System.out.println("MainPage : " + e.getMessage());
+			new Alert(AlertType.WARNING, "서버와 연결이 끊겼습니다.", ButtonType.CLOSE).showAndWait();
+			Platform.exit();
 		}
 	}
 
@@ -182,8 +90,97 @@ public class MainPageController implements Initializable {
 			primaryStage.setScene(scene);
 			primaryStage.show();
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println("MainPage : " + e.getMessage());
+			new Alert(AlertType.WARNING, "서버와 연결이 끊겼습니다.", ButtonType.CLOSE).showAndWait();
+			Platform.exit();
 		}
 	}
+	
+	private void showBanList(int PNum) throws Exception {
+
+		ProfessorDataModel.ItemList_MyClass.clear();
+
+		String responseMessage = null;
+		String requestMessage = "GetAllBan:" + PNum;
+		BufferedReader reader = new BufferedReader(
+				new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
+		PrintWriter writer = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8));
+		writer.println(requestMessage);
+		writer.flush();
+		responseMessage = reader.readLine();
+
+		String[] responseTokens = responseMessage.split(":");
+
+		if (responseTokens[0].equals("GetAllBan")) {
+			if (!responseTokens[1].equals("Success")) {
+				System.out.println("Fail : GetAllBan");
+			} else {
+				int n = 1;
+				for (int i = 2; i < responseTokens.length; i++) { // [0]GetBan:[1]Success:[2]BNum:[3]Name:[4]BM_Size
+					int pNum = PNum;
+					int BNum = Integer.parseInt(responseTokens[i]);
+					String name = responseTokens[i + 1];
+					int bmSize = Integer.parseInt(responseTokens[i + 2]);
+
+					Ban newBan = new Ban(pNum, BNum, name, bmSize);
+					ProfessorDataModel.addClass(n, newBan);
+					i = i + 2;
+					n++;
+				}
+				lv_ClassList.setItems(ProfessorDataModel.ItemList_MyClass);
+			}
+		}
+	}
+
+	private void getAllWorkbook(int pNum) throws Exception {
+		ProfessorDataModel.ChoiceList_MyWorkBook.clear();
+		String responseMessage = null;
+		// GetAllWorkbook:PNum
+		String requestTokens = "GetAllWorkbook:" + pNum;
+		BufferedReader br = new BufferedReader(
+				new InputStreamReader(this.socket.getInputStream(), StandardCharsets.UTF_8));
+		PrintWriter pw = new PrintWriter(new OutputStreamWriter(this.socket.getOutputStream(), StandardCharsets.UTF_8));
+		pw.println(requestTokens);
+		pw.flush();
+		responseMessage = br.readLine();
+
+		String[] responseTokens = responseMessage.split(":");
+		if (responseTokens[0].equals("GetAllWorkbook")) {
+			if (!responseTokens[1].equals("Success")) {
+				System.out.println("GetAllWorkbook:Fail");
+			} else {
+				for (int i = 2; i < responseTokens.length; i++) { // <- GetAllWorkbook:Success:WNum:Name:Size
+					int WBNum = Integer.parseInt(responseTokens[i]);
+					String name = responseTokens[i + 1];
+					int size = Integer.parseInt(responseTokens[i + 2]);
+
+					Workbook newWorkbook = new Workbook(pNum, WBNum, name, size);
+					ProfessorDataModel.addWBList(newWorkbook);
+					i = i + 2;
+				}
+			}
+		}
+	}
+
+	private void createNewClass(int PNum) throws SQLException, Exception {
+		String responseMessage = null;
+		String requestMessage = "AddBan:" + PNum;
+		BufferedReader reader = new BufferedReader(
+				new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
+		PrintWriter writer = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8));
+		writer.println(requestMessage);
+		writer.flush();
+		responseMessage = reader.readLine();
+
+		String[] responseTokens = responseMessage.split(":");
+		if (responseTokens[0].equals("AddBan")) {
+			if (!responseTokens[1].equals("Success")) {
+				System.out.println("Fail : AddBan");
+			} else {
+				this.showBanList(PNum);
+			}
+		}
+	}
+
 
 }

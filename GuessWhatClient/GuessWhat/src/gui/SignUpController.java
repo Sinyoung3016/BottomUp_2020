@@ -12,8 +12,6 @@ import java.sql.SQLException;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-import exception.MyException;
-
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -60,15 +58,18 @@ public class SignUpController implements Initializable {
 				primaryStage.setScene(scene);
 				primaryStage.show();
 			} catch (Exception e) {
-				e.printStackTrace();
+				System.out.println("SignUp : " + e.getMessage());
+				new Alert(AlertType.WARNING, "서버와 연결이 끊겼습니다.", ButtonType.CLOSE).showAndWait();
+				Platform.exit();
 			}
 		}
 	}
 
 	public void btn_Overlap_Action() {
-		if (tf_ID.getText().length() != 0) { // !isEmpty(tf_ID);
-			String responseMessage = null;
-			try {
+		try {
+			if (tf_ID.getText().length() != 0) { // !isEmpty(tf_ID);
+				String responseMessage = null;
+
 				String requestTokens = "OverLap:" + tf_ID.getText();
 				BufferedReader br = new BufferedReader(
 						new InputStreamReader(this.socket.getInputStream(), StandardCharsets.UTF_8));
@@ -77,67 +78,67 @@ public class SignUpController implements Initializable {
 				pw.println(requestTokens);
 				pw.flush();
 				responseMessage = br.readLine();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			String[] responseTokens = responseMessage.split(":");
-			if (responseTokens[0].equals("OverLap")) {
-				if (!responseTokens[1].equals("Success")) {
-					new Alert(Alert.AlertType.WARNING, responseTokens[1], ButtonType.OK).show();
-				} else {
-					check_Overlap_Id = true;
-					new Alert(Alert.AlertType.CONFIRMATION, "가능한 ID입니다.", ButtonType.OK).show();
+
+				String[] responseTokens = responseMessage.split(":");
+				if (responseTokens[0].equals("OverLap")) {
+					if (!responseTokens[1].equals("Success")) {
+						new Alert(Alert.AlertType.WARNING, responseTokens[1], ButtonType.OK).showAndWait();
+					} else {
+						check_Overlap_Id = true;
+						new Alert(Alert.AlertType.CONFIRMATION, "가능한 ID입니다.", ButtonType.OK).showAndWait();
+					}
 				}
+			} else { // isEmpty(tf_ID);
+				new Alert(Alert.AlertType.WARNING, "빈칸을 전부 채워주세요.", ButtonType.OK).showAndWait();
 			}
-		} else { // isEmpty(tf_ID);
-			new Alert(Alert.AlertType.WARNING, "빈칸을 전부 채워주세요.", ButtonType.OK).show();
+
+		} catch (Exception e) {
+			System.out.println("SignUp : " + e.getMessage());
+			new Alert(AlertType.WARNING, "서버와 연결이 끊겼습니다.", ButtonType.CLOSE).showAndWait();
+			Platform.exit();
 		}
 
 	}
 
 	public void btn_SignUp_Action() {
 
-		if (!check_checkPW) {
-			new Alert(Alert.AlertType.WARNING, "비밀번호가 정확하지 않습니다.", ButtonType.OK).show();
-			return;
-		}
-		
-		if (!check_Overlap_Id) {
-			new Alert(Alert.AlertType.WARNING, "ID 중복 체크를 해주세요.", ButtonType.OK).show();
-			return;
-		}
-
-		if (tf_ID.getText().length() != 0 && pf_PassWord.getText().length() != 0 && tf_Email.getText().length() != 0
-				&& check_Overlap_Id && check_checkPW) {
-			try {
-				this.signUp(tf_ID.getText(), pf_PassWord.getText(), tf_Email.getText());
-			} catch (Exception e) {
-				System.out.println("회원가입 : 실패");
+		try {
+			if (!check_checkPW) {
+				new Alert(Alert.AlertType.WARNING, "비밀번호가 정확하지 않습니다.", ButtonType.OK).showAndWait();
+				return;
 			}
-
-			Stage primaryStage = (Stage) btn_SignUp.getScene().getWindow();
-			Platform.runLater(() -> {
-				Parent login;
+			if (!check_Overlap_Id) {
+				new Alert(Alert.AlertType.WARNING, "ID 중복 체크를 해주세요.", ButtonType.OK).showAndWait();
+				return;
+			}
+			if (tf_ID.getText().length() != 0 && pf_PassWord.getText().length() != 0 && tf_Email.getText().length() != 0
+					&& check_Overlap_Id && check_checkPW) {
 				try {
-					login = FXMLLoader.load(getClass().getResource("/gui/Login.fxml"));
-					Scene scene = new Scene(login);
-					primaryStage.setTitle("GuessWhat/Login");
-					primaryStage.setScene(scene);
-					primaryStage.show();
-
+					this.signUp(tf_ID.getText(), pf_PassWord.getText(), tf_Email.getText());
 				} catch (Exception e) {
-					e.printStackTrace();
+					System.out.println("회원가입 : 실패");
 				}
-			});
+				Stage primaryStage = (Stage) btn_SignUp.getScene().getWindow();
 
-			btn_SignUp.setDisable(true);
-		} else
-			new Alert(Alert.AlertType.WARNING, "빈칸을 전부 채워주세요.", ButtonType.OK).show();
+				Parent login = FXMLLoader.load(getClass().getResource("/gui/Login.fxml"));
+				Scene scene = new Scene(login);
+				primaryStage.setTitle("GuessWhat/Login");
+				primaryStage.setScene(scene);
+				primaryStage.show();
+
+				btn_SignUp.setDisable(true);
+			} else
+				new Alert(Alert.AlertType.WARNING, "빈칸을 전부 채워주세요.", ButtonType.OK).showAndWait();
+		} catch (Exception e) {
+			System.out.println("SignUp : " + e.getMessage());
+			new Alert(AlertType.WARNING, "서버와 연결이 끊겼습니다.", ButtonType.CLOSE).showAndWait();
+			Platform.exit();
+		}
 	}
 
-	private void signUp(String id, String password, String Email) throws MyException, SQLException {
-		String responseMessage = null;
+	private void signUp(String id, String password, String Email) throws SQLException {
 		try {
+			String responseMessage = null;
 			String requestMessage = "SignUp:" + id + ":" + password + ":" + Email;
 			BufferedReader br = new BufferedReader(
 					new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
@@ -145,36 +146,44 @@ public class SignUpController implements Initializable {
 			pw.println(requestMessage);
 			pw.flush();
 			responseMessage = br.readLine();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		String[] responseTokens = responseMessage.split(":");
-		if (responseTokens[0].equals("SignUp")) {
-			if (!responseTokens[1].equals("Success")) {
-				new Alert(Alert.AlertType.WARNING, "회원가입에 실패했습니다. 잠시후 다시 진행해주세요.", ButtonType.OK).show();
-				System.out.println("id :" + responseTokens[2]);
-			} else {
-				new Alert(Alert.AlertType.CONFIRMATION, "회원가입이 성공적으로 진행되었습니다.", ButtonType.OK).show();
+
+			String[] responseTokens = responseMessage.split(":");
+			if (responseTokens[0].equals("SignUp")) {
+				if (!responseTokens[1].equals("Success")) {
+					new Alert(Alert.AlertType.WARNING, "회원가입에 실패했습니다. 잠시후 다시 진행해주세요.", ButtonType.OK).showAndWait();
+					System.out.println("id :" + responseTokens[2]);
+				} else {
+					new Alert(Alert.AlertType.CONFIRMATION, "회원가입이 성공적으로 진행되었습니다.", ButtonType.OK).showAndWait();
+				}
 			}
+		} catch (Exception e) {
+			System.out.println("SignUp : " + e.getMessage());
+			new Alert(AlertType.WARNING, "서버와 연결이 끊겼습니다.", ButtonType.CLOSE).showAndWait();
+			Platform.exit();
 		}
 	}
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// TODO Auto-generated method stub
-		this.socket = ProfessorDataModel.socket;
-		pf_CheckPW.focusedProperty().addListener(new ChangeListener<Boolean>() {
-			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-				if (!pf_CheckPW.isFocused()) {
-					if (!pf_PassWord.getText().equals(pf_CheckPW.getText())) {
-						lb_warning_CheckPW.setText("비밀번호가 정확하지 않습니다.");
-					} else {
-						check_checkPW = true;
-						lb_warning_CheckPW.setText("");
+		try {
+			this.socket = ProfessorDataModel.socket;
+			pf_CheckPW.focusedProperty().addListener(new ChangeListener<Boolean>() {
+				public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+					if (!pf_CheckPW.isFocused()) {
+						if (!pf_PassWord.getText().equals(pf_CheckPW.getText())) {
+							lb_warning_CheckPW.setText("비밀번호가 정확하지 않습니다.");
+						} else {
+							check_checkPW = true;
+							lb_warning_CheckPW.setText("");
+						}
 					}
 				}
-			}
-		});
-
+			});
+		} catch (Exception e) {
+			System.out.println("SignUp : " + e.getMessage());
+			new Alert(AlertType.WARNING, "서버와 연결이 끊겼습니다.", ButtonType.CLOSE).showAndWait();
+			Platform.exit();
+		}
 	}
 }

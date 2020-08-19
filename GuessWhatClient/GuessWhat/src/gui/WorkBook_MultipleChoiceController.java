@@ -14,6 +14,7 @@ import java.util.ResourceBundle;
 import exam.Problem;
 import exam.ProblemType;
 import exam.Workbook;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -59,73 +60,75 @@ public class WorkBook_MultipleChoiceController implements Initializable {
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// TODO Auto-generated method stub
+		try {
+			this.socket = ProfessorDataModel.socket;
+			this.workBook = ProfessorDataModel.workbook;
+			this.problemList = ProfessorDataModel.problemList;
+			this.problem = ProfessorDataModel.problem;
+			this.workBookSize = this.workBook.WorkBooksize();
+			this.PB_num = ProfessorDataModel.currentPB;
 
-		this.socket = ProfessorDataModel.socket;
-		this.workBook = ProfessorDataModel.workbook;
-		this.problemList = ProfessorDataModel.problemList;
-		this.problem = ProfessorDataModel.problem;
-		this.workBookSize = this.workBook.WorkBooksize();
-		this.PB_num = ProfessorDataModel.currentPB;
-		
-		
-		// setting
-	
-		ta_Question.setText(problem.question());
-		String[] answerContent = problem.getAnswerContent().split("~");
-		tf_Answer1.setText(answerContent[0]);
-		tf_Answer2.setText(answerContent[1]);
-		tf_Answer3.setText(answerContent[2]);
-		tf_Answer4.setText(answerContent[3]);
-		tf_Answer5.setText(answerContent[4]);
+			// setting
 
-		String answer = problem.answer();
-		for (int i = 0; i < answer.length(); i++) {
-			char num = answer.charAt(i);
-			if (num == '1')
-				cb_1.setSelected(true);
-			if (num == '2')
-				cb_2.setSelected(true);
-			if (num == '3')
-				cb_3.setSelected(true);
-			if (num == '4')
-				cb_4.setSelected(true);
-			if (num == '5')
-				cb_5.setSelected(true);
+			ta_Question.setText(problem.question());
+			String[] answerContent = problem.getAnswerContent().split("~");
+			tf_Answer1.setText(answerContent[0]);
+			tf_Answer2.setText(answerContent[1]);
+			tf_Answer3.setText(answerContent[2]);
+			tf_Answer4.setText(answerContent[3]);
+			tf_Answer5.setText(answerContent[4]);
+
+			String answer = problem.answer();
+			for (int i = 0; i < answer.length(); i++) {
+				char num = answer.charAt(i);
+				if (num == '1')
+					cb_1.setSelected(true);
+				if (num == '2')
+					cb_2.setSelected(true);
+				if (num == '3')
+					cb_3.setSelected(true);
+				if (num == '4')
+					cb_4.setSelected(true);
+				if (num == '5')
+					cb_5.setSelected(true);
+			}
+
+			tf_ChangeName.setText(workBook.W_name());
+
+			btn = new Button[] { btn_num1, btn_num2, btn_num3, btn_num4, btn_num5, btn_num6, btn_num7, btn_num8,
+					btn_num9, btn_num10, btn_num11, btn_num12, btn_num13, btn_num14, btn_num15 };
+
+			for (int i = 0; i < workBookSize; i++) {
+				btn[i].setStyle("-fx-background-color: #5ad18f;");
+				btn[i].setDisable(false);
+			}
+			for (int i = workBookSize; i < 15; i++) {
+				btn[i].setStyle("-fx-background-color: #f0fff0;");
+				btn[i].setDisable(true);
+			}
+			btn[PB_num].setStyle("-fx-background-color: #22941C;");
+			btn[PB_num].setDisable(false);
+			// setting
+		} catch (Exception e) {
+			System.out.println("WorkBook : " + e.getMessage());
+			new Alert(AlertType.WARNING, "서버와 연결이 끊겼습니다.", ButtonType.CLOSE).showAndWait();
+			Platform.exit();
 		}
-
-		tf_ChangeName.setText(workBook.W_name());
-
-		btn = new Button[] { btn_num1, btn_num2, btn_num3, btn_num4, btn_num5, btn_num6, btn_num7, btn_num8, btn_num9,
-				btn_num10, btn_num11, btn_num12, btn_num13, btn_num14, btn_num15 };
-
-		for (int i = 0; i < workBookSize; i++) {
-			btn[i].setStyle("-fx-background-color: #5ad18f;");
-			btn[i].setDisable(false);
-		}
-		for (int i = workBookSize; i < 15; i++) {
-			btn[i].setStyle("-fx-background-color: #f0fff0;");
-			btn[i].setDisable(true);
-		}
-		btn[PB_num].setStyle("-fx-background-color: #22941C;");
-		btn[PB_num].setDisable(false);
-		// setting
-
 	}
 
-	private void changeName() {
+	private void changeName() throws Exception {
 		String temp = workBook.W_name();
 		String name = tf_ChangeName.getText();
-		if (! name.equals("")) {
+		if (!name.equals("")) {
 			workBook.setName(name);
-		}
-		else {
-			Alert alert = new Alert(AlertType.WARNING, "Workbook 이름이 비어있습니다. 이전 이름으로 저장됩니다.",ButtonType.YES);
+		} else {
+			Alert alert = new Alert(AlertType.WARNING, "Workbook 이름이 비어있습니다. 이전 이름으로 저장됩니다.", ButtonType.YES);
 			alert.showAndWait();
 			workBook.setName(temp);
-		}	
+		}
 	}
 
-	private void savePro() {
+	private void savePro() throws Exception{
 
 		String answerContent = tf_Answer1.getText() + "~" + tf_Answer2.getText() + "~" + tf_Answer3.getText() + "~"
 				+ tf_Answer4.getText() + "~" + tf_Answer5.getText();
@@ -162,20 +165,7 @@ public class WorkBook_MultipleChoiceController implements Initializable {
 
 	}
 
-	private String tokenProblemList(Problem[] problem, int wnum) {
-		StringBuilder sb = new StringBuilder("");
-		int n = 0;
-		while (problem[n] != null) {
-			sb.append(problem[n].tokenString(wnum));
-			sb.append("_");
-			n++;
-		}
-		sb.deleteCharAt(sb.length() - 1);
-
-		return new String(sb);
-
-	}
-	private boolean isValueChange() {
+	private boolean isValueChange() throws Exception{
 		String newAnswer = new String();
 		if (cb_1.isSelected())
 			newAnswer = newAnswer + "1";
@@ -187,27 +177,28 @@ public class WorkBook_MultipleChoiceController implements Initializable {
 			newAnswer = newAnswer + "4";
 		if (cb_5.isSelected())
 			newAnswer = newAnswer + "5";
-		
-		if ( this.ta_Question.getText().equals(problem.question()) &&
-			 this.tf_Answer1.getText().equals(problem.getAnswerContentList()[0]) &&
-			 this.tf_Answer2.getText().equals(problem.getAnswerContentList()[1]) &&
-			 this.tf_Answer3.getText().equals(problem.getAnswerContentList()[2]) &&
-			 this.tf_Answer4.getText().equals(problem.getAnswerContentList()[3]) &&
-			 this.tf_Answer5.getText().equals(problem.getAnswerContentList()[4]) &&
-			 newAnswer.equals(problem.answer())) {
+
+		if (this.ta_Question.getText().equals(problem.question())
+				&& this.tf_Answer1.getText().equals(problem.getAnswerContentList()[0])
+				&& this.tf_Answer2.getText().equals(problem.getAnswerContentList()[1])
+				&& this.tf_Answer3.getText().equals(problem.getAnswerContentList()[2])
+				&& this.tf_Answer4.getText().equals(problem.getAnswerContentList()[3])
+				&& this.tf_Answer5.getText().equals(problem.getAnswerContentList()[4])
+				&& newAnswer.equals(problem.answer())) {
 			return false;
 		}
 		return true;
 	}
+
 	public void btn_DeleteWorkBook_Action() {
-		Alert alert = new Alert(AlertType.WARNING, "(Workbook) " + workBook.W_name() + "을(를) 정말로 삭제하시겠습니까?",
-				ButtonType.YES, ButtonType.NO);
-		Optional<ButtonType> result = alert.showAndWait();
+		try {
+			Alert alert = new Alert(AlertType.WARNING, "(Workbook) " + workBook.W_name() + "을(를) 정말로 삭제하시겠습니까?",
+					ButtonType.YES, ButtonType.NO);
+			Optional<ButtonType> result = alert.showAndWait();
 
-		if (result.get() == ButtonType.YES) {
+			if (result.get() == ButtonType.YES) {
 
-			String responseMessage = null;
-			try {
+				String responseMessage = null;
 				String requestMessage = "DeleteWorkbook:" + this.workBook.W_Num();
 				BufferedReader reader = new BufferedReader(
 						new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
@@ -216,40 +207,42 @@ public class WorkBook_MultipleChoiceController implements Initializable {
 				writer.println(requestMessage);
 				writer.flush();
 				responseMessage = reader.readLine();
-			} catch (IOException e1) {
-				e1.printStackTrace();
-			}
-			String[] responseTokens = responseMessage.split(":");
 
-			if (responseTokens[0].equals("DeleteWorkbook")) {
-				if (!responseTokens[1].equals("Success")) {
-					System.out.println("Fail : DeleteWorkbook");
-				} else {
-					System.out.println("  [Delete] " + this.workBook.W_name());
+				String[] responseTokens = responseMessage.split(":");
+
+				if (responseTokens[0].equals("DeleteWorkbook")) {
+					if (!responseTokens[1].equals("Success")) {
+						System.out.println("Fail : DeleteWorkbook");
+					} else {
+						System.out.println("  [Delete] " + this.workBook.W_name());
+					}
 				}
-			}
-			
-			ProfessorDataModel.workbook = null;
-			ProfessorDataModel.problem = null;
 
-			try {
+				ProfessorDataModel.workbook = null;
+				ProfessorDataModel.problem = null;
+
 				Stage primaryStage = (Stage) btn_DeleteWorkBook.getScene().getWindow();
 				Parent main = FXMLLoader.load(getClass().getResource("/gui/WorkBookList.fxml"));
 				Scene scene = new Scene(main);
 				primaryStage.setTitle("GuessWhat/WorkBookList");
 				primaryStage.setScene(scene);
 				primaryStage.show();
-			} catch (Exception e) {
-				e.printStackTrace();
 			}
+		} catch (Exception e) {
+			System.out.println("WorkBook : " + e.getMessage());
+			new Alert(AlertType.WARNING, "서버와 연결이 끊겼습니다.", ButtonType.CLOSE).showAndWait();
+			Platform.exit();
 		}
+
 	}
 
 	public void btn_SaveWorkBook_Action() {
-		this.savePro();
-		String modifiedProblem = this.problem.PB_Num() + ":" + this.problem.question() + ":" + this.problem.answer() + ":" + this.problem.getAnswerContent();
-		String responseMessage = null;
 		try {
+			this.savePro();
+			String modifiedProblem = this.problem.PB_Num() + ":" + this.problem.question() + ":" + this.problem.answer()
+					+ ":" + this.problem.getAnswerContent();
+			String responseMessage = null;
+
 			String requestTokens = "ModifyProblem:" + modifiedProblem;
 			BufferedReader br = new BufferedReader(
 					new InputStreamReader(this.socket.getInputStream(), StandardCharsets.UTF_8));
@@ -258,51 +251,52 @@ public class WorkBook_MultipleChoiceController implements Initializable {
 			pw.println(requestTokens);
 			pw.flush();
 			responseMessage = br.readLine();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		String[] responseTokens = responseMessage.split(":");
-		if (responseTokens[0].equals("ModifyProblem")) {
-			if (!responseTokens[1].equals("Success")) {
-				System.out.println("ModifyProblem:Fail");
-			} else {
-				System.out.println("  [Modify] Problem");
+
+			String[] responseTokens = responseMessage.split(":");
+			if (responseTokens[0].equals("ModifyProblem")) {
+				if (!responseTokens[1].equals("Success")) {
+					System.out.println("ModifyProblem:Fail");
+				} else {
+					System.out.println("  [Modify] Problem");
+				}
 			}
-		}
-		String responseMessage2 = null;
-		try {
+			String responseMessage2 = null;
+
 			String requestTokens2 = "ModifyWorkbook:" + this.workBook.W_Num() + ":" + this.workBook.W_name();
-			BufferedReader br = new BufferedReader(
-					new InputStreamReader(this.socket.getInputStream(), StandardCharsets.UTF_8));
-			PrintWriter pw = new PrintWriter(
-					new OutputStreamWriter(this.socket.getOutputStream(), StandardCharsets.UTF_8));
+			br = new BufferedReader(new InputStreamReader(this.socket.getInputStream(), StandardCharsets.UTF_8));
+			pw = new PrintWriter(new OutputStreamWriter(this.socket.getOutputStream(), StandardCharsets.UTF_8));
 			pw.println(requestTokens2);
 			pw.flush();
 			responseMessage2 = br.readLine();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		String[] responseTokens2 = responseMessage2.split(":");
-		if (responseTokens2[0].equals("ModifyWorkbook")) {
-			if (!responseTokens2[1].equals("Success")) {
-				System.out.println("ModifyWorkbook:Fail");
-			} else {
-				System.out.println("  [Modify] Workbook Name");
+
+			String[] responseTokens2 = responseMessage2.split(":");
+			if (responseTokens2[0].equals("ModifyWorkbook")) {
+				if (!responseTokens2[1].equals("Success")) {
+					System.out.println("ModifyWorkbook:Fail");
+				} else {
+					System.out.println("  [Modify] Workbook Name");
+				}
 			}
+			new Alert(AlertType.INFORMATION, "수정되었습니다").showAndWait();
+
+		} catch (Exception e) {
+			System.out.println("WorkBook : " + e.getMessage());
+			new Alert(AlertType.WARNING, "서버와 연결이 끊겼습니다.", ButtonType.CLOSE).showAndWait();
+			Platform.exit();
 		}
-		Alert alert = new Alert(AlertType.INFORMATION,"수정되었습니다");
-		alert.showAndWait();
+
 	}
+
 	public void btn_Cancel_Action() {
-		if (this.isValueChange()) {
-			Alert alert = new Alert(AlertType.WARNING, "변경사항을 저장하시겠습니까?", ButtonType.YES, ButtonType.NO);
-			Optional<ButtonType> result = alert.showAndWait();
-			
-			if (result.get() == ButtonType.YES) {
-				this.btn_SaveWorkBook_Action();
-			}
-		}
 		try {
+			if (this.isValueChange()) {
+				Alert alert = new Alert(AlertType.WARNING, "변경사항을 저장하시겠습니까?", ButtonType.YES, ButtonType.NO);
+				Optional<ButtonType> result = alert.showAndWait();
+
+				if (result.get() == ButtonType.YES) {
+					this.btn_SaveWorkBook_Action();
+				}
+			}
 			Stage primaryStage = (Stage) btn_Cancel.getScene().getWindow();
 			Parent main = FXMLLoader.load(getClass().getResource("/gui/WorkBookList.fxml"));
 			Scene scene = new Scene(main);
@@ -310,46 +304,52 @@ public class WorkBook_MultipleChoiceController implements Initializable {
 			primaryStage.setScene(scene);
 			primaryStage.show();
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println("WorkBook : " + e.getMessage());
+			new Alert(AlertType.WARNING, "서버와 연결이 끊겼습니다.", ButtonType.CLOSE).showAndWait();
+			Platform.exit();
 		}
+
 	}
 
 	private void changeProblem() {
-		if (this.isValueChange()) {
-			Alert alert = new Alert(AlertType.CONFIRMATION, "해당 문제를 수정하시겠습니까?", ButtonType.YES, ButtonType.NO);
-			Optional<ButtonType> result = alert.showAndWait();
-			
-			if (result.get() == ButtonType.YES) {
-				this.btn_SaveWorkBook_Action();
-			}	
-		}
-		int index = ProfessorDataModel.currentPB;
-		ProfessorDataModel.problem = problemList[index];
-		if (ProfessorDataModel.problem.getType().equals(ProblemType.ShortAnswer)) {
-			try {
+		try {
+			if (this.isValueChange()) {
+				Alert alert = new Alert(AlertType.CONFIRMATION, "해당 문제를 수정하시겠습니까?", ButtonType.YES, ButtonType.NO);
+				Optional<ButtonType> result = alert.showAndWait();
+
+				if (result.get() == ButtonType.YES) {
+					this.btn_SaveWorkBook_Action();
+				}
+			}
+			int index = ProfessorDataModel.currentPB;
+			ProfessorDataModel.problem = problemList[index];
+			if (ProfessorDataModel.problem.getType().equals(ProblemType.ShortAnswer)) {
+
 				Stage primaryStage = (Stage) stage.getScene().getWindow();
 				Parent main = FXMLLoader.load(getClass().getResource("/gui/WorkBook_ShortAnswer.fxml"));
 				Scene scene = new Scene(main);
 				primaryStage.setTitle("GuessWhat/WorkBook");
 				primaryStage.setScene(scene);
 				primaryStage.show();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		} else if (ProfessorDataModel.problem.getType().equals(ProblemType.Subjective)) {
-			try {
+
+			} else if (ProfessorDataModel.problem.getType().equals(ProblemType.Subjective)) {
+
 				Stage primaryStage = (Stage) stage.getScene().getWindow();
 				Parent main = FXMLLoader.load(getClass().getResource("/gui/WorkBook_Subjective.fxml"));
 				Scene scene = new Scene(main);
 				primaryStage.setTitle("GuessWhat/WorkBook");
 				primaryStage.setScene(scene);
 				primaryStage.show();
-			} catch (Exception e) {
-				e.printStackTrace();
+
+			} else {
+				initialize(null, null);
 			}
-		} else {
-			initialize(null, null);
+		} catch (Exception e) {
+			System.out.println("WorkBook : " + e.getMessage());
+			new Alert(AlertType.WARNING, "서버와 연결이 끊겼습니다.", ButtonType.CLOSE).showAndWait();
+			Platform.exit();
 		}
+
 	}
 
 	public void btn_num1_Action() {
@@ -441,8 +441,11 @@ public class WorkBook_MultipleChoiceController implements Initializable {
 				primaryStage.setScene(scene);
 				primaryStage.show();
 			} catch (Exception e) {
-				e.printStackTrace();
+				System.out.println("WorkBook : " + e.getMessage());
+				new Alert(AlertType.WARNING, "서버와 연결이 끊겼습니다.", ButtonType.CLOSE).showAndWait();
+				Platform.exit();
 			}
+
 		}
 	}
 
@@ -460,9 +463,12 @@ public class WorkBook_MultipleChoiceController implements Initializable {
 				primaryStage.setScene(scene);
 				primaryStage.show();
 			} catch (Exception e) {
-				e.printStackTrace();
+				System.out.println("WorkBook : " + e.getMessage());
+				new Alert(AlertType.WARNING, "서버와 연결이 끊겼습니다.", ButtonType.CLOSE).showAndWait();
+				Platform.exit();
 			}
+
 		}
 	}
-	
+
 }
