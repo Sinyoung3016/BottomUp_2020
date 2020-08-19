@@ -1,11 +1,5 @@
 package gui;
 
-import java.util.Iterator;
-import java.util.List;
-
-import database.DB_Problem;
-import database.DB_Student;
-import database.DB_Workbook;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
@@ -15,11 +9,11 @@ import javafx.fxml.FXMLLoader;
 public class Main extends Application {
 
 	public void start(Stage primaryStage) throws Exception {
+		
 		try {
 			BorderPane root = (BorderPane) FXMLLoader.load(getClass().getResource("/server/Server.fxml"));
 			Scene scene = new Scene(root);
-			primaryStage.setTitle("QuessWhat/Home");
-			primaryStage.setOnCloseRequest(ActionEvent -> BaseController.CloseButtonActione());
+			primaryStage.setTitle("GuessWhat/Server");
 			primaryStage.setScene(scene);
 			primaryStage.show();
 

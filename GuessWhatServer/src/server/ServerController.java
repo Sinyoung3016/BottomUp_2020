@@ -35,11 +35,9 @@ import exception.MyException;
 
 public class ServerController {
 	@FXML
-	private Button btn_Open, btn_Close, btn_Empty, btn_Enter;
-	@FXML
-	private TextField tf_input;
+	private Button btn_Open, btn_Close;
 
-	ServerDataModel dataModel;
+	static ServerDataModel dataModel;
 	ServerSocket serverSocket;
 	int i = 1;
 
@@ -53,7 +51,6 @@ public class ServerController {
 	public void btn_Close_Action() {
 		// 서버종료
 		try {
-			;
 			Iterator<Socket> iterator = dataModel.getSocketList().iterator();
 
 			while (iterator.hasNext()) {
@@ -67,6 +64,7 @@ public class ServerController {
 			}
 
 			if (this.serverSocket != null && !this.serverSocket.isClosed()) {
+				System.out.println("---ServerClose---");
 				this.serverSocket.close();
 			}
 		} catch (Exception e) {
@@ -74,35 +72,7 @@ public class ServerController {
 		}
 	}
 
-	// MoonDD's PlayGround start
-	public void btn_Enter_Action() {
-		// �뀓�뒪�듃 �엯�젰諛쏄퀬, 媛믪씠 �엳�쑝硫� 踰꾪듉�늻瑜대㈃ �떎�뻾
-		String input = tf_input.getText(); // input�뿉 �엯�젰諛쏆� �뀓�뒪�듃
-		while (input == null) {
-			input = tf_input.getText();
-
-		}
-	}
-
-	public void btn_Empty_Action() {
-		try {
-			Iterator<Socket> iterator = dataModel.getSocketList().iterator();
-			while (iterator.hasNext()) {
-				Socket socket = iterator.next();
-				PrintWriter pw = new PrintWriter(
-						new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8));
-				pw.println("GetBanManagerState:Success:ING");
-				pw.flush();
-				System.out.println("GetBanManagerState:Success:ING");
-			}
-		} catch (IOException e) {
-			System.out.println("Error: " + e.getMessage() + "FROM btn_Empty_Action");
-		}
-	}
-	// MoonDD's PlayGround end
-
 	public Object CloseButtonActione() {
-		// �떕湲� 踰꾪듉 �닃���쓣 �븣, �꽌踰� 醫낅즺�븯怨� �떕�쓬.
 		btn_Close_Action();
 		return null;
 	}
