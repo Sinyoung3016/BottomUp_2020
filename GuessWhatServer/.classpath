@@ -7,6 +7,6 @@
 	</classpathentry>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.USER_LIBRARY/JavaFx"/>
-	<classpathentry kind="lib" path="C:/Program Files/Java/jre1.8.0_261/lib/ext/mysql-connector-java-8.0.21.jar"/>
+	<classpathentry kind="lib" path="C:/Users/tasha/Downloads/mysql-connector-java-8.0.20/mysql-connector-java-8.0.20.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
