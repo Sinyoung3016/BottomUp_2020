@@ -14,12 +14,12 @@
    <top>
       <HBox alignment="CENTER_LEFT" prefHeight="90.0" prefWidth="630.0" spacing="360.0" BorderPane.alignment="CENTER">
          <children>
-            <Button mnemonicParsing="false" prefHeight="60.0" prefWidth="80.0" style="-fx-text-fill: #5ad18f; -fx-background-color: #ffffff;" text="Logo">
+            <Button mnemonicParsing="false" prefHeight="60.0" prefWidth="80.0" style="-fx-text-fill: #5ad18f; -fx-background-color: #ffffff;" text="GW">
                <HBox.margin>
                   <Insets left="25.0" top="5.0" />
                </HBox.margin>
                <font>
-                  <Font name="Dubai Medium" size="17.0" />
+                  <Font name="Dubai Medium" size="25.0" />
                </font>
             </Button>
          </children>

@@ -14,12 +14,12 @@
    <top>
       <HBox alignment="CENTER" prefHeight="90.0" prefWidth="630.0" spacing="5.0" style="-fx-background-color: #5ad18f;" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="btn_Logo" mnemonicParsing="false" onAction="#btn_Logo_Action" prefHeight="60.0" prefWidth="80.0" style="-fx-background-color: #5ad18f; -fx-text-fill: #ffffff;" text="Logo">
+            <Button fx:id="btn_Logo" mnemonicParsing="false" onAction="#btn_Logo_Action" prefHeight="60.0" prefWidth="80.0" style="-fx-background-color: #5ad18f; -fx-text-fill: #ffffff;" text="GW">
                <HBox.margin>
                   <Insets left="25.0" top="5.0" />
                </HBox.margin>
                <font>
-                  <Font name="Dubai Medium" size="17.0" />
+                  <Font name="Dubai Medium" size="25.0" />
                </font>
             </Button>
             <Button fx:id="btn_Main" mnemonicParsing="false" onAction="#btn_Main_Action" prefHeight="65.0" prefWidth="370.0" style="-fx-background-color: #5ad18f; -fx-text-fill: #ffffff;" text="ClassName">
