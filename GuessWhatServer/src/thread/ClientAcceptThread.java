@@ -45,8 +45,8 @@ public class ClientAcceptThread extends Thread{
 				new ServerThread(socket, this.dataModel).start();
 			}
 			
-		} catch (IOException e ) {
-			e.printStackTrace();
+		} catch (Exception e ) {
+			System.out.println("CLientAccept : " + e.getMessage());
 		} finally {
 			try {
 				if(this.serverSocket != null && !this.serverSocket.isClosed()) {
@@ -54,7 +54,7 @@ public class ClientAcceptThread extends Thread{
 				}
 			}
 			catch(IOException e) {
-				e.printStackTrace();
+				System.out.println("CLientAccept : " + e.getMessage());
 			}
 		}
 	}
