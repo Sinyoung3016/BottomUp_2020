@@ -135,7 +135,7 @@ public class BanManagerSoonController implements Initializable {
 
 			} catch (Exception e) {
 				System.out.println("BanManagerSoon : " + e.getMessage());
-				new Alert(AlertType.WARNING, "서버와 연결이 끊겼습니다.", ButtonType.CLOSE);
+				new Alert(AlertType.WARNING, "서버와 연결이 끊겼습니다.", ButtonType.CLOSE).showAndWait();
 				Platform.exit();
 			}
 		}
